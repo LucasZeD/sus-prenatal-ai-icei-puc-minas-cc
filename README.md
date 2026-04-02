@@ -4,6 +4,13 @@ Este projeto consiste em uma plataforma fullstack projetada para a digitalizaç�
 
 O objetivo central é reduzir a carga cognitiva do profissional de saúde e aumentar a segurança da paciente, garantindo que as condutas recomendadas estejam alinhadas com as evidências científicas mais recentes, além de automatizar o engajamento e lembretes via WhatsApp.
 
+## Tabela de Conteúdos
+* [Especificação de Requisitos e User Stories](Documentacao/Especificacao.md) 
+
+* [Arquitetura da Solução](Documentacao/Arquitetura.md) 
+
+* [Artigo](Documentacao/Artigo/TCC-2_04-2026/TCC_2_PC2.pdf)
+
 ## Integrantes
 
 ### Alunos integrantes da equipe
@@ -13,13 +20,6 @@ O objetivo central é reduzir a carga cognitiva do profissional de saúde e aume
 ### Professores responsáveis
 
 * [Humberto (Torres) Marques-Neto](https://www.linkedin.com/in/humbertotmarques/)
-
-## 📄 Documentação do Projeto
-
-Para detalhes sobre a engenharia e arquitetura, acesse:
-* [Especificação de Requisitos e User Stories](Documentacao/Especificacao.md)
-* [Arquitetura da Solução e Decisões (ADRs)](Documentacao/Arquitetura.md)
-* [Artigo](Documentacao/Artigo/TCC-2_04-2026/TCC_2_PC2.pdf)
 
 ## Instruções de utilização
 
