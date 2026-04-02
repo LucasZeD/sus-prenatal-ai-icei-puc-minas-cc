@@ -17,8 +17,8 @@ O objetivo central é reduzir a carga cognitiva do profissional de saúde e aume
 ## 📄 Documentação do Projeto
 
 Para detalhes sobre a engenharia e arquitetura, acesse:
-* [Especificação de Requisitos e User Stories](Documentacao/especificacao.md)
-* [Arquitetura da Solução e Decisões (ADRs)](Documentacao/arquitetura.md)
+* [Especificação de Requisitos e User Stories](Documentacao/Especificacao.md)
+* [Arquitetura da Solução e Decisões (ADRs)](Documentacao/Arquitetura.md)
 * [Artigo](Documentacao/Artigo/TCC_1_Ponto_Controle_FInal.pdf)
 
 ## Instruções de utilização
