@@ -1,0 +1,330 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% How to use writeLaTeX: 
+%
+% You edit the source code here on the left, and the preview on the
+% right shows you the result within a few seconds.
+%
+% Bookmark this page and share the URL with your co-authors. They can
+% edit at the same time!
+%
+% You can upload figures, bibliographies, custom classes and
+% styles using the files menu.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt]{article}
+
+\usepackage{sbc-template}
+
+\usepackage{graphicx,url}
+
+\usepackage[brazil]{babel}   
+\usepackage[utf8]{inputenc}  
+
+\usepackage[hidelinks]{hyperref}
+     
+\sloppy
+
+\title{IA Responsável em Saúde Pública: um Estudo de Caso para Apoio à Decisão Médica no Pré-Natal}
+
+% \author{Luciana P. Nedel\inst{1}, Rafael H. Bordini\inst{2}, Flávio Rech
+%   Wagner\inst{1}, Jomi F. Hübner\inst{3} }
+
+
+\author{Humberto Torres Marques Neto\inst{1}, Lucas Zegrine Duarte\inst{2}}
+
+
+% \address{Instituto de Informática -- Universidade Federal do Rio Grande do Sul
+%   (UFRGS)\\
+%   Caixa Postal 15.064 -- 91.501-970 -- Porto Alegre -- RS -- Brazil
+% \nextinstitute
+%   Department of Computer Science -- University of Durham\\
+%   Durham, U.K.
+% \nextinstitute
+%   Departamento de Sistemas e Computação\\
+%   Universidade Regional de Blumenal (FURB) -- Blumenau, SC -- Brazil
+%   \email{\{nedel,flavio\}@inf.ufrgs.br, R.Bordini@durham.ac.uk,
+%   jomi@inf.furb.br}
+% }
+
+\address{Instituto de Ciências Exatas e Informática\\
+  Pontifícia Universidade Católica de Minas Gerais (PUC Minas)\\
+  Caixa Postal 1.686 – 30.535-901 – Belo Horizonte – MG – Brazil
+  \email{\{humberto.neto, lucas.duarte\}@sga.pucminas.br}
+}
+
+\begin{document} 
+
+\maketitle
+
+% 1. Título
+% 2. Autores + Email
+% 3. Abstract
+% 4. Resumo
+% 5. Introdução
+%    5.1. Contexto
+%    5.2. Motivação
+%    5.3. Organização do Trabalho
+% 6. Problema de Pesquisa
+% 7. Objetivos
+%    7.1. Objetivo Geral
+%    7.2. Objetivos Específicos
+% 8. Revisão de Literatura
+%    8.1. IA Responsável em Saúde
+%    8.2. Explicabilidade em ML
+%    8.3. Modelos Preditivos
+%    8.4. Viés e Equidade
+%    8.5. Governança
+%    8.6. Síntese
+% 9. Referências
+
+\begin{abstract}
+  % This meta-paper describes the style to be used in articles and short papers
+  % for SBC conferences. For papers in English, you should add just an abstract
+  % while for the papers in Portuguese, we also ask for an abstract in
+  % Portuguese (``resumo''). In both cases, abstracts should not have more than
+  % 10 lines and must be in the first page of the paper.
+  The application of Artificial Intelligence (AI) in public health, while promising, faces critical barriers of algorithmic opacity and the reproduction of historical biases. This study demonstrates how Responsible Artificial Intelligence (AI) practices can be integrated into the Brazilian Unified Health System (SUS) through a framework applied to risk prediction in prenatal care. Using real databases (SINASC/SIM), the study implements machine learning models validated by global and local explainability techniques (SHAP and LIME). The expected results include a transparent predictive model, analysis of demographic biases, and responsible implementation for AI applications in the SUS.
+\end{abstract}
+     
+\begin{resumo} 
+  % Este meta-artigo descreve o estilo a ser usado na confecção de artigos e
+  % resumos de artigos para publicação nos anais das conferências organizadas
+  % pela SBC. É solicitada a escrita de resumo e abstract apenas para os artigos
+  % escritos em português. Artigos em inglês deverão apresentar apenas abstract.
+  % Nos dois casos, o autor deve tomar cuidado para que o resumo (e o abstract)
+  % não ultrapassem 10 linhas cada, sendo que ambos devem estar na primeira
+  % página do artigo.
+  A aplicação de Inteligência Artificial (IA) em saúde pública, embora promissora, enfrenta barreiras críticas de opacidade algorítmica e reprodução de preconceitos históricos. Este estudo demonstra como práticas de Inteligência Artificial (IA) Responsável podem ser integradas ao Sistema Único de Saúde (SUS) mediante um framework aplicado à predição de riscos no acompanhamento pré-natal. Utilizando bases de dados reais (SINASC/SIM), o estudo implementa modelos de aprendizado de máquina validados por técnicas de explicabilidade global e local (SHAP e LIME). Os resultados esperados incluem um modelo preditivo transparente, análise de vieses demográficos e diretrizes de implementação responsável para aplicações de IA no SUS.
+\end{resumo}
+
+\section{Introdução}
+
+A Inteligência Artificial (IA) tem potencial transformador na saúde pública \cite{Shneiderman2021, Cabitza2022}. Aplicações como previsão de riscos gestacionais \cite{Advancing2025, MachineLearning2022} e diagnósticos assistidos por IA podem melhorar a eficiência, reduzir custos e salvar vidas. No entanto, sua adoção enfrenta obstáculos como opacidade dos modelos, sensibilidade dos dados, riscos de discriminação e falta de explicabilidade.
+
+A mortalidade materna no Brasil permanece como um desafio persistente, exacerbado por disparidades regionais e falhas na estratificação de risco precoce. Embora o uso de modelos preditivos prometa otimizar a triagem no SUS, a aplicação de algoritmos de “caixa-preta” introduz riscos éticos severos. A opacidade desses sistemas, aliada à sub-representação de variáveis socioeconômicas em bases como o SINASC, pode perpetuar o que Noble \cite{Noble2018} define como algoritmos de opressão, resultando em taxas desproporcionais de falsos negativos para gestantes em situação de vulnerabilidade. Este trabalho investiga a integração de práticas de IA Responsável (RAI) não como um opcional ético, mas como um requisito técnico para a viabilidade clínica do suporte à decisão.
+
+Propõe-se a implementação de uma plataforma digital integrando agentes de Inteligência Artificial para suporte clínico em tempo real. O objetivo é reduzir a carga cognitiva do profissional de saúde e garantir a aplicação de protocolos oficiais do SUS através de Geração Aumentada de Recuperação (RAG) e interação via WhatsApp para engajamento da gestante.
+
+\subsection{Motivação}
+Complicações gestacionais têm alto impacto clínico e social, afetando expressivamente tanto a saúde materno-infantil quanto os recursos do sistema público de saúde. Contudo, observa-se que muitos sistemas de IA aplicados à saúde ainda carecem de explicabilidade adequada e não avaliam robustamente a justiça entre diferentes populações, especialmente considerando variáveis sociodemográficas, étnicas e geográficas.
+
+Médicos, pacientes e reguladores demandam maior transparência e responsabilidade, especialmente diante de diretrizes éticas emergentes. Este estudo busca oferecer um framework prático, replicável e escalável, contribuindo para soluções tecnicamente eficientes e eticamente responsáveis.
+
+\section{Problema de Pesquisa}
+Os problemas a serem discutidos envolvem como projetar e implementar um sistema de apoio à decisão médica pré-natal que:
+
+\begin{itemize}
+    \item Preveja com precisão riscos de complicações gestacionais;
+    \item Forneça explicações compreensíveis aos médicos sobre as previsões;
+    \item Mitigue vieses demográficos, socioeconômicos e de dados;
+    \item Garanta privacidade e segurança dos dados dos pacientes;
+    \item Seja compatível com práticas de governança de IA.
+\end{itemize}
+
+\section{Objetivos}
+
+\subsection{Objetivo Geral}
+Desenvolver um estudo de caso que demonstre a aplicação de práticas de IA Responsável em um sistema de previsão de riscos no pré-natal, avaliando desempenho técnico, aspectos éticos, explicabilidade e governança.
+
+\subsection{Objetivos Específicos}
+\begin{itemize}
+    \item Revisar literatura sobre IA Responsável em saúde pública, com ênfase em explicabilidade, viés, privacidade e governança;
+    \item Coletar e preparar dados de acompanhamento pré-natal (variáveis clínicas, demográficas e socioeconômicas);
+    \item Desenvolver modelos de machine learning para previsão de complicações gestacionais;
+    \item Aplicar técnicas de explicabilidade (SHAP, LIME) e avaliar sua compreensão por médicos;
+    \item Analisar vieses (étnicos, socioeconômicos e geográficos) nos modelos e propor um framework de governança de IA (responsabilidades, auditorias, transparência) para evitá-los.
+    \item Avaliar aceitabilidade e compreensão do sistema por médicos e stakeholders em estudo piloto.
+\end{itemize}
+
+\section{Revisão de Literatura}
+
+\subsection{IA Responsável e Governança em Saúde}
+A IA Responsável (RAI) transcende a ética teórica ao propor a operacionalização de princípios de transparência e justiça na engenharia de software \cite{Shneiderman2021, Dignum2022}. Na saúde, essa necessidade é suprida por frameworks como o \textit{FUTURE-AI}, que estabelece diretrizes para a implantação de sistemas confiáveis \cite{Lekadir2023}, e o \textit{FAIR-AI}, focado na revisão contínua de modelos clínicos \cite{Lekadir2022}.
+
+No cenário brasileiro, a governança deve alinhar-se à Lei Geral de Proteção de Dados (LGPD) e a frameworks institucionais que buscam mitigar riscos regulatórios e fragmentações normativas no setor público \cite{Atheniense2024, FrameworkGovBR2025}.
+
+\subsection{Modelos Preditivos e Explicabilidade (XAI)}
+A aplicação de algoritmos de ensemble, como Random Forest e XGBoost, tem demonstrado alta eficácia na predição de complicações gestacionais e morbidade materna \cite{MachineLearning2022, Cetin2020}. Todavia, a adoção clínica depende da superação da natureza "caixa-preta" desses modelos. Técnicas de Explainable AI (XAI), como SHAP e LIME, são fundamentais para converter saídas estatísticas em justificativas clínicas inteligíveis\cite{Advancing2025, ExplainableAI2023}. Essa abordagem foi aplicada com sucesso em contextos de saúde pública em Belo Horizonte, demonstrando a viabilidade de modelos preditivos em cenários de alta complexidade \cite{Dias2024}.
+
+\subsection{Equidade Algorítmica e a Realidade dos Dados no SUS}
+A integridade da IA em saúde pública é limitada pela qualidade dos dados de entrada (garbage in, garbage out). No Brasil, embora o SINASC e o SIM possuam ampla cobertura, persistem falhas de consistência em variáveis sensíveis como raça/cor e escolaridade \cite{Santos2021}. Essa incompletude gera o risco de "viés sistêmico" \cite{ViesAlgoritmico2024, FairnessAI2023}. Para assegurar a equidade (fairness) e reduzir disparidades sociorraciais, a literatura prescreve o uso de fatores de correção e técnicas de linkage para fortalecer a robustez dos indicadores epidemiológicos maternos \cite{Laurenti2010, Carvalho2019}.
+
+\subsection{Síntese e Lacunas Identificadas}
+Embora existam soluções técnicas robustas para predição \cite{MachineLearning2022, Cetin2020} e técnicas de explicabilidade \cite{Advancing2025}, essas áreas são frequentemente tratadas isoladamente. Frameworks de RAI (e.g., \cite{Lekadir2022}) estão emergindo, mas faltam estudos de caso práticos e integrados que demonstrem o ciclo de vida completo: desde o desenvolvimento do modelo, passando pela avaliação de viés \cite{FairnessAI2023} e integração de XAI \cite{ExplainableAI2023}, até a governança \cite{AIGovernance2025}. Este trabalho propõe preencher essa lacuna mediante um estudo de caso aplicado ao pré-natal brasileiro.
+
+\subsection{LLMs e RAG na Saúde Pública}
+Modelos de Linguagem de Grande Escala (LLMs) oferecem novas possibilidades para a análise de prontuários. Contudo, devido ao risco de alucinações em contextos clínicos, a técnica de \textit{Retrieval-Augmented Generation} (RAG) é empregada para restringir a base de conhecimento do modelo aos Manuais Técnicos de Pré-Natal do Ministério da Saúde.
+
+\subsection{M-Health e Engajamento via WhatsApp}
+A computação móvel aplicada à saúde (M-Health) demonstra eficácia no aumento da adesão ao pré-natal. A utilização de interfaces de conversação (WhatsApp) permite que o sistema atue proativamente em lembretes e orientações preventivas baseadas na idade gestacional.
+
+\section{Metodologia}
+% Esta pesquisa dispõe a realizar um estudo de caso experimental e aplicado para o desenvolvimento de um framework de IA Responsável (RAI) voltado à saúde pública. Portanto, o percurso metodológico será dividido em quatro etapas sequenciais: governança de dados e resultados, modelagem preditiva, auditoria e explicabilidade.
+
+A pesquisa adota uma abordagem de Engenharia de Software baseada em prototipagem rápida. O desenvolvimento foi dividido em: (i) Modelagem de dados relacionais para prontuários; (ii) Implementação de agente "Escriba Digital" para transcrição de consultas; (iii) Desenvolvimento de motor RAG para consulta de protocolos; e (iv) Automação de eventos para mensageria via WhatsApp.
+
+\subsection{Governança e Preparação de Dados}
+O estudo utiliza microdados anonimizados (como IDADEMAE e RACACOR) do SINASC e SIM, focando no tratamento de dados provenientes do Departamento de Informática do SUS (DATASUS). Serão utilizados microdados anônimos do Sistema de Informações sobre Nascidos Vivos (SINASC) e do Sistema de Informações sobre Mortalidade (SIM) \cite{ThemeFilha2014}. A escolha destas bases justifica-se pela sua abrangência nacional, embora apresentem desafios críticos de qualidade que exigem um protocolo de governança de dados rigoroso. Para mitigar a subnotificação de óbitos e a fragmentação das informações, será aplicado um processo de linkage determinístico e probabilístico entre as bases, técnica essencial para garantir a fidedignidade dos indicadores epidemiológicos maternos \cite{Carvalho2019, Silva2006}.
+
+Ainda mais, será realizada uma auditoria de completude em variáveis sensíveis, como raça/cor e escolaridade. Dado que a literatura aponta altas taxas de incompletude nesses campos \cite{ThemeFilha2012, Santos2021}, o tratamento desses dados omissos será realizado via métodos de imputação robustos ou análise de sensibilidade, visando evitar o “viés de exclusão” que frequentemente invisibiliza populações vulneráveis em modelos de aprendizado de máquina.
+
+\subsection{Desenvolvimento do Modelo Preditivo}
+O desenvolvimento do modelo para predição de morbidade materna grave e risco de óbito baseia-se em classificadores de conjunto, especificamente Random Forest e XGBoost. A seleção desses algoritmos justifica-se por sua robustez intrínseca no tratamento de dados tabulares esparsos e heterogêneos, características dominantes nos microdados do DATASUS \cite{Cetin2020}. Diferente de abordagens genéricas que priorizam desempenho isolado do modelo, a arquitetura do sistema é projetada sob princípios de design modular, garantindo que a escalabilidade técnica e a segurança dos dados caminhem junto à facilidade de manutenção e auditoria externa conforme a LGPD \cite{dosReis2024}.
+
+Quanto à avaliação de desempenho, a pesquisa adota o Recall (Sensibilidade) como métrica primária de otimização em detrimento da acurácia global. Esta escolha é fundamentada no imperativo clínico: em triagens pré-natais, o custo ético de um falso negativo é drasticamente superior ao de um falso positivo, exigindo um modelo que maximize a cobertura de eventos críticos. Para mitigar a opacidade desses modelos, a técnica SHAP (SHapley Additive exPlanations)\cite{Lundberg2017} é aplicada como ferramenta de auditoria de equidade. Caso a análise de explicabilidade identifique que variáveis sensíveis, como raça/cor ou localidade, dominam as predições desproporcionalmente, o modelo será submetido a técnica de re-weighting no treinamento para corrigir o viés sistêmico e evitar bias.
+
+\subsection{Auditoria de Equidade e Implementação de XAI}
+O diferencial está na integração de técnicas de IA Explicável (XAI) e métricas de justiça (fairness) como requisitos de validação, e não somente como etapas pós-processamento. Para garantir que o modelo não perpetue preconceitos sistêmicos, serão aplicadas as métricas de Equalized Odds e Demographic Parity, comparando o erro residual entre diferentes grupos sociorraciais \cite{FairnessAI2023, ViesAlgoritmico2024}.
+
+A opacidade algorítmica será combatida mediante a aplicação de métodos de explicabilidade global e local, como SHAP (SHapley Additive exPlanations) e LIME \cite{Rajpurkar2022, ExplainableAI2023}. O SHAP será utilizado como ferramenta de auditoria para investigar se o modelo está utilizando variáveis socioeconômicas como proxies para discriminação ou se as previsões estão fundamentadas em determinantes clínicos e sociais legítimos. Essa transparência é fundamental para a construção de confiança entre o sistema e o profissional de saúde \cite{Shneiderman2021, Lekadir2023}.
+
+\subsection{Framework de Governança e Intervenção}
+Na etapa final, o estudo proporá um framework de governança que define o "Protocolo de Resposta Responsável". Este protocolo estabelecerá como os resultados do modelo (score de risco + justificativa XAI) devem ser consumidos pelo médico, garantindo que a decisão final permaneça centrada no humano (Human-in-the-loop) \cite{Dignum2022, Lu2022}. A metodologia prevê a criação de diretrizes de responsabilidade e auditoria, alinhando o sistema às recomendações internacionais de IA confiável e às normas de proteção de dados (LGPD) \cite{ResponsibleAI2024}. Ao final, o framework será validado teoricamente em comparação com frameworks existentes ou checklist de RAI, buscando preencher a lacuna entre princípios éticos e a prática de engenharia no SUS \cite{Atheniense2024, EBIA2021}.
+
+\section{Cronograma}
+A execução das atividades previstas para esta pesquisa seguirá o cronograma apresentado na Tabela~\ref{tab:cronograma}. O planejamento foi ajustado para refletir a complexidade do tratamento de dados de saúde pública e a integração simultânea das práticas de IA Responsável.
+
+\begin{table}[ht]
+\centering
+\caption{Cronograma de execução da pesquisa (M1-M6).}
+\label{tab:cronograma}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+\textbf{Atividade} & \textbf{M1} & \textbf{M2} & \textbf{M3} & \textbf{M4} & \textbf{M5} & \textbf{M6} \\ \hline
+Revisão Bibliográfica e Coleta de Dados & X &  &  &  &  &  \\ \hline
+Processamento dos dados (SINASC/SIM) &  & X & X &  &  &  \\ \hline
+Treinamento e Otimização de Modelos (ML) &  &  & X & X &  &  \\ \hline
+Auditoria de RAI (Fairness e XAI) &  &  &  &  & X &  \\ \hline
+Design do Framework e Protocolos de Gov. &  &  &  &  & X &  \\ \hline
+Redação Final e Defesa &  &  &  &  & X & X \\ \hline
+\end{tabular}
+\end{table}
+
+\section{Resultados Esperados}
+Espera-se que o framework proposto resulte em um modelo preditivo com aumento significativo de interpretabilidade para profissionais de saúde, sem degradação estatisticamente relevante do desempenho em termos de Recall. A auditoria de equidade deverá evidenciar assimetrias de desempenho entre grupos sociodemográficos nos dados do DATASUS, permitindo quantificar o trade-off entre métricas de justiça (fairness) e desempenho preditiva. Espera-se também que a integração de técnicas de explicabilidade (XAI) contribua para maior confiança clínica no uso do sistema como apoio à decisão, reforçando seu potencial de adoção em ambientes reais do SUS.
+
+\section{Implementação}
+A arquitetura do sistema foi desenvolvida utilizando o framework Next.js (App Router) com TypeScript, garantindo tipagem estrita para dados sensíveis. O armazenamento utiliza PostgreSQL com o ORM Prisma para gestão de migrações e integridade referencial. 
+
+Até este ponto, o MVP contempla o módulo de cadastro e acompanhamento clínico ("Escriba Digital"), onde os inputs da Caderneta da Gestante foram digitalizados em um esquema de banco de dados normalizado. O processamento de linguagem natural está estruturado em uma camada de serviço isolada, permitindo que a IA consuma os dados da consulta sem expor identificadores pessoais (PII), respeitando a LGPD.
+
+O artefato técnico foi disponibilizado em repositório público para fins de reprodutibilidade \cite{Zegrine2026}.
+
+\section{Testes}
+O plano de testes inicial foca na integridade do fluxo de dados e na precisão das orientações geradas. Foram estipulados os seguintes cenários:
+\begin{itemize}
+    \item \textbf{Testes Funcionais:} Validação dos esquemas de dados (Zod) para garantir que aferições clínicas (ex: PA, Peso) não aceitem valores fora dos limites biológicos.
+    \item \textbf{Testes de Segurança:} Verificação do isolamento de rotas e mascaramento de dados em logs.
+    \item \textbf{Testes de Prompt (RAG):} Avaliação qualitativa comparando as sugestões da IA com os protocolos físicos do Ministério da Saúde para identificar possíveis divergências ou alucinações.
+\end{itemize}
+
+\section{Resultados Preliminares}
+(Espaço reservado para inclusão de métricas de uso e logs de processamento no próximo ponto de controle).
+
+% \section{Resultados e Discussão}
+
+% \section{Conclusão}
+
+% \section{General Information}
+
+% All full papers and posters (short papers) submitted to some SBC conference,
+% including any supporting documents, should be written in English or in
+% Portuguese. The format paper should be A4 with single column, 3.5 cm for upper
+% margin, 2.5 cm for bottom margin and 3.0 cm for lateral margins, without
+% headers or footers. The main font must be Times, 12 point nominal size, with 6
+% points of space before each paragraph. Page numbers must be suppressed.
+
+% Full papers must respect the page limits defined by the conference.
+% Conferences that publish just abstracts ask for \textbf{one}-page texts.
+
+% \section{First Page} \label{sec:firstpage}
+
+% The first page must display the paper title, the name and address of the
+% authors, the abstract in English and ``resumo'' in Portuguese (``resumos'' are
+% required only for papers written in Portuguese). The title must be centered
+% over the whole page, in 16 point boldface font and with 12 points of space
+% before itself. Author names must be centered in 12 point font, bold, all of
+% them disposed in the same line, separated by commas and with 12 points of
+% space after the title. Addresses must be centered in 12 point font, also with
+% 12 points of space after the authors' names. E-mail addresses should be
+% written using font Courier New, 10 point nominal size, with 6 points of space
+% before and 6 points of space after.
+
+% The abstract and ``resumo'' (if is the case) must be in 12 point Times font,
+% indented 0.8cm on both sides. The word \textbf{Abstract} and \textbf{Resumo},
+% should be written in boldface and must precede the text.
+
+% \section{CD-ROMs and Printed Proceedings}
+
+% In some conferences, the papers are published on CD-ROM while only the
+% abstract is published in the printed Proceedings. In this case, authors are
+% invited to prepare two final versions of the paper. One, complete, to be
+% published on the CD and the other, containing only the first page, with
+% abstract and ``resumo'' (for papers in Portuguese).
+
+% \section{Sections and Paragraphs}
+
+% Section titles must be in boldface, 13pt, flush left. There should be an extra
+% 12 pt of space before each title. Section numbering is optional. The first
+% paragraph of each section should not be indented, while the first lines of
+% subsequent paragraphs should be indented by 1.27 cm.
+
+% \subsection{Subsections}
+
+% The subsection titles must be in boldface, 12pt, flush left.
+
+% \section{Figures and Captions}\label{sec:figs}
+
+
+% Figure and table captions should be centered if less than one line
+% (Figure~\ref{fig:exampleFig1}), otherwise justified and indented by 0.8cm on
+% both margins, as shown in Figure~\ref{fig:exampleFig2}. The caption font must
+% be Helvetica, 10 point, boldface, with 6 points of space before and after each
+% caption.
+
+% \begin{figure}[ht]
+% \centering
+% \includegraphics[width=.5\textwidth]{fig1.jpg}
+% \caption{A typical figure}
+% \label{fig:exampleFig1}
+% \end{figure}
+
+% \begin{figure}[ht]
+% \centering
+% \includegraphics[width=.3\textwidth]{fig2.jpg}
+% \caption{This figure is an example of a figure caption taking more than one
+%   line and justified considering margins mentioned in Section~\ref{sec:figs}.}
+% \label{fig:exampleFig2}
+% \end{figure}
+
+% In tables, try to avoid the use of colored or shaded backgrounds, and avoid
+% thick, doubled, or unnecessary framing lines. When reporting empirical data,
+% do not use more decimal digits than warranted by their precision and
+% reproducibility. Table caption must be placed before the table (see Table 1)
+% and the font used must also be Helvetica, 10 point, boldface, with 6 points of
+% space before and after each caption.
+
+% \begin{table}[ht]
+% \centering
+% \caption{Variables to be considered on the evaluation of interaction
+%   techniques}
+% \label{tab:exTable1}
+% \includegraphics[width=.7\textwidth]{table.jpg}
+% \end{table}
+
+% \section{Images}
+
+% All images and illustrations should be in black-and-white, or gray tones,
+% excepting for the papers that will be electronically available (on CD-ROMs,
+% internet, etc.). The image resolution on paper should be about 600 dpi for
+% black-and-white images, and 150-300 dpi for grayscale images.  Do not include
+% images with excessive resolution, as they may take hours to print, without any
+% visible difference in the result. 
+
+\newpage
+
+\bibliographystyle{sbc}
+\bibliography{sbc-template}
+
+\end{document}
