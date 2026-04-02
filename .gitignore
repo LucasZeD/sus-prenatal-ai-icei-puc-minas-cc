@@ -77,3 +77,16 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Latex^
+*.aux
+*.bbl
+*.blg
+*.out
+main.pdf
+*.synctex.gz
+*.toc
+*.log
+*.fls
+*.fdb_latexmk
+*.synctex.gz
