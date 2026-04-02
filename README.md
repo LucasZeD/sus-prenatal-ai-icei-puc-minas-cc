@@ -4,13 +4,22 @@ Este projeto consiste em uma plataforma fullstack projetada para a digitalizaç�
 
 O objetivo central é reduzir a carga cognitiva do profissional de saúde e aumentar a segurança da paciente, garantindo que as condutas recomendadas estejam alinhadas com as evidências científicas mais recentes, além de automatizar o engajamento e lembretes via WhatsApp.
 
-## Alunos integrantes da equipe
+## Integrantes
+
+### Alunos integrantes da equipe
 
 * [Lucas Zegrine Duarte](https://www.linkedin.com/in/lucas-zegrine/)
 
-## Professores responsáveis
+### Professores responsáveis
 
 * [Humberto (Torres) Marques-Neto](https://www.linkedin.com/in/humbertotmarques/)
+
+## 📄 Documentação do Projeto
+
+Para detalhes sobre a engenharia e arquitetura, acesse:
+* [Especificação de Requisitos e User Stories](Documentacao/especificacao.md)
+* [Arquitetura da Solução e Decisões (ADRs)](Documentacao/arquitetura.md)
+* [Artigo](Documentacao/Artigo/TCC_1_Ponto_Controle_FInal.pdf)
 
 ## Instruções de utilização
 
