@@ -1,31 +1,25 @@
-cff-version: 1.0.1
+cff-version: 1.2.0
 message: Please cite this software using these metadata.
-title: 
+title: "Sistema de Digitalização e Inteligência da Caderneta de Gestante do SUS"
 authors:
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names:
+  - family-names: "Zegrine Duarte"
+    given-names: "Lucas"
+    orcid: "https://orcid.org/0009-0002-6097-2306"
   - name-suffix: Professor
     affiliation: PUC Minas
-    family-names: 
-    given-names: 
-  - name-suffix: Professor
-    affiliation: PUC Minas
-    family-names: 
-    given-names: 
+    family-names: "Marques-Neto"
+    given-names: "Humberto T."
+    orcid: "https://orcid.org/0000-0002-3164-8323"
 keywords:
-  - 
-  - 
-repository-code: 
+  - "Artficial Intelligence"
+  - "Public Health"
+  - "SUS"
+  - "Prenatal"
+  - "Machine Learning"
+  - "Speech-To-Text"
+  - "Natural Language Processing"
+  - "Agentic AI"
+repository-code: https://github.com/LucasZeD/sus-prenatal-ai-icei-puc-minas-cc.git
 license: CC-BY-4.0
 version: 1.0.0
-date-released: 2022-07-14
+date-released: 2026-07-24

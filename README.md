@@ -1,19 +1,32 @@
-# [Nome do projeto]
+# Prenatal Digital: Inteligência Artificial e RAG na Caderneta da Gestante
 
-[Escreva um ou dois  parágrafo resumindo o objetivo do seu projeto.]
+Este projeto consiste em uma plataforma fullstack projetada para a digitalização da Caderneta da Gestante do SUS, transformando o registro físico em um ecossistema de dados estruturados. O sistema utiliza um **Escriba Digital** para transcrição de consultas e um **Agente de IA com RAG** (Retrieval-Augmented Generation) que consome protocolos oficiais do Ministério da Saúde para auxiliar profissionais de saúde em tempo real.
+
+O objetivo central é reduzir a carga cognitiva do profissional de saúde e aumentar a segurança da paciente, garantindo que as condutas recomendadas estejam alinhadas com as evidências científicas mais recentes, além de automatizar o engajamento e lembretes via WhatsApp.
 
 ## Alunos integrantes da equipe
 
-* [Nome completo do aluno 1]
-* [Nome completo do aluno 2]
-* [Nome completo do aluno 3]
-* [Nome completo do aluno 4]
+* [Lucas Zegrine Duarte](https://www.linkedin.com/in/lucas-zegrine/)
 
 ## Professores responsáveis
 
-* [Nome completo do professor 1]
-* [Nome completo do professor 2]
+* [Humberto (Torres) Marques-Neto](https://www.linkedin.com/in/humbertotmarques/)
 
 ## Instruções de utilização
 
-[Assim que a primeira versão do sistema estiver disponível, deverá complementar com as instruções de utilização. Descreva como instalar eventuais dependências e como executar a aplicação.]
+Este sistema utiliza a arquitetura Next.js com PostgreSQL. Para rodar o ambiente de desenvolvimento:
+
+1. **Clonar o repositório:**
+   `git clone https://github.com/LucasZeD/projeto-prenatal.git`
+
+2. **Instalar dependências:**
+   `npm install` ou `yarn install`
+
+3. **Configurar variáveis de ambiente:**
+   Crie um arquivo `.env` na raiz seguindo o modelo `.env.example` (incluindo as chaves da API de IA e conexão com Postgres).
+
+4. **Executar Migrations do Banco:**
+   `npx prisma migrate dev`
+
+5. **Iniciar o servidor:**
+   `npm run dev`
