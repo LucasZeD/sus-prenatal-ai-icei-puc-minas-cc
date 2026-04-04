@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Paciente {
+  id              String      @id @default(cuid())
+  nome_mascarado  String
+  ig_inicial      Int         // Idade gestacional em semanas
+  imc_pre         Float
+  data_cadastro   DateTime    @default(now())
+  consultas       Consulta[]
+  exames          Exame[]
+}
+
+model Consulta {
+  id                String   @id @default(cuid())
+  paciente_id       String
+  peso              Float?
+  pa                String?  // Pressão Arterial
+  au                Int?     // Altura Uterina
+  bcf               Int?     // Batimentos Cardíacos Fetais
+  conduta_ia        String?  // Sugestão da IA Generativa
+  validacao_medica  Boolean  @default(false)
+  data              DateTime @default(now())
+
+  paciente Paciente @relation(fields: [paciente_id], references: [id])
+}
+
+model Exame {
+  id                      String   @id @default(cuid())
+  paciente_id             String
+  tipo                    String
+  data                    DateTime @default(now())
+  resultado_criptografado String
+
+  paciente Paciente @relation(fields: [paciente_id], references: [id])
+}
