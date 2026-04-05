@@ -28,14 +28,6 @@ Este sistema utiliza a arquitetura Next.js com PostgreSQL. Para rodar o ambiente
 1. **Clonar o repositório:**
    `git clone https://github.com/LucasZeD/projeto-prenatal.git`
 
-2. **Instalar dependências:**
-   `npm install` ou `yarn install`
-
-3. **Configurar variáveis de ambiente:**
-   Crie um arquivo `.env` na raiz seguindo o modelo `.env.example` (incluindo as chaves da API de IA e conexão com Postgres).
-
-4. **Executar Migrations do Banco:**
-   `npx prisma migrate dev`
-
-5. **Iniciar o servidor:**
-   `npm run dev`
+2. **Seguir Tutorial de Instalação e Configuração:**
+   [Tutorial](Codigo/webapp/README.md)
+   
