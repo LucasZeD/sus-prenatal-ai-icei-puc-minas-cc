@@ -13,10 +13,12 @@ Este documento define as especificações centrais do sistema de apoio ao pré-n
 | US05 | Prof. da Saúde | Eu quero ver alertas visuais automáticos de "Alto Risco" caso os dados avaliados pela IA estourem os limites base da Cartilha | Antecipar a identificação de perigo fatal para o feto ou a mãe, ativando transferência para atenção secundária. |
 | US06 | Prof. da Saúde | Eu quero gerar a extração da Caderneta em um formato PDF oficial idêntico à ficha física nacional do SUS impressa | Permitir a portabilidade e inclusão analógica de mulheres que preferem a via impressa ou vivem sem acesso à internet. |
 | US07 | Prof. da Saúde | Eu quero alterar a qualquer momento os campos de formulário preenchido pela IA durante a consulta. | Permitir a correção de informações inseridas incorretamente pela IA. |
-| US08 | Gestante | Eu quero receber lembretes periódicos enviados ativamente no meu WhatsApp agendando as semanas corretas da próxima consulta | Combater o alto índice de evasão nas idas aos postos ou esquecimentos das consultas críticas finais da gestação. |
-| US09 | Gestante | Eu quero receber, ao fim de cada atendimento, um lembrete do meu plano de cuidado (medicamentos/orientações do médico) resumido pelo WhatsApp | Aumentar drasticamente a aderência do tratamento no dia a dia sem depender de "decorebas" e letras inelegíveis. |
-| US10 | Gestante | Eu quero receber "pílulas de conhecimento" educativas, em linguagem clara gerada por NLP partindo do conteúdo maçante do SUS | Promover acesso à saúde empática, estimulando autocuidado preventivo com leitura simples, semanalmente coerente. |
-| US11 | Prod/Dev | Eu quero que a coleta de áudio para a NLP descarte dados de identificação (PII) sensíveis para a governança na camada Cloud | Cumprir rigor ético e mandatório de segurança do dado perante a LGPD protegendo os cenários clínicos da quebra de sigilo. |
+| US08 | Prof. da Saúde | Eu quero visualizar todos os meus agendamentos em um calendário. | Permitir o acompanhamento do fluxo de consultas da gestante. |
+| US09 | Prof. da Saúde | Eu quero visualizar o perfil do paciente e toda sua cartirinha com consultas no seu perfil. | Permitir o acompanhamento da linha de cuidado da gestante. |
+| US10 | Gestante | Eu quero receber lembretes periódicos enviados ativamente no meu WhatsApp agendando as semanas corretas da próxima consulta | Combater o alto índice de evasão nas idas aos postos ou esquecimentos das consultas críticas finais da gestação. |
+| US11 | Gestante | Eu quero receber, ao fim de cada atendimento, um lembrete do meu plano de cuidado (medicamentos/orientações do médico) resumido pelo WhatsApp | Aumentar drasticamente a aderência do tratamento no dia a dia sem depender de "decorebas" e letras inelegíveis. |
+| US12 | Gestante | Eu quero receber "pílulas de conhecimento" educativas, em linguagem clara gerada por NLP partindo do conteúdo maçante do SUS | Promover acesso à saúde empática, estimulando autocuidado preventivo com leitura simples, semanalmente coerente. |
+| US13 | Prod/Dev | Eu quero que a coleta de áudio para a NLP descarte dados de identificação (PII) sensíveis para a governança na camada Cloud | Cumprir rigor ético e mandatório de segurança do dado perante a LGPD protegendo os cenários clínicos da quebra de sigilo. |
 
 
 ## 2. Requisitos Funcionais (RF)
@@ -25,10 +27,12 @@ Os requisitos funcionais ditam as ações técnicas que o sistema deve realizar 
 
 | ID | Nome do Requisito | Descrição Técnica |
 | :--- | :--- | :--- |
-| RF01 | Agente Escriba (STT) | O WebApp deve capturar áudio do microfone e processar a conversão *Speech-to-Text* (por ex. via API Whisper) em tempo real. |
-| RF02 | Preenchimento Estruturado | O sistema deve injetar os resultados da transcrição (NLP/Generativa) mapeados diretamente nas varíaveis e input-fields virtuais da caderneta. |
-| RF03 | Consulta às Cartilhas (Chat RAG) | O sistema deve disponibilizar um *Chat* que recupere dados em bases vectoriais relativas aos Manuais do Ministério da Saúde. |
-| RF04 | Painel de Condutas da IA | O servidor deve processar os dados inseridos e retornar na interface "cards" de Sugestões / Condutas textuais (Ação/Reação). |
+| RF01 | Calendário de Consultas | O sistema deve permitir que o profissional de saude veja um calendário com suas consultas marcadas. |
+| RF02 | CRUD de Pacientes | O sistema deve permitir que o profissional de saude cadastre, atualize, visualize e exclua pacientes. |
+| RF03 | Agente Escriba (STT) | O WebApp deve capturar áudio do microfone e processar a conversão *Speech-to-Text* (por ex. via API Whisper) em tempo real. |
+| RF04 | Preenchimento Estruturado | O sistema deve injetar os resultados da transcrição (NLP/Generativa) mapeados diretamente nas varíaveis e input-fields virtuais da caderneta. |
+| RF05 | Consulta às Cartilhas (Chat RAG) | O sistema deve disponibilizar um *Chat* que recupere dados em bases vectoriais relativas aos Manuais do Ministério da Saúde. |
+| RF06 | Painel de Condutas da IA | O servidor deve processar os dados inseridos e retornar na interface "cards" de Sugestões / Condutas textuais (Ação/Reação). |
 | RF05 | Workflow "Human-in-the-Loop" | O sistema deve bloquear que uma sugestão entre no sistema sem que a Profissional de Saúde clique em aceitar, garantindo responsividade e ética na ferramenta. |
 | RF06 | Alerta de Alto Risco | O frontend deve gerar Alertas Visuais de *Alto Risco* caso o Score Clínico processado estoure os limiares padronizados na Cartilha SUS. |
 | RF07 | Procedimento de Alto Risco | O sistema deve sugerir o protocolo médico padrão para o quadro clínico detectado, de acordo com a Cartilha SUS. |
@@ -36,6 +40,8 @@ Os requisitos funcionais ditam as ações técnicas que o sistema deve realizar 
 | RF09 | Agendador de M-Health | O back-end deve rodar uma tarefa CRON calculando as datas quinzenais/mensais de disparo no WhatsApp com a próxima consulta. |
 | RF10 | Resumo via Bot do Whatsapp | O sistema deve disparar as Condutas Salvas, processadas sintaticamente por IA, integrando API de Whatsapp (API da Meta ou provedor homologado). |
 | RF11 | Aulas Semanais (Pílulas Educativas) | O sistema deve rotear trechos dos conhecimentos técnicos do banco, reescrever e enviar via WhatsApp pra gestante de acordo com a `Idade Gestacional`. |
+| RF12 | Agendamento de Consultas | O sistema deve permitir que a gestante agende consultas médicas diretamente pelo aplicativo. |
+| RF13 | Perfil da Gestante | O sistema deve permitir que a gestante visualize seu perfil e histórico de consultas. |
 
 ## 3. Requisitos Não Funcionais (RNF)
 
