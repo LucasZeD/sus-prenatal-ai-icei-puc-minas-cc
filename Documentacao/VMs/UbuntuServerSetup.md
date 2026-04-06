@@ -19,5 +19,8 @@
 - Install guest additions: off
 - Pre-allocate disk space: true
 
+##  GUI
+- xubuntu
+
 ## After install
-- 8.40 GB used
+- 7.4 GB used
