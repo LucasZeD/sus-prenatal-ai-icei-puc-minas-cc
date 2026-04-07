@@ -40,6 +40,7 @@ Ainda dentro de `Codigo/webapp`, compile o schema do Prisma e crie as tabelas no
 ```bash
 npx prisma db push
 npx prisma generate
+npx prisma studio # abre o banco de dados
 ```
 
 ### 6. Executar o Servidor 
