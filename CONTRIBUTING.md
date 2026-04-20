@@ -28,7 +28,7 @@ Utilize as praticas ["Conventional Commits"](https://www.conventionalcommits.org
 - `docs`:     Mudanças na documentação. - (Ex.: `docs/att-reademe`)
 
 ```bash
-git checkout -b "<nome-da-branch>"
+git checkout -b "<nome-da-branch>
 ```
 
 3. Commit

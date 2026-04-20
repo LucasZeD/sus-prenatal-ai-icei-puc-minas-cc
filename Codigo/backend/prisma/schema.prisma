@@ -1,0 +1,160 @@
+// Decisões vs DER.md (prioridade segurança / consistência clínica):
+// - `Gestacao.tipo_risco`: enum `RiscoGestacional` (no DER aparece como String) — evita texto livre fora do protocolo RF08.
+// - `Consulta.unidade_id`: obrigatório com FK para `unidade` (linhas legadas sem unidade recebem registro sentinela na migração).
+// - `Paciente`: campos adicionais persistidos; `cpf_ultimos4` / `cartao_sus_ultimos4` só para desambiguação (documento completo não persiste).
+//   Leitura pública deve passar por `PacienteRepository` (projeção assepsia).
+// - `PacienteIds`: hashes (HMAC+pepper fora do repositório); nunca persistir CPF/Cartão em claro.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// Nível de risco obstétrico da gestação (substitui texto livre no DER por tipo seguro).
+enum RiscoGestacional {
+  NORMAL
+  ALTO
+  MUITO_ALTO
+}
+
+/// Ciclo de vida da consulta (human-in-the-loop — RF07).
+enum StatusConsulta {
+  RASCUNHO
+  EM_ANDAMENTO
+  AGUARDANDO_CONFIRMACAO
+  CONFIRMADA
+}
+
+/// Eventos persistidos do canal de streaming (transcrição commitada / insight IA).
+enum ConsultaStreamEventoTipo {
+  TRANSCRICAO_SANITIZADA
+  IA_INSIGHT_COMPLETO
+}
+
+/// Profissional autenticável (RF14). Contas criadas por administrador / seed — sem auto-cadastro na API.
+model Profissional {
+  id            String   @id @default(uuid()) @db.Uuid
+  email         String   @unique @db.VarChar(255)
+  password_hash String   @db.VarChar(255)
+  nome          String   @db.VarChar(120)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@map("profissional")
+}
+
+/// Perfil clínico-social **sem** identificadores fortes (hashes em `PacienteIds`, 1:1 opcional até o fluxo de cadastro gravar hashes).
+model Paciente {
+  id                   String    @id @default(uuid()) @db.Uuid
+  nome_mascarado       String    @db.VarChar(50)
+  nome_social          String?   @db.VarChar(50)
+  /// Últimos 4 dígitos do CPF (somente dígitos informados no cadastro; documento completo não é persistido).
+  cpf_ultimos4         String?   @db.VarChar(4)
+  /// Últimos 4 dígitos do Cartão SUS (documento completo não é persistido).
+  cartao_sus_ultimos4  String?   @db.VarChar(4)
+  data_cadastro        DateTime  @default(now())
+  data_nascimento      DateTime? @db.Date
+  etnia                String?   @db.VarChar(50)
+  escolaridade         String?   @db.VarChar(50)
+  estado_civil         String?   @db.VarChar(50)
+  ocupacao             String?   @db.VarChar(50)
+  altura               Float?
+  peso_pre_gestacional Float?
+
+  gestacoes Gestacao[]
+  ids       PacienteIds?
+
+  @@map("paciente")
+}
+
+/// Estabelecimento de saúde (referência mínima; CNES opcional até integração com cadastro nacional).
+model Unidade {
+  id        String     @id @default(uuid()) @db.Uuid
+  nome      String     @db.VarChar(200)
+  cnes      String?    @unique @db.VarChar(15)
+  createdAt DateTime   @default(now()) @map("created_at")
+
+  consultas Consulta[]
+
+  @@map("unidade")
+}
+
+/// Identificadores fortes apenas como hash (LGPD / DER `PACIENTE_IDS`).
+model PacienteIds {
+  id              String   @id @default(uuid()) @db.Uuid
+  paciente_id     String   @unique @db.Uuid
+  cartao_sus_hash String   @unique @db.VarChar(128)
+  cpf_hash        String   @unique @db.VarChar(128)
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  paciente Paciente @relation(fields: [paciente_id], references: [id], onDelete: Cascade)
+
+  @@map("paciente_ids")
+}
+
+/// Gestação por paciente: CPF/Cartão (hash) ficam em `paciente_ids` ligados ao paciente, não nesta tabela.
+model Gestacao {
+  id                       String             @id @default(uuid()) @db.Uuid
+  paciente_id              String             @db.Uuid
+  dum                      String?
+  dpp                      String?
+  ig_inicial               Int?
+  tipo_risco               RiscoGestacional   @default(NORMAL)
+  abo_rh                   String?
+  coombs                   String?
+  tipo_gravidez            String?
+  idade_gestac_confirmada  Int?
+  is_planejada             String?
+
+  paciente  Paciente   @relation(fields: [paciente_id], references: [id], onDelete: Cascade)
+  consultas Consulta[]
+
+  @@index([paciente_id])
+  @@map("gestacao")
+}
+
+model Consulta {
+  id                            String           @id @default(uuid()) @db.Uuid
+  gestacao_id                   String           @db.Uuid
+  unidade_id                    String           @db.Uuid
+  data                          DateTime         @db.Date
+  peso                          Float?
+  pa_sistolica                  Float?
+  pa_diastolica                 Float?
+  au                            Float?
+  bfc                           Float?
+  is_edema                      Boolean          @default(false)
+  mov_fetal                     String?
+  apresentacao_fetal            String?
+  queixa                        String?
+  enxantema                     Boolean          @default(false)
+  is_visita_maternidade         Boolean          @default(false)
+  is_particip_atvd_educativa    Boolean          @default(false)
+  /// Confirmação explícita da profissional (human-in-the-loop).
+  validacao_medica              Boolean          @default(false)
+  status                        StatusConsulta @default(RASCUNHO)
+
+  gestacao Gestacao @relation(fields: [gestacao_id], references: [id], onDelete: Cascade)
+  unidade  Unidade  @relation(fields: [unidade_id], references: [id], onDelete: Restrict)
+
+  stream_eventos ConsultaStreamEvento[]
+
+  @@index([gestacao_id])
+  @@index([unidade_id])
+  @@map("consulta")
+}
+
+model ConsultaStreamEvento {
+  id           String                   @id @default(uuid()) @db.Uuid
+  consulta_id  String                   @db.Uuid
+  tipo         ConsultaStreamEventoTipo
+  payload      String                   @db.Text
+  createdAt    DateTime                 @default(now()) @map("created_at")
+
+  consulta Consulta @relation(fields: [consulta_id], references: [id], onDelete: Cascade)
+
+  @@index([consulta_id])
+  @@map("consulta_stream_evento")
+}
