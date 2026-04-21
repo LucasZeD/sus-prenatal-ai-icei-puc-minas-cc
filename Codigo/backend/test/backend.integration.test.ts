@@ -202,5 +202,44 @@ describe.skipIf(skipIntegration)("integração: Postgres efêmero + API Hono", (
 
       expect(res.status).toBe(400);
     });
+
+    it("GET /api/v1/consultas/:id retorna 200 com JWT e corpo da consulta", async () => {
+      const { getPrisma } = await import("../src/repository/prisma.js");
+      const prisma = getPrisma();
+
+      const paciente = await prisma.paciente.create({
+        data: { nome_mascarado: "Api***" },
+      });
+      const gestacao = await prisma.gestacao.create({
+        data: { paciente_id: paciente.id },
+      });
+      const consulta = await prisma.consulta.create({
+        data: {
+          gestacao_id: gestacao.id,
+          unidade_id: SENTINEL_UNIDADE,
+          data: new Date("2025-07-10T12:00:00.000Z"),
+          status: StatusConsulta.EM_ANDAMENTO,
+          validacao_medica: false,
+        },
+      });
+
+      const token = await sign(
+        {
+          sub: "00000000-0000-4000-8000-0000000000dd",
+          email: "prof.getconsulta@test.dev",
+          exp: Math.floor(Date.now() / 1000) + 3600,
+        },
+        process.env.JWT_SECRET!,
+        "HS256",
+      );
+
+      const res = await app.request(`http://local/api/v1/consultas/${consulta.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      expect(res.status).toBe(200);
+      const body = (await res.json()) as { id?: string; status?: string };
+      expect(body.id).toBe(consulta.id);
+      expect(body.status).toBe(StatusConsulta.EM_ANDAMENTO);
+    });
   });
 });

@@ -542,7 +542,7 @@ export function ConsultaStreamPanel({
         ) : null}
 
         {showClinicalChrome ? (
-          <div className="rounded-md border border-indigo-100 bg-indigo-50/50 p-4">
+          <div className="rounded-md border border-rose-100 bg-rose-50/50 p-4">
             <h3 className="text-sm font-semibold text-slate-800">Consultas disponíveis (worklist)</h3>
             <p className="mt-1 text-xs text-slate-600">
               Consultas com status diferente de <code className="rounded bg-white px-1">CONFIRMADA</code>. Clique em
@@ -553,14 +553,14 @@ export function ConsultaStreamPanel({
                 type="button"
                 disabled={clinicalBusy}
                 onClick={() => void loadWorklist()}
-                className="rounded-md border border-indigo-200 bg-white px-3 py-1.5 text-sm text-indigo-900 hover:bg-indigo-50 disabled:opacity-50"
+                className="rounded-md border border-rose-200 bg-white px-3 py-1.5 text-sm text-rose-900 hover:bg-rose-50 disabled:opacity-50"
               >
                 Atualizar lista
               </button>
             </div>
-            <div className="mt-3 max-h-56 overflow-auto rounded-md border border-indigo-100 bg-white">
+            <div className="mt-3 max-h-56 overflow-auto rounded-md border border-rose-100 bg-white">
               <table className="w-full text-left text-xs">
-                <thead className="sticky top-0 bg-indigo-100/80 text-indigo-950">
+                <thead className="sticky top-0 bg-rose-100/80 text-rose-950">
                   <tr>
                     <th className="px-2 py-2">Data</th>
                     <th className="px-2 py-2">Paciente / id</th>
@@ -600,7 +600,7 @@ export function ConsultaStreamPanel({
                             setConsultaId(w.id)
                             pushLog(`UUID selecionado: ${w.id}`)
                           }}
-                          className="rounded bg-indigo-600 px-2 py-1 text-[11px] font-medium text-white hover:bg-indigo-500"
+                          className="rounded bg-rose-600 px-2 py-1 text-[11px] font-medium text-white hover:bg-rose-500"
                         >
                           Usar
                         </button>
@@ -671,7 +671,7 @@ export function ConsultaStreamPanel({
                   Criar paciente
                 </button>
               </div>
-              {verificacaoMsg ? <p className="text-sm text-indigo-900">{verificacaoMsg}</p> : null}
+              {verificacaoMsg ? <p className="text-sm text-rose-900">{verificacaoMsg}</p> : null}
               <div>
                 <label className="text-xs font-medium text-slate-500">Paciente</label>
                 <select
@@ -773,7 +773,7 @@ export function ConsultaStreamPanel({
                 type="button"
                 onClick={connect}
                 disabled={!token || streamStatus === 'conectando'}
-                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
+                className="rounded-md bg-rose-600 px-3 py-2 text-sm font-medium text-white hover:bg-rose-500 disabled:opacity-50"
               >
                 {streamStatus === 'conectando' ? 'Conectando…' : 'Conectar'}
               </button>
@@ -830,7 +830,7 @@ export function ConsultaStreamPanel({
             <h4 className="text-xs font-semibold uppercase text-slate-500">STT parcial (efêmero)</h4>
             <p className="mt-2 min-h-[3rem] whitespace-pre-wrap text-sm text-slate-900">{sttText || '—'}</p>
             <h4 className="mt-4 text-xs font-semibold uppercase text-slate-500">Insight IA (stream)</h4>
-            <p className="mt-2 max-h-40 overflow-auto whitespace-pre-wrap text-sm text-indigo-950">{iaText || '—'}</p>
+            <p className="mt-2 max-h-40 overflow-auto whitespace-pre-wrap text-sm text-rose-950">{iaText || '—'}</p>
           </div>
         </div>
 

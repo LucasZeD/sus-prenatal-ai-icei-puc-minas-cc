@@ -13,7 +13,7 @@
     "db:seed": "prisma db seed",
     "test": "prisma generate && vitest run",
     "test:unit": "prisma generate && vitest run test/pacienteIdsHash.test.ts test/consultaPatchService.test.ts",
-    "test:integration": "prisma generate && vitest run test/backend.integration.test.ts",
+    "test:integration": "prisma generate && vitest run test/backend.integration.test.ts test/ws.integration.test.ts",
     "test:watch": "prisma generate && vitest",
     "test:types": "tsc -p tsconfig.test.json --noEmit"
   },

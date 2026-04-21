@@ -1,13 +1,9 @@
 import "./loadEnv.js";
 import { serve } from "@hono/node-server";
-import { createNodeWebSocket } from "@hono/node-ws";
-import { createApp } from "./api/app.js";
-import { registerConsultationWebSocket } from "./api/ws/consultation.js";
+import { createRuntimeApp } from "./runtimeApp.js";
 import { disconnectPrisma } from "./repository/prisma.js";
 
-const app = createApp();
-const { injectWebSocket, upgradeWebSocket } = createNodeWebSocket({ app });
-registerConsultationWebSocket(app, upgradeWebSocket);
+const { app, injectWebSocket } = createRuntimeApp();
 
 const port = Number(process.env.PORT ?? 3000);
 

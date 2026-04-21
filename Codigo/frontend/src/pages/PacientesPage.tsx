@@ -7,9 +7,23 @@ type PacienteRow = {
   nome_mascarado: string
   cpf_ultimos4?: string | null
   cartao_sus_ultimos4?: string | null
+  apelido?: string | null
 }
 
-type GestacaoRow = { id: string; paciente_id: string; tipo_risco?: string; ig_inicial?: number | null }
+type GestacaoRow = {
+  id: string
+  paciente_id: string
+  tipo_risco?: string
+  ig_inicial?: number | null
+  idade_gestac_confirmada?: number | null
+}
+
+function riscoBadgeClass(r: string | undefined): string {
+  const v = r ?? 'NORMAL'
+  if (v === 'MUITO_ALTO') return 'bg-rose-200 text-rose-900 border-rose-300'
+  if (v === 'ALTO') return 'bg-amber-100 text-amber-800 border-amber-300'
+  return 'bg-emerald-100 text-emerald-800 border-emerald-300'
+}
 
 export function PacientesPage() {
   const { authFetch } = useAuth()
@@ -73,91 +87,116 @@ export function PacientesPage() {
   }, [pacientes, gestacoesPorPaciente, q, risco])
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 max-w-5xl mx-auto px-4 py-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-900">Gestantes</h1>
-          <p className="mt-1 text-sm text-slate-600">
-            Busca por nome mascarado ou últimos dígitos de CPF/Cartão. Filtro de risco usa a gestação vinculada.
-          </p>
+          <h1 className="text-3xl font-black tracking-tight text-brand-navy">Gestantes</h1>
+          <p className="mt-1 text-sm font-medium text-slate-500">Selecione uma paciente para iniciar ou revisar consultas.</p>
         </div>
         <button
           type="button"
           onClick={() => void load()}
-          className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-800 shadow-sm hover:bg-slate-50"
+          className="rounded-xl border border-brand-pink/30 bg-white px-5 py-2.5 text-sm font-bold text-brand-navy shadow-sm hover:bg-brand-pink/10 focus:outline-none focus:ring-2 focus:ring-brand-pink transition-colors"
         >
-          Atualizar
+          Atualizar Lista
         </button>
       </div>
 
-      <div className="flex flex-wrap gap-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <label className="flex min-w-[12rem] flex-1 flex-col text-xs font-medium text-slate-600">
-          Busca rápida
-          <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Nome, SUS, CPF ou UUID"
-            className="mt-1 rounded-md border border-slate-300 px-3 py-2 text-sm"
-          />
-        </label>
-        <label className="flex flex-col text-xs font-medium text-slate-600">
-          Risco gestacional
-          <select
-            value={risco}
-            onChange={(e) => setRisco(e.target.value as typeof risco)}
-            className="mt-1 rounded-md border border-slate-300 px-3 py-2 text-sm"
-          >
-            <option value="todos">Todos</option>
-            <option value="NORMAL">Normal</option>
-            <option value="ALTO">Alto</option>
-            <option value="MUITO_ALTO">Muito alto</option>
-          </select>
-        </label>
+      {/* Controladores de Filtro */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+         <div className="flex flex-wrap items-center gap-3">
+           <span className="text-xs font-bold uppercase text-slate-400 tracking-wider">Filtrar por Risco:</span>
+           {(['todos', 'NORMAL', 'ALTO', 'MUITO_ALTO'] as const).map((k) => (
+             <button
+               key={k}
+               type="button"
+               onClick={() => setRisco(k)}
+               className={`rounded-xl px-4 py-2 text-[13px] font-bold transition-all ${
+                 risco === k ? 'bg-brand-pink text-white shadow-md' : 'border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
+               }`}
+             >
+               {k === 'todos' ? 'Todos' : k.replace('_', ' ')}
+             </button>
+           ))}
+         </div>
       </div>
 
-      {err ? <p className="text-sm text-rose-700">{err}</p> : null}
+      {err ? <p className="text-center text-sm font-medium text-red-600 bg-red-50 p-4 rounded-xl">{err}</p> : null}
 
-      <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-slate-50 text-xs uppercase text-slate-600">
-            <tr>
-              <th className="px-4 py-3">Paciente</th>
-              <th className="px-4 py-3">Identificadores (agenda)</th>
-              <th className="px-4 py-3">Gestação (risco)</th>
-              <th className="px-4 py-3" />
-            </tr>
-          </thead>
-          <tbody>
-            {filtrados.length === 0 ? (
-              <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-slate-500">
-                  Nenhum registro encontrado.
-                </td>
-              </tr>
-            ) : null}
-            {filtrados.map((p) => {
-              const gest = gestacoesPorPaciente[p.id] ?? []
-              const riscoTxt = gest.map((g) => g.tipo_risco ?? 'NORMAL').join(', ') || '—'
-              return (
-                <tr key={p.id} className="border-t border-slate-100">
-                  <td className="px-4 py-3 font-medium text-slate-900">{p.nome_mascarado}</td>
-                  <td className="px-4 py-3 text-xs text-slate-600">
-                    {p.cpf_ultimos4 ? `CPF …${p.cpf_ultimos4}` : '—'} · {p.cartao_sus_ultimos4 ? `SUS …${p.cartao_sus_ultimos4}` : '—'}
-                  </td>
-                  <td className="px-4 py-3 text-xs">{riscoTxt}</td>
-                  <td className="px-4 py-3 text-right">
-                    <Link
-                      to={`/pacientes/${p.id}`}
-                      className="font-medium text-teal-800 underline decoration-teal-300 hover:text-teal-950"
-                    >
-                      Prontuário
-                    </Link>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
+      <div className="space-y-4">
+        {filtrados.length === 0 ? (
+          <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-slate-50 py-20 text-center">
+            <div className="h-12 w-12 rounded-full bg-slate-200 flex items-center justify-center text-slate-400 mb-4">🔍</div>
+            <p className="text-slate-500 font-medium">Nenhuma paciente encontrada com os filtros atuais.</p>
+          </div>
+        ) : null}
+        
+        <div className="grid grid-cols-1 gap-4">
+          {filtrados.map((p) => {
+            const gest = gestacoesPorPaciente[p.id] ?? []
+            const primaryRisco = gest[0]?.tipo_risco ?? 'NORMAL'
+            const igSemanas = gest[0]?.idade_gestac_confirmada ?? gest[0]?.ig_inicial
+
+            // Mock Data Tags explícitos conforme plano de implementação
+            const MOCK_DATA_AGE = "28 anos"
+            const MOCK_DATA_LAST_VISIT = "12/04/2026"
+            const MOCK_DATA_NEXT_VISIT = "26/04/2026"
+            const MOCK_TELEFONE = "(31) 99999-9999"
+            const MOCK_LOCALIZACAO = "Belo Horizonte, MG"
+
+            return (
+              <article
+                key={p.id}
+                className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:border-brand-pink/50 hover:shadow-md"
+              >
+                <div className="flex items-center gap-5">
+                  <div className="hidden sm:flex h-14 w-14 items-center justify-center rounded-full bg-brand-pink/10 border border-brand-pink/30 text-brand-pink font-black text-xl group-hover:bg-brand-pink/20 transition-colors">
+                    {p.nome_mascarado.charAt(0)}
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-black text-brand-navy mb-1">{p.nome_mascarado} {p.apelido}</h2>
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-bold text-slate-500">
+                      <span className="flex items-center gap-1.5" title="Aviso MOCK DATA"><span className="text-slate-400">Idade <span className="text-[9px] text-amber-500 bg-amber-50 px-1 rounded">[⚠️ MOCK]</span>:</span> <span className="text-slate-700">{MOCK_DATA_AGE}</span></span>
+                      
+                      <span className="text-slate-300">•</span>
+                      <span className="flex items-center gap-1.5"><span className="text-slate-400">IG Atual:</span> <span className="text-brand-pink font-black">{igSemanas != null ? `${igSemanas} sem` : 'ND'}</span></span>
+                      
+                      <span className="text-slate-300">•</span>
+                      <span className="flex items-center gap-1.5" title="Aviso MOCK DATA"><span className="text-slate-400">Última Visita <span className="text-[9px] text-amber-500 bg-amber-50 px-1 rounded">[⚠️ MOCK]</span>:</span> <span className="text-slate-700">{MOCK_DATA_LAST_VISIT}</span></span>                    
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-bold text-slate-500">
+                       <span className="flex items-center gap-1.5" title="Aviso MOCK DATA"><span className="text-slate-400">Telefone <span className="text-[9px] text-amber-500 bg-amber-50 px-1 rounded">[⚠️ MOCK]</span>:</span> <span className="text-slate-700">{MOCK_TELEFONE}</span></span>
+                       <span className="flex items-center gap-1.5" title="Aviso MOCK DATA"><span className="text-slate-400">Localização <span className="text-[9px] text-amber-500 bg-amber-50 px-1 rounded">[⚠️ MOCK]</span>:</span> <span className="text-slate-700">{MOCK_LOCALIZACAO}</span></span>
+                    </div> 
+
+                    <div className="mt-3 flex items-center gap-2">
+                       <span className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 border border-slate-200 px-3 py-1.5 text-[11px] font-bold text-slate-600">
+                         CPF: {p.cpf_ultimos4 ? `***.***.***-${p.cpf_ultimos4}` : 'Não inf.'}
+                       </span>
+                       <span className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 border border-slate-200 px-3 py-1.5 text-[11px] font-bold text-slate-600">
+                         SUS: {p.cartao_sus_ultimos4 ? `*** ${p.cartao_sus_ultimos4}` : 'Não inf.'}
+                       </span>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div className="flex flex-row sm:flex-col items-center justify-between sm:items-end gap-3 mt-4 sm:mt-0">
+                  <span className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-black uppercase tracking-widest ${riscoBadgeClass(primaryRisco)}`}>
+                    Risco {primaryRisco.replace('_', ' ')}
+                  </span>
+                  <Link
+                    to={`/pacientes/${p.id}`}
+                    className="flex w-full sm:w-auto items-center justify-center rounded-xl bg-white px-5 py-2.5 text-xs font-bold text-brand-navy border border-slate-200 shadow-sm hover:bg-slate-50 hover:border-brand-pink transition-all"
+                  >
+                    Ver Prontuário
+                  </Link>
+                </div>
+              </article>
+            )
+          })}
+        </div>
       </div>
     </div>
   )

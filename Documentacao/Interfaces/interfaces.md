@@ -1,74 +1,100 @@
-Esta análise técnica detalha a arquitetura de interface e a experiência do usuário (UX/UI) do sistema **Conecte Mãe**, estruturada para orientar uma implementação via IA de alta fidelidade. O design segue uma abordagem **Mobile-First Responsiva**, com foco em redução de carga cognitiva para profissionais de saúde.
+# Interfaces — Prenatal Digital (wireframe e disposição de dados)
+
+Documento de **UX/UI e disposição de conteúdo** para implementação alinhada ao repositório em `Codigo/`. O foco aqui é **hierarquia visual, fluxos e blocos de dados**, não a stack de frameworks (a implementação real está em `cursor.md` / `Documentacao/Arquitetura.md`).
+
+**Abordagem:** mobile-first responsiva, baixa carga cognitiva para profissionais de saúde, conformidade LGPD na superfície exibida (nomes mascarados, últimos dígitos de identificadores).
 
 ---
 
-## 1. Identidade Visual e Fundamentos de Design
+## 1. Referências visuais (Mapeamento de Telas)
 
-* **Paleta de Cores:**
-    * **Primária:** Rosa Pastel (`#F8BBD0` ou similar) — evocando o tema maternal e saúde humanizada. Utilizada em barras laterais, botões de ação secundária e áreas de destaque (sidebar de IA).
-    * **Fundo:** Branco Puro (`#FFFFFF`) e Cinza Ultraleve (`#F9FAFB`) para superfícies de cards, garantindo contraste para leitura.
-    * **Tipografia:** Sans-serif (preferencialmente **Inter** ou **Roboto**). Pesos variados para hierarquia: *Bold* para nomes de pacientes e títulos de seções; *Regular/Light* para rótulos de campos de formulário.
-* **Componentização:** Uso de **Cards com bordas arredondadas** (Radius: `12px` a `16px`) e sombras sutis (*Soft Shadows*) para criar profundidade sem poluição visual.
+Arquivos PNG versionados na documentação, refletindo o layout atual do sistema:
 
----
-
-## 2. Arquitetura de Layout (Wireframe Analysis)
-
-### A. Estrutura Global (Shell)
-O sistema utiliza um layout de três colunas flexíveis:
-1.  **Sidebar de Navegação (Esquerda):** Fixa, contendo o Logotipo, links de navegação (Home, Pacientes, Configurações) e botão de Log out na base.
-2.  **Área de Conteúdo Principal (Centro):** Onde o prontuário e listas residem. Largura fluida.
-3.  **Assistente de IA "Lívia" (Direita):** Uma barra lateral contextual (drawer) para interação via chat RAG (Retrieval-Augmented Generation).
-
-### B. Fluxo de Listagem (`/pacientes`)
-* **Cabeçalho:** Barra de busca centralizada com ícone de lupa.
-* **Cards de Pacientes:** Exibição em lista vertical. Cada card contém: Nome (Destaque), Idade, Idade Gestacional e Status de Risco.
-* **Design Pattern:** *Information Chunking* — apenas os dados vitais são expostos antes do clique.
-
-### C. Prontuário e Escriba Digital (`/pacientes/[id]`)
-O design do prontuário simula a "Caderneta da Gestante", mas de forma digitalizada e expansível.
-* **Seção de Identificação:** Dados demográficos organizados em grid de 3 colunas.
-* **Timeline de Consultas:** Cards numerados (Consulta 1, 2, etc.).
-* **Mecanismo de Expansão:** Uso de *Accordions* para esconder consultas passadas e focar na atual, otimizando o scroll vertical.
+| Arquivo | Tela | Descrição Visual |
+|---------|------|------------------|
+| `0_LandingPage.png` | Landing Page / Login | Layout tipo "Hero". Esquerda: Formulário de login simples. Direita: Ilustração acolhedora. Abaixo: Categorias (Demonstração, Valores, Artigo, etc.), explicação do funcionamento das IAs (Escriba, LívIA, IA WhatsApp), áreas para testar o sistema e tecnologias utilizadas (Vite, Postgres, Prisma, Hono, Whisper). |
+| `1_Dashboard.png` | Dashboard (Agenda) | Visão de calendário semanal. Cabeçalho superior (Top Header) com ícones e perfil do usuário. Sidebar esquerda com navegação (Home, Pacientes, Configurações). Centro: Grade de horários detalhada exibindo as consultas marcadas por dia da semana. |
+| `2_Pacientes.png` | Lista de Pacientes | Barra de busca movida para o Top Header. Centro: Lista vertical de cartões de pacientes (Nome em destaque, Idade, Idade Gestacional, Risco, Última/Próxima consulta). Direita: Painel lateral da "Assistente de IA" (LívIA). |
+| `3_Paciente[id].png` | Perfil do Paciente | Prontuário detalhado. Topo: Nome de preferência e acompanhante. Centro: "Unified Identity Card" (Identificação completa com dados pessoais). Abaixo: Timeline de Consultas em formato sanfona (acordeão). Consultas anteriores podem ser expandidas. A próxima consulta exibe o botão "Iniciar Consulta". |
+| `4_Paciente[id]-InicioConsulta.png` | Escriba (Gravando) | Interface durante o atendimento. Os blocos de identificação e consultas anteriores ficam contraídos. O bloco da consulta atual se expande exibindo a área de escuta do Escriba, com botões para "Pausar Escriba" e "Finalizar Consulta". |
+| `5_Paciente[id]-FinalizarConsulta.png` | Escriba (Revisão) | Fase "Human-in-the-loop". O áudio processado preenche estruturalmente os campos clínicos (Queixa, Peso, Edema, PA, etc.). Exibe botão de "Core Action" (verde) para "Confirmar Dados de Consulta". Painel direito da LívIA exibe sugestões ativas baseadas nos dados preenchidos (ex: condutas para PA 14/9). |
 
 ---
 
-## 3. Especificações do Módulo de IA (Escriba e Lívia)
+## 2. Identidade visual e Design System
 
-### Escriba Digital (Interface de Transcrição)
-1.  **Estado Ativo (Recording):** Um componente de feedback visual (onda sonora ou ícone pulsante) e botões de "Pausar" e "Finalizar".
-2.  **Estado de Revisão (Post-Processing):** Esta é a parte mais crítica. A IA deve mapear o áudio para um formulário estruturado.
-    * **UI de Validação:** O profissional vê os campos (Peso, Edema, PA, etc.) pré-preenchidos pela IA em campos de input editáveis.
-    * **Segurança de Dados:** Nenhum dado é salvo no DB antes da "Confirmação de Dados da Consulta" pelo humano (Human-in-the-loop).
-
-### Lívia (Agente RAG)
-* **Interface de Chat:** Localizada à direita, com sugestões de perguntas baseadas no contexto clínico atual (ex: "Baseado na PA de 14/9 mmHg...").
-* **Output:** As respostas devem obrigatoriamente citar fontes (Manuais do Ministério da Saúde/FEBRASGO), conforme sua diretriz de evitar alucinações.
+- **Cores Primárias:** Fundo suave em tons de rosa pastel (`bg-rose-50/50`, `rose-100`) para a Sidebar e acentos da assistente, transmitindo um tom maternal e acolhedor.
+- **Estrutura de Cartões:** Utilização de `rounded-2xl` para bordas mais arredondadas e amigáveis, com sombras leves.
+- **Ações Principais:** Botões de confirmação médica (Core Actions) utilizam cor de destaque (ex: verde) para guiar o fluxo seguro de "Confirmar dados" no prontuário.
+- **Tipografia:** Sans-serif. Negrito para nomes e títulos de blocos, corpo regular para dados e labels.
 
 ---
 
-## 4. Requisitos Técnicos para Implementação
+## 3. Shell global (Três colunas no desktop)
 
-Para garantir um design limpo e gerenciável (Clean Design):
+O layout principal (pós-login) é composto por:
 
-* **Frontend Stack Recomendada:**
-    * **Next.js 14+ (App Router):** Para roteamento robusto.
-    * **Tailwind CSS:** Para estilização utilitária e rápida manutenção da paleta de cores.
-    * **Shadcn/UI:** Para componentes de acessibilidade (Dialogs, Accordions, Cards).
-    * **Lucide React:** Para iconografia consistente.
-* **Estratégia de Segurança (Production-Ready):**
-    * **Sanitização de Inputs:** Rigorosa em todos os campos do Escriba.
-    * **Criptografia:** Dados sensíveis de pacientes (CPF, NIS, Cartão SUS) devem ser criptografados *at rest*.
-    * **LGPD:** Implementar logs de auditoria para cada acesso ao prontuário.
+| Região | Conteúdo |
+|--------|-----------|
+| **Cabeçalho (Top Header)** | Busca central (para pacientes), ícones de ação (notificações, mensagens) e perfil do profissional de saúde (ex: Psf. Rafael). |
+| **Esquerda (Sidebar fixa)** | Fundo suave (`rose-50`). Navegação limpa: `Home` (Agenda), `Pacientes` e `Configurações`. Botão de `Log out` no rodapé. |
+| **Centro (Área Fluida)** | Conteúdo dinâmico da rota ativa (`Outlet`): Calendário da agenda, lista de pacientes ou prontuário/escriba. |
+| **Direita (Painel LívIA)** | Painel lateral fixo da Assistente de IA. Serve para chat livre RAG ou para exibir sugestões contextuais e alertas de conduta baseados nos formulários abertos no centro. |
 
 ---
 
-## 5. Referências de Design de Mercado
-Para validar estas escolhas, recomendo o estudo dos seguintes padrões de design utilizados por grupos líderes em HealthTech:
-* **Carbon Design System (IBM Health):** Pelo uso eficiente de densidade de dados em telas médicas.
-* **Material Design 3 (M3):** Pelo sistema de "Cards" e estados de botões flutuantes.
-* **Oscar Health UI:** Referência em como tornar interfaces de saúde acolhedoras (Pink/Pastel tones) sem perder o profissionalismo.
+## 4. Rotas e blocos de dados
 
-> **Análise Skeptical:** O maior risco deste design é o "over-reliance" (excesso de confiança) na automação do Escriba. A interface de confirmação (EscribaConfirmar.png) deve ter destaques visuais (ex: cores diferentes) para campos onde a IA teve baixa confiança na transcrição, forçando a revisão humana.
+Rotas da SPA (**React Router**):
 
-Deseja que eu detalhe a estrutura de tipos (TypeScript) para os objetos de `Consulta` que a IA deverá preencher?
+| Rota | Função | Dados / disposição |
+|------|--------|-------------------|
+| `/login` | Autenticação (RF14) | Landing page completa. E-mail, senha e apresentação das capacidades do Prenatal Digital. |
+| `/dashboard` | Agenda da unidade | Visão em calendário semanal (`Home`). Permite visualizar a distribuição de carga da unidade e selecionar a paciente do horário. |
+| `/pacientes` | Lista de gestantes | Busca via Top Header. Cartões de resumo com identificadores mascarados, idade gestacional atualizada e badges de risco. |
+| `/pacientes/:id` | Prontuário | Unified Identity Card. Timeline em acordeão. Transições de estado claras entre consultas antigas e consultas a serem iniciadas. |
+| `/consultas/:consultaId/escriba` | Escriba digital | **Início:** Captura ativa (WebSocket `ws://.../ws/consultation/:id`). <br>**Revisão:** Espelho preenchido (STT/IA). Edição manual permitida. Finalização via botão verde (PATCH para confirmação médica). |
+| **`/dev/sandbox`** | **Testes Rápidos** | **(NOVA TELA DEV)** Interface exclusiva de ambiente de desenvolvimento para debugar os microserviços isoladamente (ver detalhes abaixo). |
+
+---
+
+## 5. Tela de Testes Rápidos do Desenvolvedor (Dev Sandbox)
+
+Para facilitar a validação das integrações complexas (STT, LLM, MCP, WebSocket) sem precisar simular uma consulta inteira, a interface possui a rota oculta `/dev/sandbox`.
+
+**Blocos presentes no Sandbox:**
+1. **Painel WebSocket / Escriba:**
+   - Botão para Iniciar/Parar simulação de envio de chunks de áudio (Mock ou Mic real).
+   - Log em tempo real dos eventos recebidos do servidor (`consulta_stream_evento`).
+2. **Painel do MCP (Privacy Gateway):**
+   - Input de texto livre para testar a sanitização de PII.
+   - Display exibindo o "Antes" (Texto sujo) e o "Depois" (Texto assepsiado que iria para o LLM).
+3. **Painel LLM (Inferência Direta):**
+   - Campo para enviar prompts diretos ao Ollama/RAG.
+   - Retorno estruturado (JSON ou Markdown) para verificar a estruturação de variáveis e tempos de resposta (Cold Start).
+4. **Painel de Status de Infra:**
+   - Indicadores visuais simples: Conexão PostgreSQL (OK/Erro), Instância Ollama (Ativa/Inativa), Faster-Whisper (Ativo/Inativo).
+
+---
+
+## 6. Escriba (transcrição) e LívIA (RAG)
+
+### Escriba (Fluxo Operacional)
+1. **Gravando:** A interface se contrai para focar no áudio. Botões claros para pausar (VAD manual) ou finalizar a escuta.
+2. **Revisão (HITL):** O texto processado é injetado nos *inputs* da tela. O médico pode editar livremente os campos.
+3. **Confirmação:** A persistência clínica (salvar no banco como prontuário real) só ocorre após o clique explícito no botão verde de "Confirmar Dados da Consulta", garantindo o *Human-in-the-loop*.
+
+### LívIA (Contexto Ativo)
+- O painel direito ouve as atualizações de estado do componente central. Se o Escriba preencher uma "Pressão Arterial de 14/9", a LívIA atualizará seu bloco sugerindo condutas baseadas no Manual do MS para síndromes hipertensivas na gestação.
+
+---
+
+## 7. Requisitos técnicos reais do monorepo (resumo)
+
+| Camada | Tecnologia |
+|--------|------------|
+| Frontend | **Vite + React + React Router + Tailwind CSS v4** (`Codigo/frontend`) |
+| API + WS | **Node + TypeScript + Hono**; WebSocket com `@hono/node-ws` (`Codigo/backend`) |
+| Dados | **PostgreSQL + Prisma** |
+
+Boas práticas aplicadas: sanitização de inputs, LGPD via `paciente_ids` (hashes HMAC + pepper), e auditoria rigorosa de consultas.
