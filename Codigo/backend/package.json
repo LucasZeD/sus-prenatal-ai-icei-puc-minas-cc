@@ -10,7 +10,12 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
-    "db:seed": "prisma db seed"
+    "db:seed": "prisma db seed",
+    "test": "prisma generate && vitest run",
+    "test:unit": "prisma generate && vitest run test/pacienteIdsHash.test.ts test/consultaPatchService.test.ts",
+    "test:integration": "prisma generate && vitest run test/backend.integration.test.ts",
+    "test:watch": "prisma generate && vitest",
+    "test:types": "tsc -p tsconfig.test.json --noEmit"
   },
   "dependencies": {
     "@hono/node-server": "^1.14.2",
@@ -24,11 +29,13 @@
     "prisma": "^7.7.0"
   },
   "devDependencies": {
+    "@testcontainers/postgresql": "^11.14.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.14.1",
     "@types/pg": "^8.20.0",
     "@types/ws": "^8.18.1",
     "tsx": "^4.19.3",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^4.1.4"
   }
 }
