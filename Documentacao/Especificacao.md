@@ -43,6 +43,7 @@ Os requisitos funcionais ditam as ações técnicas que o sistema deve realizar 
 | RF14 | Autenticação do Profissional | O sistema deve autenticar o profissional de saúde via `email` e `senha` (hash bcrypt) antes de permitir acesso a qualquer dado de paciente. Não há auto-cadastro: contas são criadas pelo administrador. |
 | RF15 | Status do Ciclo de Vida da Consulta | A consulta deve ter um ciclo de vida rastreado no banco: `RASCUNHO → EM_ANDAMENTO → AGUARDANDO_CONFIRMACAO → CONFIRMADA`. Somente consultas `CONFIRMADAS` geram registro definitivo no prontuário. |
 | RF16 | Cálculo de Risco Gestacional | O sistema deve calcular o nível de risco da paciente (`NORMAL`, `ALTO`, `MUITO_ALTO`) com base nos dados clínicos de cada consulta, seguindo os limiares definidos na Caderneta da Gestante SUS 8ª Edição. |
+| RF17 | Gestação ativa única | O sistema deve garantir que cada gestante (`Paciente`) possua **no máximo 1 gestação ativa** por vez. A gestação deve ser marcada como **concluída** automaticamente ao registrar **dados de nascimento** (desfecho) ou ao registrar **consultas de puerpério** (pós-parto). |
 
 ## 3. Requisitos Não Funcionais (RNF)
 

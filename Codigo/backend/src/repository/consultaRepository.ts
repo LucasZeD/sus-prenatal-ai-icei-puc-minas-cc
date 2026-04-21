@@ -11,7 +11,12 @@ type ConsultaCreateInput = ConsultaCreateArgs extends { data: infer D } ? D : ne
 export class ConsultaRepository {
   async findById(id: string): Promise<Consulta | null> {
     const prisma = getPrisma();
-    return prisma.consulta.findUnique({ where: { id } });
+    return prisma.consulta.findUnique({
+      where: { id },
+      include: {
+        ia: { select: { sugestao_conduta: true } },
+      },
+    }) as unknown as Promise<Consulta | null>;
   }
 
   async findByGestacaoId(gestacaoId: string): Promise<Consulta[]> {
@@ -19,6 +24,9 @@ export class ConsultaRepository {
     return prisma.consulta.findMany({
       where: { gestacao_id: gestacaoId },
       orderBy: { data: "desc" },
+      include: {
+        ia: { select: { sugestao_conduta: true } },
+      },
     });
   }
 
@@ -54,6 +62,11 @@ export class ConsultaRepository {
   async updateById(id: string, data: Prisma.ConsultaUpdateInput): Promise<Consulta> {
     const prisma = getPrisma();
     return prisma.consulta.update({ where: { id }, data });
+  }
+
+  async deleteById(id: string): Promise<void> {
+    const prisma = getPrisma();
+    await prisma.consulta.delete({ where: { id } });
   }
 
   async updateStatus(id: string, status: Consulta["status"]): Promise<Consulta> {

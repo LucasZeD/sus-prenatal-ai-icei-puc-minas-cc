@@ -8,10 +8,14 @@ Armazena o perfil clínico e social da gestante.
 * `nome_social` (VARCHAR(50))
 * `data_cadastro` (Timestamp)
 * `data_nascimento` (Date)
-* `etnia` (Enum)
+* `etnia` (Enum) [Branca, Preta, Parda, Amarela, Indígena]
 * `escolaridade` (Enum)
 * `estado_civil` (Enum)
 * `ocupacao` (VARCHAR(50))
+* `abo_rh` (Enum) - [A,B,AB,O] [+,-]
+* `telefone` (String)
+* `email` (String)
+* `localizacao` (String)
 * `altura` (Float)
 * `peso_pre_gestacional` (Float)
 * `is_particip_atvd_educativa` (Boolean)
@@ -59,35 +63,90 @@ Estrutura para mapear o histórico obstétrico e o progresso da gestação atual
 * **FK:** `paciente_id` (UUID) -> `PACIENTE`
 * `dum` (Date) 
 * `dpp` (Date) 
+* `dpp-eco` (Date)
 * `ig_inicial` (Int)
 * `tipo_risco` (String)
-* `abo_rh` (String)
-* `coombs` (String)
-* `tipo_gravidez` (Enum)
+* `tipo_gravidez` (Enum) [unica, gemelar, tripla ou mais, ignorada]
 * `idade_gestac_confirmada` (Int)
 * `is_planejada` (Boolean)
 * `is_visita_maternidade` (Boolean)
+* `is_ativa` (Boolean) — **regra**: somente 1 gestação ativa por gestante
+* `is_colocar_diu` (Boolean)
+* `is_fez_consulta_odontologica` (Boolean)
+* `is_gestacao_risco` (Boolean)
+* `suplementacao_ferro` (Boolean)
+* `suplementacao_acido_folico` (Boolean)
+* `concluida_em` (Timestamp) — preenchido automaticamente ao registrar desfecho (nascimento) ou consulta de puerpério
 
 ### Tabela: `ANTECEDENTES`
 * **PK/FK:** `gestacao_id` (UUID) -> `GESTACAO`
-* `gestas_previas` (Int)
-* `partos` (Int)
-* `abortos` (Int)
-* `is_hipertensao` (Boolean)
-* `is_diabetes` (Boolean)
+* #### Antecedentes familiares
+* `is_diabetes_familiar` (Boolean)
+* `is_hipertensao_familiar` (Boolean)
+* `is_gravidez_gemelar_familiar` (Boolean)
+* #### Gestacoes
+* `n_gestas_anteriores` (Int)
+* `n_partos` (Int)
+* `n_parto_prematuro` (Int)
+* `n_abortos` (Int)
+* `n_nascidos_vivos` (Int)
+* `n_vivem` (Int)
+* `n_mortos_primeira_semana` (Int)
+* `n_mortos_apos_primeira_semana` (Int)
+* `n_nascidos_mortos` (Int)
+* `n_cesarea` (Int)
+* `n_bebe_menos_dois_kilos_e_meio` (Int)
+* `n_bebe_mais_quatro_kilos_e_meio` (Int)
+* `is_gesta_ectopica` (Boolean)
+* #### Antecedentes clinicos obstetricos
+* `is_diabetes_gestacional_antecedente` (Boolean)
+* `is_infeccao_urinaria_antecedente` (Boolean)
+* `is_infertilidade_antecedente` (Boolean)
+* `is_dificuldade_alimentar_antecedente` (Boolean)
+* `is_cardiopatia_antecedente` (Boolean)
+* `is_tromboembolismo_antecedente` (Boolean)
+* `is_hipertensao_arterial_antecedente` (Boolean)
+* `is_cirurgia_pelvica_uterina_antecedente` (Boolean)
+* `is_cirugia_antecedente` (Boolean)
+* #### Gestacao atual
 * `is_fumo` (Boolean)
 * `is_alcool` (Boolean)
 * `is_drogas` (Boolean)
+* `is_violencia_domestica` (Boolean)
+* `is_hiv` (Boolean)
+* `is_toxoplasmose` (Boolean)
+* `is_infeccao_urinaria` (Boolean)
+* `is_anemia` (Boolean)
+* `is_inc_istmocervical` (Boolean)
+* `is_ameaca_de_parto_prematuro` (Boolean)
+* `is_isoimunizacao_rh` (Boolean)
+* `is_oligo_polidramnio` (Boolean)
+* `is_ruptura_prem_membranas` (Boolean)
+* `is_cirurgia_uterina` (Boolean)
+* `is_posdatismo` (Boolean)
+* `is_febre_na_gestacao` (Boolean)
+* `is_hipertensao_arterial` (Boolean)
+* `is_preeclampsia` (Boolean)
 * `is_cardiopatia` (Boolean)
+* `is_diabetes_gestacional` (Boolean)
+* `is_uso_insulina` (Boolean)
+* `is_hemorragia_1_trimestre` (Boolean)
+* `is_hemorragia_2_trimestre` (Boolean)
+* `is_hemorragia_3_trimestre` (Boolean)
+* `is_exantema` (Boolean)
 * `is_tromboembolismo` (Boolean)
 * `is_infertilidade` (Boolean)
-* `is_isoimunizacao_rh` (Boolean)
 * `is_cirurgia_pelvica_uterina` (Boolean)
+* `is_final_gestacao_anterior_1_ano` (Boolean)
+* `is_sifilis` (Boolean)
+* `tratamento_sifilis_dose_1` (Date)
+* `tratamento_sifilis_dose_2` (Date)
+* `tratamento_sifilis_dose_3` (Date)
 
 ### Tabela: `VACINA`
 * **PK:** `id` (UUID)
 * **FK:** `paciente_id` (UUID) -> `PACIENTE`
-* `tipo` (String)
+* `tipo` (Enum) [Antitetanica, Hepatite b, influenza, Virus Sincicial Respiratório, tríplice viral, febre amarela, Outras]
 * `data` (Date)
 * `data_aprazada` (Date)
 
@@ -101,37 +160,43 @@ Mapeamento das consultas, exames e intervenções odontológicas.
 * **FK:** `gestacao_id` (UUID) -> `GESTACAO`
 * **FK:** `unidade_id` (UUID) -> `UNIDADE`
 * `data-hora` (DateTime)
-* `idade_gestacional` (Int)
 * `peso` (Float)
 * `pa_sistolica` (Float)
 * `pa_diastolica` (Float)
-* `au` (Float)
-* `bfc` (Float)
-* `mov_fetal` (String)
-* `apresentacao_fetal` (Enum)
+* `altura_uterina` (Int) [X CM]
+* `bfc` (Int)
+* `mov_fetal` (Boolean) [Presente, Ausente]
+* `apresentacao_fetal` (Enum) [cefalico, pelvico, obliqua, trasnversa]
 * `queixa` (String)
+* `conduta` (String)
+* `ig_dum` () [X Semanas X Dias]
+* `ig_usg` () [X Semanas X Dias]
 * `is_edema` (Boolean)
-* `is_exantema` (Boolean)
+* `is_exantema` (Boolean) [Presente, Ausente]
 
 ### Tabela: `EXAME`
 Centraliza resultados laboratoriais com criptografia.
 * **PK:** `id` (UUID)
 * **FK:** `paciente_id` (UUID) -> `PACIENTE`
-* `tipo` (Enum)
+* `tipo` (Enum) [ABO-RH, Glicemia Jejum, Teste Oral Tolerancia Glicose, Sifilis, VDRL, HIV, Hepatite B, Toxoplasmosoe, Hemoglobina, UrinaEAS, UrinaCultura, CoombsIndireto,Eletroforese Hemoglobina, Coombs, Outros]
 * `resultado_criptografado` (String)
 * `trimestre` (Int)
 * `valor` (String)
 * `is_alterado` (Boolean)
 * `data_coleta` (Date)
+* `coombs` (String)
 * `categoria_sensibilidade` (Enum)
 
 ### Tabela: `EXAME_IMAGEM_USG`
 * **PK:** `id` (UUID)
 * **FK:** `gestacao_id` (UUID) -> `GESTACAO`
+* `data_exame` (Date)
+* `ig_dum` (Int) [X Semanas X Dias]
+* `ig_usg` (Int) [X Semanas X Dias]
 * `peso_fetal_estimado` (Float)
 * `localizacao_placenta` (String)
-* `idade_gestacional_usg` (Int)
 * `is_liquido_amniotico_normal` (Boolean)
+* `outros` (String)
 
 ### Tabela: `AVALIACAO_ODONTO`
 * **PK/FK:** `gestacao_id` (UUID) -> `GESTACAO`

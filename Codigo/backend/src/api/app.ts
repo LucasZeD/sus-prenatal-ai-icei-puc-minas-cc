@@ -1,8 +1,10 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { swaggerUI } from "@hono/swagger-ui";
 import { mapAppError } from "../core/errors.js";
 import { getHealthStatus } from "../services/healthService.js";
 import { registerApiV1Routes } from "./v1/index.js";
+import { buildOpenApiDoc } from "./openapi.js";
 
 export function createApp(): Hono {
   const app = new Hono();
@@ -16,6 +18,9 @@ export function createApp(): Hono {
       allowHeaders: ["Authorization", "Content-Type", "Accept"],
     }),
   );
+
+  app.get("/openapi.json", (c) => c.json(buildOpenApiDoc("/")));
+  app.get("/swagger", swaggerUI({ url: "/openapi.json" }));
 
   app.get("/health", async (c) => {
     const result = await getHealthStatus();

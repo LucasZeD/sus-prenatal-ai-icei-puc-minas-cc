@@ -1,4 +1,4 @@
-import type { PrismaClient } from "../lib/prismaBarrel.js";
+import type { PrismaClient, AboRh, Etnia, Escolaridade, EstadoCivil } from "../lib/prismaBarrel.js";
 import { AppError } from "../core/errors.js";
 import { hashCartaoSus, hashCpf, hmacSha256Hex } from "../lib/identificadores/pacienteIdsHash.js";
 import { getPacienteIdsPepperOrThrow } from "../config/envPacienteIds.js";
@@ -10,10 +10,14 @@ type PacienteCreateData = {
   cartao_sus_ultimos4?: string | null;
   nome_social?: string | null;
   data_nascimento?: Date | null;
-  etnia?: string | null;
-  escolaridade?: string | null;
-  estado_civil?: string | null;
+  etnia?: Etnia | null;
+  escolaridade?: Escolaridade | null;
+  estado_civil?: EstadoCivil | null;
   ocupacao?: string | null;
+  abo_rh?: AboRh | null;
+  telefone?: string | null;
+  email?: string | null;
+  localizacao?: string | null;
   altura?: number | null;
   peso_pre_gestacional?: number | null;
 };

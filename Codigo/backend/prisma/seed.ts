@@ -59,12 +59,12 @@ async function main(): Promise<void> {
 
   const adapter = new PrismaPg({ connectionString });
   const prisma = new PrismaClient({ adapter });
-  const password_hash = await bcrypt.hash(password, 12);
+  const senha_hash = await bcrypt.hash(password, 12);
 
   await prisma.profissional.upsert({
     where: { email },
-    create: { email, password_hash, nome },
-    update: { password_hash, nome },
+    create: { email, senha_hash, nome, unidade_id: "00000000-0000-4000-8000-000000000001" },
+    update: { senha_hash, nome },
   });
 
   console.log("seed_ok profissional", email);

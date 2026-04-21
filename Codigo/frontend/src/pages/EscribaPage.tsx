@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ConsultaStreamPanel } from '../components/ConsultaStreamPanel.js'
 import { LiviaAssistantPanel } from '../components/LiviaAssistantPanel.js'
 import { useAuth } from '../context/AuthContext.js'
@@ -10,12 +10,25 @@ type ConsultaDetail = {
   status: string
   validacao_medica: boolean
   queixa: string | null
+  idade_gestacional: number | null
+  peso: number | null
+  pa_sistolica: number | null
+  pa_diastolica: number | null
+  au: number | null
+  bfc: number | null
+  is_edema: boolean
+  mov_fetal: string | null
+  apresentacao_fetal: string | null
+  is_exantema: boolean
+  conduta: string | null
+  sugestao_conduta: string | null
 }
 
 export function EscribaPage() {
   const { consultaId } = useParams()
   const id = consultaId ?? ''
   const { authFetch } = useAuth()
+  const navigate = useNavigate()
   const [tab, setTab] = useState<'transcricao' | 'prontuario'>('transcricao')
   const [mirrorStt, setMirrorStt] = useState('')
   const [mirrorIa, setMirrorIa] = useState('')
@@ -42,6 +55,10 @@ export function EscribaPage() {
   const [vm, setVm] = useState(false)
   const [busy, setBusy] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
+  const [dangerOpen, setDangerOpen] = useState(false)
+  const [dangerAck, setDangerAck] = useState(false)
+  const [dangerText, setDangerText] = useState('')
+  const [dangerBusy, setDangerBusy] = useState(false)
 
   const valid = useMemo(() => isUuid(id), [id])
 
@@ -61,10 +78,41 @@ export function EscribaPage() {
         status: String(body.status),
         validacao_medica: Boolean(body.validacao_medica),
         queixa: typeof body.queixa === 'string' ? body.queixa : null,
+        idade_gestacional: typeof body.idade_gestacional === 'number' ? body.idade_gestacional : null,
+        peso: typeof body.peso === 'number' ? body.peso : null,
+        pa_sistolica: typeof body.pa_sistolica === 'number' ? body.pa_sistolica : null,
+        pa_diastolica: typeof body.pa_diastolica === 'number' ? body.pa_diastolica : null,
+        au: typeof body.au === 'number' ? body.au : null,
+        bfc: typeof body.bfc === 'number' ? body.bfc : null,
+        is_edema: Boolean(body.is_edema),
+        mov_fetal: typeof body.mov_fetal === 'string' ? body.mov_fetal : null,
+        apresentacao_fetal: typeof body.apresentacao_fetal === 'string' ? body.apresentacao_fetal : null,
+        is_exantema: Boolean(body.is_exantema),
+        conduta: typeof body.conduta === 'string' ? body.conduta : null,
+        sugestao_conduta: (() => {
+          const ia = body.ia
+          if (!ia || typeof ia !== 'object') return null
+          const sug = (ia as Record<string, unknown>).sugestao_conduta
+          return typeof sug === 'string' ? sug : null
+        })(),
       }
       setRow(detail)
       setQueixa(detail.queixa ?? '')
+      setConduta(detail.conduta ?? '')
       setVm(detail.validacao_medica)
+      setIdadeG(detail.idade_gestacional != null ? String(detail.idade_gestacional) : '')
+      setPeso(detail.peso != null ? String(detail.peso) : '')
+      setPa(
+        detail.pa_sistolica != null && detail.pa_diastolica != null
+          ? `${detail.pa_sistolica}/${detail.pa_diastolica}`
+          : '',
+      )
+      setAu(detail.au != null ? String(detail.au) : '')
+      setBfc(detail.bfc != null ? String(detail.bfc) : '')
+      setEdema(detail.is_edema)
+      setMovFetal((detail.mov_fetal ?? 'Preservado').toLowerCase() !== 'reduzido')
+      setApresentacao(detail.apresentacao_fetal ?? 'Cefálica')
+      setExantema(detail.is_exantema)
     } catch {
       setMsg('Falha ao carregar consulta.')
     }
@@ -100,6 +148,33 @@ export function EscribaPage() {
     [authFetch, id, load, valid],
   )
 
+  const recriarParaEscriba = useCallback(async () => {
+    if (!valid) return
+    setDangerBusy(true)
+    setMsg(null)
+    try {
+      const res = await authFetch(`/api/v1/consultas/${id}/recriar-para-escriba`, { method: 'POST' })
+      const body = (await res.json()) as Record<string, unknown>
+      if (!res.ok) {
+        setMsg(typeof body.message === 'string' ? body.message : `HTTP ${res.status}`)
+        return
+      }
+      const newId = typeof body.new_consulta_id === 'string' ? body.new_consulta_id : ''
+      if (!newId) {
+        setMsg('Resposta inesperada do servidor (sem new_consulta_id).')
+        return
+      }
+      setDangerOpen(false)
+      setDangerAck(false)
+      setDangerText('')
+      navigate(`/consultas/${newId}/escriba`)
+    } catch {
+      setMsg('Falha ao recriar consulta para o Escriba.')
+    } finally {
+      setDangerBusy(false)
+    }
+  }, [authFetch, id, navigate, valid])
+
   if (!valid) {
     return (
       <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-900 shadow-sm max-w-xl mx-auto m-8">
@@ -122,6 +197,37 @@ export function EscribaPage() {
       {label}
     </button>
   )
+
+  const isFinalizada = row?.status === 'CONFIRMADA' || row?.status === 'FINALIZADA'
+  const canRecreate = row?.status === 'CONFIRMADA' || row?.status === 'FINALIZADA'
+  const dangerEnabled = dangerAck && dangerText.trim().toUpperCase() === 'RECRIAR'
+
+  const buildClinicalPatchFromForm = useCallback(() => {
+    const ig = idadeG.trim() ? Number.parseInt(idadeG, 10) : undefined
+    const p = peso.trim() ? Number.parseFloat(peso) : undefined
+    const auN = au.trim() ? Number.parseFloat(au) : undefined
+    const bfcN = bfc.trim() ? Number.parseFloat(bfc) : undefined
+
+    const paTrim = pa.trim()
+    const [sisRaw, diasRaw] = paTrim.includes('/') ? paTrim.split('/', 2) : [undefined, undefined]
+    const sis = sisRaw != null ? Number.parseFloat(String(sisRaw).trim()) : undefined
+    const dias = diasRaw != null ? Number.parseFloat(String(diasRaw).trim()) : undefined
+
+    return {
+      idade_gestacional: Number.isFinite(ig as number) ? ig : undefined,
+      peso: Number.isFinite(p as number) ? p : undefined,
+      pa_sistolica: Number.isFinite(sis as number) ? sis : undefined,
+      pa_diastolica: Number.isFinite(dias as number) ? dias : undefined,
+      au: Number.isFinite(auN as number) ? auN : undefined,
+      bfc: Number.isFinite(bfcN as number) ? bfcN : undefined,
+      is_edema: edema,
+      mov_fetal: movFetal ? 'Preservado' : 'Reduzido',
+      is_exantema: exantema,
+      apresentacao_fetal: apresentacao,
+      queixa,
+      conduta,
+    } as const
+  }, [apresentacao, au, bfc, conduta, edema, exantema, idadeG, movFetal, pa, peso, queixa])
 
   return (
     <div className="flex relative items-start">
@@ -166,7 +272,32 @@ export function EscribaPage() {
           </div>
 
           {tab === 'transcricao' ? (
-            <ConsultaStreamPanel variant="streamOnly" initialConsultaId={id} onStreamTexts={onStreamTexts} />
+            isFinalizada ? (
+              <section className="rounded-3xl border border-rose-200 bg-rose-50/70 p-6 shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                  <div className="space-y-2">
+                    <h2 className="text-lg font-black text-rose-900">Consulta finalizada</h2>
+                    <p className="text-sm font-medium text-rose-800/90 max-w-2xl">
+                      Esta consulta já foi <span className="font-black">assinada/encerrada</span>. Por segurança e conformidade, o Escriba não pode iniciar uma nova gravação aqui.
+                    </p>
+                    <p className="text-xs font-bold uppercase tracking-widest text-rose-700/80">
+                      Para regravar, você precisa recriar a consulta e apagar a gravação anterior.
+                    </p>
+                  </div>
+                  {canRecreate ? (
+                    <button
+                      type="button"
+                      onClick={() => setDangerOpen(true)}
+                      className="shrink-0 rounded-2xl bg-rose-600 px-5 py-3 text-sm font-black text-white shadow-sm hover:bg-rose-500 focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
+                    >
+                      Recriar para regravar
+                    </button>
+                  ) : null}
+                </div>
+              </section>
+            ) : (
+              <ConsultaStreamPanel variant="streamOnly" initialConsultaId={id} onStreamTexts={onStreamTexts} />
+            )
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               
@@ -209,42 +340,42 @@ export function EscribaPage() {
                     <div className="p-6 space-y-6">
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                          <div>
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1" title="MOCK DATA">IG (Semanas) <span className="text-[9px] text-amber-500 bg-amber-50 px-1 rounded ml-1">[⚠️ MOCK]</span></label>
+                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">IG (Semanas)</label>
                            <input type="number" value={idadeG} onChange={e => setIdadeG(e.target.value)} placeholder="Ex: 24" className="block w-full rounded-xl border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-brand-pink focus:ring-brand-pink bg-slate-50 font-medium text-slate-700" />
                          </div>
                          <div>
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1" title="MOCK DATA">Peso (kg) <span className="text-[9px] text-amber-500 bg-amber-50 px-1 rounded ml-1">[⚠️ MOCK]</span></label>
+                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Peso (kg)</label>
                            <input type="number" value={peso} onChange={e => setPeso(e.target.value)} placeholder="Ex: 68.5" className="block w-full rounded-xl border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-brand-pink focus:ring-brand-pink bg-slate-50 font-medium text-slate-700" />
                          </div>
                          <div>
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1" title="MOCK DATA">PA (mmHg) <span className="text-[9px] text-amber-500 bg-amber-50 px-1 rounded ml-1">[⚠️ MOCK]</span></label>
+                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">PA (mmHg)</label>
                            <input type="text" value={pa} onChange={e => setPa(e.target.value)} placeholder="Ex: 120/80" className="block w-full rounded-xl border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-brand-pink focus:ring-brand-pink bg-slate-50 font-medium text-slate-700" />
                          </div>
                          <div>
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1" title="MOCK DATA">AU (cm) <span className="text-[9px] text-amber-500 bg-amber-50 px-1 rounded ml-1">[⚠️ MOCK]</span></label>
+                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">AU (cm)</label>
                            <input type="number" value={au} onChange={e => setAu(e.target.value)} placeholder="Ex: 24" className="block w-full rounded-xl border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-brand-pink focus:ring-brand-pink bg-slate-50 font-medium text-slate-700" />
                          </div>
                       </div>
 
                       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-slate-100">
                          <div>
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1" title="MOCK DATA">BFC (bpm) <span className="text-[9px] text-amber-500 bg-amber-50 px-1 rounded ml-1">[⚠️ MOCK]</span></label>
+                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">BFC (bpm)</label>
                            <input type="number" value={bfc} onChange={e => setBfc(e.target.value)} placeholder="Ex: 140" className="block w-full rounded-xl border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-brand-pink focus:ring-brand-pink bg-slate-50 font-medium text-slate-700" />
                          </div>
                          <div>
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2" title="MOCK DATA">Edema <span className="text-[9px] text-amber-500 bg-amber-50 px-1 rounded ml-1">[⚠️ MOCK]</span></label>
+                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Edema</label>
                            <button type="button" onClick={() => setEdema(!edema)} className={`w-full py-2.5 rounded-xl border font-bold text-xs shadow-sm transition-all ${edema ? 'bg-rose-50 border-rose-200 text-rose-700' : 'bg-slate-50 border-slate-200 text-slate-500 hover:bg-slate-100'}`}>
                               {edema ? 'Presente' : 'Ausente'}
                            </button>
                          </div>
                          <div>
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2" title="MOCK DATA">Mov. Fetal <span className="text-[9px] text-amber-500 bg-amber-50 px-1 rounded ml-1">[⚠️ MOCK]</span></label>
+                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Mov. Fetal</label>
                            <button type="button" onClick={() => setMovFetal(!movFetal)} className={`w-full py-2.5 rounded-xl border font-bold text-xs shadow-sm transition-all ${movFetal ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-rose-50 border-rose-200 text-rose-700'}`}>
                               {movFetal ? 'Preservado' : 'Reduzido'}
                            </button>
                          </div>
                          <div>
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2" title="MOCK DATA">Exantema <span className="text-[9px] text-amber-500 bg-amber-50 px-1 rounded ml-1">[⚠️ MOCK]</span></label>
+                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Exantema</label>
                            <button type="button" onClick={() => setExantema(!exantema)} className={`w-full py-2.5 rounded-xl border font-bold text-xs shadow-sm transition-all ${exantema ? 'bg-rose-50 border-rose-200 text-rose-700' : 'bg-slate-50 border-slate-200 text-slate-500 hover:bg-slate-100'}`}>
                               {exantema ? 'Presente' : 'Ausente'}
                            </button>
@@ -252,7 +383,7 @@ export function EscribaPage() {
                       </div>
                       
                       <div className="pt-2">
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1" title="MOCK DATA">Apresentação Fetal <span className="text-[9px] text-amber-500 bg-amber-50 px-1 rounded ml-1">[⚠️ MOCK]</span></label>
+                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Apresentação Fetal</label>
                            <input type="text" value={apresentacao} onChange={e => setApresentacao(e.target.value)} placeholder="Ex: Cefálica" className="block w-full rounded-xl border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-brand-pink focus:ring-brand-pink bg-slate-50 font-medium text-slate-700" />
                       </div>
 
@@ -284,10 +415,14 @@ export function EscribaPage() {
                         <button
                           type="button"
                           disabled={busy || row?.status === 'CONFIRMADA'}
-                          onClick={() => void patch({ queixa })} // Real endpoint update mapped properly in next phase
+                          onClick={() => {
+                            void patch({
+                              ...buildClinicalPatchFromForm(),
+                            })
+                          }}
                           className="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-brand-navy shadow-sm hover:bg-slate-50 hover:text-brand-pink disabled:opacity-50 transition-colors"
                         >
-                          Salvar Submissão Clínica
+                          Salvar
                         </button>
                       </div>
                     </div>
@@ -318,7 +453,7 @@ export function EscribaPage() {
                               <button
                                 type="button"
                                 disabled={busy}
-                                onClick={() => void patch({ status: 'AGUARDANDO_CONFIRMACAO' })}
+                                onClick={() => void patch({ ...buildClinicalPatchFromForm(), status: 'AGUARDANDO_CONFIRMACAO' })}
                                 className="rounded-xl bg-amber-500 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-amber-600 disabled:opacity-50 transition-colors"
                               >
                                 Enviar p/ Confirmação
@@ -341,7 +476,13 @@ export function EscribaPage() {
                           <button
                             type="button"
                             disabled={busy || !vm}
-                            onClick={() => void patch({ validacao_medica: true, status: 'CONFIRMADA' })}
+                            onClick={() =>
+                              void patch({
+                                ...buildClinicalPatchFromForm(),
+                                validacao_medica: true,
+                                status: 'CONFIRMADA',
+                              })
+                            }
                             className="w-full rounded-2xl bg-emerald-600 px-6 py-4 text-sm font-black text-white shadow-[0_4px_14px_0_rgba(5,150,105,0.39)] hover:bg-emerald-500 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(5,150,105,0.23)] disabled:opacity-50 disabled:hover:translate-y-0 transition-all focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                           >
                             ✅ Confirmar e Assinar Consulta
@@ -389,6 +530,83 @@ export function EscribaPage() {
           </div>
         </details>
       </div>
+
+      {dangerOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
+          <div className="w-full max-w-xl rounded-3xl border border-rose-200 bg-white shadow-xl overflow-hidden">
+            <div className="border-b border-rose-100 bg-rose-50 px-6 py-5">
+              <h3 className="text-base font-black text-rose-950">Ação crítica: recriar consulta para regravar</h3>
+              <p className="mt-1 text-xs font-bold text-rose-800/80">
+                Isso apaga a gravação anterior e cria uma nova sessão, mantendo o pré-preenchimento clínico.
+              </p>
+            </div>
+            <div className="px-6 py-5 space-y-4">
+              <div className="rounded-2xl border border-rose-200 bg-rose-50 p-4">
+                <ul className="text-sm font-medium text-rose-900 space-y-1.5">
+                  <li>
+                    - <span className="font-black">A gravação anterior</span> (histórico do stream) será apagada.
+                  </li>
+                  <li>
+                    - Uma <span className="font-black">nova consulta</span> será criada para iniciar a gravação novamente.
+                  </li>
+                  <li>
+                    - Os <span className="font-black">dados clínicos atuais</span> serão copiados para pré-preenchimento.
+                  </li>
+                </ul>
+              </div>
+
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={dangerAck}
+                  onChange={(e) => setDangerAck(e.target.checked)}
+                  className="mt-1 h-5 w-5 rounded border-rose-300 text-rose-600 focus:ring-rose-600 cursor-pointer shadow-sm"
+                />
+                <div className="flex flex-col">
+                  <span className="text-sm font-black text-slate-900">Entendi e quero continuar</span>
+                  <span className="text-xs font-medium text-slate-500 mt-0.5">
+                    Esta ação é irreversível para a gravação anterior.
+                  </span>
+                </div>
+              </label>
+
+              <div>
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">
+                  Digite <span className="text-rose-700">RECRIAR</span> para confirmar
+                </label>
+                <input
+                  value={dangerText}
+                  onChange={(e) => setDangerText(e.target.value)}
+                  placeholder="RECRIAR"
+                  className="block w-full rounded-2xl border-slate-200 px-5 py-3 text-sm shadow-sm focus:border-rose-500 focus:ring-rose-500 bg-white font-black tracking-wider text-slate-800"
+                />
+              </div>
+            </div>
+            <div className="border-t border-slate-100 bg-white px-6 py-5 flex flex-col sm:flex-row gap-3 justify-end">
+              <button
+                type="button"
+                disabled={dangerBusy}
+                onClick={() => {
+                  setDangerOpen(false)
+                  setDangerAck(false)
+                  setDangerText('')
+                }}
+                className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                disabled={dangerBusy || !dangerEnabled}
+                onClick={() => void recriarParaEscriba()}
+                className="rounded-2xl bg-rose-600 px-5 py-3 text-sm font-black text-white shadow-sm hover:bg-rose-500 disabled:opacity-50 focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
+              >
+                Apagar gravação e recriar
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   )
 }

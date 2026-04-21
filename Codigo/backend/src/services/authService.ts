@@ -16,7 +16,7 @@ export type LoginResult = {
 export async function loginProfissional(email: string, password: string): Promise<LoginResult> {
   const repo = new ProfissionalRepository();
   const row = await repo.findByEmailForAuth(email);
-  if (!row || !(await bcrypt.compare(password, row.password_hash))) {
+  if (!row || !(await bcrypt.compare(password, row.senha_hash))) {
     throw new AppError("invalid_credentials", "E-mail ou senha inválidos.", 401);
   }
 

@@ -11,6 +11,8 @@ import {
 
 const uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
+type AudioInputDevice = { deviceId: string; label: string }
+
 async function readJsonBody(res: Response): Promise<Record<string, unknown>> {
   const raw = await res.text()
   if (!raw.trim()) return {}
@@ -91,6 +93,10 @@ export function ConsultaStreamPanel({
   const [history, setHistory] = useState<StreamHistoryItem[]>([])
   const [logLines, setLogLines] = useState<string[]>([])
 
+  const [micDevices, setMicDevices] = useState<AudioInputDevice[]>([])
+  const [micDeviceId, setMicDeviceId] = useState<string>('')
+  const [micBusy, setMicBusy] = useState(false)
+
   const [worklist, setWorklist] = useState<WorklistRow[]>([])
   const [unidades, setUnidades] = useState<UnidadeRow[]>([])
   const [pacientes, setPacientes] = useState<PacienteRow[]>([])
@@ -122,6 +128,46 @@ export function ConsultaStreamPanel({
   const pushLog = useCallback((line: string) => {
     setLogLines((prev) => [...prev.slice(-80), `${new Date().toISOString().slice(11, 19)} ${line}`])
   }, [])
+
+  const refreshMicDevices = useCallback(async () => {
+    if (!navigator.mediaDevices?.enumerateDevices) {
+      setMicDevices([])
+      return
+    }
+    try {
+      const list = await navigator.mediaDevices.enumerateDevices()
+      const mics = list
+        .filter((d) => d.kind === 'audioinput')
+        .map((d, idx) => ({
+          deviceId: d.deviceId,
+          label: d.label || `Microfone ${idx + 1}`,
+        }))
+      setMicDevices(mics)
+      setMicDeviceId((curr) => (curr && mics.some((m) => m.deviceId === curr) ? curr : ''))
+    } catch {
+      setMicDevices([])
+    }
+  }, [])
+
+  const requestMicPermissionAndRefresh = useCallback(async () => {
+    if (!navigator.mediaDevices?.getUserMedia) return
+    setMicBusy(true)
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      stream.getTracks().forEach((t) => t.stop())
+      await refreshMicDevices()
+      pushLog('Permissão de microfone OK; lista atualizada.')
+      setStreamError(null)
+    } catch {
+      setStreamError('Permissão de microfone negada ou indisponível.')
+    } finally {
+      setMicBusy(false)
+    }
+  }, [pushLog, refreshMicDevices])
+
+  useEffect(() => {
+    void refreshMicDevices()
+  }, [refreshMicDevices])
 
   const loadWorklist = useCallback(async () => {
     if (!token) return
@@ -306,13 +352,18 @@ export function ConsultaStreamPanel({
     pushLog('vad_pause enviado')
   }, [pushLog])
 
-  const startMic = useCallback(async () => {
+  const startMic = useCallback(async (opts?: { deviceId?: string; forceBrowserPrompt?: boolean }) => {
     if (!socketRef.current || socketRef.current.readyState() !== WebSocket.OPEN) {
       setStreamError('Conecte o stream antes de capturar áudio.')
       return
     }
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      const deviceId = opts?.deviceId?.trim() || ''
+      const forceBrowserPrompt = opts?.forceBrowserPrompt === true
+      const audioConstraint: MediaTrackConstraints | boolean =
+        !forceBrowserPrompt && deviceId ? ({ deviceId: { exact: deviceId } } as MediaTrackConstraints) : true
+
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: audioConstraint })
       const mime = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
         ? 'audio/webm;codecs=opus'
         : MediaRecorder.isTypeSupported('audio/webm')
@@ -331,7 +382,7 @@ export function ConsultaStreamPanel({
         }
       }
       rec.start(400)
-      pushLog(`Gravação iniciada (${mime}).`)
+      pushLog(`Gravação iniciada (${mime})${deviceId && !forceBrowserPrompt ? ` · mic=${deviceId.slice(0, 8)}…` : ''}.`)
     } catch {
       setStreamError('Permissão de microfone negada ou indisponível.')
     }
@@ -756,60 +807,113 @@ export function ConsultaStreamPanel({
           </div>
         ) : null}
 
-        <div>
-          <h3 className="text-sm font-semibold text-slate-800">
-            {variant === 'streamOnly' ? 'Stream (microfone)' : 'Stream (microfone)'}
-          </h3>
-          <div className="mt-3 flex max-w-xl flex-col gap-2">
-            <label className="text-xs font-medium uppercase tracking-wide text-slate-500">UUID da consulta</label>
-            <input
-              placeholder="ex.: 550e8400-e29b-41d4-a716-446655440000"
-              value={consultaId}
-              onChange={(e) => setConsultaId(e.target.value)}
-              className="rounded-md border border-slate-300 px-3 py-2 font-mono text-sm"
-            />
+        <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">🎙️</span>
+              <h3 className="text-sm font-black text-slate-800">Stream</h3>
+              <span className="text-xs text-slate-500">
+                status <span className="font-bold text-slate-800">{streamStatus}</span>
+              </span>
+            </div>
             <div className="flex flex-wrap gap-2">
               <button
                 type="button"
                 onClick={connect}
                 disabled={!token || streamStatus === 'conectando'}
-                className="rounded-md bg-rose-600 px-3 py-2 text-sm font-medium text-white hover:bg-rose-500 disabled:opacity-50"
+                className="rounded-xl bg-rose-600 px-3 py-2 text-sm font-black text-white shadow-sm hover:bg-rose-500 disabled:opacity-50"
+                title="Conectar WebSocket"
               >
-                {streamStatus === 'conectando' ? 'Conectando…' : 'Conectar'}
+                🔌 {streamStatus === 'conectando' ? 'Conectando…' : 'Conectar'}
               </button>
               <button
                 type="button"
                 onClick={disconnect}
-                className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 hover:bg-slate-50"
+                className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-black text-slate-800 shadow-sm hover:bg-slate-50"
+                title="Desconectar"
               >
-                Desconectar
+                ⛔ Desconectar
               </button>
               <button
                 type="button"
                 onClick={sendVad}
-                className="rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-950 hover:bg-amber-100"
+                className="rounded-xl border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-black text-amber-950 shadow-sm hover:bg-amber-100"
+                title="Pausa VAD"
               >
-                Pausa VAD
+                ⏸️ VAD
               </button>
               <button
                 type="button"
-                onClick={() => void startMic()}
-                className="rounded-md border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-950 hover:bg-emerald-100"
+                onClick={() => void startMic({ deviceId: micDeviceId || undefined, forceBrowserPrompt: !micDeviceId })}
+                className="rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm font-black text-emerald-950 shadow-sm hover:bg-emerald-100"
+                title="Iniciar microfone"
               >
-                Mic on
+                🎙️ Iniciar
               </button>
               <button
                 type="button"
                 onClick={stopMic}
-                className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 hover:bg-slate-50"
+                className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-black text-slate-800 shadow-sm hover:bg-slate-50"
+                title="Parar microfone"
               >
-                Mic off
+                ⏹️ Parar
               </button>
             </div>
-            <p className="text-xs text-slate-500">
-              Status: <span className="font-medium text-slate-800">{streamStatus}</span>
-            </p>
-            {streamError ? <p className="text-sm text-rose-700">{streamError}</p> : null}
+          </div>
+
+          <div className="mt-4 grid gap-3">
+            <div className="grid gap-3 md:grid-cols-[1fr_auto] items-end">
+              <div>
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">UUID</label>
+                <input
+                  placeholder="550e8400-e29b-41d4-a716-446655440000"
+                  value={consultaId}
+                  onChange={(e) => setConsultaId(e.target.value)}
+                  className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 font-mono text-sm bg-white shadow-sm"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => void requestMicPermissionAndRefresh()}
+                disabled={micBusy}
+                className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-black text-slate-800 shadow-sm hover:bg-slate-50 disabled:opacity-50"
+                title="Permitir/atualizar microfones"
+              >
+                🔄 Atualizar mics
+              </button>
+            </div>
+
+            <div className="grid gap-2 md:grid-cols-[1fr_auto] items-end">
+              <div>
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Microfone</label>
+                <select
+                  value={micDeviceId}
+                  onChange={(e) => setMicDeviceId(e.target.value)}
+                  className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm bg-white shadow-sm"
+                  title="Selecionar microfone"
+                >
+                  <option value="">Automático (navegador)</option>
+                  {micDevices.map((d) => (
+                    <option key={d.deviceId} value={d.deviceId}>
+                      {d.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setMicDeviceId('')
+                  void startMic({ forceBrowserPrompt: true })
+                }}
+                className="rounded-xl border border-emerald-300 bg-white px-3 py-2 text-sm font-black text-emerald-800 shadow-sm hover:bg-emerald-50"
+                title="Usar escolha do navegador"
+              >
+                🧭 Usar navegador
+              </button>
+            </div>
+
+            {streamError ? <p className="text-sm font-bold text-rose-700">{streamError}</p> : null}
           </div>
         </div>
 

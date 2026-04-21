@@ -6,6 +6,7 @@ export type HealthPayload = {
   db: boolean;
   mcpConfigured: boolean;
   privacyGateway: "noop" | "remote";
+  ollamaConfigured: boolean;
   timestamp: string;
 };
 
@@ -13,6 +14,7 @@ export async function getHealthStatus(): Promise<{ httpStatus: 200 | 503; body: 
   const timestamp = new Date().toISOString();
   const mcpConfigured = Boolean(process.env.MCP_SERVER_URL?.trim());
   const gateway = getPrivacyGateway();
+  const ollamaConfigured = Boolean(process.env.OLLAMA_HTTP_URL?.trim());
 
   let db = false;
   try {
@@ -30,6 +32,7 @@ export async function getHealthStatus(): Promise<{ httpStatus: 200 | 503; body: 
         db: false,
         mcpConfigured,
         privacyGateway: gateway.kind === "http" ? "remote" : "noop",
+        ollamaConfigured,
         timestamp,
       },
     };
@@ -44,6 +47,7 @@ export async function getHealthStatus(): Promise<{ httpStatus: 200 | 503; body: 
       db: true,
       mcpConfigured,
       privacyGateway: gateway.kind === "http" ? "remote" : "noop",
+      ollamaConfigured,
       timestamp,
     },
   };

@@ -9,24 +9,32 @@ type HealthPayload = {
   db: boolean
   mcpConfigured: boolean
   privacyGateway: 'noop' | 'remote'
+  ollamaConfigured: boolean
   timestamp: string
 }
 
 export function DevSandboxPage() {
-  const { authFetch } = useAuth()
   const apiBase = useMemo(() => getApiBaseUrl(), [])
   const [health, setHealth] = useState<HealthPayload | null>(null)
   const [healthLoading, setHealthLoading] = useState(true)
 
-  // MCP State
+  const { token, login, loginState, logout, authFetch } = useAuth()
+
+  // Manual Auth (Dev Sandbox)
+  const [loginEmail, setLoginEmail] = useState('admin@local')
+  const [loginPassword, setLoginPassword] = useState('admin')
+
+  // Dev API tests
   const [mcpInput, setMcpInput] = useState('A paciente Maria de Souza, CPF 123.456.789-00 relatou...')
   const [mcpOutput, setMcpOutput] = useState('')
   const [mcpBusy, setMcpBusy] = useState(false)
 
-  // LLM State
   const [llmInput, setLlmInput] = useState('Extrair informações clínicas: A paciente está com 38 semanas, PA 12/8 e BCF 150')
   const [llmOutput, setLlmOutput] = useState('')
   const [llmBusy, setLlmBusy] = useState(false)
+
+  const [apiTestOutput, setApiTestOutput] = useState('')
+  const [apiTestBusy, setApiTestBusy] = useState(false)
 
   useEffect(() => {
     const c = new AbortController()
@@ -49,20 +57,46 @@ export function DevSandboxPage() {
 
   const handleTestMcp = async () => {
     setMcpBusy(true)
-    setMcpOutput('Processando com Privacy Gateway (Placeholder para /api/v1/mcp)...')
-    setTimeout(() => {
-       setMcpOutput('A paciente [NOME MASCARADO], CPF [CPF MASCARADO] relatou...')
-       setMcpBusy(false)
-    }, 1000)
+    setMcpOutput('')
+    try {
+      const res = await authFetch('/api/v1/dev/sanitize', {
+        method: 'POST',
+        body: JSON.stringify({ input: mcpInput }),
+      })
+      const json = (await res.json()) as { output?: string; code?: string; message?: string }
+      if (!res.ok) {
+        const msg = typeof json.message === 'string' ? json.message : json.code ?? `HTTP ${res.status}`
+        setMcpOutput(`Erro: ${msg}`)
+        return
+      }
+      setMcpOutput(typeof json.output === 'string' ? json.output : '(sem output)')
+    } catch {
+      setMcpOutput('Falha de rede ao chamar /api/v1/dev/sanitize')
+    } finally {
+      setMcpBusy(false)
+    }
   }
 
   const handleTestLlm = async () => {
     setLlmBusy(true)
-    setLlmOutput('Iniciando inferência com Ollama (Cold start pode demorar)...')
-    setTimeout(() => {
-       setLlmOutput('{\n  "idade_gestacional": 38,\n  "pa": "120/80",\n  "bcf": 150\n}')
-       setLlmBusy(false)
-    }, 2000)
+    setLlmOutput('')
+    try {
+      const res = await authFetch('/api/v1/dev/ollama/insight', {
+        method: 'POST',
+        body: JSON.stringify({ input: llmInput, maxChars: 1500 }),
+      })
+      const json = (await res.json()) as { output?: string; code?: string; message?: string }
+      if (!res.ok) {
+        const msg = typeof json.message === 'string' ? json.message : json.code ?? `HTTP ${res.status}`
+        setLlmOutput(`Erro: ${msg}`)
+        return
+      }
+      setLlmOutput(typeof json.output === 'string' ? json.output : '(sem output)')
+    } catch {
+      setLlmOutput('Falha de rede ao chamar /api/v1/dev/ollama/insight')
+    } finally {
+      setLlmBusy(false)
+    }
   }
 
   return (
@@ -87,24 +121,51 @@ export function DevSandboxPage() {
               <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Painel de Status de Infra</h2>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2">
+                   <span
+                     className={`h-3 w-3 rounded-full ${
+                       health ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-rose-500'
+                     }`}
+                   ></span>
+                   <span className="text-sm font-semibold text-slate-700">Backend API {health ? '(Online)' : '(Offline)'}</span>
+                </div>
+                <div className="w-px h-5 bg-slate-200 hidden sm:block"></div>
+                <div className="flex items-center gap-2">
                    <span className={`h-3 w-3 rounded-full ${health?.db ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-rose-500'}`}></span>
                    <span className="text-sm font-semibold text-slate-700">PostgreSQL {health?.db ? '(Online)' : '(Offline)'}</span>
                 </div>
                 <div className="w-px h-5 bg-slate-200 hidden sm:block"></div>
                 <div className="flex items-center gap-2">
                    <span className={`h-3 w-3 rounded-full ${health?.mcpConfigured ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-slate-300'}`}></span>
-                   <span className="text-sm font-semibold text-slate-700">MCP Gateway {health?.mcpConfigured ? '(Ativo)' : '(Mock/Noop)'}</span>
+                   <span className="text-sm font-semibold text-slate-700">MCP URL {health?.mcpConfigured ? '(Configurado)' : '(Não configurado)'}</span>
                 </div>
                 <div className="w-px h-5 bg-slate-200 hidden sm:block"></div>
                 <div className="flex items-center gap-2">
-                   <span className="h-3 w-3 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]"></span>
-                   <span className="text-sm font-semibold text-slate-700">Ollama / RAG (Standby)</span>
+                   <span className={`h-3 w-3 rounded-full ${health?.ollamaConfigured ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-slate-300'}`}></span>
+                   <span className="text-sm font-semibold text-slate-700">Ollama {health?.ollamaConfigured ? '(Configurado)' : '(Não configurado)'}</span>
                 </div>
                 <div className="w-px h-5 bg-slate-200 hidden sm:block"></div>
                 <div className="flex items-center gap-2">
-                   <span className="h-3 w-3 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
-                   <span className="text-sm font-semibold text-slate-700">Faster-Whisper (WS)</span>
+                   <span className={`h-3 w-3 rounded-full ${token ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-slate-300'}`}></span>
+                   <span className="text-sm font-semibold text-slate-700">Auth Token {token ? '(OK)' : '(Faça login)'}</span>
                 </div>
+              </div>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <a
+                  href={`${apiBase}/swagger`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 font-bold text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 shadow-sm transition-all text-sm"
+                >
+                  Abrir Swagger
+                </a>
+                <a
+                  href={`${apiBase}/openapi.json`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 font-bold text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 shadow-sm transition-all text-sm"
+                >
+                  Ver OpenAPI JSON
+                </a>
               </div>
            </div>
            
@@ -112,6 +173,123 @@ export function DevSandboxPage() {
               <span className="text-xs font-bold uppercase tracking-wider block mb-1">Status Global</span>
               {healthLoading ? 'Verificando...' : (health?.status ? `SISTEMA ${health.status.toUpperCase()}` : 'FALHA DE REDE')}
            </div>
+        </div>
+
+        {/* Painel 1b: Testes manuais rápidos (HTTP) */}
+        <div className="lg:col-span-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm flex flex-col gap-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-base font-bold text-slate-900">Testes manuais (HTTP)</h2>
+              <p className="text-xs text-slate-500 font-medium">
+                Fluxo recomendado: login → validar lista de pacientes/worklist → testar sanitize/Ollama.
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => logout()}
+                disabled={!token}
+                className="rounded-xl bg-white border border-slate-200 px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-50 shadow-sm transition-all"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Login</div>
+              <div className="space-y-3">
+                <div>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">E-mail</label>
+                  <input
+                    value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}
+                    className="mt-1.5 w-full rounded-xl border border-slate-300 p-2.5 text-sm shadow-sm bg-white"
+                    placeholder="admin@local"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Senha</label>
+                  <input
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    type="password"
+                    className="mt-1.5 w-full rounded-xl border border-slate-300 p-2.5 text-sm shadow-sm bg-white"
+                    placeholder="admin"
+                  />
+                </div>
+                <button
+                  onClick={() => void login(loginEmail, loginPassword)}
+                  disabled={loginState.kind === 'loading'}
+                  className="w-full rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-slate-800 disabled:opacity-50 transition-all"
+                >
+                  {loginState.kind === 'loading' ? 'Autenticando...' : 'Entrar'}
+                </button>
+                {loginState.kind === 'error' && (
+                  <div className="text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-xl p-2.5">
+                    {loginState.message}
+                  </div>
+                )}
+                <div className="text-[11px] text-slate-600 font-mono break-all">
+                  {token ? `Token: ${token.slice(0, 28)}…` : 'Sem token ainda.'}
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Chamadas protegidas</div>
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={async () => {
+                    setApiTestBusy(true)
+                    setApiTestOutput('')
+                    try {
+                      const res = await authFetch('/api/v1/pacientes')
+                      const txt = await res.text()
+                      setApiTestOutput(`GET /api/v1/pacientes\nHTTP ${res.status}\n\n${txt}`)
+                    } catch {
+                      setApiTestOutput('Falha de rede ao chamar /api/v1/pacientes')
+                    } finally {
+                      setApiTestBusy(false)
+                    }
+                  }}
+                  disabled={!token || apiTestBusy}
+                  className="rounded-xl bg-white border border-slate-200 px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-50 shadow-sm transition-all text-left"
+                >
+                  GET /pacientes
+                </button>
+                <button
+                  onClick={async () => {
+                    setApiTestBusy(true)
+                    setApiTestOutput('')
+                    try {
+                      const res = await authFetch('/api/v1/consultas/disponiveis-stream')
+                      const txt = await res.text()
+                      setApiTestOutput(`GET /api/v1/consultas/disponiveis-stream\nHTTP ${res.status}\n\n${txt}`)
+                    } catch {
+                      setApiTestOutput('Falha de rede ao chamar /api/v1/consultas/disponiveis-stream')
+                    } finally {
+                      setApiTestBusy(false)
+                    }
+                  }}
+                  disabled={!token || apiTestBusy}
+                  className="rounded-xl bg-white border border-slate-200 px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-50 shadow-sm transition-all text-left"
+                >
+                  GET /consultas/disponiveis-stream
+                </button>
+                <div className="text-[11px] text-slate-500 font-medium">
+                  Dica: no Swagger, clique em “Authorize” e cole o JWT.
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Saída</div>
+              <pre className="h-56 overflow-auto rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-800 whitespace-pre-wrap">
+                {apiTestOutput || 'Execute uma chamada para ver o retorno aqui.'}
+              </pre>
+            </div>
+          </div>
         </div>
 
         {/* Painel 2: Escriba & Worklist (ConsultaStreamPanel original) */}
@@ -127,7 +305,9 @@ export function DevSandboxPage() {
            <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 mb-2">
               <span className="text-xl">🛡️</span> Painel do MCP (Privacy Gateway)
            </h2>
-           <p className="text-xs text-slate-500 mb-6 font-medium">Testar sanitização de PII antes de enviar ao LLM via pipeline.</p>
+           <p className="text-xs text-slate-500 mb-6 font-medium">
+             Teste real via <span className="font-mono">POST /api/v1/dev/sanitize</span> (usa o gateway configurado/noop).
+           </p>
            
            <div className="flex flex-col gap-4 flex-1">
              <div>
@@ -141,7 +321,7 @@ export function DevSandboxPage() {
              </div>
              <button
                onClick={handleTestMcp}
-               disabled={mcpBusy}
+               disabled={mcpBusy || !token}
                className="w-full sm:w-auto self-end rounded-xl bg-slate-800 px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-slate-700 disabled:opacity-50 transition-all"
              >
                Sanitizar Texto
@@ -160,7 +340,9 @@ export function DevSandboxPage() {
            <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 mb-2">
               <span className="text-xl">🧠</span> Painel LLM (Inferência Direta)
            </h2>
-           <p className="text-xs text-slate-500 mb-6 font-medium">Testar modelos locais (Ollama) para RAG e extração JSON.</p>
+           <p className="text-xs text-slate-500 mb-6 font-medium">
+             Teste real via <span className="font-mono">POST /api/v1/dev/ollama/insight</span> (agregado, sem stream).
+           </p>
            
            <div className="flex flex-col gap-4 flex-1">
              <div>
@@ -174,7 +356,7 @@ export function DevSandboxPage() {
              </div>
              <button
                onClick={handleTestLlm}
-               disabled={llmBusy}
+               disabled={llmBusy || !token}
                className="w-full sm:w-auto self-end rounded-xl bg-gradient-to-r from-rose-500 to-rose-600 px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:from-rose-600 hover:to-rose-700 disabled:opacity-50 transition-all"
              >
                Executar LLM 

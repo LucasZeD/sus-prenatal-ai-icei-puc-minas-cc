@@ -29,6 +29,9 @@ function assertStatusTransition(from: StatusConsulta, to: StatusConsulta): void 
 export type ConsultaPatchInput = {
   status?: StatusConsulta;
   validacao_medica?: boolean;
+  /** Remarcação (apenas enquanto NÃO confirmada). */
+  data?: Date;
+  idade_gestacional?: number | null;
   peso?: number | null;
   pa_sistolica?: number | null;
   pa_diastolica?: number | null;
@@ -38,9 +41,7 @@ export type ConsultaPatchInput = {
   mov_fetal?: string | null;
   apresentacao_fetal?: string | null;
   queixa?: string | null;
-  enxantema?: boolean;
-  is_visita_maternidade?: boolean;
-  is_particip_atvd_educativa?: boolean;
+  is_exantema?: boolean;
 };
 
 /**
@@ -50,8 +51,15 @@ export function buildConsultaPatchUpdate(current: Consulta, patch: ConsultaPatch
   if (current.status === StatusConsulta.CONFIRMADA && patch.validacao_medica === false) {
     throw new AppError("validation_error", "Consulta confirmada: validação médica não pode ser desmarcada.", 400);
   }
+  if (current.status === StatusConsulta.CONFIRMADA && patch.data !== undefined) {
+    throw new AppError("validation_error", "Consulta confirmada não admite remarcação de data/horário.", 400);
+  }
 
   const data: Prisma.ConsultaUpdateInput = {};
+
+  if (patch.data !== undefined) {
+    data.data = patch.data;
+  }
 
   if (patch.validacao_medica !== undefined) {
     data.validacao_medica = patch.validacao_medica;
@@ -72,6 +80,10 @@ export function buildConsultaPatchUpdate(current: Consulta, patch: ConsultaPatch
       "Somente consultas com validação médica (validacao_medica: true) podem ir para CONFIRMADA.",
       400,
     );
+  }
+
+  if (patch.idade_gestacional !== undefined) {
+    data.idade_gestacional = patch.idade_gestacional;
   }
 
   if (patch.peso !== undefined) {
@@ -101,14 +113,8 @@ export function buildConsultaPatchUpdate(current: Consulta, patch: ConsultaPatch
   if (patch.queixa !== undefined) {
     data.queixa = patch.queixa;
   }
-  if (patch.enxantema !== undefined) {
-    data.enxantema = patch.enxantema;
-  }
-  if (patch.is_visita_maternidade !== undefined) {
-    data.is_visita_maternidade = patch.is_visita_maternidade;
-  }
-  if (patch.is_particip_atvd_educativa !== undefined) {
-    data.is_particip_atvd_educativa = patch.is_particip_atvd_educativa;
+  if (patch.is_exantema !== undefined) {
+    data.is_exantema = patch.is_exantema;
   }
 
   if (Object.keys(data).length === 0) {

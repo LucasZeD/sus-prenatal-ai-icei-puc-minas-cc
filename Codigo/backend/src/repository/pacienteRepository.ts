@@ -12,8 +12,19 @@ export const pacienteAssepsisadoSelect = {
   cpf_ultimos4: true,
   cartao_sus_ultimos4: true,
   data_cadastro: true,
+  telefone: true,
+  email: true,
+  localizacao: true,
   altura: true,
   peso_pre_gestacional: true,
+  abo_rh: true,
+  etnia: true,
+  escolaridade: true,
+  estado_civil: true,
+  ocupacao: true,
+  data_nascimento: true,
+  idade: true,
+  is_particip_atvd_educativa: true,
 } as const;
 
 /** Alinhado a `pacienteAssepsisadoSelect` (campos omitidos de propósito). */
@@ -26,6 +37,55 @@ type PacienteCreateArgs = Parameters<PacienteDelegate["create"]>[0];
 type PacienteCreateInput = PacienteCreateArgs extends { data: infer D } ? D : never;
 
 export class PacienteRepository {
+  async findManyAssepsisadoResumo(): Promise<
+    Array<
+      PacienteAssepsisado & {
+        gestacao_ativa: { id: string; tipo_risco: string; ig_inicial: number | null; idade_gestac_confirmada: number | null } | null;
+        ultima_visita_em: Date | null;
+      }
+    >
+  > {
+    const prisma = getPrisma();
+    const rows = await prisma.paciente.findMany({
+      select: {
+        ...pacienteAssepsisadoSelect,
+        gestacoes: {
+          select: {
+            id: true,
+            is_ativa: true,
+            tipo_risco: true,
+            ig_inicial: true,
+            idade_gestac_confirmada: true,
+            consultas: { take: 1, orderBy: { data: "desc" }, select: { data: true } },
+          },
+        },
+      },
+      orderBy: { data_cadastro: "desc" },
+    });
+
+    return rows.map((p) => {
+      const gestacoes = (p as unknown as { gestacoes: any[] }).gestacoes ?? [];
+      const ativa = gestacoes.find((g) => g.is_ativa) ?? null;
+      const ultima = gestacoes
+        .map((g) => (g.consultas?.[0]?.data ? new Date(g.consultas[0].data) : null))
+        .filter((d): d is Date => d instanceof Date && !Number.isNaN(d.getTime()))
+        .sort((a, b) => b.getTime() - a.getTime())[0] ?? null;
+
+      return {
+        ...(p as unknown as PacienteAssepsisado),
+        gestacao_ativa: ativa
+          ? {
+              id: String(ativa.id),
+              tipo_risco: String(ativa.tipo_risco),
+              ig_inicial: (ativa.ig_inicial ?? null) as number | null,
+              idade_gestac_confirmada: (ativa.idade_gestac_confirmada ?? null) as number | null,
+            }
+          : null,
+        ultima_visita_em: ultima,
+      };
+    });
+  }
+
   async findManyAssepsisado(
     args?: Omit<Parameters<PacienteDelegate["findMany"]>[0], "select">,
   ): Promise<PacienteAssepsisado[]> {

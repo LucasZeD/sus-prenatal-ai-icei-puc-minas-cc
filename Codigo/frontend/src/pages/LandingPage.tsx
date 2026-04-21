@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.js'
 import { getApiBaseUrl } from '../lib/apiBase.js'
 
@@ -36,8 +36,8 @@ export function LandingPage() {
         <div className="flex w-full flex-col justify-center px-8 py-12 md:w-1/2 lg:px-24 xl:px-32 relative z-10 bg-white">
           <div className="mx-auto w-full max-w-md">
             <div className="flex items-center gap-3">
-              <img src="/assets/imagem_logo_transparente.png" alt="SUS Prenatal AI Logo" className="h-10 w-10 object-contain drop-shadow-sm" />
-              <h1 className="text-2xl font-black tracking-tight text-brand-navy">SUS Prenatal AI</h1>
+              <img src="/assets/imagem_logo_transparente.png" alt="Pré-natal Digital Logo" className="h-10 w-10 object-contain drop-shadow-sm" />
+              <h1 className="text-2xl font-black tracking-tight text-brand-navy">Pré-Natal Digital</h1>
             </div>
 
             <div className="mt-10">

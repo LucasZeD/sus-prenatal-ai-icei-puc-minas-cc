@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 const SUGESTOES = [
   'Resumo do risco desta gestação',
   'Conduta para PA elevada (protocolo MS)',
@@ -5,6 +7,8 @@ const SUGESTOES = [
 ]
 
 export function LiviaAssistantPanel({ className = '' }: { className?: string }) {
+  const [inputText, setInputText] = useState('')
+
   return (
     <div className={`flex h-full flex-col ${className}`}>
       <div className="flex h-[4.5rem] items-center border-b border-rose-100 bg-rose-50/30 px-6">
@@ -34,9 +38,8 @@ export function LiviaAssistantPanel({ className = '' }: { className?: string }) 
                 <li key={s}>
                   <button
                     type="button"
-                    disabled
-                    className="rounded-full border border-rose-200 bg-white px-4 py-2 text-[13px] font-medium text-rose-700 shadow-sm transition-colors hover:bg-rose-50 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed"
-                    title="Função de IA em andamento"
+                    onClick={() => setInputText(s)}
+                    className="rounded-full border border-rose-200 bg-white px-4 py-2 text-[13px] font-medium text-rose-700 shadow-sm transition-colors hover:bg-rose-50 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
                   >
                     {s}
                   </button>
@@ -51,11 +54,12 @@ export function LiviaAssistantPanel({ className = '' }: { className?: string }) 
         <div className="relative">
           <input
             type="text"
-            disabled
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
             placeholder="Pergunte algo à Lívia..."
-            className="block w-full rounded-2xl border-0 py-3 pl-4 pr-12 text-slate-900 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-rose-500 sm:text-sm sm:leading-6 disabled:bg-slate-50 disabled:opacity-70"
+            className="block w-full rounded-2xl border-0 py-3 pl-4 pr-12 text-slate-900 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-rose-500 sm:text-sm sm:leading-6"
           />
-          <button className="absolute right-2 top-2 rounded-xl bg-rose-500 p-1.5 text-white shadow-sm disabled:opacity-50">
+          <button className="absolute right-2 top-2 rounded-xl bg-rose-500 p-1.5 text-white shadow-sm hover:bg-rose-600 transition-colors">
             <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path d="M3.105 2.289a.75.75 0 00-.826.95l1.414 4.925A1.5 1.5 0 005.135 9.25h6.115a.75.75 0 010 1.5H5.135a1.5 1.5 0 00-1.442 1.086l-1.414 4.926a.75.75 0 00.826.95 28.896 28.896 0 0015.293-7.154.75.75 0 000-1.115A28.897 28.897 0 003.105 2.289z" />
             </svg>

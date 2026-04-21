@@ -75,4 +75,13 @@ describe("buildConsultaPatchUpdate (máquina de estados RF07)", () => {
   it("rejeita payload sem campos aplicáveis (edge case de cliente malformado)", () => {
     expect(() => buildConsultaPatchUpdate(cx(StatusConsulta.RASCUNHO, false), {})).toThrow(AppError);
   });
+
+  it("aplica campos clínicos (idade_gestacional, is_exantema) sem alterar status", () => {
+    const data = buildConsultaPatchUpdate(cx(StatusConsulta.EM_ANDAMENTO, false), {
+      idade_gestacional: 24,
+      is_exantema: true,
+    });
+    expect(data.idade_gestacional).toBe(24);
+    expect(data.is_exantema).toBe(true);
+  });
 });

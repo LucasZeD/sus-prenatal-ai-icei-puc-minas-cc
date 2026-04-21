@@ -241,5 +241,129 @@ describe.skipIf(skipIntegration)("integração: Postgres efêmero + API Hono", (
       expect(body.id).toBe(consulta.id);
       expect(body.status).toBe(StatusConsulta.EM_ANDAMENTO);
     });
+
+    it("PATCH /api/v1/consultas/:id persiste campos do prontuário estruturado (inclui conduta)", async () => {
+      const { getPrisma } = await import("../src/repository/prisma.js");
+      const prisma = getPrisma();
+
+      const paciente = await prisma.paciente.create({
+        data: { nome_mascarado: "Es***" },
+      });
+      const gestacao = await prisma.gestacao.create({
+        data: { paciente_id: paciente.id },
+      });
+      const consulta = await prisma.consulta.create({
+        data: {
+          gestacao_id: gestacao.id,
+          unidade_id: SENTINEL_UNIDADE,
+          data: new Date("2025-08-01T10:20:00.000Z"),
+          status: StatusConsulta.EM_ANDAMENTO,
+          validacao_medica: false,
+        },
+      });
+
+      const token = await sign(
+        {
+          sub: "00000000-0000-4000-8000-0000000000ee",
+          email: "prof.patch@test.dev",
+          exp: Math.floor(Date.now() / 1000) + 3600,
+        },
+        process.env.JWT_SECRET!,
+        "HS256",
+      );
+
+      const payload = {
+        idade_gestacional: 24,
+        peso: 68.5,
+        pa_sistolica: 120,
+        pa_diastolica: 80,
+        au: 24,
+        bfc: 140,
+        is_edema: true,
+        mov_fetal: "Preservado",
+        apresentacao_fetal: "Cefálica",
+        queixa: "Dor lombar",
+        is_exantema: false,
+        conduta: "Conduta final definida pela profissional.",
+        sugestao_conduta: "Sugestão IA (não oficial).",
+      };
+
+      const res = await app.request(`http://local/api/v1/consultas/${consulta.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+      expect(res.status).toBe(200);
+
+      const saved = await prisma.consulta.findUnique({ where: { id: consulta.id } });
+      expect(saved).not.toBeNull();
+      expect(saved!.idade_gestacional).toBe(24);
+      expect(saved!.peso).toBeCloseTo(68.5);
+      expect(saved!.pa_sistolica).toBe(120);
+      expect(saved!.pa_diastolica).toBe(80);
+      expect(saved!.au).toBe(24);
+      expect(saved!.bfc).toBe(140);
+      expect(saved!.is_edema).toBe(true);
+      expect(saved!.mov_fetal).toBe("Preservado");
+      expect(saved!.apresentacao_fetal).toBe("Cefálica");
+      expect(saved!.queixa).toBe("Dor lombar");
+      expect(saved!.is_exantema).toBe(false);
+      expect(saved!.conduta).toBe(payload.conduta);
+
+      const ia = await prisma.consultaIa.findUnique({ where: { consulta_id: consulta.id } });
+      expect(ia?.sugestao_conduta).toBe(payload.sugestao_conduta);
+    });
+
+    it("DELETE /api/v1/consultas/:id remove consulta (cascade dependências)", async () => {
+      const { getPrisma } = await import("../src/repository/prisma.js");
+      const prisma = getPrisma();
+
+      const paciente = await prisma.paciente.create({
+        data: { nome_mascarado: "Del***" },
+      });
+      const gestacao = await prisma.gestacao.create({
+        data: { paciente_id: paciente.id },
+      });
+      const consulta = await prisma.consulta.create({
+        data: {
+          gestacao_id: gestacao.id,
+          unidade_id: SENTINEL_UNIDADE,
+          data: new Date("2025-09-01T10:20:00.000Z"),
+          status: StatusConsulta.RASCUNHO,
+          validacao_medica: false,
+          queixa: "Teste delete",
+        },
+      });
+
+      await prisma.consultaIa.upsert({
+        where: { consulta_id: consulta.id },
+        create: { consulta_id: consulta.id, sugestao_conduta: "IA" },
+        update: { sugestao_conduta: "IA" },
+      });
+
+      const token = await sign(
+        {
+          sub: "00000000-0000-4000-8000-0000000000fa",
+          email: "prof.delete@test.dev",
+          exp: Math.floor(Date.now() / 1000) + 3600,
+        },
+        process.env.JWT_SECRET!,
+        "HS256",
+      );
+
+      const res = await app.request(`http://local/api/v1/consultas/${consulta.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      expect(res.status).toBe(200);
+
+      const after = await prisma.consulta.findUnique({ where: { id: consulta.id } });
+      expect(after).toBeNull();
+      const iaAfter = await prisma.consultaIa.findUnique({ where: { consulta_id: consulta.id } });
+      expect(iaAfter).toBeNull();
+    });
   });
 });

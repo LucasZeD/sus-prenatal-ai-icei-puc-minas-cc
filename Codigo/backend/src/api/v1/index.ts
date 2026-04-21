@@ -3,6 +3,7 @@ import type { AuthVariables } from "../../middleware/requireAuth.js";
 import { requireAuth } from "../../middleware/requireAuth.js";
 import { registerAuthV1Routes } from "./auth.js";
 import { registerClinicalV1Routes } from "./clinical.js";
+import { registerDevV1Routes } from "./dev.js";
 
 function isPublicLogin(c: { req: { method: string; path: string } }): boolean {
   if (c.req.method !== "POST") {
@@ -28,5 +29,6 @@ export function registerApiV1Routes(app: Hono): void {
 
   registerAuthV1Routes(v1);
   registerClinicalV1Routes(v1);
+  registerDevV1Routes(v1);
   app.route("/api/v1", v1);
 }
