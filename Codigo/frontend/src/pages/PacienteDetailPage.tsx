@@ -576,6 +576,58 @@ export function PacienteDetailPage() {
     return d.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })
   }
 
+  const parseBrDateToLocalDate = (v: string): Date | null => {
+    const t = (v || '').trim()
+    if (!t) return null
+    const parts = t.split('/')
+    if (parts.length !== 3) return null
+    const dd = Number.parseInt(parts[0], 10)
+    const mm = Number.parseInt(parts[1], 10)
+    const yyyy = Number.parseInt(parts[2], 10)
+    if (!Number.isFinite(dd) || !Number.isFinite(mm) || !Number.isFinite(yyyy)) return null
+    const d = new Date(yyyy, mm - 1, dd, 12, 0, 0, 0)
+    return Number.isNaN(d.getTime()) ? null : d
+  }
+
+  const parseIsoDateOnlyToLocalDate = (v: unknown): Date | null => {
+    if (typeof v !== 'string' || !v) return null
+    const t = v.slice(0, 10)
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(t)
+    if (!m) return null
+    const yyyy = Number.parseInt(m[1], 10)
+    const mm = Number.parseInt(m[2], 10)
+    const dd = Number.parseInt(m[3], 10)
+    const d = new Date(yyyy, mm - 1, dd, 12, 0, 0, 0)
+    return Number.isNaN(d.getTime()) ? null : d
+  }
+
+  const fmtBrDate = (d: Date | null): string => {
+    if (!d || Number.isNaN(d.getTime())) return ''
+    const dd = String(d.getDate()).padStart(2, '0')
+    const mm = String(d.getMonth() + 1).padStart(2, '0')
+    const yyyy = String(d.getFullYear())
+    return `${dd}/${mm}/${yyyy}`
+  }
+
+  const addDaysLocal = (d: Date, n: number): Date => {
+    const x = new Date(d)
+    x.setDate(x.getDate() + n)
+    return x
+  }
+
+  const calcIgAtualFromDum = (dum: Date | null, now = new Date()): string => {
+    if (!dum) return '—'
+    const today = new Date(now)
+    today.setHours(12, 0, 0, 0)
+    const base = new Date(dum)
+    base.setHours(12, 0, 0, 0)
+    const diffDays = Math.floor((today.getTime() - base.getTime()) / 86400000)
+    if (!Number.isFinite(diffDays) || diffDays < 0) return '—'
+    const weeks = Math.floor(diffDays / 7)
+    const days = diffDays % 7
+    return `${weeks} sem ${days} d`
+  }
+
   const calcIdadeEmAnos = (isoDateOnlyOrIso: string): number | null => {
     const d = new Date(isoDateOnlyOrIso)
     if (Number.isNaN(d.getTime())) return null
@@ -601,6 +653,21 @@ export function PacienteDetailPage() {
       return /positiv/i.test(valor)
     })
   }, [pacienteFull])
+
+  const dumBaseDate = useMemo(() => {
+    if (isEditing) return parseBrDateToLocalDate(gestacaoDraft.dum)
+    return parseIsoDateOnlyToLocalDate(selectedGestacao?.dum ?? null)
+  }, [gestacaoDraft.dum, isEditing, selectedGestacao?.dum])
+
+  const dppAutoDate = useMemo(() => (dumBaseDate ? addDaysLocal(dumBaseDate, 280) : null), [dumBaseDate])
+  const dppAutoBr = useMemo(() => fmtBrDate(dppAutoDate) || '—', [dppAutoDate])
+  const igAtualAuto = useMemo(() => calcIgAtualFromDum(dumBaseDate), [dumBaseDate])
+
+  useEffect(() => {
+    if (!isEditing) return
+    const next = dppAutoDate ? fmtBrDate(dppAutoDate) : ''
+    setGestacaoDraft((p) => (p.dpp === next ? p : { ...p, dpp: next }))
+  }, [dppAutoDate, isEditing])
 
   const toggleConsulta = (cid: string) => {
     setExpandedConsultas(prev => {
@@ -744,11 +811,32 @@ export function PacienteDetailPage() {
       return `${y}-${m}-${d}`
     }
 
-    const setDate = (key: 'dum' | 'dpp' | 'dpp_eco' | 'tratamento_sifilis_dose_1' | 'tratamento_sifilis_dose_2' | 'tratamento_sifilis_dose_3') => {
+    const setDate = (key: 'dum' | 'dpp_eco' | 'tratamento_sifilis_dose_1' | 'tratamento_sifilis_dose_2' | 'tratamento_sifilis_dose_3') => {
       const next = parseBrDate((gestacaoDraft[key] || '').trim())
       const cur = current[key] ? String(current[key]).slice(0, 10) : ''
       if (next === null || next === cur) return
       payload[key] = next
+    }
+    const isoDateOnlyToLocalDate = (iso: string): Date | null => {
+      const t = iso.slice(0, 10)
+      const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(t)
+      if (!m) return null
+      const y = Number.parseInt(m[1], 10)
+      const mo = Number.parseInt(m[2], 10) - 1
+      const da = Number.parseInt(m[3], 10)
+      const d = new Date(y, mo, da, 12, 0, 0, 0)
+      return Number.isNaN(d.getTime()) ? null : d
+    }
+    const localDateToIsoDateOnly = (d: Date): string => {
+      const y = d.getFullYear()
+      const m = String(d.getMonth() + 1).padStart(2, '0')
+      const da = String(d.getDate()).padStart(2, '0')
+      return `${y}-${m}-${da}`
+    }
+    const addDaysLocal = (d: Date, n: number): Date => {
+      const x = new Date(d)
+      x.setDate(x.getDate() + n)
+      return x
     }
     const setInt = (key: 'ig_inicial' | 'idade_gestac_confirmada') => {
       const raw = (gestacaoDraft[key] || '').trim()
@@ -785,8 +873,18 @@ export function PacienteDetailPage() {
     }
 
     setDate('dum')
-    setDate('dpp')
     setDate('dpp_eco')
+
+    // DPP: sempre derivada da DUM (280 dias) e enviada ao banco quando possível
+    const nextDumIso = parseBrDate((gestacaoDraft.dum || '').trim())
+    if (nextDumIso) {
+      const dumDate = isoDateOnlyToLocalDate(nextDumIso)
+      if (dumDate) {
+        const dppIso = localDateToIsoDateOnly(addDaysLocal(dumDate, 280))
+        const curDpp = current.dpp ? String(current.dpp).slice(0, 10) : ''
+        if (dppIso !== curDpp) payload.dpp = dppIso
+      }
+    }
     setInt('ig_inicial')
     setInt('idade_gestac_confirmada')
     if (gestacaoDraft.tipo_risco && gestacaoDraft.tipo_risco !== current.tipo_risco) payload.tipo_risco = gestacaoDraft.tipo_risco
@@ -1352,14 +1450,20 @@ export function PacienteDetailPage() {
                           <input
                             placeholder="DD/MM/YYYY"
                             value={gestacaoDraft.dpp}
-                            onChange={(e) => setGestacaoDraft((p) => ({ ...p, dpp: e.target.value }))}
-                            className="block w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-800 shadow-sm focus:ring-2 focus:ring-brand-pink/30 focus:border-brand-pink/50"
+                            disabled
+                            className="block w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-bold text-slate-800 shadow-sm disabled:opacity-80 disabled:cursor-not-allowed"
                           />
                         ) : (
                           <span className="text-sm font-black text-brand-navy">
-                            {selectedGestacao?.dpp ? new Date(selectedGestacao.dpp).toLocaleDateString('pt-BR') : '—'}
+                            {dppAutoBr}
                           </span>
                         )}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">IG atual</dt>
+                      <dd className="mt-1">
+                        <span className="text-sm font-black text-brand-navy">{igAtualAuto}</span>
                       </dd>
                     </div>
                     <div>
