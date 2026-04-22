@@ -1,12 +1,9 @@
+import type { Prisma } from "../lib/prismaBarrel.js";
 import { getPrisma } from "./prisma.js";
 
 type GestacaoDelegate = ReturnType<typeof getPrisma>["gestacao"];
 
 export type Gestacao = NonNullable<Awaited<ReturnType<GestacaoDelegate["findUnique"]>>>;
-type GestacaoCreateArgs = Parameters<GestacaoDelegate["create"]>[0];
-type GestacaoCreateInput = GestacaoCreateArgs extends { data: infer D } ? D : never;
-type GestacaoUpdateArgs = Parameters<GestacaoDelegate["update"]>[0];
-type GestacaoUpdateInput = GestacaoUpdateArgs extends { data: infer D } ? D : never;
 
 export class GestacaoRepository {
   async findById(id: string): Promise<Gestacao | null> {
@@ -22,12 +19,13 @@ export class GestacaoRepository {
     });
   }
 
-  async create(data: GestacaoCreateInput): Promise<Gestacao> {
+  /** Usa forma *unchecked* para aceitar `paciente_id` escalar (API JSON), não só `paciente: { connect }`. */
+  async create(data: Prisma.GestacaoUncheckedCreateInput): Promise<Gestacao> {
     const prisma = getPrisma();
     return prisma.gestacao.create({ data });
   }
 
-  async updateById(id: string, data: GestacaoUpdateInput): Promise<Gestacao> {
+  async updateById(id: string, data: Prisma.GestacaoUpdateInput): Promise<Gestacao> {
     const prisma = getPrisma();
     return prisma.gestacao.update({
       where: { id },

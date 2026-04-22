@@ -81,7 +81,7 @@ export function registerConsultationWebSocket(app: Hono, upgradeWebSocket: Upgra
           const eventos = await consultas.listStreamEventos(consultaId);
           outbound({
             type: "history",
-            eventos: eventos.map((e) => ({
+            eventos: eventos.map((e: { tipo: string; payload: string; createdAt: Date }) => ({
               tipo: e.tipo,
               payload: e.payload,
               createdAt: e.createdAt.toISOString(),
@@ -92,7 +92,7 @@ export function registerConsultationWebSocket(app: Hono, upgradeWebSocket: Upgra
           session = streamService.createSession(consultaId, outbound);
         },
 
-        onMessage: async (evt) => {
+        onMessage: async (evt: { data: unknown }) => {
           if (!session) {
             return;
           }

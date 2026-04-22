@@ -39,6 +39,11 @@ services:
       MCP_SERVER_URL: ${MCP_SERVER_URL:-}
       JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in Codigo/.env (RF14)}
       JWT_EXPIRES_SEC: ${JWT_EXPIRES_SEC:-28800}
+      # Repasse explícito: o `.env` do host não é copiado para a imagem; `prisma db seed` e a API leem o ambiente do contêiner.
+      PACIENTE_IDS_PEPPER: ${PACIENTE_IDS_PEPPER:?set PACIENTE_IDS_PEPPER in Codigo/.env}
+      SEED_PROFISSIONAL_EMAIL: ${SEED_PROFISSIONAL_EMAIL:-}
+      SEED_PROFISSIONAL_PASSWORD: ${SEED_PROFISSIONAL_PASSWORD:-}
+      SEED_PROFISSIONAL_NOME: ${SEED_PROFISSIONAL_NOME:-}
     ports:
       - "${BACKEND_PUBLISH_PORT:-3000}:3000"
     networks:

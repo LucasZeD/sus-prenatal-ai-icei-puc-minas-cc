@@ -64,7 +64,15 @@ export class PacienteRepository {
     });
 
     return rows.map((p) => {
-      const gestacoes = (p as unknown as { gestacoes: any[] }).gestacoes ?? [];
+      type GestacaoResumo = {
+        id: string
+        is_ativa: boolean
+        tipo_risco: unknown
+        ig_inicial: number | null
+        idade_gestac_confirmada: number | null
+        consultas?: Array<{ data: Date | string }>
+      }
+      const gestacoes = (p as unknown as { gestacoes: GestacaoResumo[] }).gestacoes ?? [];
       const ativa = gestacoes.find((g) => g.is_ativa) ?? null;
       const ultima = gestacoes
         .map((g) => (g.consultas?.[0]?.data ? new Date(g.consultas[0].data) : null))

@@ -1,0 +1,2 @@
+# Scripts de shell no Linux (Docker): CRLF quebra o shebang → "exec ./docker-entrypoint.sh: no such file or directory"
+*.sh text eol=lf

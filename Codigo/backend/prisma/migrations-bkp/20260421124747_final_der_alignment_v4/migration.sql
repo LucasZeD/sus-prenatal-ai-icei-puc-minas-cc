@@ -26,8 +26,7 @@ CREATE TYPE "EstadoCivil" AS ENUM ('SOLTEIRA', 'CASADA', 'UNIAO_ESTAVEL', 'DIVOR
 -- DropIndex
 DROP INDEX IF EXISTS "profissional_unidade_id_idx";
 
--- AlterTable
-ALTER TABLE "antecedentes" ADD COLUMN     "is_sifilis" BOOLEAN NOT NULL DEFAULT false;
+-- `antecedentes` só existe a partir de `20260422150000_der_modulos_gestacao_ativa`; `is_sifilis` foi movida para lá.
 
 -- AlterTable
 ALTER TABLE "consulta" ALTER COLUMN "id" DROP DEFAULT;

@@ -1,5 +1,13 @@
 import type { Hono } from "hono";
-import { AboRh, RiscoGestacional, StatusConsulta, Etnia, Escolaridade, EstadoCivil } from "../../lib/prismaBarrel.js";
+import {
+  AboRh,
+  RiscoGestacional,
+  StatusConsulta,
+  Etnia,
+  Escolaridade,
+  EstadoCivil,
+  type Prisma,
+} from "../../lib/prismaBarrel.js";
 import { AppError } from "../../core/errors.js";
 import { extrairUltimos4CartaoSus, extrairUltimos4Cpf } from "../../lib/identificadores/pacienteUltimosDigitos.js";
 import { isUuid } from "../../lib/validation/uuid.js";
@@ -536,7 +544,7 @@ export function registerClinicalV1Routes(secured: Hono<{ Variables: AuthVariable
       throw new AppError("validation_error", "Informe ao menos um campo para atualização.", 400);
     }
 
-    const updated = await gestacoes.updateById(id, patch as any);
+    const updated = await gestacoes.updateById(id, patch as Prisma.GestacaoUpdateInput);
     return c.json(updated);
   });
 
@@ -841,7 +849,7 @@ export function registerClinicalV1Routes(secured: Hono<{ Variables: AuthVariable
     // clínicos existentes mesmo se o TS não enxergar todos (mantendo runtime correto).
     const cur = current as unknown as Record<string, unknown>;
 
-    const created = await prisma.$transaction(async (tx) => {
+    const created = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       // Apaga a "gravação" (histórico de stream) da consulta confirmada.
       await tx.consultaStreamEvento.deleteMany({ where: { consulta_id: id } });
 
@@ -942,7 +950,7 @@ export function registerClinicalV1Routes(secured: Hono<{ Variables: AuthVariable
       apresentacao_fetal: parseOptionalString(rec.apresentacao_fetal, 2000),
       queixa: parseOptionalString(rec.queixa, 4000),
       is_exantema: parseOptionalBool(rec.is_exantema),
-    } as Parameters<typeof consultas.create>[0]);
+    });
     return c.json(created, 201);
   });
 }
