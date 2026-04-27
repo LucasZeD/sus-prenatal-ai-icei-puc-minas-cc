@@ -1,4 +1,4 @@
-import type { PrismaClient, AboRh, Etnia, Escolaridade, EstadoCivil } from "../lib/prismaBarrel.js";
+import type { Prisma, PrismaClient, AboRh, Etnia, Escolaridade, EstadoCivil } from "../lib/prismaBarrel.js";
 import { AppError } from "../core/errors.js";
 import { hashCartaoSus, hashCpf, hmacSha256Hex } from "../lib/identificadores/pacienteIdsHash.js";
 import { getPacienteIdsPepperOrThrow } from "../config/envPacienteIds.js";
@@ -48,7 +48,7 @@ export async function cadastrarPacienteComHashesIds(
 ): Promise<PacienteAssepsisado> {
   const pepper = getPacienteIdsPepperOrThrow();
 
-  return prisma.$transaction(async (tx) => {
+  return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     if (cpfBruto) {
       const h = hashCpf(cpfBruto, pepper);
       const ex = await tx.pacienteIds.findUnique({ where: { cpf_hash: h } });

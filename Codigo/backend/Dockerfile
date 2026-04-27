@@ -6,7 +6,7 @@ COPY prisma.config.ts ./
 RUN npm ci
 
 FROM deps AS build
-COPY tsconfig.json ./
+COPY tsconfig.json tsconfig.seed.json ./
 COPY src ./src/
 COPY docker-entrypoint.sh ./
 # Apenas para `prisma generate` no build (URL real vem do Compose em runtime).
@@ -25,7 +25,10 @@ COPY --from=build --chown=nodejs:nodejs /app/prisma ./prisma
 COPY --from=build --chown=nodejs:nodejs /app/package.json ./
 COPY --from=build --chown=nodejs:nodejs /app/prisma.config.ts ./
 COPY --from=build --chown=nodejs:nodejs /app/docker-entrypoint.sh ./docker-entrypoint.sh
-RUN chmod +x docker-entrypoint.sh
+# Checkout no Windows pode gravar CRLF no .sh → o kernel acusa "no such file or directory" no shebang.
+RUN tr -d '\r' < docker-entrypoint.sh > docker-entrypoint.lf \
+  && mv docker-entrypoint.lf docker-entrypoint.sh \
+  && chmod +x docker-entrypoint.sh
 USER nodejs
 EXPOSE 3000
-ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "./docker-entrypoint.sh"]

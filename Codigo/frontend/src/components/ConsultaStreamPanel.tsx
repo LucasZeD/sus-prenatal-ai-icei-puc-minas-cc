@@ -333,7 +333,7 @@ export function ConsultaStreamPanel({
 
     const handle = openConsultationSocket(id, token, {
       onOpen: () => pushLog('socket open'),
-      onClose: (ev) => {
+      onClose: (ev: CloseEvent) => {
         pushLog(`socket close code=${ev.code}`)
         setStreamStatus((s) => (s === 'conectando' ? 'erro' : 'desconectado'))
         socketRef.current = null

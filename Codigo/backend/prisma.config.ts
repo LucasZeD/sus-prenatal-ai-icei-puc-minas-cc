@@ -19,7 +19,8 @@ export default defineConfig({
   schema: path.join(backendRoot, "prisma", "schema.prisma"),
   migrations: {
     path: path.join(backendRoot, "prisma", "migrations"),
-    seed: "tsx prisma/seed.ts",
+    /* `tsx` não existe na imagem Docker após `npm prune --omit=dev`; o build gera `dist/seed.js`. */
+    seed: "node dist/seed.js",
   },
   datasource: {
     url: env("DATABASE_URL"),

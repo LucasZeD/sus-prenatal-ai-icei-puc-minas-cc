@@ -5,8 +5,6 @@ import { getPrisma } from "./prisma.js";
 type ConsultaDelegate = ReturnType<typeof getPrisma>["consulta"];
 
 export type Consulta = NonNullable<Awaited<ReturnType<ConsultaDelegate["findUnique"]>>>;
-type ConsultaCreateArgs = Parameters<ConsultaDelegate["create"]>[0];
-type ConsultaCreateInput = ConsultaCreateArgs extends { data: infer D } ? D : never;
 
 export class ConsultaRepository {
   async findById(id: string): Promise<Consulta | null> {
@@ -54,7 +52,8 @@ export class ConsultaRepository {
     });
   }
 
-  async create(data: ConsultaCreateInput): Promise<Consulta> {
+  /** Usa forma *unchecked* para aceitar `gestacao_id` / `unidade_id` escalares vindos da API. */
+  async create(data: Prisma.ConsultaUncheckedCreateInput): Promise<Consulta> {
     const prisma = getPrisma();
     return prisma.consulta.create({ data });
   }
