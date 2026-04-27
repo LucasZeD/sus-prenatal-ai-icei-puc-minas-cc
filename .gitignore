@@ -90,3 +90,9 @@ main.pdf
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+
+# AI/STT
+*.wav
+*.mp3
+*.m4a
+ai/
