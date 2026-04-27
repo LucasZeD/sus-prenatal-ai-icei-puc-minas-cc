@@ -1,6 +1,6 @@
 # Especificação do Sistema
 
-Este documento define as especificações centrais do sistema de apoio ao pré-natal SUS com Inteligência Artificial, descrevendo as Histórias de Usuário, os Requisitos Funcionais e os Requisitos Não Funcionais.
+Este documento define as especificações centrais do sistema de apoio ao pré-natal SUS com Inteligência Artificial, descrevendo as Histórias de Usuário, os Requisitos Funcionais e os Requisitos Não Funcionais, observando padrões de implementação on-premise (Local LLM) e Clean Architecture.
 
 ## 1. Histórias de Usuário
 
@@ -16,9 +16,9 @@ Este documento define as especificações centrais do sistema de apoio ao pré-n
 | US08 | Prof. da Saúde | Eu quero visualizar todos os meus agendamentos em um calendário. | Permitir o acompanhamento do fluxo de consultas da gestante. |
 | US09 | Prof. da Saúde | Eu quero visualizar o perfil do paciente e toda sua caderneta com consultas no seu perfil. | Permitir o acompanhamento da linha de cuidado da gestante. |
 | US10 | Gestante | Eu quero receber lembretes periódicos enviados ativamente no meu WhatsApp agendando as semanas corretas da próxima consulta | Combater o alto índice de evasão nas idas aos postos ou esquecimentos das consultas críticas finais da gestação. |
-| US11 | Gestante | Eu quero receber, ao fim de cada atendimento, um lembrete do meu plano de cuidado (medicamentos/orientações do médico) resumido pelo WhatsApp | Aumentar drasticamente a aderência do tratamento no dia a dia sem depender de "decorebas" e letras inelegíveis. |
-| US12 | Gestante | Eu quero receber "pílulas de conhecimento" educativas, em linguagem clara gerada por NLP partindo do conteúdo maçante do SUS | Promover acesso à saúde empática, estimulando autocuidado preventivo com leitura simples, semanalmente coerente. |
-| US13 | Prod/Dev | Eu quero que a coleta de áudio para a NLP descarte dados de identificação (PII) sensíveis para a governança na camada Cloud | Cumprir rigor ético e mandatório de segurança do dado perante a LGPD protegendo os cenários clínicos da quebra de sigilo. |
+| US11 | Gestante | Eu quero receber, ao fim de cada atendimento, um lembrete do meu plano de cuidado (medicamentos/orientações do médico) resumido pelo WhatsApp  Aumentar drasticamente a aderência do tratamento no dia a dia sem depender de "decorebas" e letras inelegíveis. |
+| US12 | Gestante | Eu quero receber "pílulas de conhecimento" educativas, em linguagem clara gerada por NLP partindo do conteúdo maçante do SUS *(Módulo Plus)* | Promover acesso à saúde empática, estimulando autocuidado preventivo com leitura simples, semanalmente coerente. |
+| US13 | Prod/Dev | Eu quero que a coleta de dados passe por um intermediador de privacidade bloqueando dados de identificação (PII) sensíveis para a governança na camada local/Docker | Cumprir rigor ético e mandatório de segurança do dado perante a LGPD protegendo os cenários clínicos da quebra de sigilo via Model Context Protocol (MCP). |
 
 
 ## 2. Requisitos Funcionais (RF)
@@ -29,20 +29,21 @@ Os requisitos funcionais ditam as ações técnicas que o sistema deve realizar 
 | :--- | :--- | :--- |
 | RF01 | Calendário de Consultas | O sistema deve permitir que o profissional de saúde veja um calendário com suas consultas marcadas. |
 | RF02 | CRUD de Pacientes | O sistema deve permitir que o profissional de saúde cadastre, atualize, visualize e exclua pacientes, incluindo dados de identificação completos (Cartão SUS, NIS, Sisprenatal, endereço, raça, ocupação). |
-| RF03 | Agente Escriba (STT) | O WebApp deve capturar áudio do microfone e processar a conversão *Speech-to-Text* (por ex. via API Whisper) em tempo real. |
-| RF04 | Preenchimento Estruturado | O sistema deve injetar os resultados da transcrição (NLP/Generativa) mapeados diretamente nas variáveis e input-fields virtuais da caderneta, **sem persistir a transcrição bruta**. |
+| RF03 | Agente Escriba (STT) | O WebApp deve capturar áudio do microfone e processar a conversão *Speech-to-Text* (via motor offline **Faster-Whisper**) isolado da internet. |
+| RF04 | Preenchimento Estruturado | O sistema deve injetar os resultados da transcrição mapeados diretamente nas variáveis e input-fields virtuais da caderneta utilizando o Agente LLM local, **sem persistir a transcrição bruta**. |
 | RF05 | Consulta às Cartilhas (Chat RAG) | O sistema deve disponibilizar um *Chat* (LívIA) que recupere dados em bases vetoriais relativas aos Manuais do Ministério da Saúde. |
 | RF06 | Painel de Condutas da IA | O servidor deve processar os dados inseridos e retornar na interface "cards" de Sugestões / Condutas textuais (Ação/Reação). |
 | RF07 | Workflow "Human-in-the-Loop" | O sistema deve bloquear que uma sugestão entre no sistema sem que a Profissional de Saúde revise e confirme os dados extraídos, garantindo responsividade e ética na ferramenta. O status da consulta percorre o ciclo: `RASCUNHO → EM_ANDAMENTO → AGUARDANDO_CONFIRMACAO → CONFIRMADA`. |
 | RF08 | Alerta de Alto Risco | O frontend deve gerar Alertas Visuais de *Alto Risco* caso o Score Clínico processado estoure os limiares padronizados na Cartilha SUS. O campo `risco_calculado` na `Consulta` pode assumir `NORMAL`, `ALTO` ou `MUITO_ALTO`. |
 | RF09 | Procedimento de Alto Risco | O sistema deve sugerir o protocolo médico padrão para o quadro clínico detectado, de acordo com a Cartilha SUS. |
 | RF10 | Geração de Relatório Físico | O sistema deve renderizar o layout estrutural exato de uma página dupla e exportar como PDF para imprimir um "Clone da Ficha Física". |
-| RF11 | Agendador de M-Health | O back-end deve rodar uma tarefa CRON calculando as datas quinzenais/mensais de disparo no WhatsApp com a próxima consulta. |
-| RF12 | Resumo via Bot do WhatsApp | O sistema deve disparar as Condutas Salvas, processadas sintaticamente por IA, integrando API de WhatsApp (API da Meta ou provedor homologado). |
-| RF13 | Aulas Semanais (Pílulas Educativas) | O sistema deve rotear trechos dos conhecimentos técnicos do banco, reescrever e enviar via WhatsApp para a gestante de acordo com a `Idade Gestacional`. |
+| RF11 | Agendador de M-Health *(Módulo Plus)* | O back-end deve rodar uma tarefa CRON calculando as datas quinzenais/mensais de disparo no WhatsApp com a próxima consulta. |
+| RF12 | Resumo via Bot do Wpp *(Módulo Plus)* | O sistema deve disparar as Condutas Salvas, processadas sintaticamente por IA, integrando API de WhatsApp (API da Meta ou provedor homologado). |
+| RF13 | Aulas Semanais Educa *(Módulo Plus)* | O sistema deve rotear trechos dos conhecimentos técnicos do banco, reescrever e enviar via WhatsApp para a gestante de acordo com a `Idade Gestacional`. |
 | RF14 | Autenticação do Profissional | O sistema deve autenticar o profissional de saúde via `email` e `senha` (hash bcrypt) antes de permitir acesso a qualquer dado de paciente. Não há auto-cadastro: contas são criadas pelo administrador. |
 | RF15 | Status do Ciclo de Vida da Consulta | A consulta deve ter um ciclo de vida rastreado no banco: `RASCUNHO → EM_ANDAMENTO → AGUARDANDO_CONFIRMACAO → CONFIRMADA`. Somente consultas `CONFIRMADAS` geram registro definitivo no prontuário. |
 | RF16 | Cálculo de Risco Gestacional | O sistema deve calcular o nível de risco da paciente (`NORMAL`, `ALTO`, `MUITO_ALTO`) com base nos dados clínicos de cada consulta, seguindo os limiares definidos na Caderneta da Gestante SUS 8ª Edição. |
+| RF17 | Gestação ativa única | O sistema deve garantir que cada gestante (`Paciente`) possua **no máximo 1 gestação ativa** por vez. A gestação deve ser marcada como **concluída** automaticamente ao registrar **dados de nascimento** (desfecho) ou ao registrar **consultas de puerpério** (pós-parto). |
 
 ## 3. Requisitos Não Funcionais (RNF)
 
@@ -51,9 +52,9 @@ Os RNF representam as restrições arquiteturais e de qualidade de serviço exig
 | ID | Categoria | Descrição Técnica (Regras e Restrições) |
 | :--- | :--- | :--- |
 | RNF01 | Privacidade M-Health | Nenhuma informação hipercrítica de diagnóstico deve ser publicamente exposta em formato não criptografado e direto via WhatsApp sem validação de número/token pelo serviço. |
-| RNF02 | Desempenho (Escriba) | A requisição do *Speech-to-Text* para extração de preenchimento de campos virtuais não pode apresentar timeouts superiores a ~5 segundos para não causar perda temporal do profissional. |
-| RNF03 | Confiança/Rigor Médico | Módulo Anti-Alucinação: A IA generativa só pode recuperar conhecimento do repositório da Saúde Pública pré-salvo em contexto (RAG) em relação ao prompt e a temperatura de geração em inferência clínica não pode tender ao *criativo*. |
-| RNF04 | Segurança de Dados/LGPD (Anonymizer) | O backend deve aplicar guardrails antes de enviar qualquer texto ao modelo de IA: substituir `nome_real`, número do Cartão SUS e NIS por tokens anonimizados. A transcrição bruta do áudio **nunca deve ser persistida**. |
-| RNF05 | Acessibilidade Digital | As mensagens (Pílulas e Resumos via NLP) geradas na cloud deverão instruir na persona do System Prompts o uso de linguagem equivalente ao 1º grau formativo, garantindo assim completo entendimento no contexto SUS. |
-| RNF06 | Arquitetura (Escalabilidade) | O Worker CRON de disparos no WhatsApp (eventos longos em massa) rodarão numa arquitetura ou serviço desacoplado para não ferir ou onerar os recursos primários do frontend da sala de triagem dos postos de consulta. |
-| RNF07 | Segurança em Repouso (Dados SUS) | Identificadores sensíveis como Cartão SUS e NIS devem ser armazenados como hash (bcrypt/SHA-256) no banco de dados, nunca em texto plano. O `nome_real` é armazenado em texto, mas sua exposição é controlada exclusivamente pela camada de autorização da API. |
+| RNF02 | Desempenho (Escriba e VRAM) | A requisição do *Speech-to-Text* (Faster-Whisper) e *LLM* devm ocorrer tolerando tempos aceitáveis via streaming/WebSocket. Deve-se observar o overhead de alocação de memória do host Docker. |
+| RNF03 | Confiança/Rigor Médico | Módulo Anti-Alucinação: O Agente local (Ollama) só pode recuperar conhecimento do repositório da Saúde Pública (RAG) em relação ao prompt e a temperatura de geração em inferência clínica não pode tender ao *criativo*. |
+| RNF04 | Segurança de Dados/LGPD (Anonymizer) | O backend deve aplicar um Proxy via **Servidor MCP** antes de bater no Agente Ollama. A camada deve interceptar a string limando o `nome_real`, Cartão SUS e NIS por tokens anonimizadores. A transcrição bruta do áudio **nunca deve ser persistida**. |
+| RNF05 | Acessibilidade Digital | As mensagens (Pílulas e Resumos) geradas deverão instruir na persona do System Prompts o uso de linguagem equivalente ao 1º grau formativo, garantindo assim completo entendimento no contexto SUS. |
+| RNF06 | Arquitetura (Escalabilidade) | O Worker CRON de disparos no WhatsApp (eventos longos em massa) rodará numa arquitetura desacoplada na backend-nw para não onerar os recursos pesados de GPU/RAM dos contêineres do Ollama e Whisper. |
+| RNF07 | Segurança em Repouso (Dados SUS) | Identificadores sensíveis como Cartão SUS e NIS devem ser armazenados como hash (bcrypt/SHA-256) na `data-nw`, nunca em texto plano contínuo. Exposição de string real somente via autenticação na API FastAPI. |

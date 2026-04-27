@@ -1,0 +1,466 @@
+// Decisões vs DER.md (prioridade segurança / consistência clínica):
+// - `Gestacao.tipo_risco`: enum `RiscoGestacional` (no DER aparece como String) — evita texto livre fora do protocolo RF08.
+// - `Consulta.unidade_id`: obrigatório com FK para `unidade` (linhas legadas sem unidade recebem registro sentinela na migração).
+// - `Paciente`: campos adicionais persistidos; `cpf_ultimos4` / `cartao_sus_ultimos4` só para desambiguação (documento completo não persiste).
+//   Leitura pública deve passar por `PacienteRepository` (projeção assepsia).
+// - `PacienteIds`: hashes (HMAC+pepper fora do repositório); nunca persistir CPF/Cartão em claro.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum VacinaTipo {
+  ANTITETANICA
+  HEPATITE_B
+  INFLUENZA
+  VIRUS_SINCICIAL_RESPIRATORIO
+  TRIPLICE_VIRAL
+  FEBRE_AMARELA
+  OUTRAS
+}
+
+enum ExameTipo {
+  ABO_RH
+  GLICEMIA_JEJUM
+  TESTE_ORAL_TOLERANCIA_GLICOSE
+  SIFILIS
+  VDRL
+  HIV
+  HEPATITE_B
+  TOXOPLASMOSE
+  HEMOGLOBINA
+  URINA_EAS
+  URINA_CULTURA
+  COOMBS_INDIRETO
+  ELETROFORESE_HEMOGLOBINA
+  COOMBS
+  OUTROS
+}
+
+enum Etnia {
+  BRANCA
+  PRETA
+  PARDA
+  AMARELA
+  INDIGENA
+}
+
+enum Escolaridade {
+  ANALFABETO
+  FUNDAMENTAL_INCOMPLETO
+  FUNDAMENTAL_COMPLETO
+  MEDIO_INCOMPLETO
+  MEDIO_COMPLETO
+  SUPERIOR_INCOMPLETO
+  SUPERIOR_COMPLETO
+}
+
+enum EstadoCivil {
+  SOLTEIRA
+  CASADA
+  UNIAO_ESTAVEL
+  DIVORCIADA
+  VIUVA
+}
+
+/// Nível de risco obstétrico da gestação (substitui texto livre no DER por tipo seguro).
+enum RiscoGestacional {
+  HABITUAL
+  ALTO
+}
+
+/// Tipagem de ABO/Rh (DER `PACIENTE.abo_rh`).
+enum AboRh {
+  A_POS
+  A_NEG
+  B_POS
+  B_NEG
+  AB_POS
+  AB_NEG
+  O_POS
+  O_NEG
+}
+
+/// Ciclo de vida da consulta (human-in-the-loop — RF07).
+enum StatusConsulta {
+  RASCUNHO
+  EM_ANDAMENTO
+  AGUARDANDO_CONFIRMACAO
+  CONFIRMADA
+}
+
+/// Eventos persistidos do canal de streaming (transcrição commitada / insight IA).
+enum ConsultaStreamEventoTipo {
+  TRANSCRICAO_SANITIZADA
+  IA_INSIGHT_COMPLETO
+}
+
+/// Profissional autenticável (RF14). Contas criadas por administrador / seed — sem auto-cadastro na API.
+model Profissional {
+  id            String   @id @default(uuid()) @db.Uuid
+  unidade_id    String   @db.Uuid
+  email         String   @unique @db.VarChar(255)
+  senha_hash    String   @db.VarChar(255)
+  nome          String   @db.VarChar(120)
+  registro      String?  @db.VarChar(50)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  unidade Unidade @relation(fields: [unidade_id], references: [id], onDelete: Restrict)
+
+  @@map("profissional")
+}
+
+/// Perfil clínico-social **sem** identificadores fortes (hashes em `PacienteIds`, 1:1 opcional até o fluxo de cadastro gravar hashes).
+model Paciente {
+  id                   String    @id @default(uuid()) @db.Uuid
+  nome_mascarado       String    @db.VarChar(50)
+  nome_social          String?   @db.VarChar(50)
+  /// Últimos 4 dígitos do CPF (somente dígitos informados no cadastro; documento completo não é persistido).
+  cpf_ultimos4         String?   @db.VarChar(4)
+  /// Últimos 4 dígitos do Cartão SUS (documento completo não é persistido).
+  cartao_sus_ultimos4  String?   @db.VarChar(4)
+  data_cadastro        DateTime  @default(now())
+  data_nascimento      DateTime? @db.Date
+  /// Idade em anos (derivada de `data_nascimento` no PATCH).
+  /// Nota: pode ficar desatualizada; recalculada quando `data_nascimento` é alterada.
+  idade                Int?
+  etnia                Etnia?
+  escolaridade         Escolaridade?
+  estado_civil         EstadoCivil?
+  ocupacao             String?   @db.VarChar(50)
+  abo_rh               AboRh?
+  telefone             String?   @db.VarChar(40)
+  email                String?   @db.VarChar(255)
+  localizacao          String?   @db.VarChar(120)
+  altura               Float?
+  peso_pre_gestacional Float?
+  is_particip_atvd_educativa Boolean @default(false)
+
+  parceiro Parceiro?
+  gestacoes Gestacao[]
+  vacinas   Vacina[]
+  exames    Exame[]
+  ids       PacienteIds?
+
+  @@map("paciente")
+}
+
+/// Dados do parceiro (1:1 com paciente) + marcadores rápidos (DER `PARCEIRO`).
+model Parceiro {
+  paciente_id String @id @db.Uuid
+  nome        String @db.VarChar(120)
+  vdrl        String? @db.VarChar(50)
+  hiv         String? @db.VarChar(50)
+
+  paciente Paciente @relation(fields: [paciente_id], references: [id], onDelete: Cascade)
+
+  @@map("parceiro")
+}
+
+/// Estabelecimento de saúde (referência mínima; CNES opcional até integração com cadastro nacional).
+model Unidade {
+  id        String     @id @default(uuid()) @db.Uuid
+  nome      String     @db.VarChar(200)
+  cnes      String?    @unique @db.VarChar(15)
+  endereco  String?    @db.VarChar(255)
+  telefone  String?    @db.VarChar(40)
+  createdAt DateTime   @default(now()) @map("created_at")
+
+  consultas Consulta[]
+  desfechos DesfechoGestacao[]
+  profissionais Profissional[]
+
+  @@map("unidade")
+}
+
+/// Identificadores fortes apenas como hash (LGPD / DER `PACIENTE_IDS`).
+model PacienteIds {
+  id              String   @id @default(uuid()) @db.Uuid
+  paciente_id     String   @unique @db.Uuid
+  cartao_sus_hash String   @unique @db.VarChar(128)
+  cpf_hash        String   @unique @db.VarChar(128)
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  paciente Paciente @relation(fields: [paciente_id], references: [id], onDelete: Cascade)
+
+  @@map("paciente_ids")
+}
+
+/// Gestação por paciente: CPF/Cartão (hash) ficam em `paciente_ids` ligados ao paciente, não nesta tabela.
+model Gestacao {
+  id                       String             @id @default(uuid()) @db.Uuid
+  paciente_id              String             @db.Uuid
+  dum                      DateTime?          @db.Date
+  dpp                      DateTime?          @db.Date
+  dpp_eco                  DateTime?          @db.Date
+  ig_inicial               Int?
+  tipo_risco               RiscoGestacional   @default(HABITUAL)
+  coombs                   String?
+  tipo_gravidez            String?
+  idade_gestac_confirmada  Int?
+  is_planejada             Boolean            @default(false)
+  is_visita_maternidade    Boolean            @default(false)
+  /// Controle de ciclo de vida (regra: só 1 gestação ativa por paciente).
+  is_ativa                 Boolean            @default(true)
+  is_colocar_diu           Boolean            @default(false)
+  is_did_consulta_odontologica Boolean         @default(false)
+  is_diabetes_gestacional  Boolean            @default(false)
+  is_infeccao_urinaria     Boolean            @default(false)
+  is_infertilidade         Boolean            @default(false)
+  is_dificuldade_alimentar  Boolean            @default(false)
+  is_cardiopatia           Boolean            @default(false)
+  is_tromboembolismo       Boolean            @default(false)
+  is_hipertensao_arterial  Boolean            @default(false)
+  is_cirurgia_elvica_uterina Boolean            @default(false)
+  is_cirugia               Boolean            @default(false)
+  tratamento_sifilis_dose_1 DateTime?          @db.Date
+  tratamento_sifilis_dose_2 DateTime?          @db.Date
+  tratamento_sifilis_dose_3 DateTime?          @db.Date
+  suplementacao_ferro      Boolean            @default(false)
+  suplementacao_acido_folico Boolean           @default(false)
+  concluida_em             DateTime?          @db.Timestamp(3)
+
+  paciente  Paciente   @relation(fields: [paciente_id], references: [id], onDelete: Cascade)
+  consultas Consulta[]
+  antecedentes      Antecedentes?
+  avaliacao_odonto  AvaliacaoOdonto?
+  plano_parto       PlanoParto?
+  usgs              ExameImagemUsg[]
+  desfecho          DesfechoGestacao?
+  consultas_pos_parto ConsultaPosParto[]
+
+  @@index([paciente_id])
+  @@map("gestacao")
+}
+
+/// Antecedentes obstétricos e comorbidades (DER `ANTECEDENTES`) — 1:1 com gestação.
+model Antecedentes {
+  gestacao_id                String  @id @db.Uuid
+  n_gestas_anteriores        Int?
+  n_partos                   Int?
+  n_abortos                  Int?
+  n_nascidos_vivos           Int?
+  n_vivem                    Int?
+  n_mortos_primeira_semana   Int?
+  n_mortos_apos_primeira_semana Int?
+  n_nascidos_mortos          Int?
+  n_cesarea                  Int?
+  n_parto_normal             Int?
+  n_parto_prematuro          Int?
+  n_bebe_menos_dois_kilos_e_meio Int?
+  n_bebe_mais_quatro_kilos_e_meio Int?
+  is_gesta_ectopica          Boolean @default(false)
+  is_gesta_molar             Boolean @default(false)
+  is_hipertensao_familiar    Boolean @default(false)
+  is_gravidez_gemelar_familiar Boolean @default(false)
+  is_diabetes_familiar       Boolean @default(false)
+  is_fumo                    Boolean @default(false)
+  is_alcool                  Boolean @default(false)
+  is_drogas                  Boolean @default(false)
+  is_cardiopatia             Boolean @default(false)
+  is_tromboembolismo         Boolean @default(false)
+  is_infertilidade           Boolean @default(false)
+  is_isoimunizacao_rh        Boolean @default(false)
+  is_cirurgia_pelvica_uterina Boolean @default(false)
+  is_final_gestacao_anterior_1_ano Boolean @default(false)
+  is_sifilis                 Boolean @default(false)
+
+  gestacao Gestacao @relation(fields: [gestacao_id], references: [id], onDelete: Cascade)
+
+  @@map("antecedentes")
+}
+
+/// Registro de vacinas (DER `VACINA`) — N:1 para paciente.
+model Vacina {
+  id            String   @id @default(uuid()) @db.Uuid
+  paciente_id   String   @db.Uuid
+  tipo          VacinaTipo
+  data          DateTime? @db.Date
+  data_aprazada DateTime? @db.Date
+
+  paciente Paciente @relation(fields: [paciente_id], references: [id], onDelete: Cascade)
+
+  @@index([paciente_id])
+  @@map("vacina")
+}
+
+/// Exames laboratoriais com resultado criptografado (DER `EXAME`) — N:1 para paciente.
+model Exame {
+  id                     String   @id @default(uuid()) @db.Uuid
+  paciente_id            String   @db.Uuid
+  tipo                   ExameTipo
+  resultado_criptografado String? @db.Text
+  trimestre              Int?
+  valor                  String?  @db.Text
+  is_alterado            Boolean  @default(false)
+  data_coleta            DateTime? @db.Date
+  categoria_sensibilidade String? @db.VarChar(120)
+  coombs                 String? @db.VarChar(50)
+
+  paciente Paciente @relation(fields: [paciente_id], references: [id], onDelete: Cascade)
+
+  @@index([paciente_id])
+  @@map("exame")
+}
+
+/// USG e exames de imagem (DER `EXAME_IMAGEM_USG`) — N:1 para gestação.
+model ExameImagemUsg {
+  id                        String  @id @default(uuid()) @db.Uuid
+  gestacao_id               String  @db.Uuid
+  data_exame                DateTime? @db.Date
+  ig_dum                    String?   @db.VarChar(50)
+  ig_usg                    String?   @db.VarChar(50)
+  peso_fetal_estimado       Float?
+  localizacao_placenta      String? @db.VarChar(120)
+  idade_gestacional_usg     Int?
+  is_liquido_amniotico_normal Boolean @default(true)
+  outros                    String? @db.Text
+
+  gestacao Gestacao @relation(fields: [gestacao_id], references: [id], onDelete: Cascade)
+
+  @@index([gestacao_id])
+  @@map("exame_imagem_usg")
+}
+
+/// Avaliação odontológica (DER `AVALIACAO_ODONTO`) — 1:1 com gestação.
+model AvaliacaoOdonto {
+  gestacao_id            String  @id @db.Uuid
+  anotacoes              String? @db.Text
+  is_alta                Boolean @default(false)
+  is_sangramento_gengival Boolean @default(false)
+  is_carie_detectada     Boolean @default(false)
+
+  gestacao Gestacao @relation(fields: [gestacao_id], references: [id], onDelete: Cascade)
+
+  @@map("avaliacao_odonto")
+}
+
+/// Plano de parto (DER `PLANO_PARTO`) — 1:1 com gestação.
+model PlanoParto {
+  gestacao_id         String  @id @db.Uuid
+  acompanhante_nome   String? @db.VarChar(120)
+  posicao_parto_pref  String? @db.VarChar(80)
+  anestesia_alivio_dor String? @db.VarChar(80)
+  is_deseja_doula     Boolean @default(false)
+
+  gestacao Gestacao @relation(fields: [gestacao_id], references: [id], onDelete: Cascade)
+
+  @@map("plano_parto")
+}
+
+model Consulta {
+  id                            String           @id @default(uuid()) @db.Uuid
+  gestacao_id                   String           @db.Uuid
+  unidade_id                    String           @db.Uuid
+  data                          DateTime         @db.Timestamp(3)
+  idade_gestacional             Int?
+  peso                          Float?
+  pa_sistolica                  Float?
+  pa_diastolica                 Float?
+  au                            Float?
+  bfc                           Float?
+  is_edema                      Boolean          @default(false)
+  mov_fetal                     String?
+  apresentacao_fetal            String?
+  queixa                        String?
+  conduta                       String?          @db.Text
+  is_exantema                   Boolean          @default(false)
+  /// Confirmação explícita da profissional (human-in-the-loop).
+  validacao_medica              Boolean          @default(false)
+  status                        StatusConsulta @default(RASCUNHO)
+
+  gestacao Gestacao @relation(fields: [gestacao_id], references: [id], onDelete: Cascade)
+  unidade  Unidade  @relation(fields: [unidade_id], references: [id], onDelete: Restrict)
+
+  stream_eventos ConsultaStreamEvento[]
+  ia            ConsultaIa?
+  logs          LogEvento[]
+
+  @@index([gestacao_id])
+  @@index([unidade_id])
+  @@map("consulta")
+}
+
+/// Saída da IA e metadata (DER `CONSULTA_IA`) — 1:1 com consulta.
+model ConsultaIa {
+  consulta_id            String  @id @db.Uuid
+  transcricao_efemera_id String? @db.VarChar(200)
+  sugestao_conduta       String? @db.Text
+  risco_calculado        String? @db.VarChar(80)
+  modelo_versao          String? @db.VarChar(80)
+  justificativa_risco    String? @db.Text
+  is_sugestao_aceita     Boolean @default(false)
+
+  consulta Consulta @relation(fields: [consulta_id], references: [id], onDelete: Cascade)
+
+  @@map("consulta_ia")
+}
+
+/// Auditoria de mudanças (DER `LOGS`) — N:1 com consulta.
+model LogEvento {
+  id            String   @id @default(uuid()) @db.Uuid
+  consulta_id   String   @db.Uuid
+  tipo_evento   String   @db.VarChar(80)
+  valor_anterior String? @db.Text
+  valor_novo     String? @db.Text
+  timestamp     DateTime @default(now()) @db.Timestamp(3)
+
+  consulta Consulta @relation(fields: [consulta_id], references: [id], onDelete: Cascade)
+
+  @@index([consulta_id])
+  @@map("logs")
+}
+
+/// Desfecho da gestação (DER `DESFECHO_GESTACAO`) — 1:1 com gestação.
+model DesfechoGestacao {
+  id                 String  @id @default(uuid()) @db.Uuid
+  gestacao_id        String  @unique @db.Uuid
+  unidade_id         String  @db.Uuid
+  tipo_parto         String? @db.VarChar(80)
+  peso_nascimento    Float?
+  sexo               String? @db.VarChar(20)
+  grau_laceracao     String? @db.VarChar(80)
+  apgar_1_minuto     Int?
+  apgar_5_minuto     Int?
+  is_indicacao_cesarea Boolean @default(false)
+  is_reanimacao      Boolean @default(false)
+  is_laceracao       Boolean @default(false)
+
+  gestacao Gestacao @relation(fields: [gestacao_id], references: [id], onDelete: Cascade)
+  unidade  Unidade  @relation(fields: [unidade_id], references: [id], onDelete: Restrict)
+
+  @@index([unidade_id])
+  @@map("desfecho_gestacao")
+}
+
+/// Consulta de puerpério (DER `CONSULTA_POS_PARTO`) — N:1 com gestação.
+model ConsultaPosParto {
+  id                   String  @id @default(uuid()) @db.Uuid
+  gestacao_id          String  @db.Uuid
+  data                 DateTime? @db.Date
+  avaliacao_amamentacao String? @db.Text
+  involucao_uterina    String? @db.Text
+  metodo_contraceptivo String? @db.Text
+
+  gestacao Gestacao @relation(fields: [gestacao_id], references: [id], onDelete: Cascade)
+
+  @@index([gestacao_id])
+  @@map("consulta_pos_parto")
+}
+
+model ConsultaStreamEvento {
+  id           String                   @id @default(uuid()) @db.Uuid
+  consulta_id  String                   @db.Uuid
+  tipo         ConsultaStreamEventoTipo
+  payload      String                   @db.Text
+  createdAt    DateTime                 @default(now()) @map("created_at")
+
+  consulta Consulta @relation(fields: [consulta_id], references: [id], onDelete: Cascade)
+
+  @@index([consulta_id])
+  @@map("consulta_stream_evento")
+}

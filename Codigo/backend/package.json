@@ -1,0 +1,42 @@
+{
+  "name": "prenatal-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.seed.json",
+    "start": "node dist/index.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
+    "db:seed": "tsc -p tsconfig.seed.json && prisma db seed",
+    "test": "prisma generate && vitest run",
+    "test:unit": "vitest run test/pacienteIdsHash.test.ts test/consultaPatchService.test.ts",
+    "test:integration": "prisma generate && vitest run test/backend.integration.test.ts test/ws.integration.test.ts",
+    "test:watch": "prisma generate && vitest",
+    "test:types": "tsc -p tsconfig.test.json --noEmit"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.14.2",
+    "@hono/node-ws": "^1.3.0",
+    "@hono/swagger-ui": "^0.6.1",
+    "@prisma/adapter-pg": "^7.7.0",
+    "@prisma/client": "^7.7.0",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^16.5.0",
+    "hono": "^4.7.5",
+    "pg": "^8.20.0",
+    "prisma": "^7.7.0"
+  },
+  "devDependencies": {
+    "@testcontainers/postgresql": "^11.14.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.14.1",
+    "@types/pg": "^8.20.0",
+    "@types/ws": "^8.18.1",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3",
+    "vitest": "^4.1.4"
+  }
+}
