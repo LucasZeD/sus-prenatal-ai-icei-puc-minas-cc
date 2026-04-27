@@ -1,0 +1,323 @@
+[INFO] 7 diretórios CUDA injetados no sistema.
+Carregando large-v3 na GPU...
+--- Worker Ativo: | GPU CUDA | float16 ---
+Monitorando... (Pressione Ctrl+C para encerrar)
+[0.3s] É o diálogo de um gato.
+[0.4s] Um garçom...
+[0.0s] Com o freguês.
+[0.4s] Eu perdi a espalha.
+[0.2s] fala tudo com a letra F.
+[0.0s] pra F.
+[0.8s] Então, é isso aí.
+[0.0s] ele chega e o garçom fala, que prazer
+[0.0s] Que prazer tê-lo de volta.
+[0.4s] no meu restaurante.
+[0.0s] Agora, a gente fala fora a figura.
+[0.0s] a figura.
+[0.1s] Não está me reconhecendo?
+[0.0s] É de fisionomia familiar.
+[0.0s] família familiar.
+[0.0s] Eu sou o garçom Fernando Atenas.
+[0.0s] A Fernanda atendeu o senhor há uns tempos atrás.
+[0.0s] Tem uns tempos atrás aqui...
+[0.5s] É que agora eu mordei.
+[0.3s] Eu sou o senhor dele, me chamo de Fernandão.
+[0.0s] Fernandão, cabelo também, cara.
+[0.0s] também caiu.
+[0.0s] Não é fácil, ficou forte.
+[0.0s] Floresta foi.
+[0.2s] Essa foi, ficaram uns fiozinhos.
+[0.0s] Os fiozinhos fininhos e fracos...
+[0.1s] fazendo figuração no foro.
+[0.0s] Só um furo.
+[0.7s] Eu não sei como está.
+[0.0s] Como está? Forte, firme?
+[0.0s] firme, feliz e faminto.
+[0.0s] Tinha uma mesa...
+[0.0s] A mesa vazia lá fora.
+[0.4s] Agora é frio, eu fico esfumando.
+[0.5s] fazer uma fumaceira.
+[0.0s] fumaça na porta.
+[0.0s] Tico na frente e é fresquinho.
+[0.0s] é o rei dos 5 mil anos.
+[0.1s] Seu Armado, seu...
+[0.8s] Esqueci.
+[0.1s] Esqueci o seu nome.
+[0.2s] Francisco Freire Fernandes.
+[0.0s] Freire Fernandes, Ferraz Fernandes.
+[0.0s] Fernando Figueira, furtado.
+[0.0s] Furtado Franco Ferreira
+[0.8s] E aí
+[0.0s] Falcão, fascismo de falar.
+[0.0s] de falar e fácil de fixar.
+[0.0s] de fixar.
+[1.0s] E aí
+[0.5s] que vai formar igual a...
+[0.0s] Vê qual é o prato favorito.
+[1.1s] Por favor.
+[0.1s] favoritos.
+[0.0s] Ele é de franga francesa.
+[0.0s] Complicação de Fubá, Farol...
+[0.0s] Ova, farofa, fritas, feijão.
+[0.0s] Já enfatiou as linhas de fio.
+[0.8s] O que está acontecendo?
+[0.8s] Fica aqui nisso.
+[0.6s] A roquinha.
+[0.0s] E para beber cinza.
+[0.0s] Fiz um fundo, fiz uma pergunta.
+[0.0s] Fiz uma fermentada e falei, o que eu vou fazer?
+[0.0s] Por isso, o que eu fazia? Eu não pulava.
+[0.3s] Garçom de serviço.
+[0.0s] serviu a cerveja e continuou o papo.
+[0.0s] Continua o papo. De sério, Joaquim?
+[0.0s] aqui em Frutal, senhor Francisco.
+[0.1s] Fornando feijão nos filhos.
+[0.0s] E de braço gessado.
+[0.0s] O que foi o acidente?
+[0.0s] Presidente de carro, foi.
+[0.4s] Friburgo
+[0.7s] Como foi?
+[0.9s] Obrigado.
+[0.0s] No Fiat, Fedorento, Fuleiro...
+[0.0s] fuleiro ferroviário.
+[0.0s] Quase a três por cento.
+[0.7s] Pai, eu...
+[0.0s] Acalhou o freio e o Fiduma fez...
+[0.0s] uma vez de final no Fusca.
+[0.0s] Fusca, fusca, foi fechando, fiquei...
+[0.2s] Fiquei fora da porta por aí.
+[0.0s] porém o farol fechado.
+[0.0s] Fui em prédio.
+[0.0s] Obrigado.
+[0.3s] Uma porrada de...
+[0.0s] nada violento, infelizmente.
+[0.0s] Infelizmente foi fraco.
+[0.1s] Obrigado.
+[0.0s] Em 2 de fevereiro a opressão foi fria.
+[0.0s] Então, foi frio.
+[0.0s] Fiz um experimentozinho.
+[0.0s] Filhos, feria a fronte, a face.
+[0.0s] fácil para atorir a falange.
+[0.0s] Tá cheio dessa...
+[0.0s] Achei de assinatura no gesto.
+[0.0s] nos restos, quem são? Filhos
+[0.0s] Filhos!
+[0.4s] Quantos filhos...
+[0.0s] Fique de sorte aí.
+[0.8s] Fala.
+[0.0s] Pai.
+[1.0s] Atenção!
+[0.1s] E o Flávio Fernando Fátima.
+[0.0s] Fátima e Fabiana
+[0.4s] Qual a Fabiana, sua filha?
+[0.0s] A sua filha mais velha estava estudando
+[0.0s] Estava estudando, já se informou?
+[0.0s] Foda-se, papai.
+[0.0s] Fez faculdade em Friburgo
+[0.0s] Obrigado.
+[0.0s] Eu fico dispensa para a matura.
+[0.0s] Uma formatura fantástica.
+[0.8s] cofres.
+[0.9s] Eu não mereço.
+[0.1s] A senhora até ajudava o senhor.
+[0.0s] O que ajudava o senhor na sua indústria?
+[0.1s] O que é isso? Você não tem uma indústria?
+[0.0s] que é uma indústria, a fabriquinha.
+[0.0s] uma briquinha. O que era mesmo?
+[0.0s] que era a minha condição.
+[0.0s] O que o senhor vai produzir?
+[0.0s] produzir.
+[0.1s] Foda-lhe, fulano, ferrete, ferrado.
+[0.0s] O que é isso?
+[0.1s] Fechadura, faca, folha
+[0.0s] Faca, foice, facão.
+[0.1s] Se der, eu vou fugir o formato
+[0.0s] E o formato e ele...
+[0.1s] Obrigado.
+[0.0s] Fabricado a ferramenta...
+[0.0s] O tratamento foi fundido em ferro forjado.
+[0.1s] forjado.
+[0.0s] Ainda tem a paga? Fechei.
+[0.0s] Fechei.
+[1.0s] Tchau, dica.
+[0.0s] Faltou financiamento.
+[0.0s] Financiamento, fator financeiro.
+[0.0s] financeiro foi fundamental.
+[0.0s] Fora o que está...
+[0.0s] Os Estados Federais fazendo fiscalização.
+[0.2s] fiscalização feroz.
+[0.7s] Fornecedores.
+[0.0s] Forçadores falhados, funcionários...
+[0.0s] Comissionados de Califérias Forçadas.
+[0.0s] é esforçado.
+[0.2s] Fragmento fraquíssimo, Ferro.
+[0.3s] Ficou faltando, fui ao...
+[0.4s] Falei isso, eu fui pelo.
+[0.2s] Foi feio o fracasso.
+[0.0s] fui forçada a fechar a firma.
+[0.0s] Tchau, tchau.
+[0.5s] É, e agora o seu trabalho?
+[0.0s] Você trabalha em quê?
+[0.1s] Faço feiras e festas
+[0.9s] para o YouTube.
+[0.8s] Obrigado.
+[0.0s] Obrigado.
+[0.0s] Foi a Fortaleza.
+[0.9s] Fiz a festa.
+[0.1s] A festa das felinas foi formidável.
+[0.1s] Foi a Florianópolis.
+[0.0s] Eu fui a Florianópolis, fiz o...
+[0.0s] Fiz o festival do filho
+[0.0s] Eu sigo em Florianópolis.
+[0.5s] Pronto, pode ir.
+[0.0s] fazer a famosa feira frontal.
+[0.0s] frontal, finalmente foi fiscalizado.
+[0.0s] O Facebook está nas firmas franqueadas.
+[0.0s] franqueados na feira filantrópica.
+[0.0s] Filantrópica de Formenta...
+[0.0s] a condição de frutal.
+[0.2s] Estou orando aqui em Frutal.
+[0.0s] a fim de facilitar a Fabiana.
+[0.0s] Obrigado por assistir.
+[0.0s] Ele tá o que agora? Não entendi.
+[0.7s] Fica focado
+[0.0s] Focado, Fernandão, forte.
+[0.0s] Força para o fato fixa
+[0.0s] fixa, que eu falei.
+[0.1s] Faculdade de Filosofia
+[0.0s] filosofia, espaciando a pazia.
+[0.0s] Fazia, fica o Friburgo
+[0.2s] Pode ter aquele time fazendo...
+[0.0s] Fazendo sucesso o campeonato carioca
+[0.0s] Friburguense
+[0.0s] Passa para ele.
+[0.0s] Eu sei, mas você volta lá.
+[0.0s] Igual o Flamengo.
+[0.0s] Quanto a nada, ficou fervoroso.
+[1.0s] Malte.
+[0.0s] malte, frágil
+[0.1s] O frasão é final no fone.
+[0.0s] Não, não vale, na finalíssima época...
+[0.0s] Isso me empolga.
+[0.0s] Está feito furacão, faz apelido.
+[0.0s] faz a felicidade da família.
+[0.0s] A família Flamenguista fazendo...
+[0.0s] está fazendo para o final.
+[0.0s] E ganha o título.
+[0.0s] Tinto fácil
+[0.3s] Para nem faturar...
+[0.0s] aturas faixas, fluminenses e preguiças.
+[0.0s] nesse preguiça, fazendo futebol.
+[0.0s] Futebolzinho, fajuto, feio
+[0.0s] junto feio e fraquinho, fica...
+[0.0s] Fica fora facilmente
+[0.0s] ao menos fazendo figuração.
+[0.0s] Ação, Flamengo, Flamengo.
+[0.0s] Não, Flamengo, a gente faz a festa.
+[0.2s] festa final.
+[0.2s] numa festa aqui semana passada.
+[0.0s] semana passada, o senhor foi?
+[1.0s] Fantasia.
+[0.0s] Fiquei fascinado.
+[0.4s] Sim, minha espantada.
+[0.5s] Acho que é o Fernando.
+[0.0s] Eu andava, eu fiquei flertando.
+[0.4s] Mas você não é casado?
+[0.4s] Fui
+[0.0s] Filomena
+[0.8s] Faleceu.
+[0.0s] Agradeceu.
+[0.5s] Fique Fundo!
+[0.0s] Fui.
+[0.1s] París.
+[0.1s] Sim, quebrado.
+[0.4s] Fumava muito pra mim.
+[0.1s] muito, para mim, geradamente.
+[0.3s] frequentemente.
+[0.3s] Falou, falou.
+[0.0s] Falou fumaça, tá ficando feio.
+[0.3s] Eu era filósofo em casa.
+[0.8s] Palavra filósofa.
+[0.0s] Filho nosso, fumo aqui sobre a parede.
+[0.0s] Tchau, tchau.
+[0.5s] Porque lá não fazia apelo.
+[0.1s] Eu quero que eu falado pro mato
+[0.3s] Eu tomava, tento fornalhar.
+[0.1s] Fornalha, pernalha, porra, é?
+[0.0s] um prazer.
+[0.1s] E uma coisa ficando fina para a gente.
+[0.0s] Fina fragilizada, fininha.
+[0.3s] E é frequentemente feito...
+[0.4s] O brilho foi ficando em França.
+[0.0s] em Frangalho foi fatal.
+[0.0s] Fatal, faleceu.
+[0.1s] Meus presos, mas não sabe.
+[0.0s] mas eu não sabia. Fiz o funerário.
+[0.0s] O fone era aparecido e fechava.
+[0.0s] A vida fechada do familiar. Por favor.
+[0.1s] Fatídico, fatalidade.
+[0.1s] Fico falando na filózinha.
+[0.0s] Eu fico na força.
+[0.0s] Nossa, perna.
+[0.1s] O senhor perdeu uma grande esposa.
+[0.0s] dispôs a nadar lá.
+[0.5s] Foi, foi
+[0.5s] Acho que é forte, fio.
+[0.0s] Filho, que alfissão
+[0.7s] O que é isso?
+[0.1s] de quebra-finada, Fernando.
+[0.0s] não pode faltar para vestir.
+[0.0s] para descer.
+[0.5s] Eu não sou uma tradição.
+[0.1s] para trazer suplementos.
+[0.0s] Tem um sorvete, doces...
+[0.0s] Frutas frescas.
+[0.0s] Frambuesa, frambada...
+[0.0s] Flambado em Frangérico.
+[0.1s] patiníssimo.
+[0.4s] Minha sobremesa, o garçom.
+[0.0s] Agora trazer o cafezinho.
+[0.0s] Um cafezinho da hora. Falou, Fernando.
+[0.9s] O garçom que tá...
+[0.0s] Que tal?
+[0.8s] Formidável.
+[0.2s] Fresquinho, forte e perfeito.
+[0.0s] de fermento.
+[0.0s] com o famoso fraque de...
+[0.0s] Fim, não sei.
+[0.0s] foi apedorento, feito em filtro
+[0.2s] Tem filtro furado, formiga no fundo.
+[0.0s] No fundo, fazendo festa.
+[0.0s] O Festa faz preguiça de capuz.
+[0.0s] Este capulhoso.
+[0.0s] Só que assim eu pensei, ó.
+[0.2s] O senhor farra tudo com...
+[0.3s] com F impressionante.
+[0.0s] como profissionais, como facilidade.
+[0.0s] Fato facilidade.
+[0.0s] facilidade.
+[0.0s] Falar em FPX, eu falo...
+[0.0s] Falo fluentemente
+[0.0s] e fazer força, forma de falar.
+[0.1s] Frases fluem facilmente.
+[0.1s] Somente o que foram de fato.
+[0.3s] Então, posso fazer...
+[0.0s] Não posso fazer um desafio para o senhor?
+[0.0s] O show vai terminar.
+[0.7s] Só estou lhe falando.
+[0.0s] Se o senhor falar mais 15...
+[0.0s] 15 palavras.
+[0.3s] Como é que relaciona?
+[0.0s] relacionado com o almoço.
+[0.2s] Não precisa pagar conta
+[0.6s] Obrigado.
+[0.0s] franga francesa.
+[0.0s] Obrigado, empatias finas.
+[0.0s] Os fritados na frigideira...
+[0.3s] Ficando fiado.
+[0.1s] Obrigado, fico feliz de...
+[0.0s] Obrigado.
+[0.1s] Se derrubam o contexto.
+[0.0s] Eu contei, só deu 14 agora.
+[0.7s] Foda-se.
+[0.0s] Foda-se e foi-se.

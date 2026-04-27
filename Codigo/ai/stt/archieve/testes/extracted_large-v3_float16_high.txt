@@ -1,0 +1,172 @@
+[INFO] 5 diretórios CUDA injetados no sistema.
+Carregando large-v3 na GPU...
+--- Worker Ativo: | GPU CUDA | float16 ---
+Monitorando... (Ctrl+C para sair)
+[0.9s] Teste, um, dois, três, teste, teste.
+[0.0s] Teste, teste, 1, 2, 3, teste...
+[0.0s] Teste 1, 2, 3.
+[0.0s] Teste, um, dois, três, teste.
+[0.8s] Teste, um, dois, três, teste.
+[0.7s] Teste...
+[1.7s] Teste...
+[1.1s] Teste 1, 2, 3.
+[1.0s] Como é que é a história do monólogo do F?
+[1.4s] É o diálogo de um garçom.
+[0.0s] E o freguês fala tudo com a letra F.
+[0.0s] Tudo com a letra F. Tudo, tudo.
+[2.3s] Então ele chega e o garçom fala assim, que prazer.
+[0.0s] O garçom fala, que prazer tê-lo de volta no meu restaurante. Ele fala, fala figura.
+[0.0s] Fala, fala, figura! Não tá me reconhecendo? É de fisionomia familiar.
+[0.0s] Eu sou o garçom Fernando, atendi o senhor há uns tempos atrás.
+[0.0s] O que eu disse aos senhores há uns tempos atrás aqui é que agora eu engordei, me chamam de Fernandão.
+[0.0s] em português brasileiro com uso intensivo de aliteração na letra F.
+[0.0s] Ficou forte, fofão. Floresta foi, ficaram uns fiozinhos, fininho e fraco fazendo...
+[0.0s] Ninguém fraco fazendo figuração no forro.
+[3.1s] E o senhor como está?
+[0.1s] O senhor como está? Forte, firme, feliz e faminto.
+[3.1s] Tem uma mesa vazia.
+[0.0s] Tem uma mesa vazia lá fora. Lá fora é frio, eu fico fumando, fazendo uma fumaceira.
+[0.0s] Legenda Adriana Zanotto
+[0.4s] Sra. Armada, esqueci o seu nome.
+[0.6s] Francisco Freire Fernão, Ferraz Fernandes Figueira, Furtado Franco.
+[0.0s] Furtado Franco Ferreira, de Figueiredo Falcão, Facínimo de Valar.
+[0.0s] Assínimo de falar e fácil de fixar.
+[0.1s] Já escolheu o que vai comer, qual é o prato? O favorito. Como é o favorito?
+[0.3s] O meu favorito, filé de frango francesa com fricassê de fubá, farofa.
+[0.0s] F.
+[0.0s] Legenda por Sônia Ruberti
+[1.1s] E para beber, fiz um fundo friso e uma fermentada.
+[0.0s] Fiz uma fermentada fresca. O que eu fazia no pombasco? Garçom servia a cerveja.
+[0.0s] Então, serviu a cerveja e continuou o papo. De férias aqui em Frutal, seu Francisco?
+[0.0s] F. está tornando o feijão dos filhos.
+[0.0s] O mais sugestado que foi acidente de carro foi a ONU Friburgo.
+[0.3s] Friburgo, como foi? Fresco, não tinha de fedorento.
+[0.0s] F.
+[0.0s] Futebol em português brasileiro com uso intensivo de aliteração na letra F.
+[0.2s] A busca foi fechando, fiquei fora da faixa, porém o farol fechado.
+[0.0s] F.
+[0.0s] F.
+[0.0s] Fiz um experimentozinho.
+[0.0s] Desfria a fronte, afasta e fratura a falante.
+[2.6s] Está cheio de assinatura.
+[0.0s] Chegue a assinatura em Nogês, quem são? Filhos.
+[0.0s] Quantos filhos eu tenho?
+[0.7s] F.
+[0.8s] Fabinho, Flávio, Fernando, Fátima e Fabiano.
+[0.1s] Qual a Fabiana, sua filha mais velha, estava estudando, já se formou? Formou.
+[0.4s] Formou, fez faculdade em Friburgo, formou-se em filosofia, fez péssimo formador.
+[0.0s] A filosofia fiz fez formatura fantástica, a Fabiana ficou feliz.
+[0.4s] Você não merece, ela até ajudava o senhor na sua indústria.
+[0.0s] Legenda por Sônia Ruberti
+[0.1s] O que o senhor produzia? Fazia folha de frango, ferrete.
+[0.0s] Legenda por Sônia Ruberti
+[0.0s] F.
+[0.6s] Fabricado a ferramenta fundida em ferro forjado.
+[0.8s] Ainda tem a paga? Fechei. Por quê? Faliu.
+[1.9s] Falta o financiamento, o fator financeiro.
+[0.0s] O fator financeiro foi fundamental.
+[0.0s] ...federais fazendo fiscalização feroz, fornecedores falhados...
+[0.0s] Fatoramento fraquíssimo.
+[0.0s] O movimento fraquíssimo, o que ficou faltando foi a falência, foi feio, fracasso.
+[0.0s] O processo foi forçado a fechar a firma.
+[0.4s] E agora, se eu trabalho em quê? Não, faço feiras e festas. No Brasil todo.
+[0.5s] Brasil todo, feriadão destinado foi a Fortaleza.
+[0.1s] Fiz a festa das felinas, foi formidável.
+[2.5s] Fui a Florianópolis, fiz o...
+[0.0s] Fiz o Festival do Filho em Floripa.
+[2.1s] A Franca fazia famosa a Feira Francal.
+[0.0s] A famosa Feira Francal finalmente foi fiscal nas firmas franqueadas na Feira Filantropa.
+[0.0s] O senhor está morando?
+[0.4s] Está morando aqui em Frutal, a fim de facilitar para a Viana fixar em Friburgo.
+[0.0s] Fica focado!
+[0.1s] Fica focado, Fernandão, forte, fosfato, fixa, filho, valei!
+[0.0s] Falei, faculdade de filosofia, fazia, fazia, fica o Friburgo.
+[0.0s] É, onde tem aquele time fazendo sucesso no campeonato carioca.
+[0.0s] Nesse campeonato carioca, Friburguense, torce pra ele.
+[0.5s] Futebol Flamengo, fiquei empantanado, fico fervoroso.
+[0.0s] Legenda por Sônia Ruberti
+[0.1s] No final do vale, na finalíssima é fogo, fica feito furacão, faz a felicidade.
+[0.0s] O placão faz a felicidade da família Flamenguista fazendo para o final.
+[0.0s] E ganha o título fácil!
+[0.0s] Ó, pra mim fatura as faixas, Fluminense e Freguês fazendo futebolzinho.
+[0.0s] Futebolzinho, fajuto, feio e fraquinho, fica fora facilmente fazendo...
+[0.0s] Agora, facilmente fazendo figuração, Flamegão Flamegante faz a festa final.
+[0.0s] A gente faz a festa final.
+[1.7s] Falando em festa, teve uma festa aqui semana passada.
+[0.0s] Festa aqui semana passada, foi? Foi, festa fantasia, fiquei fascinado.
+[0.0s] Fé minhas fantásticas, Fernandão, estou enfrentando.
+[0.6s] O senhor não é casado?
+[1.9s] Fui!
+[2.8s] E a esposa, dona?
+[0.4s] F.
+[0.9s] Faleceu.
+[2.6s] Quando?
+[0.4s] Fevereiro, dia 1.
+[2.3s] París.
+[1.4s] Fumava muito?
+[0.0s] Fala muito pra mim, geral da mente.
+[1.6s] Porque não falava pra ela falar?
+[3.0s] Falava frequentemente.
+[0.0s] Falava frequentemente, fumar sem fogo. Falou, fuma, é fatal, fica um fera.
+[0.5s] Era filósofo em casa, falava filósofo, uma pessoa na parede...
+[0.0s] F.
+[0.1s] F.
+[0.2s] A língua foi ficando fina, fragilizada, fininha frequentemente em febril.
+[0.1s] Febril foi ficando em frangalho, foi fatal, faleceu.
+[0.1s] Meus pesos, eu não sabia. Fiz o funeral falecido e fechado o familiar.
+[0.0s] A CIDADE NO BRASIL
+[0.0s] O senhor perdeu uma grande esposa natural.
+[0.3s] É uma coisa natural, não foi fora, porque lá foi figura fantástica.
+[0.9s] O que é o fissurada dos filhos penetrados?
+[1.2s] em português brasileiro com uso intensivo de aliteração na letra F.
+[0.0s] Então nós vamos falar mais nela para você não ficar triste. Mudar de assunto.
+[0.0s] O senhor almoçou, vou trazer a sobremesa.
+[2.1s] Tem o sorvete, doces, frutos.
+[0.9s] Frutas frescas, fibra e framboesa, frambada e frangérico.
+[0.0s] Música
+[0.0s] O garçom agora vai trazer o cafezinho da hora. Falou, Fernandão.
+[0.0s] O garçom que tal? Formidável, fresquinho, forte e fervendo.
+[0.0s] Não ficou o famoso fraco, fedido e fino, feio, fedorento, feito...
+[0.0s] F.
+[0.2s] Legenda por Sônia Ruberti
+[0.1s] O senhor fala tudo com F, impressionado, com facilidade.
+[0.2s] Fato, facilidade, falar em F é fechinha, falo fluentemente...
+[0.0s] Fala fluentemente, sem fazer força, forma de falar, frases fluem facilmente.
+[0.0s] Então posso fazer um desafio...
+[0.0s] O senhor vai terminar? Faça.
+[0.0s] Falar mais 15 palavras com F relacionado com almoço.
+[0.0s] F.
+[0.1s] Filé de frango à francesa, fatiado em fatias finas, fritado na frigideira.
+[0.0s] Ficando fiado, fico feliz e freguês fiel.
+[0.0s] Se ferrou não contei, só deu 14 agora.
+[0.4s] O que vocês pegaram?
+[1.4s] Ah, ruim, viu?
+[2.2s] Obrigado.
+[0.7s] Pão com linguiça.
+[1.1s] Obrigado por assistir.
+[3.5s] Obrigado.
+[0.3s] Legenda por Sônia Ruberti
+[1.0s] Obrigado por assistir.
+[1.8s] Obrigado.
+[3.6s] Obrigado.
+[0.6s] Obrigado.
+[1.5s] Tem um ponto pequeno, mora aí.
+[0.6s] Um mini pão, se você não quiser pão inteiro.
+[0.0s] Obrigado por assistir.
+[2.0s] Lula, depois será essa.
+[0.4s] Deixa no pátio, senão sai.
+[1.1s] Legenda Adriana Zanotto
+[1.8s] É um instante.
+[2.0s] Fácula e bueno?
+[3.4s] Aplausos
+[2.2s] Tchau.
+[2.7s] Tchau.
+[2.7s] Obrigado.
+[0.9s] Obrigado.
+[2.3s] Tchau!
+[2.5s] Não tem copo aí.
+[0.0s] Não comprei.
+[0.7s] Obrigado.
+[0.0s] Atenção!
+
+Encerrado pelo usuário.

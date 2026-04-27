@@ -1,0 +1,163 @@
+[INFO] 5 diretórios CUDA injetados no sistema.
+Carregando large-v3-turbo na GPU...
+--- Worker Ativo: | GPU CUDA | int8_float16 ---
+Monitorando... (Ctrl+C para sair)
+[1.3s] O cabelo também caiu.
+[1.1s] Eu sou o nome do monólogo do F.
+[1.4s] É, eu já não vou jogar só.
+[0.0s] Um garçom, com freguês.
+[0.0s] Porque eles falam tudo com a letra F. Tudo, tudo.
+[0.5s] Então ele chega e o garçom fala, que prazer ter um de volta.
+[0.0s] Viro de volta no meu restaurante. Fala, fala figura!
+[1.3s] Fisionomia familiar.
+[0.0s] Eu sou o garçom Fernando, atendia os senhores.
+[0.0s] Entendi o senhor há uns tempos atrás aqui, é que agora eu engordei.
+[0.5s] Me chamo de Fernandão, o cabelo também caiu.
+[0.4s] Ficou forte, Floresta foi.
+[0.2s] Ficaram uns fiozinhos fininho e fraco fazendo figuras.
+[0.0s] E o senhor, como está?
+[0.0s] Como está? Forte, firme, feliz e faminto.
+[0.0s] Tem uma mesa vazia lá fora.
+[1.7s] A flora é fria, fica os fumantes.
+[0.1s] Fumante, fazendo uma fumaceira a porte.
+[2.1s] Fico na frente e é preciso...
+[0.0s] A frente é fresquinho, faz favor.
+[1.8s] Sormada seu...
+[0.0s] Eu esqueci o seu nome, Francisco Freire.
+[0.0s] Francisco Freire, Fernão Ferraz, Fernandes Figueiro, furtado.
+[0.0s] O deputado Franco Ferreira, de Figueiredo Falcão, facílimo.
+[0.0s] Francisco Freire, fisionomia familiar, Fiburgo, Flamengo, Faciloma de Falar e Fácil de Fixar.
+[0.8s] Já escolheu o que vai poder, vou ler o prato.
+[0.0s] O favorito é o favorito, filé de frango a francês.
+[0.0s] E frango a francesa, com fricassé de fová, farofa, frita.
+[0.2s] Fijão, fatiazinha de figo, feita varinha fina.
+[0.3s] Friburgo, Flamengo, faculdade, filosofia, fundição, ferramentas.
+[1.2s] Vem pra bebê, fiz o fundo.
+[0.0s] No fundo, o frismo é uma fermentada fresquinha fazendo com base.
+[0.8s] A cerveja continua o papo.
+[0.1s] De férias aqui em Frutal, seu Francisco, faturando.
+[0.1s] Maturando o feijão dos filhos e de braço gessado que foi.
+[0.0s] O que foi? Acidente de carro.
+[1.7s] Foi, aonde?
+[0.2s] Friburgo, como foi? Fresco.
+[0.4s] Filipe, fedorento, fuleiro, ferramentas.
+[0.9s] Fete o pute, vai ao frente do...
+[0.0s] Freire, fiz uma festa final no Fusca, a Fusca foi fechando.
+[0.4s] Fora da faixa, por aí o farol fechado.
+[0.0s] Fui em frente o furgão, uma porrada de honesto.
+[0.0s] Felizmente foi fraco.
+[0.0s] Fiburgo, fíquus per ver a pressão, foi freio.
+[2.3s] Filios perimenes...
+[0.1s] Um experimentozinho, feria a fronte, afaste e faturinha falando.
+[0.0s] Está cheio de assinatura aí no GESC.
+[0.0s] Quem são? Filhos. Quantos filhos?
+[0.0s] Todos os filhos ortaem.
+[0.6s] FIPE!
+[1.4s] Fiburgo, Flamengo, Fernando, Fátima e Fabri.
+[0.0s] Fátima e Fabiana, sua filha mais velha estava estrada.
+[0.0s] Estudando, já se formou? Formou, fez faculdade.
+[0.0s] Faculdade de Friburgo, formou-se filosofia, fiz fese, formatura.
+[0.0s] Firmatur é fantástica, Fabiana Tico Feliz.
+[0.5s] Ela até ajudava o senhor na sua indústria.
+[0.1s] Você não tem uma indústria, você não tem uma indústria? A fabriquinha.
+[0.3s] O que era mesmo? Fundição. O que o senhor produziu?
+[0.5s] Fazia coisa de plantas, ferretes, ferraduras.
+[0.6s] Fiburgo, fechadura, faca, foice, facal.
+[0.0s] Fiburgo, Flamengo, formão, fieira, seu carpado.
+[0.3s] Fabricado a ferramenta fundida em ferro forjada.
+[0.0s] Ainda tem a paga, fechei.
+[2.2s] Faz o que?
+[0.1s] Faltou financiamento, fator financeiro foi fundamental.
+[0.0s] Fórums fiscais federais fazendo fiscalização.
+[0.1s] Fiscalização feroz, fornecedores falhados.
+[0.0s] Funcionários ficarem férias forçadas, faturamento...
+[0.0s] Ficou faltando, fui a falência.
+[0.0s] Foi feio, fracasso, fui forçado a fechar a firma.
+[0.0s] É, e agora? Você trabalha em quê?
+[0.3s] Faço feiras e festas no Brasil todo.
+[0.7s] Feriadão de final foi a Fortaleza, fiz a festa.
+[0.2s] A festa das felinas foi formidada, fui a florear nós.
+[0.0s] Fiz o festival do filho em Florianópolis, fiz o festival do filho em Floripa.
+[0.6s] A gente vai fazer a famosa feira francal, finalmente...
+[0.0s] Principalmente por fiscal nas firmas franqueadas na feira filantrópica.
+[0.0s] O senhor está morando.
+[0.1s] Está morando aqui em Frutal, a fim de facilitar a Fabiana fixei.
+[0.0s] Filipe, fisionomia familiar, Friburgo.
+[1.3s] Ah, não sei o que tá aqui agora, eu não entendi.
+[1.6s] Fernando, forte fosfato.
+[0.0s] Fosfato fixo, a filha eu falei, faculdade de filosofia.
+[0.0s] Filosofia, padriano fazia, fica o Friburgo.
+[0.7s] Onde tem aquele time fazendo sucesso no campeonato carioca.
+[0.0s] Friburgo, torce pra ele.
+[0.4s] Futebol, Flamengo.
+[0.4s] A nave ficou fervorosa.
+[1.8s] Tá mal, time?
+[0.0s] Fácil, o frasão é final não falha, na finalíssima é fogo.
+[0.0s] Fica feito furacão, faz a felicidade.
+[0.2s] Da família para o menino está fazendo o final.
+[0.4s] E ganho tinto fácil.
+[0.5s] Para mim, fatura as faixas, Fluminense e Freire.
+[0.0s] Fazendo futebolzinho, fajuto, feio e fraquinho.
+[0.0s] Fica fora facilmente fazendo figuração.
+[0.1s] Flamengo, flamengante faz a festa final.
+[1.8s] A gente está aqui semana passada.
+[0.0s] Fiquei fascinado.
+[0.0s] Francisco Fernandão, Friburgo.
+[0.3s] Acertando, o senhor não é casado?
+[2.3s] Fui!
+[1.2s] Fiburgo, Flamengo, faculdade, filosofia, fundição.
+[0.0s] Filomena, faleceu.
+[0.0s] Faleceu, quando?
+[0.0s] Fiburgo, Friburgo, Fiburgo.
+[0.0s] Fum, fumar, parir.
+[1.6s] Fiburgo, Flamengo, faculdade, filosofia, fundição, ferramentas.
+[0.3s] Fumava muito pra mim, geradamente.
+[2.5s] Por que não falar?
+[0.2s] Falava para parar, falava frequentemente.
+[0.2s] Máte a fó, valor vó não é fatal se confere a filhoteca.
+[0.0s] Filó ficava, falava filó, fumo, tessura, fabriquinha.
+[0.0s] Fiburgo, Flamengo, fazia a pena do que eu falava.
+[0.0s] Falava, fumava, feito fornalha, fernalho foi um prajeiro.
+[0.0s] Filipe, fisionomia familiar, Friburgo, Flamengo, faculdade, filosofia, fabriquinha, fundição, ferramentas.
+[0.6s] Frequentemente, Friburgo foi ficando enfrandado.
+[0.0s] O frandalho foi fatal, faleceu.
+[0.0s] Fiz o funeral, falecido é fechado.
+[0.0s] Foi fatídio, fatalidade, tinha que falar aquilo lá.
+[0.0s] Ficou na fossa, Fernanda.
+[2.3s] O senhor perdeu mais.
+[0.0s] Perdi uma grande esposa natural, não foi?
+[0.0s] Foi, foi, foi.
+[0.7s] Fui, foi.
+[1.1s] A tortação de uma fantástica fórmice.
+[2.5s] Fude!
+[0.6s] E a fissurada nos filhos, pena de ver.
+[0.4s] Fiburgo, Flamengo, fisionomia, fundição, ferramentas.
+[0.0s] Fim, fisionomia familiar, Friburgo, Flamengo, faculdade, filosofia, fundição.
+[0.2s] Se o senhor não gostou, eu vou trazer a sua por mesa.
+[2.3s] Tem um sorvete?
+[0.0s] Friburgo, Flamengo, faculdade, filosofia, fundição, ferramentas.
+[0.0s] Fiburgo, frambueso, flambar de infragélico, coca finíssimo.
+[0.8s] Comeu a sobremesa, mas agora trazer o cafezinho.
+[0.0s] Fizinho da hora. Falou, Fernandão.
+[1.8s] Tumou o café.
+[0.2s] Garçom, que tal? Formidável, fresquinho, forte e fervento.
+[0.0s] Não ficou o famoso fraco, fidei de fim no feio.
+[0.0s] Fino, feio, feito em filtro furado, formiga no fundo.
+[0.4s] Fazendo festa, faz pra gente ficar curioso.
+[0.1s] Seu Francisco, pensei lá. O senhor fala tudo com ele.
+[0.2s] Tudo com eco, impressionante, com facilidade.
+[0.1s] Fato, facilidade.
+[1.5s] Fala em FFixinha Paulo Freire.
+[0.0s] Eu falo fluentemente, sem fazer força, forma de falar.
+[0.6s] Asas fluem facilmente, fico falando de faca.
+[0.2s] Então posso fazer um desafio para o senhor, para terminar?
+[1.0s] Se o senhor falar mais 15...
+[0.9s] Como é? Relacionado com o almoço.
+[0.0s] Não precisa pagar a conta.
+[0.4s] Freire de franga francesa, fatiado em fatias finas.
+[0.0s] Freitado na frigideira, ficando fiado.
+[0.0s] Eu fico feliz, Friburgo Espiel. Se derrubo eu contei.
+[0.1s] Como eu contei, só deu 14 agora. Foda-se!
+[0.1s] E foi isso.
+
+Encerrado pelo usuário.

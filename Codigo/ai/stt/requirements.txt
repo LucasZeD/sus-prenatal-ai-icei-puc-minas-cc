@@ -1,0 +1,23 @@
+# Infraestrutura NVIDIA / CUDA
+nvidia-cublas-cu12
+nvidia-cudnn-cu12
+nvidia-curand-cu12
+
+# Áudio e Processamento
+numpy
+torch>=2.0.0
+torchaudio
+soundfile
+sounddevice
+
+# Motores STT e Diarização
+faster-whisper
+pyannote.audio
+silero-vad
+
+# Métricas e Avaliação
+jiwer
+pyannote.metrics
+
+# Utilidades
+python-dotenv
