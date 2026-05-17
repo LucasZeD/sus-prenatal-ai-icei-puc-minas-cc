@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ConsultaStreamPanel } from '../components/ConsultaStreamPanel.js'
 import { LiviaAssistantPanel } from '../components/LiviaAssistantPanel.js'
 import { useAuth } from '../context/AuthContext.js'
+import { useLiviaDesktopAsideOpen } from '../hooks/useLiviaDesktopAsideOpen.js'
 import { isUuid } from '../lib/uuid.js'
 
 type ConsultaDetail = {
@@ -28,6 +29,7 @@ export function EscribaPage() {
   const { consultaId } = useParams()
   const id = consultaId ?? ''
   const { authFetch } = useAuth()
+  const [liviaAsideOpen, setLiviaAsideOpen] = useLiviaDesktopAsideOpen()
   const navigate = useNavigate()
   const [tab, setTab] = useState<'transcricao' | 'prontuario'>('transcricao')
   const [mirrorStt, setMirrorStt] = useState('')
@@ -232,8 +234,8 @@ export function EscribaPage() {
   return (
     <div className="flex relative items-start">
       {/* Container Principal */}
-      <div className="flex-1 w-full lg:pr-[24rem]">
-        <div className="max-w-5xl mx-auto space-y-8 px-6 py-8">
+      <div className="flex-1 w-full min-w-0 lg:pr-[calc(var(--livia-aside-width)+1.5rem)]">
+        <div className="max-w-5xl mx-auto space-y-8 px-6 py-8 lg:max-w-none lg:mx-0">
           {/* Cabeçalho */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
             <div className="flex items-start gap-5">
@@ -507,10 +509,26 @@ export function EscribaPage() {
         </div>
       </div>
 
-      {/* Painel Lívia Side-by-side fixo de tela cheia (desktop) */}
-      <aside className="fixed top-16 right-0 w-[24rem] h-[calc(100vh-4rem)] border-l border-brand-pink/30 bg-white hidden lg:flex flex-col z-30 shadow-[-4px_0_15px_rgba(251,160,167,0.05)]">
-         <LiviaAssistantPanel />
-      </aside>
+      {/* Painel Lívia (desktop): recolhível */}
+      {liviaAsideOpen ? (
+        <aside className="fixed top-16 right-0 z-30 hidden h-[calc(100vh-4rem)] w-[var(--livia-aside-width)] min-w-0 shrink-0 flex-col border-l border-brand-pink/30 bg-white shadow-[-4px_0_15px_rgba(251,160,167,0.05)] lg:flex">
+          <LiviaAssistantPanel
+            className="min-h-0 flex-1"
+            consultaId={isUuid(id) ? id : undefined}
+            onDesktopPanelHide={() => setLiviaAsideOpen(false)}
+          />
+        </aside>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setLiviaAsideOpen(true)}
+          className="fixed bottom-6 right-6 z-40 hidden h-14 w-14 items-center justify-center rounded-full border border-rose-200/90 bg-white text-xl shadow-lg transition-[box-shadow,transform] hover:scale-[1.03] hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 focus-visible:ring-offset-2 lg:flex"
+          aria-label="Mostrar assistente Lívia"
+          title="Mostrar assistente Lívia"
+        >
+          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-rose-600 text-base text-white shadow-inner">✨</span>
+        </button>
+      )}
 
       {/* Mobile-first: assistente Lívia expansível (mobile apenas) */}
       <div className="lg:hidden fixed bottom-4 right-4 z-40">
@@ -525,8 +543,8 @@ export function EscribaPage() {
               <span className="text-xs font-bold text-brand-pink/70 hidden group-open:block">FECHAR</span>
             </span>
           </summary>
-          <div className="border-t border-brand-pink/20 bg-white rounded-b-2xl h-[60vh] overflow-hidden flex flex-col">
-            <LiviaAssistantPanel />
+          <div className="border-t border-brand-pink/20 bg-white rounded-b-2xl h-[min(65vh,36rem)] overflow-hidden flex flex-col">
+            <LiviaAssistantPanel consultaId={isUuid(id) ? id : undefined} />
           </div>
         </details>
       </div>

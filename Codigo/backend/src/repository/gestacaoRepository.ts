@@ -40,4 +40,9 @@ export class GestacaoRepository {
       data: { tipo_risco },
     });
   }
+
+  async deleteById(id: string): Promise<void> {
+    const prisma = getPrisma();
+    await prisma.gestacao.delete({ where: { id } });
+  }
 }

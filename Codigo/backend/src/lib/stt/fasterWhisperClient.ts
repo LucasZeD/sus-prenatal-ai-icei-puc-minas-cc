@@ -1,3 +1,5 @@
+import { sttConcurrencyLimiter } from "../concurrencyLimiter.js";
+
 /**
  * STT opcional (`WHISPER_HTTP_URL`). Sem serviço configurado, retorna `null` (sem parcial).
  */
@@ -17,7 +19,7 @@ export class FasterWhisperClient {
     );
     form.append("model", "whisper-1");
 
-    const res = await fetch(url, { method: "POST", body: form });
+    const res = await sttConcurrencyLimiter.run(() => fetch(url, { method: "POST", body: form }));
     if (!res.ok) {
       return null;
     }

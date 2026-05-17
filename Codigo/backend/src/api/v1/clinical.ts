@@ -1,13 +1,5 @@
 import type { Hono } from "hono";
-import {
-  AboRh,
-  RiscoGestacional,
-  StatusConsulta,
-  Etnia,
-  Escolaridade,
-  EstadoCivil,
-  type Prisma,
-} from "../../lib/prismaBarrel.js";
+import { AboRh, StatusConsulta, Etnia, Escolaridade, EstadoCivil, type Prisma } from "../../lib/prismaBarrel.js";
 import { AppError } from "../../core/errors.js";
 import { extrairUltimos4CartaoSus, extrairUltimos4Cpf } from "../../lib/identificadores/pacienteUltimosDigitos.js";
 import { isUuid } from "../../lib/validation/uuid.js";
@@ -22,6 +14,11 @@ import {
   verificarIdentificadoresPaciente,
 } from "../../services/pacienteCadastroComIdsService.js";
 import { buildConsultaPatchUpdate, type ConsultaPatchInput } from "../../services/consultaPatchService.js";
+import { stripUntrustedLlmText } from "../../lib/promptInjectionSanitize.js";
+import { buildLiviaContext, buildLiviaSuggestions } from "../../services/liviaContextService.js";
+import { syncTipoRiscoGestacao, syncTipoRiscoGestacoesAtivasDoPaciente } from "../../services/riscoEstratificacaoService.js";
+import { parseOptionalIsoDateOnlyNullable } from "../../domain/gestacaoPatchDateParse.js";
+import { registerProntuarioDerEscritaRoutes } from "./clinicalProntuarioDerEscrita.js";
 
 function parseIsoDateOnly(value: unknown): Date | null {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
@@ -303,6 +300,7 @@ export function registerClinicalV1Routes(secured: Hono<{ Variables: AuthVariable
       data: patch as any,
       select: pacienteAssepsisadoSelect,
     });
+    await syncTipoRiscoGestacoesAtivasDoPaciente(prisma, id);
     return c.json(updated);
   });
 
@@ -358,7 +356,7 @@ export function registerClinicalV1Routes(secured: Hono<{ Variables: AuthVariable
     if (!cpfBruto && !cartaoSusBruto) {
       throw new AppError(
         "validation_error",
-        "Informe CPF e/ou Cartão SUS: os últimos dígitos aparecem na agenda; o documento completo vira hash em paciente_ids (com PACIENTE_IDS_PEPPER) para busca e anti-duplicidade.",
+        "Informe o CPF e/ou o número do Cartão do SUS (pelo menos um dos dois), para evitar cadastros duplicados e permitir busca segura.",
         400,
       );
     }
@@ -419,6 +417,72 @@ export function registerClinicalV1Routes(secured: Hono<{ Variables: AuthVariable
     return c.json(row);
   });
 
+  /** Contexto resumido para o assistente Livia (RAG + perguntas clinicas), filtrado pela pergunta. */
+  secured.post("/clinical/livia/context", async (c) => {
+    let body: unknown;
+    try {
+      body = await c.req.json();
+    } catch {
+      throw new AppError("bad_request", "Corpo da requisição deve ser JSON.", 400);
+    }
+    if (!body || typeof body !== "object") {
+      throw new AppError("validation_error", "Payload inválido.", 400);
+    }
+    const rec = body as Record<string, unknown>;
+    const rawQuestion = typeof rec.question === "string" ? rec.question : "";
+    const question = stripUntrustedLlmText(rawQuestion, 8192);
+    if (!question.trim()) {
+      throw new AppError("validation_error", "Pergunta vazia ou invalida apos sanitizacao.", 400);
+    }
+    const optId = (key: string): string | undefined => {
+      const v = rec[key];
+      if (typeof v !== "string") return undefined;
+      const t = v.trim();
+      if (!t) return undefined;
+      if (!isUuid(t)) {
+        throw new AppError("validation_error", `${key} deve ser UUID.`, 400);
+      }
+      return t;
+    };
+    const out = await buildLiviaContext({
+      question,
+      paciente_id: optId("paciente_id"),
+      gestacao_id: optId("gestacao_id"),
+      consulta_id: optId("consulta_id"),
+    });
+    return c.json(out);
+  });
+
+  /** Sugestoes de pergunta para a Livia (texto derivado de dados estruturados; sem PII livre). */
+  secured.post("/clinical/livia/suggestions", async (c) => {
+    let body: unknown;
+    try {
+      body = await c.req.json();
+    } catch {
+      throw new AppError("bad_request", "Corpo da requisicao deve ser JSON.", 400);
+    }
+    if (!body || typeof body !== "object") {
+      throw new AppError("validation_error", "Payload invalido.", 400);
+    }
+    const rec = body as Record<string, unknown>;
+    const optId = (key: string): string | undefined => {
+      const v = rec[key];
+      if (typeof v !== "string") return undefined;
+      const t = v.trim();
+      if (!t) return undefined;
+      if (!isUuid(t)) {
+        throw new AppError("validation_error", `${key} deve ser UUID.`, 400);
+      }
+      return t;
+    };
+    const out = await buildLiviaSuggestions({
+      paciente_id: optId("paciente_id"),
+      gestacao_id: optId("gestacao_id"),
+      consulta_id: optId("consulta_id"),
+    });
+    return c.json(out);
+  });
+
   secured.post("/gestacoes", async (c) => {
     let body: unknown;
     try {
@@ -435,12 +499,21 @@ export function registerClinicalV1Routes(secured: Hono<{ Variables: AuthVariable
       throw new AppError("validation_error", "paciente_id deve ser um UUID válido.", 400);
     }
 
-    let tipo_risco: RiscoGestacional | undefined;
-    if (rec.tipo_risco !== undefined && rec.tipo_risco !== null) {
-      if (typeof rec.tipo_risco !== "string" || !Object.values(RiscoGestacional).includes(rec.tipo_risco as RiscoGestacional)) {
-        throw new AppError("validation_error", "tipo_risco inválido.", 400);
+    const prisma = getPrisma();
+    const parsedAtiva = parseOptionalBool(rec.is_ativa);
+    const willBeAtiva = parsedAtiva === undefined ? true : parsedAtiva;
+    if (willBeAtiva) {
+      const emCurso = await prisma.gestacao.findFirst({
+        where: { paciente_id, is_ativa: true },
+        select: { id: true },
+      });
+      if (emCurso) {
+        throw new AppError(
+          "conflict",
+          "Ja existe uma gravidez em acompanhamento para este paciente. Desative a gestacao atual no prontuario antes de registrar outra.",
+          409,
+        );
       }
-      tipo_risco = rec.tipo_risco as RiscoGestacional;
     }
 
     const created = await gestacoes.create({
@@ -449,13 +522,11 @@ export function registerClinicalV1Routes(secured: Hono<{ Variables: AuthVariable
       dpp: parseOptionalIsoDateOnly(rec.dpp, "dpp"),
       dpp_eco: parseOptionalIsoDateOnly(rec.dpp_eco, "dpp_eco"),
       ig_inicial: parseOptionalInt(rec.ig_inicial),
-      tipo_risco,
       coombs: parseOptionalString(rec.coombs, 50),
       tipo_gravidez: parseOptionalString(rec.tipo_gravidez, 100),
       idade_gestac_confirmada: parseOptionalInt(rec.idade_gestac_confirmada),
       is_planejada: parseOptionalBool(rec.is_planejada),
       is_visita_maternidade: parseOptionalBool(rec.is_visita_maternidade),
-      is_ativa: parseOptionalBool(rec.is_ativa),
       is_colocar_diu: parseOptionalBool(rec.is_colocar_diu),
       is_did_consulta_odontologica: parseOptionalBool(rec.is_did_consulta_odontologica),
       is_diabetes_gestacional: parseOptionalBool(rec.is_diabetes_gestacional),
@@ -472,8 +543,10 @@ export function registerClinicalV1Routes(secured: Hono<{ Variables: AuthVariable
       tratamento_sifilis_dose_3: parseOptionalIsoDateOnly(rec.tratamento_sifilis_dose_3, "tratamento_sifilis_dose_3"),
       suplementacao_ferro: parseOptionalBool(rec.suplementacao_ferro),
       suplementacao_acido_folico: parseOptionalBool(rec.suplementacao_acido_folico),
+      is_ativa: willBeAtiva,
     });
-    return c.json(created, 201);
+    const synced = await syncTipoRiscoGestacao(prisma, created.id);
+    return c.json(synced?.gestacao ?? created, 201);
   });
 
   /**
@@ -501,21 +574,12 @@ export function registerClinicalV1Routes(secured: Hono<{ Variables: AuthVariable
     const dpp = parseOptionalIsoDateOnly(rec.dpp, "dpp");
     const dpp_eco = parseOptionalIsoDateOnly(rec.dpp_eco, "dpp_eco");
 
-    let tipo_risco: RiscoGestacional | undefined;
-    if (rec.tipo_risco !== undefined && rec.tipo_risco !== null) {
-      if (typeof rec.tipo_risco !== "string" || !Object.values(RiscoGestacional).includes(rec.tipo_risco as RiscoGestacional)) {
-        throw new AppError("validation_error", "tipo_risco inválido.", 400);
-      }
-      tipo_risco = rec.tipo_risco as RiscoGestacional;
-    }
-
     const patch = {
       dum,
       dpp,
       dpp_eco,
       ig_inicial: parseOptionalInt(rec.ig_inicial),
-      tipo_risco,
-      coombs: parseOptionalString(rec.coombs, 50),
+      coombs: parseOptionalStringNullable(rec.coombs, 50),
       tipo_gravidez: parseOptionalString(rec.tipo_gravidez, 100),
       idade_gestac_confirmada: parseOptionalInt(rec.idade_gestac_confirmada),
       is_planejada: parseOptionalBool(rec.is_planejada),
@@ -532,9 +596,18 @@ export function registerClinicalV1Routes(secured: Hono<{ Variables: AuthVariable
       is_hipertensao_arterial: parseOptionalBool(rec.is_hipertensao_arterial),
       is_cirurgia_elvica_uterina: parseOptionalBool(rec.is_cirurgia_elvica_uterina),
       is_cirugia: parseOptionalBool(rec.is_cirugia),
-      tratamento_sifilis_dose_1: parseOptionalIsoDateOnly(rec.tratamento_sifilis_dose_1, "tratamento_sifilis_dose_1"),
-      tratamento_sifilis_dose_2: parseOptionalIsoDateOnly(rec.tratamento_sifilis_dose_2, "tratamento_sifilis_dose_2"),
-      tratamento_sifilis_dose_3: parseOptionalIsoDateOnly(rec.tratamento_sifilis_dose_3, "tratamento_sifilis_dose_3"),
+      tratamento_sifilis_dose_1: parseOptionalIsoDateOnlyNullable(
+        rec.tratamento_sifilis_dose_1,
+        "tratamento_sifilis_dose_1",
+      ),
+      tratamento_sifilis_dose_2: parseOptionalIsoDateOnlyNullable(
+        rec.tratamento_sifilis_dose_2,
+        "tratamento_sifilis_dose_2",
+      ),
+      tratamento_sifilis_dose_3: parseOptionalIsoDateOnlyNullable(
+        rec.tratamento_sifilis_dose_3,
+        "tratamento_sifilis_dose_3",
+      ),
       suplementacao_ferro: parseOptionalBool(rec.suplementacao_ferro),
       suplementacao_acido_folico: parseOptionalBool(rec.suplementacao_acido_folico),
     } as const;
@@ -544,8 +617,25 @@ export function registerClinicalV1Routes(secured: Hono<{ Variables: AuthVariable
       throw new AppError("validation_error", "Informe ao menos um campo para atualização.", 400);
     }
 
-    const updated = await gestacoes.updateById(id, patch as Prisma.GestacaoUpdateInput);
-    return c.json(updated);
+    if (patch.is_ativa === true) {
+      const prisma = getPrisma();
+      const row = await gestacoes.findById(id);
+      if (!row) {
+        throw new AppError("not_found", "Gestação não encontrada.", 404);
+      }
+      await prisma.gestacao.updateMany({
+        where: { paciente_id: row.paciente_id, is_ativa: true, id: { not: id } },
+        data: { is_ativa: false },
+      });
+    }
+
+    await gestacoes.updateById(id, patch as Prisma.GestacaoUpdateInput);
+    const prisma = getPrisma();
+    const synced = await syncTipoRiscoGestacao(prisma, id);
+    if (!synced) {
+      throw new AppError("not_found", "Gestação não encontrada.", 404);
+    }
+    return c.json(synced.gestacao);
   });
 
   /**
@@ -611,6 +701,7 @@ export function registerClinicalV1Routes(secured: Hono<{ Variables: AuthVariable
       update: patch as any,
       create: { gestacao_id, ...(patch as any) },
     });
+    await syncTipoRiscoGestacao(prisma, gestacao_id);
     return c.json(updated);
   });
 
@@ -953,4 +1044,6 @@ export function registerClinicalV1Routes(secured: Hono<{ Variables: AuthVariable
     });
     return c.json(created, 201);
   });
+
+  registerProntuarioDerEscritaRoutes(secured);
 }

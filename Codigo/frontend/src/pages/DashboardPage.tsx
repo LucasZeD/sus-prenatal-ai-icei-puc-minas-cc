@@ -348,16 +348,11 @@ export function DashboardPage() {
 
   return (
     <div className="space-y-8 max-w-[1400px] mx-auto px-6 py-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-4xl font-black tracking-tight text-brand-navy">Agenda da Unidade</h1>
-          <p className="mt-2 text-base text-slate-500 font-medium max-w-2xl">
-            Visão operacional do dia e da semana; calendário de consultas mapeadas via agendamento.
-          </p>
-        </div>
-        <Link to="/dev/sandbox" className="hidden sm:flex px-5 py-3 text-sm font-bold text-brand-navy bg-white border border-brand-pink/30 rounded-xl hover:bg-brand-pink/10 transition-colors shadow-sm items-center gap-2">
-          <span className="text-xl">🛠️</span> Dev Sandbox
-        </Link>
+      <div>
+        <h1 className="text-4xl font-black tracking-tight text-brand-navy">Agenda da Unidade</h1>
+        <p className="mt-2 text-base text-slate-500 font-medium max-w-2xl">
+          Visão operacional do dia e da semana; calendário de consultas mapeadas via agendamento.
+        </p>
       </div>
 
       <section className="grid gap-6 lg:grid-cols-2">
@@ -412,7 +407,7 @@ export function DashboardPage() {
                     <div className="flex flex-col items-center justify-center">
                       <span className="text-4xl mb-3">🗓️</span>
                       <p className="text-base text-slate-600 font-bold">Sua agenda de pendentes está vazia no momento.</p>
-                      <p className="text-slate-400 text-xs mt-2">Vá ao <Link to="/dev/sandbox" className="text-brand-pink font-bold hover:underline">/dev/sandbox</Link> para adicionar testes.</p>
+                      <p className="text-slate-400 text-xs mt-2">Em ambiente de demonstração, a coordenação pode gerar dados de teste.</p>
                     </div>
                   </td>
                 </tr>
@@ -642,13 +637,6 @@ export function DashboardPage() {
            </button>
         </div>
       </section>
-
-      {/* Link de Sandbox para UI Mobile */}
-      <div className="sm:hidden flex justify-center mt-6">
-         <Link to="/dev/sandbox" className="w-full text-center px-5 py-4 text-sm font-bold text-brand-navy bg-white border border-brand-pink/30 rounded-xl shadow-sm">
-           Acessar Painel de Testes (Dev Sandbox)
-         </Link>
-      </div>
 
       {/* Modal: Criar consulta */}
       {createOpen ? (

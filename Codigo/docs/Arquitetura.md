@@ -25,7 +25,7 @@ O deploy é focado em isolamento rigoroso de redes internas. O WebApp ou serviç
 3. **`data-nw` (Camada de Persistência e RAG):**
    - **Servidor MCP (Model Context Protocol):** "Sidecar de Privacidade". O MCP barra a string suja enviada pelo Hub e extirpa Nomes, CPFs, e Cartões SUS antes de entregar pro llm (ex: converte em "Paciente hipertensa, 32 anos"). Nenhuma Query SQL vaza à IA Generativa.
    - **AI Agent (Ollama):** A engine encarregada da inteligência do ecossistema, processando instruções de triagem ou resumitiva rodando modelos restritos (ex: Llama-3 8B). Isolada da rede de internet aberta.
-   - **ChromaDB:** Banco Vetorial focado no "Retrieval-Augmented Generation" (RAG). Contém as Diretrizes do SUS picotadas e vetorizadas.
+   - **SQLite (vetores no clinical-ai):** Persistência local dos *embeddings* e dos fragmentos indexados para o RAG (implementação atual; substitui um motor vetorial dedicado como ChromaDB).
    - **PostgreSQL (via Prisma):** DB Central e de registros. Guardião último de todo o estado transacional.
 
 ![Diagrama de Implantação](UML/Diagrama%20de%20Implantacao.jpg)
@@ -57,4 +57,4 @@ O diagrama demonstra visualmente as restrições e trânsitos entre as camadas d
 - Operações de inicialização de Load Inference podem levar dezenas de segundos no 1º frame, forçando o frontend a lidar responsivamente por abordagens WebSocket ou Streaming Pacing (Loaders).
 
 ### 4.3 Estratégias de Recuperação e Anti-Alucinação
-- O chunking fragmentado no **ChromaDB** necessita de sobreposições semânticas saudáveis para não retornar contextos invertidos pro LLM, anulando o objetivo de segurança e padronização do SUS. A temp do modelo deve forçar zero "criatividade" nas conclusões clínicas.
+- O chunking fragmentado no armazenamento vetorial (\textbf{SQLite} no serviço \texttt{clinical-ai}) necessita de sobreposições semânticas saudáveis para não retornar contextos invertidos pro LLM, anulando o objetivo de segurança e padronização do SUS. A temp do modelo deve forçar zero "criatividade" nas conclusões clínicas.

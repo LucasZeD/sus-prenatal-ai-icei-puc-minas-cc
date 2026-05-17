@@ -32,6 +32,7 @@ Edite **`.env`** e garanta estes itens (valores reais, não placeholder de tutor
 | `PACIENTE_IDS_PEPPER` | Segredo longo para HMAC de CPF/Cartão; obrigatório no Compose para o `backend`. |
 | `DATABASE_URL` | Para Prisma **no seu PC** (host): `postgresql://USUARIO:SENHA@127.0.0.1:PORTA/sus_prenatal` com **a mesma** senha/usuário que `POSTGRES_*`. Dentro do Docker o backend usa outra URL montada pelo Compose (`@db:5432`). |
 | `SEED_PROFISSIONAL_EMAIL` / `SEED_PROFISSIONAL_PASSWORD` | Credenciais do profissional criadas pelo **seed** (login na API). |
+| `CLINICAL_AI_URL` | Opcional: `http://clinical_ai:4010` no Compose para proxies `/api/v1/dev/...` e sanitize via serviço Python. |
 
 **Senha do Postgres e URL:** use preferencialmente letras e números. Caracteres como `@`, `:`, `/`, `#` na senha podem **quebrar** a montagem de `postgresql://user:password@db:5432/...` e derrubar migração ou conexão.
 
@@ -59,7 +60,7 @@ docker compose ps
 docker compose logs backend --tail 100
 ```
 
-Causas frequentes: migração falhando (histórico de DB incompatível, senha errada), `JWT_SECRET` curto, ou senha do Postgres com caracteres que estragam a URL interna.
+Causas frequentes: falha de migração ou histórico de DB incompatível (**[backend/prisma/FALHAS-MIGRACAO.md](backend/prisma/FALHAS-MIGRACAO.md)**), `JWT_SECRET` curto, ou senha do Postgres com caracteres que estragam a URL interna.
 
 **Log `exec ./docker-entrypoint.sh: no such file or directory`:** quase sempre é o arquivo `docker-entrypoint.sh` com **fim de linha Windows (CRLF)**. O `Dockerfile` já remove `\r` na build; faça **`docker compose build --no-cache backend`** e suba de novo. O repositório usa **`.gitattributes`** (`*.sh` → LF) para não voltar a acontecer após `git add`.
 
@@ -84,44 +85,95 @@ Com `NODE_ENV=production` no contêiner (padrão do compose), o seed **só grava
 
 **Erro `spawn tsx ENOENT`:** na imagem Docker o `npm prune --omit=dev` remove o `tsx`. O projeto compila `prisma/seed.ts` → **`dist/seed.js`** no build e o Prisma roda `node dist/seed.js`. Rebuild do backend: `docker compose build --no-cache backend`.
 
-**Seed: `P2022` / coluna `profissional.unidade_id` não existe:** o volume do Postgres costuma estar **desalinhado** do `schema.prisma` atual (schema evoluiu e o banco não). Com o histórico atual do repositório há **uma** migração baseline (`20260421180000_baseline_der`) que cria o schema inteiro; use o passo 8 (volume limpo) e `docker compose up -d --build` para reaplicar do zero, depois rode o seed de novo.
+**Seed: `P2022` / coluna inexistente (ex.: `profissional.unidade_id`):** volume/schema desalinhado — siga **[backend/prisma/FALHAS-MIGRACAO.md](backend/prisma/FALHAS-MIGRACAO.md)** e rode o seed de novo.
 
 ### 7) Frontend
 
 - **Docker:** `http://localhost:5173` (porta `FRONTEND_PUBLISH_PORT`), apontando para a API definida em `VITE_API_BASE_URL` **no momento do build** da imagem.
 - Se mudar `VITE_API_BASE_URL` no `.env`, faça rebuild: `docker compose up -d --build frontend`.
 
-### 8) “Limpar e tentar de novo” (opcional)
+### 8) Expor pela internet (Cloudflare Tunnel — opcional)
 
-Se o Postgres ficou com volume inconsistente e as migrações não aplicam:
+Útil para demo (TCC), teste no celular ou acesso remoto sem abrir portas no roteador. Com o **frontend no Docker** e `VITE_API_BASE_URL=/` (padrão do compose), o nginx já faz proxy de `/api` e `/ws` para o backend; aponte o túnel para a **porta publicada do frontend** no host (ex.: `5173`).
+
+#### 8.1) Instalar o `cloudflared`
+
+Instale o cliente oficial ([Cloudflare — Downloads](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/installation/)) no mesmo PC onde rodam os contêineres.
+
+#### 8.2) Túnel rápido (sem domínio próprio, URL `*.trycloudflare.com`)
+
+Não exige `tunnel login`. Com o stack **já no ar** (`docker compose up`):
 
 ```powershell
-docker compose down
-docker volume rm prenatal-digital_prenatal_pg_data
-docker compose up -d --build
+cloudflared tunnel --url http://127.0.0.1:5173
 ```
 
-**Atenção:** isso apaga todos os dados do banco desse compose.
+(Ajuste `5173` se `FRONTEND_PUBLISH_PORT` for outra.) O terminal imprime um `https://....trycloudflare.com` — use no navegador. O URL é **temporário** (nova execução pode gerar outro host).
 
-### 9) Migração falha no banco (`P3009` / `P3018`)
+#### 8.3) Túnel nomeado + seu domínio (URL fixa)
 
-Se os logs do backend mostram **`P3009`** (`migrate found failed migrations in the target database`) ou **`P3018`** (SQL de uma migração falhou), o Prisma **para** até o estado em `_prisma_migrations` bater com o que realmente existe no Postgres.
+Exige **conta Cloudflare** e **pelo menos um domínio** com DNS gerenciado na Cloudflare (o domínio pode ser comprado em qualquer registrador; em [Websites](https://dash.cloudflare.com/) use *Add a site* e troque os nameservers conforme o assistente).
 
-**Histórico de migrações no repositório:** o projeto passou a usar **uma** migração baseline (`20260421180000_baseline_der`) gerada a partir do `schema.prisma` atual (TCC / sem necessidade de preservar histórico incremental). Se o seu volume ainda contém **checksums ou nomes** de migrações antigas que já não existem na pasta `prisma/migrations`, o `migrate deploy` não “reconcilia” isso sozinho.
+1. **Login do cliente** (associa certificado à sua conta e a uma zona):
 
-**Ambiente local (pode apagar dados) — recomendado após puxar essa mudança:**
+   ```powershell
+   cloudflared tunnel login
+   ```
 
-1. `docker compose down`
-2. `docker volume rm prenatal-digital_prenatal_pg_data`
-3. `docker compose up -d --build`
+   - O terminal mostra **“Waiting for login…”** e um **URL** (`https://dash.cloudflare.com/argotunnel?...`).
+   - Se o navegador não abrir sozinho, **copie o URL**, cole no Chrome/Edge e confirme o login na Cloudflare.
+   - Na página, **escolha o domínio (zona)** que já está na sua conta e autorize (**Authorize** / **Allow**). Isso não “cria” domínio novo — só diz em qual zona o `cloudflared` pode criar registros depois.
+   - Ao concluir, o terminal deve sair da espera e gravar o certificado (ex.: `~/.cloudflared/cert.pem` no Linux, equivalente no perfil do usuário no Windows).
 
-Assim o Postgres sobe vazio, a baseline aplica o schema completo no `migrate deploy` do entrypoint e o estado “failed” some.
+   **Se não aparecer nenhum domínio na lista:** adicione o site no painel Cloudflare e aguarde a zona ativa; ou use apenas o **túnel rápido** (passo 8.2).
 
-**Sem apagar o volume** (avançado): use `prisma migrate resolve` com o **nome exato** da migração que o `migrate status` / log acusar como falha (`--rolled-back` ou `--applied`, conforme o caso), depois `prisma migrate deploy`. Se o banco ficou **meio migrado** por uma cadeia antiga, o caminho seguro continua sendo volume limpo.
+2. **Criar o túnel** (nome interno livre, ex.: `prenatal`):
 
-Documentação oficial: [Resolve migration issues in production](https://www.prisma.io/docs/guides/migrate/production-troubleshooting).
+   ```powershell
+   cloudflared tunnel create prenatal
+   ```
 
-**Erros antigos `42P01` (relation does not exist) em migrações incrementais:** ocorriam quando o SQL assumia tabelas que só existiam em migrações **posteriores** na pasta (ordem difícil de manter enquanto o DER crescia). A baseline única evita essa classe de problema em banco novo.
+   Anote o **Tunnel ID** e o caminho do arquivo `*.json` de credenciais indicado no output.
+
+3. **Arquivo de configuração** (ex.: `~/.cloudflared/config.yml` — ajuste caminhos no Windows se preferir `%USERPROFILE%\.cloudflared\`):
+
+   ```yaml
+   tunnel: <TUNNEL_ID>
+   credentials-file: /caminho/absoluto/para/<UUID>.json
+
+   ingress:
+     - hostname: app.seudominio.com.br
+       service: http://127.0.0.1:5173
+     - service: http_status:404
+   ```
+
+   Substitua `hostname` pela subida real e a porta pela do seu `FRONTEND_PUBLISH_PORT`.
+
+4. **DNS** (CNAME automático para o túnel):
+
+   ```powershell
+   cloudflared tunnel route dns prenatal app.seudominio.com.br
+   ```
+
+5. **Rodar o túnel**:
+
+   ```powershell
+   cloudflared tunnel run prenatal
+   ```
+
+   Para manter sempre ligado, configure **serviço** (systemd no Linux, serviço Windows) conforme a documentação da Cloudflare.
+
+**CORS:** se algo chamar a API com **origem diferente** da do SPA, inclua o URL público em `FRONTEND_ORIGIN` no `Codigo/.env` (várias origens separadas por vírgula), rebuild do backend se necessário. Com `VITE_API_BASE_URL=/` e tudo no mesmo host do túnel, na prática tudo sai na mesma origem.
+
+**Segurança:** URL público expõe a aplicação; use senhas fortes, JWT seguro e, se possível, **Cloudflare Access** ou VPN para não deixar o ambiente aberto na internet.
+
+#### 8.4) WSL / servidor sem navegador no mesmo host
+
+Copie o URL impresso pelo `tunnel login` para uma máquina com navegador, conclua a autorização **e** garanta que o `cert.pem` resultante fique na máquina onde o `cloudflared` vai rodar (fluxo típico: fazer o login uma vez nesse host).
+
+### 9) Migração / volume do Postgres inconsistente
+
+Instruções completas (incluindo `P3009`, `P3018`, limpeza de volume, `migrate resolve`): **[backend/prisma/FALHAS-MIGRACAO.md](backend/prisma/FALHAS-MIGRACAO.md)**.
 
 ---
 
@@ -239,9 +291,42 @@ Com o serviço **`db`** publicado no host:
 - **Database:** `POSTGRES_DB` (padrão `sus_prenatal`)
 - **Usuário / senha:** `POSTGRES_USER` / `POSTGRES_PASSWORD` do `.env`
 
+## Clinical AI — RAG + contexto (FastAPI)
+
+O Compose inclui o serviço **`clinical_ai`** ([`clinical-ai/`](clinical-ai/)): índice RAG local (JSONL/MD/TXT), reranking MMR + viés a documentos com `meta.effective_date` / `updated_at` / `document_date` mais recentes, desidentificação de PII e rota de pergunta direta à médica (`POST /mcp/test/direct-question`). **Não há busca na internet** — só o corpus e os blocos opcionais enviados no JSON.
+
+**Ollama no host:** o contêiner usa `CLINICAL_AI_OLLAMA_BASE_URL` (padrão `http://host.docker.internal:11434`). No Linux o `docker-compose.yml` já define `extra_hosts: host.docker.internal:host-gateway`. Tenha **`ollama serve`** acessível e modelos puxados:
+
+- **Chat:** mesmo `OLLAMA_MODEL` do `.env` (ex. `qwen3.5:9b-medical-rag`).
+- **Embeddings RAG:** modelo **distinto**, `RAG_EMBEDDING_MODEL` (ex. `nomic-embed-text` — `ollama pull nomic-embed-text`).
+
+**Backend (proxies autenticados):** em `Codigo/.env` defina `CLINICAL_AI_URL=http://clinical_ai:4010` (Compose na mesma rede). O `GET /health` do backend consulta `GET /api/tags` no Ollama e `GET /health` no clinical-ai — o Dev Sandbox usa isso para o indicador verde.
+
+**Backend no Docker + Ollama no host:** `OLLAMA_HTTP_URL=http://host.docker.internal:11434` (evite `127.0.0.1` dentro do container).
+
+Rotas JWT:
+
+- `GET /api/v1/dev/clinical-ai/health`
+- `POST /api/v1/dev/rag/test/query` — corpo `{ "query": "...", "top_k": 6 }`
+- `POST /api/v1/dev/rag/test/rebuild`
+- `POST /api/v1/dev/mcp/test/direct-question` — corpo `{ "question": "...", "gestacao_context": "...", "consulta_escriba_context": "...", "top_k": 6 }` (blocos opcionais omitidos se vazios após PII).
+
+**Sanitize:** `CLINICAL_AI_URL` tem prioridade em `mcpGateway()`: o backend chama `POST /sanitize` na raiz do clinical-ai (compatível com o contrato antigo de `MCP_SERVER_URL`).
+
+**Teste direto na porta publicada** (`CLINICAL_AI_PUBLISH_PORT`, padrão `4010`):
+
+```bash
+curl -s "http://127.0.0.1:4010/health" | jq .
+curl -s -X POST "http://127.0.0.1:4010/rag/test/query" \
+  -H "Content-Type: application/json" \
+  -d '{"query":"pre natal hipertensao"}' | jq .
+```
+
+Corpus padrão na imagem: `clinical-ai/corpus/CartilhasSUS` (`RAG_CORPUS_DIR`; ver `.env.example`). Ficheiros suportados: `.md`, `.txt`, `.pdf`, `.docx`, `.jsonl`. Vetores persistidos em SQLite (`RAG_VECTOR_STORE_PATH`, volume `clinical_rag_data` no Compose). Opcionalmente `corpus/sample.jsonl` apenas para overrides locais se apontares `RAG_CORPUS_DIR` para a raiz `corpus/`.
+
 ## IA opcional (Compose comentado)
 
-Em `docker-compose.yml` há exemplos comentados (`ollama`, `faster-whisper`) e perfil `ai`. O backend usa **`MCP_SERVER_URL`**, **`OLLAMA_HTTP_URL`**, **`WHISPER_HTTP_URL`** conforme `.env.example`. Sem esses serviços, STT/LLM ficam desativados (fluxo ainda sobe).
+Em `docker-compose.yml` há exemplos comentados (`ollama`, `faster-whisper`) e perfil `ai`. O backend usa **`OLLAMA_HTTP_URL`**, **`WHISPER_HTTP_URL`** e, para desidentificação, **`CLINICAL_AI_URL`** ou **`MCP_SERVER_URL`** conforme `.env.example`. Sem Ollama no host, o clinical-ai sobe mas `/mcp/test/direct-question` falha na chamada ao modelo.
 
 ## PowerShell no Windows
 

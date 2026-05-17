@@ -36,6 +36,9 @@ services:
       PORT: ${BACKEND_PORT:-3000}
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-sus_prenatal}
       FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:5173}
+      OLLAMA_HTTP_URL: ${OLLAMA_HTTP_URL:-}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2}
+      WHISPER_HTTP_URL: ${WHISPER_HTTP_URL:-}
       MCP_SERVER_URL: ${MCP_SERVER_URL:-}
       JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in Codigo/.env (RF14)}
       JWT_EXPIRES_SEC: ${JWT_EXPIRES_SEC:-28800}
@@ -44,6 +47,11 @@ services:
       SEED_PROFISSIONAL_EMAIL: ${SEED_PROFISSIONAL_EMAIL:-}
       SEED_PROFISSIONAL_PASSWORD: ${SEED_PROFISSIONAL_PASSWORD:-}
       SEED_PROFISSIONAL_NOME: ${SEED_PROFISSIONAL_NOME:-}
+      # Dev Sandbox: POST /api/v1/dev/profissionais (apenas se =1 e JWT for e-mail em DEV_ADMIN_EMAILS ou seed)
+      DEV_ALLOW_PROFISSIONAL_CREATE: ${DEV_ALLOW_PROFISSIONAL_CREATE:-0}
+      DEV_ADMIN_EMAILS: ${DEV_ADMIN_EMAILS:-}
+      # No Compose o backend deve usar o hostname do serviço (nao localhost). Omita no `.env` para este default.
+      CLINICAL_AI_URL: ${CLINICAL_AI_URL:-http://clinical_ai:4010}
     ports:
       - "${BACKEND_PUBLISH_PORT:-3000}:3000"
     networks:
@@ -52,21 +60,73 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      clinical_ai:
+        condition: service_healthy
     restart: unless-stopped
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      # "/" = mesma origem (nginx faz proxy de /api e /ws). Funciona no celular na LAN sem apontar para localhost.
       args:
-        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:3000}
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/}
     container_name: prenatal_frontend
     ports:
       - "${FRONTEND_PUBLISH_PORT:-5173}:80"
     networks:
       - frontend-nw
+      - backend-nw
     depends_on:
       - backend
+    restart: unless-stopped
+
+  # RAG + composição de contexto (PII) — FastAPI; Ollama no host (porta 11434) via host.docker.internal
+  clinical_ai:
+    build:
+      context: ./clinical-ai
+      dockerfile: Dockerfile
+    container_name: prenatal_clinical_ai
+    environment:
+      OLLAMA_BASE_URL: ${CLINICAL_AI_OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen3.5:9b-medical-rag}
+      OLLAMA_THINK: ${OLLAMA_THINK:-false}
+      RAG_EMBEDDING_MODEL: ${RAG_EMBEDDING_MODEL:-nomic-embed-text}
+      RAG_CORPUS_DIR: ${RAG_CORPUS_DIR:-/app/corpus/CartilhasSUS}
+      RAG_VECTOR_STORE_PATH: ${RAG_VECTOR_STORE_PATH:-/app/data/rag_store.sqlite}
+      RAG_RECENCY_WEIGHT: ${RAG_RECENCY_WEIGHT:-0.35}
+      RAG_CHUNK_MAX_CHARS: ${RAG_CHUNK_MAX_CHARS:-1650}
+      RAG_CHUNK_OVERLAP: ${RAG_CHUNK_OVERLAP:-120}
+      RAG_QUERY_EXPAND_ENABLED: ${RAG_QUERY_EXPAND_ENABLED:-true}
+      # Think=ON: thinking+content partilham num_predict; teto MCP_CHAT_THINK_MAX_PREDICT evita loops longos (ver clinical_ai/main.py).
+      MCP_CHAT_MAX_TOKENS: ${MCP_CHAT_MAX_TOKENS:-4096}
+      MCP_CHAT_THINK_EXTRA_TOKENS: ${MCP_CHAT_THINK_EXTRA_TOKENS:-2048}
+      MCP_CHAT_THINK_NUM_PREDICT_FLOOR: ${MCP_CHAT_THINK_NUM_PREDICT_FLOOR:-2048}
+      MCP_CHAT_THINK_MAX_PREDICT: ${MCP_CHAT_THINK_MAX_PREDICT:-8192}
+      # Opcional: resposta via Google Gemini quando llm_provider=gemini ou fallback em auto (chave nunca no frontend).
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.0-flash}
+      GEMINI_TIMEOUT_S: ${GEMINI_TIMEOUT_S:-120}
+    ports:
+      - "127.0.0.1:${CLINICAL_AI_PUBLISH_PORT:-4010}:4010"
+    volumes:
+      - clinical_rag_data:/app/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - backend-nw
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:4010/health', timeout=8)",
+        ]
+      interval: 10s
+      timeout: 12s
+      retries: 6
+      start_period: 300s
     restart: unless-stopped
 
   # --- Placeholders IA (perfil opcional): ancorar na data-nw ---
@@ -91,4 +151,5 @@ networks:
 
 volumes:
   prenatal_pg_data:
+  clinical_rag_data:
   # ollama_data:

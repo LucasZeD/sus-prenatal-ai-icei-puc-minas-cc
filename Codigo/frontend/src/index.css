@@ -14,3 +14,17 @@ body,
 body {
   margin: 0;
 }
+
+/*
+  Lívia (desktop): metade da área útil = (viewport − menu lateral esquerdo).
+  MainLayout atualiza --app-nav-sidebar-width (0 com menu recolhido, 16rem com menu aberto — alinhado a lg:w-64).
+*/
+:root {
+  --app-nav-sidebar-width: 16rem;
+  --livia-aside-width: calc((100vw - var(--app-nav-sidebar-width)) * 0.5);
+}
+
+p {
+  text-align: justify;
+  text-wrap: pretty;
+}

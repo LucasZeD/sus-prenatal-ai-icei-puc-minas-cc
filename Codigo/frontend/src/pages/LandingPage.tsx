@@ -1,7 +1,68 @@
-import { useState, useEffect } from 'react'
+// import { useEffect, useId, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.js'
-import { getApiBaseUrl } from '../lib/apiBase.js'
+// import { getApiBaseUrl } from '../lib/apiBase.js'
+import { LandingCarousel, type LandingCarouselSlide } from '../components/landing/LandingCarousel.js'
+import { LandingPdfEmbed } from '../components/landing/LandingPdfEmbed.js'
+import { LANDING_OFFICIAL_DOCUMENTS } from '../data/landingOfficialDocuments.js'
+
+const demoVideoUrl = import.meta.env.VITE_LANDING_DEMO_VIDEO_URL as string | undefined
+
+const feedbackFormUrl = (import.meta.env.VITE_LANDING_FEEDBACK_FORM_URL as string | undefined)?.trim() || undefined
+
+const MS_CADERNETAS_PUBLICACOES =
+  'https://www.gov.br/saude/pt-br/composicao/saps/publicacoes/cadernetas-e-cartoes'
+
+const defaultSampleCartilhaPdf = '/assets/docs/CadernetaGestante/CadernetaGestante_8ed_rev_2024.pdf'
+
+const INTERFACE_SLIDES_META: { id: string; src: string; caption: string; alt: string }[] = [
+  {
+    id: 'dashboard',
+    src: '/assets/interfaces/02_dashboard_editted.png',
+    caption: 'Painel Geral da Profissional de Saúde',
+    alt: 'Captura da agenda do sistema: lista de consultas e resumo do dia',
+  },
+  {
+    id: 'pacientes',
+    src: '/assets/interfaces/03_pacientes_lista.png',
+    caption: 'Lista de Pacientes Cadastradas',
+    alt: 'Captura da lista de pacientes do sistema',
+  },
+  {
+    id: 'prontuario',
+    src: '/assets/interfaces/04_paciente_detalhe.png',
+    caption: 'Prontuário e dados da gestante',
+    alt: 'Captura do prontuário eletrónico com dados clínicos da gestante',
+  },
+  {
+    id: 'escriba',
+    src: '/assets/interfaces/05_escriba_consulta.png',
+    caption: 'Escriba durante a consulta',
+    alt: 'Captura do modo escriba com transcrição e revisão da consulta',
+  },
+]
+
+function StackTechLink({
+  href,
+  children,
+  className = '',
+}: {
+  href: string
+  children: React.ReactNode
+  className?: string
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${className} text-inherit no-underline outline-none ring-brand-pink focus-visible:ring-2 focus-visible:ring-offset-2`}
+    >
+      {children}
+    </a>
+  )
+}
 
 export function LandingPage() {
   const { login, loginState, token } = useAuth()
@@ -9,15 +70,29 @@ export function LandingPage() {
   const location = useLocation()
   const from = (location.state as { from?: string } | null)?.from ?? '/dashboard'
 
-  // Se já estiver logado, redireciona magicamente pro Dashboard
+  const sampleCartilhaPdf =
+    (import.meta.env.VITE_LANDING_SAMPLE_CARTILHA_PDF_URL as string | undefined)?.trim() || defaultSampleCartilhaPdf
+
+  const [lightbox, setLightbox] = useState<{ src: string; caption: string } | null>(null)
+  // const hostingDetailsId = useId()
+
   useEffect(() => {
     if (token) navigate(from, { replace: true })
   }, [token, navigate, from])
 
+  useEffect(() => {
+    if (!lightbox) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setLightbox(null)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [lightbox])
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const apiBase = getApiBaseUrl()
+  // const apiBase = getApiBaseUrl()
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -27,217 +102,592 @@ export function LandingPage() {
     }
   }
 
-  return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
-      {/* SECTION 1: HERO & LOGIN */}
-      <div className="flex w-full flex-col md:flex-row min-h-screen bg-white">
-        
-        {/* Lado Esquerdo - Info e Form */}
-        <div className="flex w-full flex-col justify-center px-8 py-12 md:w-1/2 lg:px-24 xl:px-32 relative z-10 bg-white">
-          <div className="mx-auto w-full max-w-md">
-            <div className="flex items-center gap-3">
-              <img src="/assets/imagem_logo_transparente.png" alt="Pré-natal Digital Logo" className="h-10 w-10 object-contain drop-shadow-sm" />
-              <h1 className="text-2xl font-black tracking-tight text-brand-navy">Pré-Natal Digital</h1>
-            </div>
+  const interfaceCarouselSlides: LandingCarouselSlide[] = useMemo(
+    () =>
+      INTERFACE_SLIDES_META.map((m) => ({
+        id: m.id,
+        content: (
+          <figure className="mx-auto max-w-4xl">
+            <button
+              type="button"
+              className="group relative w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-sm focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-pink"
+              onClick={() => setLightbox({ src: m.src, caption: m.caption })}
+            >
+              <img
+                src={m.src}
+                alt={m.alt}
+                className="aspect-[16/10] w-full object-cover object-top transition group-hover:opacity-95"
+              />
+              <span className="absolute bottom-3 right-3 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700 shadow">
+                Ampliar
+              </span>
+            </button>
+            <figcaption className="mt-4 text-center text-base font-semibold text-slate-700">{m.caption}</figcaption>
+          </figure>
+        ),
+      })),
+    [],
+  )
 
-            <div className="mt-10">
-              <h2 className="text-4xl font-black tracking-tight text-brand-navy sm:text-5xl leading-tight">
-                Inteligência <span className="text-brand-pink">Artificial</span> para a Saúde Materna
-              </h2>
-              <p className="mt-4 text-lg text-slate-600 leading-relaxed font-medium">
-                Uma solução arquitetural do TCC da PUC-Minas integrando LLMs locais, reconhecimento de voz e dados seguros.
+  const officialDocsSlides: LandingCarouselSlide[] = useMemo(
+    () =>
+      LANDING_OFFICIAL_DOCUMENTS.map((d) => ({
+        id: d.id,
+        content: (
+          <div className="mx-auto max-w-4xl">
+            <div className="mb-4 text-left">
+              <h3 className="text-lg font-semibold text-brand-navy sm:text-xl">{d.title}</h3>
+              <p className="mt-1 text-sm text-slate-500">
+                {d.publisher} · {d.year}
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">{d.blurb}</p>
+            </div>
+            {d.localPdfPath ? (
+              <LandingPdfEmbed pdfUrl={d.localPdfPath} title={d.title} openLabel="Abrir PDF" />
+            ) : (
+              <div className="flex h-48 items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50">
+                <p className="text-sm text-slate-500">PDF disponível apenas no site do órgão emissor.</p>
+              </div>
+            )}
+            <div className="mt-3 flex flex-wrap gap-3">
+              <a
+                href={d.officialPdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-xl bg-brand-navy px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-pink"
+              >
+                Abrir PDF oficial
+              </a>
+              <span className="self-center text-xs text-slate-500">Abre no site do órgão emissor.</span>
+            </div>
+          </div>
+        ),
+      })),
+    [],
+  )
+
+  return (
+    <div className="flex min-h-screen flex-col bg-slate-50 font-sans text-slate-800">
+      {lightbox ? (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label={lightbox.caption}
+          onClick={() => setLightbox(null)}
+        >
+          <div
+            className="relative max-h-[92vh] w-full max-w-5xl rounded-2xl bg-white p-2 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="absolute right-3 top-3 z-10 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-brand-navy shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-pink"
+              onClick={() => setLightbox(null)}
+            >
+              Fechar
+            </button>
+            <img
+              src={lightbox.src}
+              alt={lightbox.caption}
+              className="max-h-[85vh] w-full rounded-xl object-contain"
+            />
+            <p className="px-2 pb-2 pt-2 text-center text-sm font-medium text-slate-600">{lightbox.caption}</p>
+          </div>
+        </div>
+      ) : null}
+
+      <header className="border-b border-slate-200 bg-white">
+        <div className="mx-auto flex max-w-6xl items-center gap-3 px-6 py-4">
+          <img
+            src="/assets/imgs/imagem_logo_transparente.png"
+            alt=""
+            className="h-11 w-11 object-contain"
+            width={44}
+            height={44}
+          />
+          <span className="text-xl font-semibold tracking-tight text-brand-navy">Pré-Natal Digital</span>
+          <a
+            href="#feedback-interesse"
+            className="ml-auto text-sm font-semibold text-brand-navy underline decoration-brand-pink/50 decoration-2 underline-offset-4 hover:text-brand-pink focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-pink"
+          >
+            Sugestões e feedback
+          </a>
+        </div>
+      </header>
+
+      <section className="relative overflow-hidden bg-white px-6 pb-16 pt-12 sm:pb-24 sm:pt-16">
+        {/* Background image – visible on lg+ as left column, hidden on mobile */}
+        {/* <div className="pointer-events-none absolute inset-0 hidden lg:block" aria-hidden>
+          <img
+            src="/assets/imgs/imagem_logo.png"
+            alt=""
+            className="absolute bottom-0 left-0 h-full w-[52%] object-contain object-left-bottom opacity-[0.12]"
+          />
+        </div> */}
+
+        <div className="relative mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-14">
+          {/* Left: illustration (visible on all sizes, prominent on mobile) */}
+          <div className="flex items-center justify-center lg:justify-start">
+            <div className="w-full max-w-md overflow-hidden rounded-3xl border border-slate-200 bg-slate-50/80 p-6 shadow-sm backdrop-blur-sm sm:p-8 lg:max-w-none">
+              <img
+                src="/assets/imgs/imagem_logo.png"
+                alt="Ilustração da plataforma de pré-natal"
+                className="h-auto w-full rounded-2xl object-cover"
+              />
+            </div>
+          </div>
+
+          {/* Right: title + subtitle + feature list */}
+          <div className="text-left">
+            <p className="text-xs font-semibold uppercase tracking-wide text-brand-pink">Trabalho de Conclusão de Curso · PUC Minas · Ciência da Computação</p>
+            <h1 className="mt-4 text-3xl font-semibold leading-tight tracking-tight text-brand-navy sm:text-4xl lg:text-5xl">
+              IA Responsável para o <span className="text-brand-pink">Pré-Natal</span> no SUS
+            </h1>
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
+              O sistema transcreve a consulta, pré-preenche a ficha para revisão da equipe, e responde dúvidas clínicas com referências aos manuais oficiais do Ministério da Saúde.
+            </p>
+
+            <div className="mt-8 border-t border-slate-200 pt-8">
+              <h2 className="text-xl font-semibold tracking-tight text-brand-navy sm:text-2xl">Pensado para a rotina dos Profissionais de Saúde.</h2>
+              <p className="mt-3 text-base leading-relaxed text-slate-600">
+                Para quem atende muitas gestantes por dia. Esse sistema realiza escuta ativa sem digitar, pré preenchimento de registros clínicos e apoio clínico com fontes do SUS.
               </p>
             </div>
 
-            <div className="mt-10 rounded-3xl border border-slate-100 bg-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-              <h2 className="text-lg font-black text-brand-navy">Acesso Profissional</h2>
-              <p className="mt-1 text-sm text-slate-500 font-medium">Insira suas credenciais seguras para teste do MVP.</p>
+            <ul className="mt-6 space-y-4 text-base leading-relaxed text-slate-700">
+              <li className="flex gap-3">
+                <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-brand-pink" aria-hidden />
+                <span>
+                  <strong className="font-semibold text-brand-navy">Escriba digital:</strong> a consulta é transcrita localmente e a ficha é pré-preenchida. Você revisa os dados inseridos pela IA, decide se aprova e então grava no prontuário da gestante.
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-brand-pink" aria-hidden />
+                <span>
+                  <strong className="font-semibold text-brand-navy">Assistente LívIA:</strong> responde suas dúvidas clínicas com trechos retirados dos manuais oficiais do Ministério da Saúde, sempre indicando a fonte e a página para conferência em segundos.
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-brand-pink" aria-hidden />
+                <span>
+                  <strong className="font-semibold text-brand-navy">Estratificação de risco:</strong> o painel calcula a classificação de risco gestacional com regras explícitas do Guia de Atenção à Saúde da Gestante (MG/SES, 2024), atualizada quando os dados clínicos mudam.
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
-              <form className="mt-6 flex flex-col gap-4" onSubmit={(e) => void onSubmit(e)}>
-                <label className="text-sm font-bold text-slate-700">
-                  E-mail institucional
-                  <input
-                    type="email"
-                    autoComplete="username"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="mt-1.5 block w-full rounded-2xl border-0 py-3 px-4 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-pink focus:bg-brand-pink/5 transition-colors sm:text-sm font-medium"
-                    placeholder="medica@unidade.gov.br"
-                    required
-                  />
-                </label>
-                <label className="text-sm font-bold text-slate-700">
-                  Senha
-                  <input
-                    type="password"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="mt-1.5 block w-full rounded-2xl border-0 py-3 px-4 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-pink focus:bg-brand-pink/5 transition-colors sm:text-sm font-medium"
-                    required
-                  />
-                </label>
-                <div className="mt-2">
-                  <button
-                    type="submit"
-                    disabled={loginState.kind === 'loading'}
-                    className="flex w-full items-center justify-center rounded-2xl bg-brand-pink px-4 py-3.5 text-sm font-black text-white shadow-[0_4px_14px_0_rgba(251,160,167,0.39)] hover:bg-rose-400 hover:shadow-[0_6px_20px_rgba(251,160,167,0.23)] hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-pink disabled:opacity-60 disabled:hover:translate-y-0 transition-all uppercase tracking-wider"
-                  >
-                    {loginState.kind === 'loading' ? 'Autenticando...' : 'Entrar'}
-                  </button>
-                </div>
-                {loginState.kind === 'error' ? (
-                  <div className="mt-2 text-sm text-red-600 bg-red-50 p-4 rounded-xl border border-red-100 font-bold">{loginState.message}</div>
-                ) : null}
-              </form>
+      <section className="relative overflow-hidden bg-white px-6 pb-16 pt-12 sm:pb-24 sm:pt-16">
+        <div className="relative mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-14">
+          {/* Left: */}
+          <div className="flex items-center justify-center lg:justify-start">
+            <div className="mx-auto w-full max-w-md">
+              <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
+                <h2 id="acesso-titulo" className="text-lg font-semibold text-brand-navy">
+                  Acesso profissional
+                </h2>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  Entre com as credenciais do ambiente de demonstração para explorar o painel.
+                </p>
+
+                <form className="mt-8 flex flex-col gap-5" onSubmit={(e) => void onSubmit(e)}>
+                  <label className="text-sm font-semibold text-slate-800">
+                    E-mail
+                    <input
+                      type="email"
+                      autoComplete="username"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="mt-2 block w-full rounded-xl border-0 py-3 px-4 text-base text-slate-900 shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:bg-brand-pink/5 focus:ring-2 focus:ring-inset focus:ring-brand-pink"
+                      placeholder="nome@unidade.gov.br"
+                      required
+                    />
+                  </label>
+                  <label className="text-sm font-semibold text-slate-800">
+                    Senha
+                    <input
+                      type="password"
+                      autoComplete="current-password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="mt-2 block w-full rounded-xl border-0 py-3 px-4 text-base text-slate-900 shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:bg-brand-pink/5 focus:ring-2 focus:ring-inset focus:ring-brand-pink"
+                      required
+                    />
+                  </label>
+                  <div className="pt-1">
+                    <button
+                      type="submit"
+                      disabled={loginState.kind === 'loading'}
+                      className="flex min-h-[3rem] w-full items-center justify-center rounded-xl bg-brand-pink px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400 focus-visible:outline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-pink disabled:opacity-60"
+                    >
+                      {loginState.kind === 'loading' ? 'A entrar…' : 'Entrar'}
+                    </button>
+                  </div>
+                  {loginState.kind === 'error' ? (
+                    <div className="rounded-xl border border-red-100 bg-red-50 p-4 text-sm font-medium text-red-700">
+                      {loginState.message}
+                    </div>
+                  ) : null}
+                </form>
+              </div>
             </div>
-            
-            <p className="mt-8 text-center text-xs text-slate-400 font-medium">
-              Arquitetura Zero-Trust • Conexão Local <span className="font-mono bg-slate-100 px-2 py-0.5 rounded ml-1">{apiBase}</span>
+          </div>
+
+          {/* Right: */}
+          <div className="text-right">
+            <div className="mx-auto max-w-4xl text-center">
+              <h2 id="demo-titulo" className="text-2xl font-semibold tracking-tight text-brand-navy sm:text-3xl">
+                Vídeo de demonstração
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
+                Veja uma demonstração abaixo de como realizar a consulta através da interface.
+              </p>
+              <div className="mt-10 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                {demoVideoUrl ? (
+                  <iframe
+                    title="Demonstração em vídeo do Pré-Natal Digital"
+                    src={demoVideoUrl}
+                    className="aspect-video w-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <div className="flex aspect-video flex-col items-center justify-center gap-2 bg-slate-100 px-6 text-center">
+                    <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium uppercase tracking-wide text-slate-500">
+                      Vídeo em preparação
+                    </span>
+                    <p className="max-w-md text-sm text-slate-600">
+                      Veja em breve uma demonstração de como realizar a consulta através da interface.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-slate-200 bg-white px-6 py-16 sm:py-20" aria-labelledby="contexto-titulo">
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center">
+            <h2 id="contexto-titulo" className="text-2xl font-semibold tracking-tight text-brand-navy sm:text-3xl">
+              Da cartilha de gestantes à tela do profissional.
+            </h2>
+            <p className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">
+              A Caderneta da Gestante continua orientando o cuidado. O desafio é alinhar o registro ao tempo da consulta, reduzindo a sobrecarga cognitiva da equipe.
             </p>
-            
-            <div className="mt-12 flex items-center justify-center animate-bounce text-slate-300">
-               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-               </svg>
+          </div>
+
+          <div className="mt-12 grid gap-8 md:grid-cols-2 md:gap-10">
+            <div className="rounded-2xl border border-brand-pink/30 bg-rose-50/40 p-8 shadow-sm sm:p-9">
+              <h3 className="text-lg font-semibold text-brand-navy">Desafios do dia a dia</h3>
+              <ol className="mt-5 list-decimal list-inside space-y-3 text-base leading-relaxed text-slate-700">
+                <li>Preenchimento do sistema de pré-natal interno e da cartilha manual ao mesmo tempo.</li>
+                <li>Consulta a manuais em PDF ou papel no meio do horário corrido.</li>
+                <li>Atenção a detalhes clínicos de procedimentos recomendados pelo Ministério da Saúde.</li>
+                <li>Atenção repartida entre escuta, teclado e procura de referência.</li>
+              </ol>
+            </div>
+            <div className="rounded-2xl border border-emerald-200 bg-emerald-50/40 p-8 shadow-sm sm:p-9">
+              <h3 className="text-lg font-semibold text-brand-navy">O que o sistema acrescenta</h3>
+              <ol className="mt-5 list-decimal list-inside space-y-3 text-base leading-relaxed text-slate-800">
+                <li>Transcrição da consulta pré-preenche a ficha, que é revisada antes de gravar.</li>
+                <li>
+                  Busca em trechos de <strong className="font-semibold text-brand-navy">cartilhas e manuais públicos</strong> indexados, com referência à fonte e página.
+                </li>
+                <li>
+                  Classificação de risco gestacional com regras explícitas do Guia de Estratificação (MG/SES, 2024), atualizada conforme os dados clínicos mudam.
+                </li>
+                <li>
+                  Banco de dados estruturado de acordo com a <strong className="font-semibold text-brand-navy">Cartilha de Gestante de 2024</strong> podendo ser exportado via API para o banco de dados da instituição.
+                </li>
+              </ol>
+            </div>
+          </div>
+
+          <div className="mt-10 rounded-2xl border border-slate-200 bg-slate-50/50 p-8 shadow-sm sm:p-9">
+            <h3 className="text-lg font-semibold text-emerald-800">Nossa preocupação com a segurança.</h3>
+            <p className="mt-3 text-base leading-relaxed text-slate-700">
+              O sistema foi desenvolvido em conformidade com a LGPD. Nenhum dado sensível ou áudio bruto sai do servidor local. A arquitetura on-premise em containers Docker garante que todo o processamento (transcrição, busca em manuais e inferência de IA) ocorra na rede interna da instituição, em conformidade com a LGPD. Dados de identificação pessoal são anonimizados antes de qualquer processamento por IA.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-slate-200 bg-slate-50 px-6 py-16 sm:py-20" aria-labelledby="refs-titulo">
+        <div className="mx-auto max-w-6xl">
+          <h2 id="refs-titulo" className="text-center text-2xl font-semibold tracking-tight text-brand-navy sm:text-3xl">
+            Documentos públicos que sustentam o apoio à decisão
+          </h2>
+          <p className="mx-auto mt-4 max-w-3xl text-center text-base leading-relaxed text-slate-600 sm:text-lg">
+            O assistente procura respostas em material do Ministério da Saúde, de estados e de outras fontes oficiais. Abaixo veja todos os documentos que o agente usa como conhecimento para dar respostas.
+          </p>
+          <div className="mx-auto mt-10 max-w-4xl">
+            <LandingCarousel ariaLabel="Lista de documentos oficiais em carrossel" slides={officialDocsSlides} />
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-slate-200 bg-gradient-to-b from-white to-slate-50/60 px-6 py-16 sm:py-20" aria-labelledby="materiais-titulo">
+        <div className="mx-auto max-w-6xl">
+          {/* Header */}
+          <div className="text-center">
+            {/* <p className="text-xs font-semibold uppercase tracking-wide text-brand-pink">Do papel à plataforma</p> */}
+            <h2 id="materiais-titulo" className="mt-2 text-2xl font-semibold tracking-tight text-brand-navy sm:text-3xl">
+              Digitalização do cuidado
+            </h2>
+            <p className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">
+              Digitalizamos a cartilha de acompanhamento de pré-natal do Ministério da Saúde para evitar o preenchimento manual e otimizar o tempo da equipe.
+            </p>
+          </div>
+
+          {/* Two-column: PDF left + narrative right */}
+          <div className="mt-12 grid items-start gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
+            {/* Left: PDF embed */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+              <div className="mb-4 flex items-center gap-3">
+                {/* <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-pink/10 text-lg">📋</span> */}
+                <div>
+                  <h3 className="text-base font-semibold text-brand-navy">Caderneta da Gestante</h3>
+                  <p className="text-xs text-slate-500">8.ª ed. revista · Ministério da Saúde · 2024</p>
+                </div>
+              </div>
+              <LandingPdfEmbed
+                pdfUrl={sampleCartilhaPdf}
+                title="Caderneta da Gestante 8.ª edição revista 2024"
+              />
+              <div className="mt-4 flex flex-wrap gap-2">
+                <a
+                  href={sampleCartilhaPdf}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-brand-navy transition hover:border-brand-pink/40 hover:shadow-sm"
+                >
+                  <span aria-hidden>↗</span> Abrir PDF
+                </a>
+                <a
+                  href={MS_CADERNETAS_PUBLICACOES}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-brand-navy transition hover:bg-slate-50"
+                >
+                  Mais cadernetas (gov.br)
+                </a>
+              </div>
+            </div>
+
+            {/* Right: narrative */}
+            <div className="flex flex-col gap-6">
+              <div className="rounded-2xl border border-brand-pink/20 bg-rose-50/50 p-6">
+                <h3 className="flex items-center gap-2 text-base font-semibold text-brand-navy">
+                  {/* <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-pink/15 text-sm">📝</span> */}
+                  Preenchimento manual
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  A equipe preenchia a caderneta física e o sistema interno ao mesmo tempo duplicando esforço e aumentando o risco de campos vazios ou inconsistentes.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-emerald-200 bg-emerald-50/50 p-6">
+                <h3 className="flex items-center gap-2 text-base font-semibold text-brand-navy">
+                  {/* <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100 text-sm">✅</span> */}
+                  Campos digitalizados
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  O banco de dados do sistema foi modelado a partir da caderneta oficial. Cada campo da cartilha tem correspondência direta no prontuário digital, podendo ser exportado via API para o sistema da instituição.
+                </p>
+              </div>
+              <div className="rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+                <p className="text-sm leading-relaxed text-slate-600">
+                  Menos retrabalho, dados mais completos e horas ganhas para cuidar de quem mais precisa.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Interface screenshots */}
+          <div className="mt-16">
+            <h3 className="mb-6 text-center text-xl font-semibold tracking-tight text-brand-navy sm:text-2xl">
+              Veja o sistema em funcionamento
+            </h3>
+            <div className="mx-auto max-w-5xl">
+              <LandingCarousel ariaLabel="Imagens do sistema em carrossel" slides={interfaceCarouselSlides} />
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Lado Direito - Ilustração (Usando Asset Fornecido) */}
-        <div className="relative hidden w-1/2 bg-rose-50/30 md:flex flex-col items-center justify-center border-l border-brand-pink/10 overflow-hidden">
-           {/* Decorative Blobs */}
-          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-[40rem] h-[40rem] rounded-full bg-gradient-to-br from-brand-pink/20 to-rose-300/30 blur-3xl mix-blend-multiply"></div>
-          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-[30rem] h-[30rem] rounded-full bg-gradient-to-tr from-brand-pink/20 to-rose-400/20 blur-3xl mix-blend-multiply"></div>
+      <div className="border-t border-slate-200 bg-white py-16 sm:py-20">
+        {/* <div className="mx-auto max-w-6xl px-6"> */}
+          {/* <div className="mt-16 border-t border-slate-200 pt-12"> */}
+            <div className="mb-10 text-center">
+              <h3 className="text-xl font-semibold tracking-tight text-brand-navy sm:text-2xl">Infraestrutura e modelos de IA.</h3>
+              <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
+                Interface web (React/Vite), API (Node.js/Hono), banco relacional (PostgreSQL/Prisma) e modelos de voz e linguagem em contêineres Docker na rede local. O modelo principal (Qwen 3.5 9B, quantização Q4) foi escolhido pelo melhor equilíbrio entre latência e precisão clínica em hardware com 16 GB de VRAM.
+              </p>
+            </div>
 
-          <div className="relative z-10 w-full max-w-lg rounded-[2.5rem] border border-brand-pink/10 bg-white/40 shadow-2xl backdrop-blur-md mx-12 overflow-hidden flex items-center justify-center">
-            <img src="/assets/imagem_logo.png" alt="Plataforma Integrada SUS" className="w-full h-auto object-cover opacity-90 transition-transform duration-700 hover:scale-[1.02]" />
+            <div className="mx-auto flex max-w-6xl flex-wrap justify-center gap-3 px-2">
+              <StackTechLink
+                href="https://vite.dev/"
+                className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-sky-200 hover:shadow"
+              >
+                <img src="/assets/icons/black-nextjs-icon-svgrepo-com.svg" alt="" className="h-9 w-9 opacity-80" />
+                <span className="text-center text-xs font-medium text-slate-600">React / Vite</span>
+              </StackTechLink>
+
+              <StackTechLink
+                href="https://tailwindcss.com/"
+                className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-sky-300 hover:shadow"
+              >
+                <img src="/assets/icons/blue_tailwind-css-svgrepo-com.svg" alt="" className="h-9 w-9" />
+                <span className="text-center text-xs font-medium text-slate-600">Tailwind v4</span>
+              </StackTechLink>
+
+              <StackTechLink
+                href="https://www.postgresql.org/"
+                className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-blue-200 hover:shadow"
+              >
+                <img src="/assets/icons/color-postgresql-logo-svgrepo-com.svg" alt="" className="h-9 w-9" />
+                <span className="text-center text-xs font-medium text-slate-600">PostgreSQL</span>
+              </StackTechLink>
+
+              <StackTechLink
+                href="https://www.prisma.io/"
+                className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-indigo-200 hover:shadow"
+              >
+                <img src="/assets/icons/color-Prisma_Prisma-IndigoSymbol_0.svg" alt="" className="h-9 w-9 object-contain" />
+                <span className="text-center text-xs font-medium text-slate-600">Prisma ORM</span>
+              </StackTechLink>
+
+              <StackTechLink
+                href="https://github.com/SYSTRAN/faster-whisper"
+                className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-slate-300 hover:shadow"
+              >
+                <img src="/assets/icons/color-Whisper_(app)_logo.svg" alt="" className="h-9 w-9" />
+                <span className="text-center text-xs font-medium text-slate-600">Faster-Whisper (STT)</span>
+              </StackTechLink>
+
+              <StackTechLink
+                href="https://ollama.com/library/llama3.1"
+                className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-slate-300 hover:shadow"
+              >
+                <img src="/assets/icons/dark_ollama.svg" alt="" className="h-9 w-9" />
+                <span className="text-center text-xs font-medium text-slate-600">Llama 3.1 8B Q6_K</span>
+              </StackTechLink>
+
+              <StackTechLink
+                href="https://ollama.com/library/gemma3"
+                className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-slate-300 hover:shadow"
+              >
+                <img src="/assets/icons/dark_gemma-color.svg" alt="" className="h-9 w-9" />
+                <span className="text-center text-xs font-medium text-slate-600">Gemma 3 12B Q6_K</span>
+              </StackTechLink>
+
+              <StackTechLink
+                href="https://github.com/QwenLM/Qwen3"
+                className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-slate-300 hover:shadow"
+              >
+                <img src="/assets/icons/dark_qwen-color.svg" alt="" className="h-9 w-9" />
+                <span className="text-center text-xs font-medium text-slate-600">Qwen 3.5 9B Q6_K</span>
+              </StackTechLink>
+            </div>
+          {/* </div> */}
+        {/* </div> */}
+      </div>
+
+      <section className="border-t border-slate-200 bg-slate-50 px-6 py-16 sm:py-20" aria-labelledby="metricas-titulo">
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center">
+            <p className="text-xs text-center font-semibold uppercase tracking-wide text-brand-pink">Validação</p>
+            <h2 id="metricas-titulo" className="mt-2 text-2xl font-semibold tracking-tight text-brand-navy sm:text-3xl">
+              Métricas e resultados
+            </h2>
+            <p className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-slate-600 sm:text-lg">
+              Os testes a seguir estão em andamento e serão publicados nesta seção assim que concluídos.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center shadow-sm">
+              <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-700">Em breve</span>
+              <h3 className="mt-4 text-lg font-semibold text-brand-navy">Latência de transcrição</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                Tempo médio de resposta do Faster-Whisper em hardware local com diferentes durações de áudio.
+              </p>
+            </div>
+            <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center shadow-sm">
+              <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-700">Em breve</span>
+              <h3 className="mt-4 text-lg font-semibold text-brand-navy">Precisão do RAG</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                Avaliação da qualidade dos trechos recuperados frente a casos clínicos sintéticos baseados na Caderneta.
+              </p>
+            </div>
+            <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center shadow-sm">
+              <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-700">Em breve</span>
+              <h3 className="mt-4 text-lg font-semibold text-brand-navy">Mitigação de alucinações</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                O sistema força a exibição da fonte exata do manual em cada resposta, permitindo verificação humana imediata.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* SECTION 2: TECNOLOGIAS E ARQUITETURA */}
-      <div className="py-24 bg-slate-50 border-t border-slate-200">
-         <div className="max-w-6xl mx-auto px-6">
-            
-            <div className="text-center mb-16">
-               <span className="text-sm font-black text-brand-pink tracking-widest uppercase mb-3 block">Arquitetura de Software</span>
-               <h2 className="text-3xl sm:text-4xl font-black text-brand-navy tracking-tight">Privacidade by Design & Zero Trust</h2>
-               <p className="mt-4 text-lg text-slate-500 max-w-2xl mx-auto font-medium">Apresentando os módulos de inteligência criados para o projeto de Trabalho de Conclusão de Curso visando o contexto público municipal.</p>
+      <section
+        id="feedback-interesse"
+        className="border-t border-slate-200 bg-slate-50 px-6 py-14 sm:py-18"
+        aria-labelledby="feedback-titulo"
+      >
+        <div className="mx-auto max-w-2xl rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-10">
+          <p className="text-xs font-semibold uppercase tracking-wide text-brand-pink">Participação</p>
+          <h2 id="feedback-titulo" className="mt-2 text-xl font-semibold tracking-tight text-brand-navy sm:text-2xl">
+            Sua opinião importa
+          </h2>
+          <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
+            Profissional de saúde, pesquisador ou avaliador: queremos ouvir críticas, sugestões e ideias para evoluir este projeto. Sua experiência é o que torna esta ferramenta relevante.
+          </p>
+          {feedbackFormUrl ? (
+            <div className="mt-8">
+              <a
+                href={feedbackFormUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-[3rem] items-center justify-center rounded-xl bg-brand-pink px-8 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400 focus-visible:outline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-pink"
+              >
+                Abrir formulário
+              </a>
+              <p className="mt-3 text-xs text-slate-500">Abre numa nova página; não precisa de conta neste site.</p>
             </div>
+          ) : (
+            <p className="mt-8 text-sm text-slate-600">
+              O link para o formulário de feedback será adicionado em breve.
+            </p>
+          )}
+        </div>
+      </section>
 
-            <div className="grid md:grid-cols-3 gap-8">
-               
-               <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col items-start gap-4 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
-                  <div className="h-16 w-16 p-3 rounded-2xl bg-brand-pink/5 border border-brand-pink/20 flex items-center justify-center">
-                     <img src="/assets/icons/color-Whisper_(app)_logo.svg" alt="Whisper Icon" className="w-full h-full object-contain" />
-                  </div>
-                  <h3 className="text-xl font-black text-brand-navy mt-2">Escriba Digital</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed font-medium">
-                     Transcreve diálogos da consulta em tempo real (OpenAI Whisper) e utiliza LLMs parametrizados (RAG) para preenchimento estruturado da Caderneta da Gestante.
-                  </p>
-               </div>
-               
-               <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col items-start gap-4 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
-                  <div className="h-16 w-16 p-3 rounded-2xl bg-brand-navy/5 border border-brand-navy/10 flex items-center justify-center">
-                     <img src="/assets/icons/color-gemini-color.svg" alt="Gemini Icon" className="w-full h-full object-contain drop-shadow" />
-                  </div>
-                  <h3 className="text-xl font-black text-brand-navy mt-2">LívIA Assistant</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed font-medium">
-                     Agente de segunda opinião médica integrado ao dashboard. Responde a dúvidas clínicas em segundos, analisa riscos a partir de Mapeamentos DER e mantém histórico.
-                  </p>
-               </div>
-               
-               <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col items-start gap-4 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
-                  <div className="h-16 w-16 p-3 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
-                     <img src="/assets/icons/pink-personal-data-security-interface-symbol-svgrepo-com.svg" alt="Security Icon" className="w-full h-full object-contain opacity-80" />
-                  </div>
-                  <h3 className="text-xl font-black text-brand-navy mt-2">Agente Integrado</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed font-medium">
-                     Agentes que expandem a visão arquitetural para a triagem remota de pacientes utilizando interfaces conversacionais limpas focadas em dados abertos sem fricção.
-                  </p>
-               </div>
-               
-            </div>
-
-            <div className="mt-20 border-t border-slate-200 pt-16">
-                <div className="text-center mb-12">
-                   <h3 className="text-2xl font-black text-brand-navy tracking-tight">Stack Tecnológico Oficial & Modelos Locais</h3>
-                   <p className="mt-3 text-slate-500 max-w-xl mx-auto font-medium text-sm">Tecnologias modulares de ponta viabilizando uma arquitetura de IA segura, utilizando LLMs embarcados e Zero-Trust.</p>
-                </div>
-
-                <div className="flex flex-wrap justify-center gap-4 max-w-6xl mx-auto px-4">
-
-                  <div className="flex flex-wrap justify-center gap-4">
-                    {/* Frontend */}
-                   <div className="flex flex-col items-center justify-center gap-3 p-5 bg-white border border-slate-200 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-sky-200 transition-all cursor-default">
-                      <img src="/assets/icons/black-nextjs-icon-svgrepo-com.svg" alt="React" className="h-10 w-10 opacity-80" />
-                      <span className="text-xs font-bold text-slate-600 text-center">React / Vite</span>
-                   </div>
-                   
-                   <div className="flex flex-col items-center justify-center gap-3 p-5 bg-white border border-slate-200 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-sky-300 transition-all cursor-default">
-                      <img src="/assets/icons/blue_tailwind-css-svgrepo-com.svg" alt="Tailwind" className="h-10 w-10 drop-shadow-sm" />
-                      <span className="text-xs font-bold text-slate-600 text-center">Tailwind v4</span>
-                   </div>
-
-                   {/* Database */}
-                   <div className="flex flex-col items-center justify-center gap-3 p-5 bg-white border border-slate-200 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-blue-300 transition-all cursor-default">
-                      <img src="/assets/icons/color-postgresql-logo-svgrepo-com.svg" alt="Postgres" className="h-10 w-10" />
-                      <span className="text-xs font-bold text-slate-600 text-center">PostgreSQL</span>
-                   </div>
-                   
-                   <div className="flex flex-col items-center justify-center gap-3 p-5 bg-white border border-slate-200 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-indigo-300 transition-all cursor-default">
-                      <img src="/assets/icons/color-Prisma_Prisma-IndigoSymbol_0.svg" alt="Prisma" className="h-10 w-10 object-contain drop-shadow-sm" />
-                      <span className="text-xs font-bold text-slate-600 text-center">Prisma ORM</span>
-                   </div>
-                  </div>
-
-                  {/* Linha 2: IA Ecosystem (Forçada para baixo) */}
-                  <div className="flex flex-wrap justify-center gap-4">
-                    {/* AI Ecosystem */}
-                    <div  className="flex flex-col items-center justify-center gap-3 p-5 bg-white border border-slate-200 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-slate-800 transition-all cursor-default relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <img src="/assets/icons/light_langchain-color.svg" alt="LangChain" className="h-10 w-10 relative z-10 group-hover:invert transition-all" />
-                        <span className="text-xs font-bold text-slate-600 group-hover:text-white relative z-10 text-center transition-all"><a href="https://www.langchain.com/" target="_blank" rel="noopener noreferrer">LangChain</a></span>
-                    </div>
-                    <div className="flex flex-col items-center justify-center gap-3 p-5 bg-white border border-slate-200 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-slate-800 transition-all cursor-default relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <img src="/assets/icons/color-Whisper_(app)_logo.svg" alt="Faster-Whisper" className="h-10 w-10 relative z-10 group-hover:invert transition-all" />
-                        <span className="text-xs font-bold text-slate-600 group-hover:text-white relative z-10 text-center transition-all"><a href="https://pypi.org/project/faster-whisper/0.3.0/" target="_blank" rel="noopener noreferrer">Faster-Whisper (STT)</a></span>
-                    </div>
-
-                    {/* Local Models */}
-                    <div className="flex flex-col items-center justify-center gap-3 p-5 bg-white border border-slate-200 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-slate-800 transition-all cursor-default relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <img src="/assets/icons/dark_ollama.svg" alt="Ollama" className="h-10 w-10 relative z-10 group-hover:invert transition-all" />
-                        <span className="text-xs font-bold text-slate-600 group-hover:text-white relative z-10 text-center transition-all"><a href="https://ollama.com/library/llama3.1" target="_blank" rel="noopener noreferrer">Llama 3.1 8B Q6_K</a></span>
-                    </div>
-                    <div className="flex flex-col items-center justify-center gap-3 p-5 bg-white border border-slate-200 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-slate-800 transition-all cursor-default relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <img src="/assets/icons/dark_gemma-color.svg" alt="Gemma" className="h-10 w-10 relative z-10 group-hover:invert transition-all" />
-                        <span className="text-xs font-bold text-slate-600 group-hover:text-white relative z-10 text-center transition-all"><a href="https://ollama.com/library/gemma3" target="_blank" rel="noopener noreferrer">Gemma 3 12B Q6_K</a></span>
-                    </div>
-                    <div className="flex flex-col items-center justify-center gap-3 p-5 bg-white border border-slate-200 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-slate-800 transition-all cursor-default relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <img src="/assets/icons/dark_qwen-color.svg" alt="Qwen" className="h-10 w-10 relative z-10 group-hover:invert transition-all" />
-                        <span className="text-xs font-bold text-slate-600 group-hover:text-white relative z-10 text-center transition-all"><a href="https://qwen.ai/blog?id=qwen3.5" target="_blank" rel="noopener noreferrer">Qwen 3.5 9B Q6_K</a></span>
-                    </div>
-                  </div>
-                   
-                   
-
-                   
-                </div>
-            </div>
-         </div>
-      </div>
-      
-      <footer className="py-8 bg-brand-navy border-t border-brand-navy/90 text-center">
-          <div className="flex justify-center gap-6 mb-4">
-             <a href="https://github.com/LucasZeD" target="_blank" className="opacity-50 hover:opacity-100 transition-opacity"><img src="/assets/icons/white-github-142-svgrepo-com-white.svg" className="h-6 w-6" alt="GitHub" /></a>
-             <a href="www.linkedin.com/in/lucas-zegrine" target="_blank" className="opacity-50 hover:opacity-100 transition-opacity"><img src="/assets/icons/white-linkedin-svgrepo-com.svg" className="h-6 w-6" alt="LinkedIn" /></a>
-          </div>
-          <p className="text-sm font-bold text-slate-400">TCC PUC-Minas • Engenharia de Software</p>
+      <footer className="border-t border-slate-200 bg-brand-pink/90 py-10 text-center text-brand-navy">
+        <div className="mb-5 flex justify-center gap-6">
+          <a
+            href="https://github.com/LucasZeD"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full p-2 opacity-90 transition hover:bg-white/30 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-navy/30"
+          >
+            <img src="/assets/icons/black-github-142-svgrepo-com-black.svg" className="h-7 w-7" alt="GitHub" />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/lucas-zegrine"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full p-2 opacity-90 transition hover:bg-white/30 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-navy/30"
+          >
+            <img src="/assets/icons/black-linkedin-svgrepo-com.svg" className="h-7 w-7" alt="LinkedIn" />
+          </a>
+        </div>
+        <p className="text-sm font-semibold text-brand-navy/95">Trabalho de Conclusão de Curso · PUC Minas · Ciência da Computação</p>
       </footer>
     </div>
   )
