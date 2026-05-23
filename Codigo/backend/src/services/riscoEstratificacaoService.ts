@@ -74,7 +74,7 @@ export async function syncTipoRiscoGestacao(prisma: PrismaClient, gestacaoId: st
 }
 
 /**
- * Recalcula risco para todas as gestaes ativas do paciente (normalmente uma).
+ * Recalcula risco para todas as gestaÂÂes ativas do paciente (normalmente uma).
  */
 export async function syncTipoRiscoGestacoesAtivasDoPaciente(
   prisma: PrismaClient,

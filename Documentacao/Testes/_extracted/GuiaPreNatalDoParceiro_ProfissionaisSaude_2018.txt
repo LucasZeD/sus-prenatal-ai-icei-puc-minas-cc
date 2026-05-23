@@ -1,0 +1,1656 @@
+       MINISTÉRIO DA SAÚDE
+
+
+
+  Guia do Pré-Natal
+   do Parceiro para
+Profissionais de Saúde
+
+
+
+
+           Brasília – DF
+              2018
+              MINISTÉRIO DA SAÚDE
+           Secretaria de Atenção à Saúde
+  Departamento de Ações Programáticas Estratégicas
+
+
+
+
+Guia do Pré-Natal
+do Parceiro para
+  Profissionais
+    de Saúde
+
+
+
+
+                    Brasília – DF
+                       2018
+2018 Ministério da Saúde.
+
+                         Esta obra é disponibilizada nos termos da Licença Creative Commons – Atribuição –
+                         Não Comercial – Compartilhamento pela mesma licença 4.0 Internacional. É permitida a
+                         reprodução parcial ou total desta obra, desde que citada a fonte.
+
+A coleção institucional do Ministério da Saúde pode ser acessada, na íntegra, na Biblioteca Virtual em Saúde do
+Ministério da Saúde: <www.saude.gov.br/bvs>.
+
+Tiragem: 1ª edição – 2018 – 5.000 exemplares
+
+Elaboração, distribuição e informações:                        Colaboração:
+MINISTÉRIO DA SAÚDE                                            Cícero Ayrton Brito Sampaio
+Secretaria de Atenção à Saúde                                  Francisco Norberto Moreira da Silva
+Departamento de Ações Programáticas Estratégicas               Juliano Mattos Rodrigues
+Coordenação Nacional de Saúde do Homem                         Renata Gomes Soares
+SAF Sul, Trecho 2, lotes 5/6, Ed. Premium, Torre II, sala
+16, térreo                                                     Ilustrações:
+CEP: 70070-600 – Brasília/DF                                   Marcelo Henrique Costa Pimenta
+Tel.: (61) 3315-6222
+E-mail: saudedohomem@saude.gov.br                              Apoio:
+                                                               Instituto Nacional de Saúde da Mulher, da Criança e do
+Coordenação:                                                   Adolescente Fernandes Figueira (IFF/Fiocruz)
+Angelita Herrmann
+                                                               Normalização:
+Elaboração e organização:                                      Daniela Ferreira Barros da Silva – Editora MS/CGDI
+Daniel Costa Lima
+Eduardo Schwarz Chakora                                        Diagramação:
+Michelle Leite da Silva                                        Renato Carvalho – Editora MS/CGDI
+
+
+
+Impresso no Brasil / Printed in Brazil
+
+
+
+
+                                                    Ficha Catalográfica
+
+Brasil. Secretaria de Atenção à Saúde. Departamento de Ações Programáticas Estratégicas.
+    Guia do pré-natal do parceiro para profissionais de Saúde / Ministério da Saúde, Secretaria de Atenção à
+Saúde, Departamento de Ações Programáticas Estratégicas. – Brasília : Ministério da Saúde, 2018.
+    56 p. : il.
+
+    ISBN 978-85-334-2631-3
+
+    1. Cuidado pré-natal. 2. Saúde do homem. 3. Política Nacional de Atenção à Saúde do Homem. I. Título.
+
+                                                                                               CDU 613.97-055.1(036)
+
+
+           Catalogação na fonte – Coordenação-Geral de Documentação e Informação – Editora MS – OS 2018/0066
+
+
+Título para indexação:
+Agradecimentos
+A Coordenação Nacional de Saúde do Homem agradece o empenho e as contribuições nos conteúdos
+e textos deste Guia aos seguintes profissionais:
+Ministério da Saúde
+Ana Mônica de Mello-DDAHV                      Thaís F. V de Oliveira-CGSM
+Charleni Inês Scherer-CGGAB                    Lusanira Maria Santa Cruz
+Cristiane Pereira de Barros- PNI               Manoel Alexandre Neto
+Daniela Cristina M. M. de Figueiredo-CGGAB     Maria Cristina Nejaim de Holanda
+Ellen Zita Ayer-DDAHV                          Maria das Graças Antonino
+Etiane Araldi-CGPNH                            Maria Lúcia Barbosa da Silva
+Euzeli Araújo-CGGAB                            Marília de Araújo Braga
+Francisca Lidiane Sampaio Freitas-DDAHV        Mayara Rodrigues Gonçalves Primo
+Francisco Job Neto-SISPE                       Mayave Vieira de Souza Belchior
+Georgia da Silva-CGPNH                         Merielly Mariano Bezerra
+Karina G. Arruda-CGSCAM                        Regina Célia Mendes dos Santos Silva-PNI
+Luiza Geaquinto-CGSCAM                         Roseane Gomes
+Márcia Helena Leal-CGGAB                       Sheilla Almeida Simões Ferreira
+Maria Guia de Oliveira-CGSAJ                   Silvana Patrícia F. S. Monteiro
+Maria Vitória Ramos Gonçalves-DDAHV            Silvia Fernanda Bezerra da Silva
+Marina G. Jacobs-CGPNCT                        Sirlene de Fátima Pereira-PNI
+Olivia Lucena de Medeiros-CGGAB                Taciana Borba Gonçalves Guerra
+Osvaldo P. Bonetti-DAGEP                       Thatiana Ferreira de Vasconcelos
+Profissionais da Atenção Básica do Estado de Pernambuco
+Ana Beatriz Pinheiro P. Cavalcanti           Lindinalva Henrique
+Ana Maria De Lima Oliveira                   Luciana Prado
+Ana Rosa Falcão F. de Melo                   Luciana Rose Matoso de Oliveira
+Carlos Henrique Tenório A. do Nascimento     Lucrécia de Barros Sales
+Clara Lopes Bezerra                          Lucyana Paula de Couto Moreira
+Eline Mendonça                               Luiz Valério Soares da Cunha
+Flávia Cristina Alves Pereira                Renata Cristina de Araujo
+Flávia Wanderley                             Roberta Melão
+Joyce Catarina Lopes de Morais               Soraya Ayub Moregola de Oliveira
+Juliana Marília Albuquerque da Silva         Sueleni Araujo de Oliveira
+Laura Menezes                                Thais Tiemi Yamamoto
+Lilian Silva Sampaio de Barros               Vania Cardoso Santos
+
+Profissionais da Atenção Básica - São Paulo/SP - regional Leste
+Angela Hiroko H.Yamakawa                     Lucia Maria Machado de Resende
+Cassia Alexandra M. Lima                     Marcia Maria Gomes Massironi
+Edna Cardoso dos S. Nunes                    Marcia Mulin Firmino da Silva
+Fabio Pereira Santana                        Maria Aparecida B. Nunes
+Iroty Bueno dos Reis Batista                 Maria Aparecida Barbosa Nunes
+Janine Soares dos Santos                     Maria Lucia da Silva
+Jose Rodrigo de Oliveira                     Nancy Bonanho dos Reis Santos
+Juliana Cristina Ferrucci                    Patricia Luna
+Juliana Sousa Costa                          Priscila Andrade Neves
+
+Instituto PAPAI                                Secretaria Municipal de Saúde
+Mariana Azevedo                                do Rio de Janeiro
+Rafael Acioly                                  Viviane Manso Castello Branco
+Sumário
+Apresentação......................................................................................... 6
+
+1 Introdução........................................................................................... 8
+
+2 A Paternidade como Caminho para a Saúde dos Homens. ................. 12
+
+3 A Rede Cegonha e a Estratégia Pré-Natal do Parceiro........................ 16
+
+4 Fluxo do Pré-Natal da Gestante e do Parceiro.................................... 22
+
+5 Fluxograma Ilustrativo da Participação do Homem no
+  Pré-natal, Parto e Puerpério............................................................... 34
+
+6 Fique Sabendo e Repasse essas Informações aos Parceiros.............. 36
+
+Referências.......................................................................................... 40
+
+Anexos................................................................................................. 44
+
+         Anexo A – Legislações que se Referem aos Direitos dos Pais...... 45
+
+         Anexo B – Instruções Sobre como Registrar seu Filho................. 47
+
+         Anexo C – Imagem-Objetivo para Linhas de
+                   Cuidados Masculinos Voltados para a
+                   Saúde Sexual, a Reprodução e a Paternidade............. 49
+
+         Anexo D – Fluxo de Envolvimento de Homens no Pré-Natal. ....... 53
+Apresentação
+                                                                              Apresentação       7
+
+
+
+E    ste Guia apresenta a estratégia Pré-
+Natal do Parceiro, uma ferramenta inovadora
+que busca contextualizar a importância do
+envolvimento consciente e ativo de homens
+adolescentes, jovens adultos e idosos em todas
+as ações voltadas ao planejamento reprodutivo
+e, ao mesmo tempo, contribuir para a ampliação
+e a melhoria do acesso e acolhimento desta
+população aos serviços de saúde, com enfoque
+na Atenção Básica.
+
+Historicamente, tanto o planejamento reprodutivo
+quanto as ações em saúde voltadas ao momento
+da gestação, parto e puerpério foram pensadas
+e direcionadas às mulheres e às gestantes,
+enfocando o binômio mãe-criança.
+No entanto, um movimento crescente observado no Brasil, e também em vários outros países
+do mundo, tem defendido que os homens podem e devem ser envolvidos integralmente em
+tudo o que diz respeito à tomada de decisão reprodutiva, desde a escolha de ser pai à
+participação solidária na gestação, no parto e no cuidado e na educação das crianças.
+
+O argumento central trazido por este debate é que, desta forma, é possível romper e
+transformar, na prática, construções sociais de gênero que, por um lado, direcionam todas
+as responsabilidades relacionadas à reprodução e aos cuidados das crianças às mulheres
+e, por outro, afastam os homens tanto dos compromissos e dos deveres, quanto dos
+prazeres e dos aprendizados que circundam este universo.
+
+O envolvimento consciente dos homens – independente de ser pai biológico ou não – em todas
+as etapas do planejamento reprodutivo e da gestação pode ser determinante para a criação e/ou
+fortalecimento de vínculos afetivos saudáveis entre eles e suas parceiras e filhos(as).
+
+Ressaltamos que isto pode ser positivo não apenas para as crianças e mulheres, mas
+especialmente para os homens, por aproximá-los definitivamente da arena do afeto e do cuidado.
+
+Nesse contexto, o Pré-Natal do Parceiro propõe-se a ser uma das principais ‘portas
+de entrada’ aos serviços ofertados pela Atenção Básica em saúde a esta população, ao
+enfatizar ações orientadas à prevenção, à promoção, ao autocuidado e à adoção de estilos
+de vida mais saudáveis.
+1 Introdução
+HOMENS, GÊNERO,
+PATERNIDADE E CUIDADO
+                                                                             Introdução      9
+
+
+
+
+A       gestação é um momento especial repleto de
+significados e emoções para a família e um acontecimento
+que demanda uma série de ações pela área da saúde.
+
+Nos últimos anos, um tema tem emergido cada vez com
+mais força, exigindo debates, ações e principalmente, uma
+mudança de olhar por parte dos/as pesquisadores/as, gestores/
+as, trabalhadores/as de saúde e ativistas: a importância do
+envolvimento consciente e ativo do pai/parceiro.
+
+Usualmente, a gestação é definida pelas mudanças
+observadas no corpo feminino a partir dos meses iniciais.
+Nesse contexto, muitas vezes a paternidade parece só existir
+quando a criança nasce ou mesmo quando ela já está mais
+crescida. Mas, isso não precisa ser assim.
+
+Muitos homens de diferentes idades demonstram desejo
+de participar ou efetivamente participam em todos os
+momentos da gravidez, desde a decisão compartilhada de
+ter um filho, passando por todas as fases da gestação, até
+o desenvolvimento da criança (FUNDO DE POPULAÇÃO DAS
+NAÇÕES UNIDAS; INSTITUTO PAPAI, 2007).
+
+Quem já passou por esta experiência ou mesmo acompanhou
+de perto uma gestação pode facilmente comprovar que
+independente da configuração familiar, este período traz à tona
+uma série de emoções e de decisões que impactam o cotidiano
+das já formadas ou futuras famílias.
+
+Nesse sentido, o período da gestação é de grande importância para todas as pessoas
+envolvidas a fim de que, as mudanças de rotina e as adaptações decorrentes da chegada
+desta nova vida, transcorram de forma fluida e tranquila para todos.
+
+Tradicionalmente, as estratégias e ações de saúde do Sistema Único de Saúde - SUS voltadas
+aos direitos reprodutivos, incluindo o acompanhamento da gestação e o momento do parto,
+têm se centrado quase que exclusivamente nas mulheres e/ou no binômio mãe-criança.
+10    Ministério da Saúde / Guia do Pré-Natal do Parceiro para Profissionais de Saúde
+
+
+
+     No entanto, diversos países que desenvolvem estudos e pesquisas aplicadas a esta
+     temática, ressaltam a importância e os resultados positivos do engajamento ativo dos
+     homens em todo esse processo.
+
+     Por outro lado, ainda é possível encontrar obstáculos e resistências, naturais a qualquer
+     processo que envolva mudança de paradigmas e novos modos de trabalho, por parte de
+     alguns gestores/as, trabalhadores/as de saúde e uma parcela significativa da população
+     masculina e feminina no que tange ao engajamento dos homens nesses temas.
+
+     Isso é compreensível, pois seguindo valores passados por uma cultura e uma sociedade
+     patriarcal, ainda predominantemente machista, esta mentalidade defende a manutenção
+     de papéis rígidos de gênero para mulheres e homens. Muitas vezes, isso inclui a percepção
+     de que a gestação e o cuidado de filhos/as dizem respeito exclusivamente às mulheres.
+
+     Especificamente relacionado à população masculina, percebemos que a vivência de um
+     número significativo de homens brasileiros é marcada por uma constante vigilância e
+     questionamento sobre o que de fato representa ser um “homem de verdade” e como este
+     deveria se comportar para tal.
+
+     Nesse cenário, a necessidade de negação de qualquer aspecto que possa ser interpretado
+     como ‘feminino’ é algo estritamente ligado às experiências masculinas, o que os afasta, por
+     exemplo, do afeto e cuidado com os/as seus filhos/as e também do cuidado com a própria
+     saúde.
+
+     Em outras palavras, como pontua o pesquisador canadense Michael Kaufman, observamos
+     um “paradoxo do poder masculino”, onde, para ter acesso a uma série de privilégios e mais
+     poder em relação às mulheres, os homens constroem armaduras que os isolam do contato
+     afetivo com o próximo e da esfera do cuidado e da saúde, seja para outros ou para ele
+     mesmo (KAUFMAN, 1999).
+
+     Com base neste estereótipo, que permeia ainda o imaginário simbólico e concreto de
+     muitos homens, podemos compreender não apenas o distanciamento deles em relação à
+     paternidade, como também a exposição a diversas situações de riscos desnecessários à
+     saúde, que têm colaborado decisivamente para que, no Brasil, eles vivam em média sete
+     anos menos do que as mulheres.
+
+     Dentro dessa mesma lógica, sabemos que um número significativo de homens não se
+     envolve com a gestação de suas parceiras e que outros não chegam a desenvolver qualquer
+     vínculo com seus filhos e filhas, ainda mais quando não estão em um relacionamento
+     afetivo com a mãe.
+
+     No entanto, para outros homens, o período da gestação pode suscitar as mais diversas emoções
+     e até mesmo sintomas físicos. Assim como as mulheres, é muito comum que os futuros pais
+     engordem, sofram enjoos, tenham desejos, crises de choro, dentre outros sintomas.
+                                                                          Introdução     11
+
+
+Característicos da Síndrome de Couvade, esses sintomas não representam um distúrbio ou
+doença, pelo contrário, podem demonstrar que os homens sentem, assumem e desejam a
+gravidez juntamente com a sua parceira.
+
+
+
+
+           A gravidez também é um assunto de homem e estimular a
+           participação do pai/parceiro durante todo esse processo pode ser
+           fundamental para o bem estar biopsicossocial da mãe, do bebê e dele
+           próprio, sendo o pré-natal o momento oportuno e propício para isso!
+
+
+
+
+            Os homens adolescentes e jovens ainda carecem de olhar
+            inclusivo, pois frequentemente são vistos como “obstáculos
+            para o planejamento reprodutivo” e sem reconhecimento de
+            poderem ser participantes imprescindíveis nos eventos da
+            sexualidade e da reprodução (BRASIL, 2015, p. 9).
+2 A Paternidade
+como Caminho
+para a Saúde
+dos Homens
+                                      A Paternidade como Caminho para a Saúde dos Homens           13
+
+
+
+
+A      Política Nacional de Atenção Integral à Saúde
+do Homem (PNAISH) instituída pela Portaria GM/MS nº
+1.944, de 27 de agosto de 2009, tem como objetivo facilitar                                Seja Pai,
+                                                                                           seja parceiro.
+e ampliar o acesso com qualidade da população masculina,                                       Pré-natal
+na faixa etária de 20 a 59 anos, às ações e aos serviços de                                    Parto e
+                                                                                               Pós-parto
+assistência integral à saúde da Rede SUS, mediante a atuação
+nos aspectos socioculturais, sob a perspectiva relacional de
+gênero e na lógica da concepção de linhas de cuidado que
+respeitem a integralidade da atenção, contribuindo de modo
+efetivo para a redução da morbimortalidade e melhores
+condições de saúde desta população.
+
+A PNAISH aposta na perspectiva da inclusão do tema da
+paternidade e cuidado, por meio do Pré-Natal do Parceiro,
+nos debates e nas ações voltadas para o planejamento
+reprodutivo como uma estratégia essencial para qualificar
+a atenção à gestação, ao parto e ao nascimento, estreitando
+a relação entre trabalhadores de saúde, comunidade e,
+sobretudo, aprimorando os vínculos afetivos familiares dos
+usuários e das usuárias nos serviços ofertados.
+
+Além desse importante efeito, estas ações têm grande
+potencial para auxiliar em um dos principais objetivos da
+política: ampliar o acesso e o acolhimento dos homens aos
+serviços e programas de saúde e qualificar as práticas de                          DIRE
+                                                                                        ITO
+                                                                                      DO O
+cuidado com sua saúde de maneira geral no âmbito do SUS.                            CIDA
+                                                                                          DÃ
+
+
+
+Para tal, a Coordenação Nacional de Saúde do Homem,
+responsável pela condução da PNAISH, tem desenvolvido
+diferentes ações, como campanhas, elaboração de materiais
+educativos, seminários e capacitações voltadas à valorização
+da paternidade consciente e à organização dos serviços, a
+partir da sensibilização de homens e mulheres, famílias e
+comunidades, gestores/as e trabalhadores/as da saúde
+sobre o tema.
+14       Ministério da Saúde / Guia do Pré-Natal do Parceiro para Profissionais de Saúde
+
+
+
+     Estas ações buscam ressaltar a importância de:
+
+         DDDisseminar imagens e mensagens positivas sobre pais e paternidade,
+              reconhecendo a importância do papel dos pais para a socialização e a educação
+              das crianças, considerando a complexidade deste papel, muito além da visão
+              tradicional onde pai significa apenas provedor.
+         DDSensibilizar e qualificar os trabalhadores da saúde para acolher e envolver os
+              pais/parceiros desde o teste de gravidez, permitindo que estes se identifiquem
+              com a proposta e possam vincular-se desde cedo a esta criança que virá a
+              nascer, com especial atenção aos pais adolescentes e jovens;
+         DDExplicar para a gestante e para o pai/parceiro os benefícios da participação dele
+              em todas as etapas da gestação, desde as consultas de pré-natal até o momento
+              do parto e do pós-parto;
+         DDInformar a população sobre os direitos dos pais, como por exemplo, a licença
+              paternidade de 05 (cinco) dias, garantidos por lei.1
+         DDIncentivar e orientar pais e mães sobre a importância do registro civil de
+              nascimento de seus filhos(as), com especial atenção para pais e mães
+              adolescentes e jovens;
+         DDDivulgar amplamente a Lei do Acompanhante nº 11.108/2005, estimulando
+              que esse acompanhante - inclusive no caso de pais adolescentes - seja o pai/
+              parceiro, respeitando a livre escolha da mulher.
+         DDValorizar a participação do pai/parceiro em ações simples durante todo o trabalho
+              de parto, como o suporte à sua parceira, realizando o clampeamento (corte) do
+              cordão umbilical e o primeiro banho, por exemplo.
+         DDDestacar a presença do pai/parceiro incluindo o nome dele na placa de
+              identificação dos recém-nascidos e nos consultórios dos serviços de saúde;
+         DDRessaltar que o pai/parceiro nunca deve ser visto como uma “visita”, mas como
+              protagonista desta família, devendo ter livre e irrestrito acesso a sua parceira e
+              ao seu filho no ambiente onde se encontrem;
+         DDConvidar o pai/parceiro a engajar-se no método canguru , caso o recém-nascido
+                                                                               2
+
+              seja prematuro (BRASIL, 2013b);
+         DDOrientar como o pai/parceiro pode estimular e favorecer a amamentação de sua
+              parceira, além de dividir as atividades domésticas e tarefas de cuidado com a criança.
+
+     1
+         É importante o profissional de saúde ter conhecimento da existência de legislações locais que ampliam o
+         período da licença paternidade.
+     2
+         Norma de Atenção Humanizada ao Recém Nascido de Baixo Peso – Método Canguru.
+                                      A Paternidade como Caminho para a Saúde dos Homens     15
+
+
+Para todas essas ações, a PNAISH ressalta a importância da reflexão contínua sobre
+as construções sociais de gênero voltadas às masculinidades, buscando abolir papéis
+estereotipados que afastam os homens da saúde, do cuidado, do afeto e da construção de
+relações mais equitativas e humanizadas em suas parcerias sexuais e afetivas.
+
+Da mesma forma, aponta a necessidade de se pensar e desenvolver ações em saúde
+fora do enquadramento biológico e heteronormativo – reconhecendo e valorizando assim,
+os diversos arranjos familiares existentes e as diferentes possibilidades de vivenciar
+a paternagem, como por exemplo, através de casais homossexuais, pais solteiros,
+adolescentes ou idosos e também homens que desempenham a função paterna (avôs, tios,
+amigos, padrastos, etc.).
+
+Com isso, a política busca enfatizar que o momento da gestação e os cuidados posteriores
+com as crianças também devem ser aproveitados para valorizar modelos positivos de
+masculinidade, pautados pela cooperação, pelo diálogo, pelo respeito, pelo cuidado, pela
+não-violência e pelas relações entre gêneros que respeitem a diversidade, a pluralidade e
+a equidade como princípios básicos.
+
+No sentido de desenvolver mais o assunto, destacam-se as considerações de Ribeiro e
+colaboradores (2015). Segundo os autores, frente às mudanças sociais, vem se discutindo
+a idealização de um “novo” pai, que – para além da redução ao papel de provedor da família
+– assuma, de forma flexível e igualitária, o cuidado com o filho e com sua parceira. Para
+eles, nessa idealização, faz-se necessário também que se leve em conta a paternidade em
+novos arranjos familiares, a exemplo das duplas formadas pelas escolhas homoafetivas.
+Assim, os autores observam que a paternidade deve ser vista como uma função que se
+atribui – de forma relacional – a um membro que integra o casal, independentemente de
+ser homem ou mulher.
+3 A Rede
+Cegonha e
+a Estratégia
+Pré-Natal do
+Parceiro
+                                          A Rede Cegonha e a Estratégia Pré-Natal do Parceiro     17
+
+
+
+S    egundo a publicação “Pré-natal e Puerpério: atenção qualificada e humanizada”, do
+Ministério da Saúde (BRASIL, 2005), uma atenção pré-natal e puerperal de qualidade e
+humanizada é fundamental para a saúde materna e neonatal e, para sua humanização e
+qualificação, faz-se necessário:
+
+ 1. Construir um novo olhar sobre o processo saúde/doença, que compreenda a
+    pessoa em sua totalidade corpo/mente e considere o ambiente social, econômico,
+    cultural e físico no qual vive;
+
+ 2. Estabelecer novas bases de relacionamento para os diversos sujeitos envolvidos
+    na produção de saúde – trabalhadores/as de saúde, usuários/as e gestores/as;
+
+ 3. Construir uma cultura de respeito aos direitos humanos, entre os quais estejam
+    incluídos os direitos sexuais e os direitos reprodutivos, com a devida valorização
+    dos aspectos subjetivos envolvidos.
+
+
+
+
+A Rede Cegonha, lançada em 2011, consiste numa rede
+de cuidados que visa assegurar à mulher o direito ao
+planejamento reprodutivo e à atenção humanizada à
+gravidez, ao parto e ao puerpério, bem como o direito ao
+nascimento seguro e ao crescimento e desenvolvimento
+saudáveis das crianças (BRASIL, 2011).
+
+Esta Rede visa proporcionar às mulheres saúde, qualidade de vida e bem-estar durante a
+gestação, o parto, o pós-parto e o desenvolvimento da criança até os dois primeiros anos de
+vida. Ainda tem a finalidade de reduzir a mortalidade materna e infantil e garantir os direitos
+sexuais e reprodutivos de mulheres e de homens, de jovens e de adolescentes.
+18      Ministério da Saúde / Guia do Pré-Natal do Parceiro para Profissionais de Saúde
+
+
+
+      A proposta qualifica os serviços ofertados pelo Sistema Único de Saúde (SUS) no
+      planejamento reprodutivo, na confirmação da gravidez, no pré-natal, parto e puerpério,
+      constituindo uma oportunidade propícia para a inclusão e participação ativa dos pais/
+      parceiros.
+
+      Além disso, a Rede Cegonha sistematiza e institucionaliza um modelo de atenção ao parto
+      e ao nascimento que vem sendo discutido e construído no país desde 1990, com base
+      no pioneirismo e na experiência de médicos, enfermeiros, parteiras, doulas, acadêmicos,
+      antropólogos, sociólogos, gestores, formuladores de políticas públicas, gestantes, ativistas
+      e instituições de saúde, entre outros.
+
+      O Governo Federal instituiu também, conforme já citado,
+      desde 2005, a Lei Federal nº 11.108/05, que garante o direito
+      a um acompanhante de livre escolha da mulher durante todo
+      o período de trabalho de parto, parto e pós-parto imediato
+      (BRASIL, 2005).
+
+      Nesse contexto, tanto a Rede Cegonha quanto a Lei do
+      Acompanhante podem contribuir positivamente para a
+      inserção dos homens nas consultas de pré-natal, e consolidar
+      a mudança crucial do paradigma - do binômio mãe-criança                       LEI Nº 11.108,
+                                                                                    DE 7 DE ABRIL DE 2005.
+      para o trinômio pai-mãe-criança.
+                                                                                     É DIREITO DE
+      Para isso, as equipes de saúde devem incentivar o                            TODA MULHER A
+                                                                                   ESCOLHA DE SEU
+      envolvimento do pai/parceiro e sua participação desde
+                                                                                   ACOMPANHANTE.
+      o teste de gravidez, passando pelo puerpério até o
+      acompanhamento do desenvolvimento integral do filho/a.
+
+O enfermeiro(a) e/ou o(a) médico(a), como integrante dessa equipe são responsáveis pela
+realização do pré-natal na atenção básica, devendo proporcionar o acolhimento na unidade
+e sua integração ao processo.
+
+Desta forma, a estratégia Pré-natal do Parceiro pode constituir-se de uma importante “porta
+de entrada positiva” para os homens nos serviços de saúde, aproveitando sua presença
+nas consultas relacionadas à gestação para ofertar exames de rotina e testes rápidos,
+convidando-os a participarem das atividades educativas e ao exercício da paternidade
+consciente, buscando a integralidade no cuidado a esta população.
+
+Isso parte da constatação de que os homens geralmente acessam o sistema de saúde
+por meio da atenção especializada, já com o problema de saúde instalado e evoluindo de
+maneira insatisfatória. Este contexto aumenta os agravos da morbidade para a população
+masculina, causam maior sofrimento, menor possibilidade de resolução e um maior ônus
+para o sistema.
+                                             A Rede Cegonha e a Estratégia Pré-Natal do Parceiro   19
+
+
+A conclusão é que muitas doenças e sofrimento poderiam ser evitados se os homens
+procurassem os serviços de saúde com mais regularidade pela porta de entrada prioritária
+do SUS, a Atenção Básica.
+
+
+
+
+                                                     Seja Pai,
+                                                     seja parceiro.
+                                                         Pré-natal
+                                                         Parto e
+                                                         Pós-parto
+
+
+
+
+Para o fortalecimento dessas ações é necessário que as unidades de saúde estejam
+preparadas para o acolhimento desse pai/parceiro. Dessa forma, sugerimos que sejam
+seguidas as recomendações para a Unidade de Saúde Parceira do Pai3 (RIO DE JANEIRO,
+2009), iniciativa da Secretaria Municipal de Saúde do Rio de Janeiro. São elas:
+
+    1. Preparar a equipe de saúde;
+
+    2. Incluir os pais/parceiros nas rotinas dos serviços;
+
+    3. Incluir os pais/parceiros no pré-natal, parto e pós-parto;
+
+    4. Incluir os pais/parceiros nas enfermarias;
+
+    5. Promover atividades educativas com os homens;
+
+    6. Acolher e cuidar dos homens;
+
+    7. Preparar o ambiente;
+
+    8. Dar visibilidade ao tema do cuidado paterno;
+
+    9. Criar horários alternativos;
+
+    10. Fortalecer a rede de apoio social.
+
+3
+    <http://elosdasaude.wordpress.com/2011/01/18/unidade-de-saude-parceira-do-pai/>.
+20       Ministério da Saúde / Guia do Pré-Natal do Parceiro para Profissionais de Saúde
+
+
+
+
+     3.1 Acolhimento do pai/parceiro
+     No momento em que a mulher e/ou pai/parceiro procura o serviço de saúde com a suspeita
+     de uma gravidez, devem ser seguidas as orientações contidas no “Teste rápido de gravidez
+     na Atenção Básica: guia técnico”4 (BRASIL, 2014), elaboradas pela Coordenação-Geral
+     de Saúde das Mulheres em 2014 que indica o TRG para mulheres em idade fértil que
+     apresentem atraso menstrual, sendo, em sua maioria, igual ou superior a sete dias. Deve
+     ser facilitado o acesso ao TRG, com respeito e atenção especifica às adolescentes, devido
+     às singularidades da faixa etária.
+
+
+
+
+     Destacamos que, nesse momento, deve ser realizado um acolhimento humanizado e
+     alguns aspectos, pontuados abaixo, devem ser observados pelos(as) profissionais para
+     a abordagem de homens ou de mulheres. Caso ele não possa estar presente, deve ser
+     explicada para sua parceira a importância do envolvimento deste.
+
+
+
+
+     4
+         <http://bvsms.saude.gov.br/bvs/publicacoes/teste_rapido_gravidez_guia_tecnico.pdf>.
+                                          A Rede Cegonha e a Estratégia Pré-Natal do Parceiro    21
+
+
+Durante o atendimento, é importante que o profissional resgate o histórico deste usuário
+com o tema da paternidade, no sentido de conhecer suas experiências e vivências
+pregressas e expectativas quanto ao desempenho deste importante papel afetivo e social,
+a fim de captar quais são as facilidades e as dificuldades encontradas, dialogando de
+maneira sensível e construindo junto possíveis estratégias de enfrentamento. Talvez não
+seja logo no primeiro encontro que o profissional abordará questões ligadas à intimidade
+do usuário, mas ao longo do processo.
+
+Lembramos, então, que o acolhimento não é um momento fixo ou uma etapa, mas uma
+postura ética, política e, sobretudo empática, que pode ocorrer em boa parte dos momentos
+de interação entre usuários e profissionais de saúde. Quanto maior o vínculo estabelecido,
+mais trocas verdadeiras se potencializam entre o pai/parceiro e os profissionais que o
+assistem, possibilitando, então, o acesso respeitoso à informações mais íntimas destes
+homens no que tange à sexualidade, práticas e eventuais comportamentos de risco e à
+dinâmica conjugal e divisão de papéis e tarefas nesta relação.
+
+Independente do resultado do teste rápido de gravidez ou do exame laboratorial βHCG,
+esse primeiro contato deve ser aproveitado para incorporar o homem nas ações voltadas
+para o cuidado integral à saúde, as quais podem ser desenvolvidas em grupos de saúde do
+homem, durante as visitas dos Agentes Comunitarios de Saúde, nos locais estratégicos do
+território (empresas, áreas de lazer, bares), entre outras. É oportuno ofertar, já na primeira
+consulta, os testes rápidos de sífilis e HIV e o aconselhamento.
+
+Na consulta de retorno, o teste de gravidez apresentando resultado positivo, deve-se iniciar
+a rotina de pré-natal, parto e puerpério do parceiro, seguindo o fluxo apresentado a seguir.
+4 Fluxo do
+Pré-Natal da
+Gestante e do
+Parceiro
+                                                           Fluxo do Pré-Natal da Gestante e do Parceiro   23
+
+
+                      Figura 1 – Fluxo do Pré-Natal da
+                           Gestante e do Parceiro
+
+                                                        Chegada do casal
+                                                    Chegada
+                                                          nodoserviço
+                                                               casal no SUS
+                                                                        serviço SUS
+
+                                                        Realização do teste
+                                                        rápido de gravidez
+
+                                                     Teste realizado na UBS
+
+
+                                          SIM                                           NÃO
+
+                                        Resultado                           Repetir teste na unidade
+
+
+                             Negativo               Positivo
+
+          Vincular o homem as                       Vinculação a rotina
+         ações de saúde da UBS                         do pré-natal
+
+                                                Presença do parceiro no
+                                                   momento do teste
+
+
+                                 SIM                                                  NÃO
+
+                   Ofertar testes rápidos e                                Convocar o parceiro
+                      exames de rotina                                       para consulta
+
+                        Atualização do
+                       cartão de vacina
+
+          Incentivar participação nas atividades
+           educativas, nas consultas e exames
+
+                        Participação no
+                       momento do parto
+
+
+Fonte: Elaboração própria.
+24    Ministério da Saúde / Guia do Pré-Natal do Parceiro para Profissionais de Saúde
+
+
+
+     Após a confirmação da gravidez, em consulta médica ou de enfermagem, dá-se início à
+     participação do pai/parceiro nas rotinas de acompanhamento da gestante. Este processo é
+     composto por cinco (05) passos.
+
+
+     1º PASSO: Primeiro contato com postura acolhedora: incentivar a sua
+     participação nas consultas de pré-natal e nas atividades educativas, informar que poderá
+     tirar dúvidas e se preparar adequadamente para exercer o seu papel durante a gestação,
+     parto e pós-parto. Explicar a importância e ofertar a realização de exames.
+
+
+     2º PASSO: Solicitar os testes rápidos e exames de rotina.
+     Ampliar o acesso e a oferta da testagem e do aconselhamento é uma importante estratégia
+     para a prevenção de vários agravos. A institucionalização dessas ações permite a redução
+     do impacto das doenças transmissíveis na população, a promoção de saúde e a melhoria
+     da qualidade do serviço prestado nas unidades de saúde. Permite, também, conhecer e
+     aprofundar o perfil social e epidemiológico da comunidade de abrangência, dimensionar
+     e mapear a população de maior vulnerabilidade e, com isso, reformular estratégias de
+     prevenção e monitoramento.
+                                                Fluxo do Pré-Natal da Gestante e do Parceiro   25
+
+
+O aconselhamento nas unidades básicas de saúde:
+
+• Aprimora as práticas em saúde.
+
+• Favorece uma atenção integral.
+
+• Contribui para que o indivíduo participe ativamente do processo de promoção da saúde,
+   da prevenção e do tratamento principalmente das DST, do HIV/aids e das hepatites
+   virais.
+
+A atenção básica é um campo propício para o desenvolvimento do aconselhamento. Essa
+prática se assemelha aos princípios adotados pela estratégia de saúde da família, quando
+estes se propõem a resgatar o modo como se dá o relacionamento entre o serviço e seus
+usuários, enfatizando o caráter preventivo e a articulação com a prática assistencial e com
+a comunidade.
+
+O aconselhamento é o momento onde emerge a responsabilidade individual com a
+prevenção e a sua abordagem reforça o compromisso coletivo.
+
+A inserção do aconselhamento e dos exames de rotina nos serviços da rede básica de
+saúde implica uma reorganização do processo de trabalho da equipe e do serviço como
+um todo. Requer uma atenção para o tempo de atendimento, reformulações de fluxo da
+demanda, funções e oferta de atividades no serviço.
+
+Estimular mudanças de valores e práticas exige uma preparação da equipe/serviço
+para acolher a subjetividade dos usuários. É parte essencial conhecer as principais
+vulnerabilidades e as necessidades particulares dos usuários, suas características e estilos
+de vida e desenvolver uma abordagem sobre os riscos, respeitando as suas especificidades.
+
+É importante incluir o pai na promoção e na ampliação do acesso ao serviço, aos insumos
+de prevenção e ao diagnóstico.
+
+É importante uma ação articulada entre os Agentes Comunitários de Saúde e os profissionais
+presentes na unidade.
+
+
+Lembrete: Conhecer o diagnóstico e ter acesso ao tratamento é um direito do cidadão.
+26       Ministério da Saúde / Guia do Pré-Natal do Parceiro para Profissionais de Saúde
+
+
+
+
+     No que diz respeito aos exames e aos procedimentos,
+     sugerimos ser solicitados os seguintes:
+         1. Tipagem sanguínea e Fator RH (no caso da mulher ter RH negativo);
+
+         2. Pesquisa de antígeno de superfície do vírus da Hepatite B (HBsAg);
+
+         3. Teste treponêmico e/ou não treponêmico para detecção de Sífilis por meio de
+            tecnologia convencional ou rápida;
+
+         4. Pesquisa de Anticorpos anti-HIV;
+
+         5. Pesquisa de anticorpos do vírus da Hepatite C (anti-HCV);
+
+         6. Hemograma;
+
+         7. Lipidograma: dosagem de colesterol HDL, dosagem de colesterol LDL, dosagem
+            de colesterol total, dosagem de triglicerídeos;
+
+         8. Dosagem de Glicose;
+
+         9. Eletroforese da hemoglobina (para detecção da doença falciforme)6 ;
+
+         10. Aferição de Pressão Arterial;
+
+         11. Verificação de Peso e cálculo de IMC (índice de Massa Corporal).
+
+     Lembrando que esses procedimentos e exames devem ser solicitados respeitando os
+     protocolos estabelecidos pelo Ministério da Saúde7. Caso seja detectada alguma alteração
+     em algum desses exames, o pai/parceiro deve ser referenciado para o tratamento dentro
+     da rede SUS. O mesmo procedimento deve ser adotado caso o profissional verifique a
+     necessidade de outros exames (legislações vigentes, anexo A).
+
+
+
+
+     6
+       A descrição dos exames e seus respectivos valores encontram-se disponíveis no site do SIGTAP - Sistema
+        de Gerenciamento da Tabela de Procedimentos, Medicamentos e OPM do SUS: <http://sigtap.datasus.
+        gov.br/tabela-unificada/app/sec/inicio.jsp>.
+     7
+        Como referência pode ser utilizado o Caderno de Atenção Básica 29 Rastreamento, disponível em:
+        <http://189.28.128.100/dab/docs/publicacoes/cadernos_ab/abcad29.pdf> *Caderno de Atenção
+        Básica nº28 volume II Acolhimento à demanda espontânea: queixas mais comuns na Atenção Básica,
+        disponível em <http://189.28.128.100/dab/docs/publicacoes/geral/miolo_CAP_28.pdf>.
+                                                                   Fluxo do Pré-Natal da Gestante e do Parceiro   27
+
+
+3º PASSO: Vacinar o pai/parceiro conforme a situação vacinal encontrada.
+A vacinação é a medida mais eficaz para a prevenção de doenças que podem ser prevenidas.
+Com esse objetivo o Programa Nacional de Imunizações (PNI), disponibiliza para toda a
+família, o Calendário Nacional de Vacinação, que atende a todas as etapas da vida, tanto
+para a criança, quanto para o adolescente, o adulto e o idoso.
+
+O pai/parceiro, durante o acompanhamento do período gestacional, deve atualizar o seu
+Cartão da Vacina e buscar participar do processo de vacinação de toda família, em especial
+da gestante e do bebê.
+
+Assim, com o intuito de possibilitar conhecimento e acesso às vacinas oferecidas pelo PNI e
+a participação do pai/parceiro na vacinação da família, segue quadro contendo o Calendário
+Nacional de Vacinação8:
+
+
+
+                                CALENDÁRIO NACIONAL DE VACINAÇÃO
+
+
+
+
+8
+    Informações sobre as vacinas podem ser obtidas no site do PNI- Programa Nacional de Imunização
+    <http://portalarquivos2.saude.gov.br/images/jpg/2018/janeiro/10/calendario-vacinal-2018.jpg>. O
+    Calendário Nacional de Vacinação está em conformidade com a Portaria Ministerial n° 1.498, de 19 de
+    julho de 2013, que redefine o mesmo. Sendo atualizado com certa frequência, o que torna importante o
+    parceiro/pai estar atento para estas atualizações.
+28        Ministério da Saúde / Guia do Pré-Natal do Parceiro para Profissionais de Saúde
+
+
+
+
+                                                                                                             Pneumocócia                       Meningo-
+                                                                                                                                Rotavírus
+          Grupo Alvo          Idade          BCG           Hepatite B       Penta/DTP          VIP/VOP            10V                          cócica C
+                                                                                                                                 Humano
+                                                                                                             (Conjugada)+                    (conjugada)+
+                                                            Dose ao
+                            Ao nascer     Dose única
+                                                            nascer
+                                                                                               1° Dose
+                             2 meses                                          1° dose                           1° dose          1° dose
+                                                                                              (com VIP)
+                             3 meses                                                                                                           1° dose
+                                                                                               2° Dose
+                             4 meses                                          2° dose                           2° dose          2° dose
+                                                                                              (com VIP)
+                             5 meses                                                                                                           2° dose
+
+             CRIANÇAS
+                                                                                               3° Dose
+                             6 meses                                          3° dose
+                                                                                              (com VIP)
+                             9 meses
+                            12 meses                                                                            Reforço                        Reforço
+                                                                            1° reforço       1° reforço
+                            15 meses
+                                                                            (com DTP)        (com VOP)
+                                                                            2° reforço       2° reforço
+                             4 anos
+                                                                            (com DTP)        (com VOP)
+                             9 anos
+                                                                                                                                             1 Reforço ou
+
+
+
+             ADOLESCENTE
+                                                             3 does                                                                           dose única
+                                                           (verificar                                                                          verificar
+                           10 a 19 anos
+                                                           a atuação                                                                          a atuação
+                                                            vacinal)                                                                         vacinal - 11
+                                                                                                                                              a 14 anos)
+
+                                                             3 does
+
+             ADULTO
+                                                           (verificar
+                           20 a 59 anos
+                                                           a atuação
+                                                            vacinal)
+
+                                                            3 doses
+
+             IDOSO
+                             60 anos                       (Verificar
+                             ou mais                       a atuação
+                                                            vacinal)
+
+                                                            3 doses
+
+             GESTANTE
+                                                           (Verificar
+                                                           a atuação
+                                                            vacinal)
+
+     *
+          Administrar Uma dose de vacina Pneumocócia 10V (conjugada e da vacina Meningocócica C (conjugada)em crianças entre 2 e 4 anos,
+          que não tenham recebido o reforço ou que tenham perdido a oportunidade de se vacinar anteriormente.
+     **
+          Indicada às pessoas residentes ou viajantes para as áreas com recomendação de vacina. Atender às precauções e contraindicações
+          para vacinação.
+     ***
+          Indicada para os residentes dos minicípios das áreas ampliadas para vacinação que anteriormente eram áreas SEM recomendação para
+          vacinação dos estados de SP, RJ, PR, SC, RS, BA e PI.
+     ****
+          Administrar uma dose de vacina hepatite A, em crianças entre 2 e 4 anos que tenham perdido a oportunidade de se vacinar
+          anteriormente.
+                                                                Fluxo do Pré-Natal da Gestante e do Parceiro       29
+
+
+  Febre         Hepatite                        Tetra     Varicela      HPV            Dupla         dTpa
+                           Tríplice Viral
+Amarela ++      A++++                       viral+++++   ++++++       +++++++          Adulto      ++++++++
+
+
+
+
+***Dose única
+                              1° dose
+
+                Uma dose                    Uma dose
+
+                                                         Uma Dose
+
+
+                                                                        2 doses
+  Dose única
+                              2 doses                                 (meninas de
+(não vacinado                                                                         Reforçar
+                             (verificar                               9 a 14 anos)
+   ou sem                                                                              a cada
+                             a atução                                   2 doses
+ comprovante                                                                         (10 anos)
+                              vacinal)                                (meninos de
+de vacinação)
+                                                                     11 a 14 anos)
+  Dose única
+                              2 doses
+(não vacinado                                                                         Reforçar
+                           (20 a 29 anos)
+   ou sem                                                                              a cada
+                            1 dose (30 a
+ comprovante                                                                         (10 anos)
+                              49 anos)
+de vacinação)
+  Dose única
+(não vacinado                                                                         Reforçar
+   ou sem                                                                              a cada
+ comprovante                                                                         (10 anos)
+de vacinação)
+                                                                                       3 doses      Uma dose a
+                                                                                      (verificar   cada gestação
+                                                                                     a situação      a partir da
+                                                                                       vacinal)     20ª semana
+30    Ministério da Saúde / Guia do Pré-Natal do Parceiro para Profissionais de Saúde
+
+
+
+
+     4º PASSO: Toda a consulta é uma oportunidade de escuta e de criação de vínculo entre
+     os homens e os profissionais de saúde, propiciando o esclarecimento de dúvidas e orientação
+     sobre temas relevantes, tais como relacionamento com a parceira, atividade sexual, gestação,
+     parto e puerpério, aleitamento materno, prevenção da violência doméstica, etc.
+
+
+
+
+                                      A sua alimentação
+                                      é importante para
+                                         a sua saúde.
+
+
+
+
+                                                                    Al
+                                                                 sa imen
+                                                                    u    t
+                                                                ex dáv ação
+                                                                   er el
+                                                               fís cício e
+                                                                  ico s
+                                                                     s
+
+
+
+
+     Seguem algumas sugestões de atividades educativas com temas voltados para o público
+     masculino:
+
+      DD Orientação de hábitos saudáveis, como: prática de atividades físicas regulares,
+            alimentação balanceada e saudável (preferência por alimentos in natura; usar
+            óleos, gorduras, sal e açúcar com moderação; limitar o uso de produtos prontos
+            para consumo; evitar comidas prontas tipo fast food etc.), diminuir ou cessar
+            consumo de bebida alcoólica, cigarro e outras drogas.
+      DD Realização de palestras e rodas de conversa com a população masculina,
+            abordando temas como: Política Nacional de Atenção Integral à Saúde do
+            Homem; Gênero, socialização masculina e impactos para a vida de homens,
+            mulheres e crianças; Sexualidade, direitos sexuais e direitos reprodutivos;
+            Paternidade, como ser um pai/parceiro presente; Prevenção de acidentes e de
+            violência entre a população masculina, dentre outros. Exemplos de atividades
+            educativas exitosas com foco no público masculino podem ser obtidos em
+            <http://atencaobasica.org.br/>.
+                                               Fluxo do Pré-Natal da Gestante e do Parceiro   31
+
+
+ DD É Importante lembrar que o envolvimento do pai/parceiro pode acontecer mesmo
+      quando ele e a gestante não estiverem em um relacionamento afetivo.
+ DD Para isso, é importante conversar com a gestante e saber se ela deseja que ele
+      participe desse momento. Caso ela não deseje, é importante respeitar a sua
+      decisão, buscar informações sobre a mesma e perguntar se ela quer que outra
+      pessoa a acompanhe nesse processo.
+
+
+
+5º PASSO: Esclarecer sobre o direito da mulher a um acompanhante no pré parto,
+parto e puerpério e incentivar o pai a conversar com a parceira sobre a possibilidade
+da sua participação nesse momento. Conversar com os futuros pais sobre a relevância
+de sua participação no pré-parto, parto e puerpério, dando exemplos do que ele poderá
+fazer, como: ser encorajado a clampear o cordão umbilical em momento oportuno, levar
+o recém-nascido ao contato pele a pele, a incentivar a amamentação, a dividir as tarefas
+de cuidados da criança com a mãe, etc. Caso a gestação seja de alto risco com chances
+do recém-nascido nascer prematuro e ou com baixo peso, incentivar os pais/parceiros a
+conhecerem a unidade neonatal da maternidade de referência. Além disso, o (a) profissional
+deve mostrar ao futuro pai que ao participar do parto, ele pode ajudar a:
+32       Ministério da Saúde / Guia do Pré-Natal do Parceiro para Profissionais de Saúde
+
+
+
+     • Garantir um melhor atendimento para a sua parceira, reduzindo com isso a possibilidade
+        de eventuais situações de violência obstétrica e/ou institucional;
+
+     • estimular o parto normal;
+
+     • diminuir a duração do trabalho de parto;
+
+     • diminuir o medo, a tensão e, consequentemente, aliviar a dor;
+
+     • aumentar a sensação de prazer e satisfação no parto;
+
+     • diminuir a ocorrência de depressão pós-parto;
+
+     • favorecer o aleitamento materno;
+
+     • fortalecer o vínculo entre pai/parceiro, mãe e bebê.
+
+     Esses benefícios são defendidos pela Organização Mundial da Saúde desde 19859.
+
+
+
+
+     9
+         <http://www.partodoprincipio.com.br/#!beneficios-acompanhante/cc5h>.
+5 Fluxograma
+Ilustrativo da
+Participação do
+Homem no
+Pré-natal,
+Parto e Puerpério
+     Fluxograma Ilustrativo da Participação do Homem no Pré-natal, Parto e Puerpério   35
+
+
+
+
+             1º
+Chegada do homem no serviço
+  SUS:informar como será a
+  participação do homem no
+
+
+
+                                                            2º
+ pré-natal, parto e puerpério
+
+
+
+                                                          Realizar o
+                                                        atendimento,
+
+
+
+          3º
+                                                     incluindo exames
+                                                         de rotina e
+                                                       testes rápidos
+
+        Atualizar o
+          cartão
+        de vacinas
+
+
+
+
+              4º
+          Trabalhar com
+                                                                   5º
+                                                        Participar ativamente
+      temas voltados para o                              do pré-parto, parto,
+        público masculino                               puerpério e cuidados
+                                                            com a criança
+6 Fique
+Sabendo e
+Repasse essas
+Informações aos
+Parceiros
+                                    Fique Sabendo e Repasse essas Informações aos Parceiros     37
+
+
+
+
+* Sífilis. A Organização Mundial da Saúde estabeleceu a meta de erradicar a sífilis
+  congênita até 2015 e para tal, a detecção e tratamento na população masculina é
+  imprescindível. (www.aids.gov.br)
+* AIDS e HIV (www.aids.gov.br)
+* Hepatites (www.aids.gov.br)
+* Tétano acidental e neonatal (http://portalsaude.saude.gov.br/index.php/vigilancia-de-a-a-z)
+* Campanhas de vacinação.
+* Visitas dos ACS na residência.
+* Consulta com Odontólogo caso seja necessário.
+* Pai/parceiro adolescente também tem direito ao cuidado integral.
+* Divulgue os benefícios do pai/parceiro ser o acompanhante no parto. (http://www.
+  partodoprincipio.com.br/lei_beneficio.html)
+* Fique atento: na caderneta da gestante tem informações especificas para o pai/parceiro.
+* Coordenação-Geral de Saúde da Criança e Aleitamento Materno. <http://portalsaude.
+  saude.gov.br/index.php/o-ministerio/principal/secretarias/sas/saude-da-crianca-e-
+  aleitamento-materno>.
+
+
+
+
+    IMPORTANTE: Sugestão de utilização do
+    CID (Código Internacional de Doenças
+    Z76.8 - contatos com serviços de saúde
+    por outras circunstâncias especificadas)
+    para justificar a ausência do homem no
+    trabalho. Outra sugestão é a utilização
+    do CIAP (Classificação Internacional de
+    Atenção Primária), A29 - outros sinais/
+    sintomas gerais, disponível em <http://
+    www.sbmfc.org.br/media/file/CIAP%202/
+    CIAP%20Brasil_atualizado.pdf>.
+38        Ministério da Saúde / Guia do Pré-Natal do Parceiro para Profissionais de Saúde
+
+
+
+     * De acordo com a Constituição Federal/88 em seu artigo 7º, XIX e art.10, §1º, do Ato das
+          Disposições Constitucionais Transitórias – ADCT os pais têem direito a 5 dias de licença
+          paternidade. Localidades como Cuiabá, Niterói, Florianópolis, Manaus, Pernambuco,
+          Porto Alegre e João Pessoa já criaram leis locais que ampliam a licença paternidade
+          para 10,15 ou 30 dias para os servidores públicos. Um outro exemplo é a Emenda
+          Constitucional 63/2015 publicada em 22 de dezembro de 2015 que estende a licença
+          paternidade para o prazo de 30 dias a todos os servidores civis e militares no estado
+          do Rio de Janeiro.
+     Com o objetivo de ampliar esse direito, no dia 08 de Março de 2016 foi sancionada a Lei
+     13.257/2016, que dispõe sobre as políticas públicas para primeira infância. Dentro dessa
+     lei, existem artigos específicos ligados ao exercício da paternidade ativa e consciente, como
+     ampliação da licença paternidade para os funcionários das empresas cidadãs10 que agora
+     tem direito a 20 dias.
+
+     Essa ampliação para participação ativa e consciente do pai irá proporcionar vários benefícios
+     como os destacados abaixo:
+
+     • A ampliação da licença-paternidade em 15 dias é vantajosa para as crianças, para os
+        pais e para o Brasil. Há evidências de impactos positivos para o desenvolvimento das
+        crianças e para a igualdade de gêneros em países onde essa licença é mais extensa e
+        está em vigor há mais tempo.
+
+     • A licença-paternidade promove um maior envolvimento dos pais no cuidado dos
+        filhos, sobretudo quando atraente para os homens, do ponto de vista da duração e da
+        remuneração, e quando não pode ser transferida para a mulher. O envolvimento paterno
+        se estende para além do período de licença e tem reflexos importantes para a vida das
+        crianças.
+
+     • O envolvimento dos pais no cuidado com os filhos afeta as crianças de muitas formas.
+        Foram observados ganhos como maior desenvolvimento cognitivo, melhor desempenho
+        escolar e menores taxas de delinquência (LEVTOV et al., 2015).
+
+     • Outro efeito positivo da licença-paternidade diz respeito à amamentação. Crianças de
+        pais que usaram a licença-paternidade têm mais probabilidade de serem amamentadas
+        no primeiro ano em comparação a filhos de pais que não utilizaram a licença.
+
+
+
+
+     10
+          Uma empresa precisa de apenas duas coisas para estender o período da licença paternidade: pagar
+          impostos com base no regime tributário chamado lucro real (no qual os impostos são cobrados apenas
+          sobre o lucro realmente apurado) e se cadastrar no programa Empresa Cidadã, criado em 2008 pelo
+          governo para estimular a licença-maternidade maior. Segundo dados da Receita Federal, o programa
+          tinha, até setembro de 2015, 19 mil empresas inscritas, com 2,9 milhões de empregados. No Brasil, há
+          cerca de 175 mil companhias que pagam impostos com base no lucro real, sendo a maioria de médio ou
+          grande porte.
+                                    Fique Sabendo e Repasse essas Informações aos Parceiros      39
+
+
+• Há evidências de que o aumento da licença-paternidade também ajudaria a mudar o
+   comportamento das famílias quanto à divisão de tarefas domésticas e a diminuir a
+   diferença entre homens e mulheres no mercado de trabalho.
+
+• O Brasil foi um dos primeiros países a oferecer a licença-paternidade no mundo, em
+   1943, segundo a Organização Internacional do Trabalho (OIT). Desde 1988, essa licença
+   é de cinco dias remunerados (FUNDAÇÃO MARIA CECÍLIA SOUTO VIDIGAL, 2016).
+
+• No mundo todo, o número de países que concedem o direito à licença-paternidade
+   aumentou de 41 para 79, entre 1994 e 2013.
+
+• Na maior parte deles (90%), o benefício é remunerado. A duração da licença varia de 1
+   a 90 dias, com benefícios relativamente mais extensos (mais de duas semanas) sendo
+   concedidos em países europeus como Finlândia, Islândia, Lituânia, Portugal e Eslovênia.
+
+A lei nº 13.257/2016 destaca no inciso II, parágrafo 1º, artigo 38, que o empregado requeira
+no prazo de 2 (dois) dias úteis após o parto e comprove participação em programa ou atividade
+de orientação sobre paternidade responsável para ter direito ao benefício da licença (BRASIL,
+2016). A CNSH orienta que os profissionais de saúde estimulem a realização do Pré-Natal do
+Parceiro, a participação nas atividades educativas durante o pré-natal e visitas à maternidade
+onde acontecerá o parto para vinculação do casal. Essas ações podem ser consideradas
+como comprovante de participação para que os homens tenham direito ao benefício.
+
+A ampliação da licença paternidade foi um passo na construção de estratégias que
+promovam equidade de gênero no cuidado.
+
+
+
+            Para a continuidade da discussão acerca dos cuidados masculinos e do
+            envolvimento dos homens no pré-natal destacam-se a “Imagem-Objetivo para
+            linhas de cuidados masculinos voltados para a saúde sexual, a reprodução e a
+            paternidade” e o “Fluxo de envolvimento de homens no pré-natal”, propostos
+            por Gomes e colaboradores (2016), que se encontram nos Anexos C e D, ambos
+            validados por consenso de especialistas brasileiros.
+Referências
+                                                                 Referências Bibliográficas   41
+
+
+
+
+BRASIL. Constituição (1988). Constituição da República Federativa do Brasil de 1988.
+Disponível em: <http://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm>.
+Acesso em: 26 jan. 2018.
+
+______. Lei nº 11.108, de 7 de abril de 2005. Altera a Lei nº 8.080, de 19 de setembro
+de 1990, para garantir às parturientes o direito à presença de acompanhante durante
+o trabalho de parto, parto e pós-parto imediato, no âmbito do Sistema Único de Saúde
+- SUS. Disponível em: <http://www.planalto.gov.br/ccivil_03/_Ato2004-2006/2005/Lei/
+L11108.htm>. Acesso em: 26 jan. 2018.
+
+______. Lei nº 13.257, de 8 de março de 2016. Dispõe sobre as políticas públicas para
+a primeira infância e altera a Lei nº 8.069, de 13 de julho de 1990 (Estatuto da Criança e
+do Adolescente), o Decreto-Lei nº 3.689, de 3 de outubro de 1941 (Código de Processo
+Penal), a Consolidação das Leis do Trabalho (CLT), aprovada pelo Decreto-Lei nº 5.452,
+de 1º de maio de 1943, a Lei nº 11.770, de 9 de setembro de 2008, e a Lei nº 12.662,
+de 5 de junho de 2012. Disponível em: <http://www.planalto.gov.br/ccivil_03/_ato2015-
+2018/2016/lei/l13257.htm>. Acesso em: 26 jan. 2018.
+
+______. Ministério da Saúde. Portaria nº 1.459, de 24 de junho de 2011. Institui, no
+âmbito do Sistema Único de Saúde - SUS - a Rede Cegonha. Disponível em: <http://
+bvsms.saude.gov.br/bvs/saudelegis/gm/2011/prt1459_24_06_2011.html>. Acesso em:
+26 jan. 2018.
+
+______. Ministério da Saúde. Portaria nº 1.498, de 19 de julho de 2013. Redefine
+o Calendário Nacional de Vacinação, o Calendário Nacional de Vacinação dos Povos
+Indígenas e as Campanhas Nacionais de Vacinação, no âmbito do Programa Nacional de
+Imunizações (PNI), em todo o território nacional. 2013a. Disponível em: <http://bvsms.
+saude.gov.br/bvs/saudelegis/gm/2013/prt1498_19_07_2013.html>. Acesso em: 6 abr.
+2017.
+
+______. Ministério da Saúde. Secretaria de Atenção à Saúde. Departamento de Ações
+Programáticas Estratégicas. Cuidando de adolescentes na Rede Cegonha: orientações
+básicas para a saúde sexual e saúde reprodutiva. Brasília, 2015.
+
+______. Ministério da Saúde. Secretaria de Atenção à Saúde. Departamento de Ações
+Programáticas Estratégicas. Atenção humanizada ao recém-nascido de baixo peso:
+Método Canguru: manual técnico. 2. ed., 1. reimpr. Brasília, 2013b.
+
+______. Ministério da Saúde. Secretaria de Atenção à Saúde. Departamento de Ações
+Programáticas Estratégicas. Pré-natal e puerpério: atenção qualificada e humanizada:
+manual técnico. Brasília, 2005.
+42    Ministério da Saúde / Guia do Pré-Natal do Parceiro para Profissionais de Saúde
+
+
+
+     ______. Ministério da Saúde. Secretaria de Atenção à Saúde. Departamento de Ações
+     Programáticas Estratégicas. Teste rápido de gravidez na Atenção Básica: guia técnico.
+     Brasília, 2014.
+
+     FUNDAÇÃO MARIA CECÍLIA SOUTO VIDIGAL. Licença paternidade: as vantagens da
+     ampliação. São Paulo, 2016. (Textos para Discussão, v. 1). Disponível em: <http://www.
+     fmcsv.org.br/pt-br/acervo-digital/Paginas/Licen%C3%A7a-Paternidade-As-Vantagens-da-
+     Amplia%C3%A7%C3%A3o.aspx>. Acesso em: 26 jan. 2018.
+
+     FUNDO DE POPULAÇÃO DAS NAÇÕES UNIDAS; INSTITUTO PAPAI. Homens também
+     cuidam!: diálogos sobre direitos, saúde sexual e reprodutiva, paternidade e relações
+     de cuidado. Recife, 2007. Disponível em: <http://www.unfpa.org.br/Arquivos/
+     homenstambemcuidam.pdf>. Acesso em: 6 abr. 2017.
+
+     GOMES, R. et al. Linhas de cuidados masculinos voltados para a saúde sexual, a
+     reprodução e a paternidade. Ciência & Saúde Coletiva, Rio de Janeiro, v. 21, n. 5, p.
+     1545-1552, 2016.
+
+     KAUFMAN, M. The 7 P’s of men’s violence. Toronto, 1999. Disponível em: <http://
+     michaelkaufman.com/1999/10/the-7-ps-of-mens-violence/>. Acesso em: 26 jan. 2017.
+
+     LEVTOV, R. et al. State of the World’s Fathers: a Men Care Advocacy Publication.
+     Washington, DC: Promundo; Rutgers; Save the Children; Sonke Gender Justice; The Men
+     Engage Alliance, 2015. Disponível em: <https://sowf.men-care.org/wp-content/uploads/
+     sites/4/2015/06/State-of-the-Worlds-Fathers_23June2015-1.pdf>. Acesso em: 26 jan.
+     2018.
+
+     RIBEIRO, C. R.; GOMES, R.; MOREIRA, M. C. N. A paternidade e a parentalidade como
+     questões de saúde frente aos rearranjos de gênero. Ciência & Saúde Coletiva, Rio de
+     Janeiro, v. 20, n. 11, p. 3589-3598, nov. 2015. Disponível em: <http://www.scielo.br/
+     pdf/csc/v20n11/1413-8123-csc-20-11-3589.pdf>. Acesso em: 14 mar. 2016. DOI:
+     10.1590/1413-812320152011.19252014.
+
+     RIO DE JANEIRO (Cidade). Prefeitura da Cidade do Rio de Janeiro. Secretaria Municipal de
+     Saúde. Unidade de saúde parceira do pai. Rio de Janeiro, 2009. Disponível em: <http://
+     elosdasaude.files.wordpress.com/2011/01/unidadede-sac3bade-parceira-do-pai.pdf>.
+     Acesso em: 4 abr. 2017.
+Anexos
+                                                                                Anexos       45
+
+
+
+Anexo A – Legislações que se Referem aos
+Direitos dos Pais
+
+• Lei nº9.263/96 - Dá direito a todo cidadão brasileiro a todos os métodos cientificamente
+  aceitos de concepção e contracepção.
+
+• Lei Federal nº8.069/90 - Direito ao acompanhamento de crianças e adolescentes inter-
+  nados.
+
+• Lei Federal nº11.108/05 - Direito de um acompanhante durante todo o período de traba-
+  lho de parto, parto e pós-parto imediato.
+
+• Portaria nº2.418/05 - Define como pós-parto imediato o período de 10 dias após o parto
+  e dá cobertura para que o/a acompanhante possa ter acomodação adequada e receber
+  as principais refeições.
+
+• Portaria nº 48/99 Ministério da Saúde - Dispõe sobre o planejamento familiar e dá outras
+  providências.
+46    Ministério da Saúde / Guia do Pré-Natal do Parceiro para Profissionais de Saúde
+
+
+
+     • Licença paternidade de 05 (cinco) dias foi concedida pela Constituição Federal/88 em
+       seu artigo 7º, XIX e art.10, §1º, do Ato das Disposições Constitucionais Transitórias –
+       ADCT.
+
+     • Portaria nº1.944, de 27 de agosto de 2009 -– Institui, no âmbito do SUS, a Política Na-
+       cional de Atenção Integral à Saúde do Homem - PNAISH.
+
+     • Portaria nº930/12- Define as diretrizes e os objetivos para a organização da atenção
+       integral e humanizada ao recém-nascido grave ou potencialmente grave e os critérios
+       de classificação e de habilitação de leitos de Unidade Neonatal no âmbito do Sistema
+       Único de Saúde (SUS).
+
+     • Portaria nº 1.683, de 12 de julho de 2007 - Aprova, na forma do anexo, as Normas de
+       Orientação para a Implantação do Método Canguru.
+
+     • Portaria nº 1.130 de 5 de Agosto de 2015 que cria a Política Nacional de Atenção In-
+       tegral àa Saúde da Criança - http://bvsms.saude.gov.br/bvs/saudelegis/gm/2015/
+       prt1130_05_08_2015.html
+
+     • Portaria nº 371, de 07 de maio de 2014 - Institui diretrizes para a organização da aten-
+       ção integral e humanizada ao recém-nascido (RN) no Sistema Único de Saúde (SUS).
+
+     • Portaria nº 3242, de 30 de dezembro de 2011, Dispõe sobre o Fluxograma Laboratorial
+       da Sífilis e a utilização de testes rápidos para triagem da sífilis em situações especiais
+       e apresenta outras recomendações.
+
+     • Portaria nº 29, de 17 de dezembro de 2013, Aprova o Manual Técnico para o Diagnóstico
+       da Infecção pelo HIV em Adultos e Crianças e dá outras providências.
+
+     • Portaria nº 3275, de 26 de dezembro de 2013, Altera a Portaria nº 77/GM/MS, de 12 de
+       janeiro de 2012, que dispõe sobre a realização de testes rápidos, na atenção básica,
+       para a detecção de HIV e sífilis, assim como testes rápidos para outros agravos, no
+       âmbito da atenção pré-natal para gestantes e suas parcerias sexuais.
+
+     • Portaria nº 1271, de 06 de junho de 2014, Define a Lista Nacional de Notificação Compul-
+       sória de doenças, agravos e eventos de saúde pública nos serviços de saúde públicos
+       e privados em todo o território nacional, nos termos do anexo, e dá outras providências.
+                                                                                      Anexos       47
+
+
+
+Anexo B – Instruções Sobre como Registrar seu
+Filho
+
+Com o Registro de Nascimento, seu filho será um indivíduo, com o próprio nome, sobrenome,
+o nome da mãe, do pai e dos avós e estará escrito que ele nasceu no Brasil. Ser um cidadão
+brasileiro dará a ele muitos direitos: atendimento à saúde, creche, matrícula escolar, o
+recebimento dos benefícios dos programas sociais e muitos outros.
+
+Tirar o registro civil é obrigatório e ninguém precisa pagar pela primeira certidão, é gratuita.
+Procure o cartório de registro civil do lugar onde seu filho nasceu ou onde você mora.
+Algumas maternidades oferecem esse serviço.
+
+O pai deve comparecer ao cartório, acompanhado ou não da mãe, com os seguintes
+documentos:
+48     Ministério da Saúde / Guia do Pré-Natal do Parceiro para Profissionais de Saúde
+
+
+
+
+     * Declaração de Nascido Vivo (DNV), fornecida pelo hospital, maternidade, UBS ou
+       Secretaria de Saúde.
+     * Documento de identificação.
+     * Certidão de Casamento (Se os pais forem casados legalmente)
+     * Se for indígena, RANI (Registro Administrativo de Nascimento Indígena emitido pela
+       Fundação Nacional do Índio – FUNAI1)
+     * Se não tiver os documentos acima, devem comparecer ao cartório com duas testemunhas
+       que tenham conhecimento do parto, com seus documentos.
+     * Se o pai não puder comparecer ao cartório, deve fazer uma declaração com firma
+       reconhecida autorizando o registro do filho em seu nome.
+     * Se a mãe não tiver a declaração do pai ou se o pai for desconhecido, ela pode fazer a
+       certidão de nascimento apenas em seu nome.
+     * Se os pais não tiverem o próprio registro civil de nascimento, devem primeiro fazer os
+       seus para depois registrar a criança.
+     * Qualquer pessoa em qualquer idade pode fazer o registro de seu nascimento com
+       assinatura de duas testemunhas. Procure um cartório da sua cidade. A primeira certidão
+       de nascimento É GRATUITA.
+
+
+
+
+     1 O RANI é um documento administrativo, que serve aos procedimentos da FUNAI, ele não é necessário
+       para certidão de nascimento de crianças indígenas, os pais podem ter ou não, não é obrigatório. O RANI
+       possibilita acesso a outras políticas sociais ofertadas para os povos indígenas.
+                                                                                           Anexos       49
+
+
+
+Anexo C – Imagem-Objetivo para Linhas de
+Cuidados Masculinos Voltados para a Saúde
+Sexual, a Reprodução e a Paternidade1
+
+Material apresentado no artigo “Linhas de cuidados masculinos voltados para a saúde
+sexual, a reprodução e a paternidade”. Ciência & Saúde Coletiva, 21(5):1545-1552, 2016.
+DOI: 10.1590/1413-81232015215.26842015.
+
+
+
+Princípios estão sendo entendidos como bases estruturantes e fundamentos que norteiam
+as linhas de cuidados masculinos voltados para a saúde sexual, para a reprodução e para
+a paternidade.
+
+“Linha de Cuidado é a imagem pensada para expressar os fluxos assistenciais seguros
+e garantidos ao usuário, a fim de atender às suas necessidades de saúde (...) A Linha
+de Cuidado é diferente dos processos de referência e contrarreferência, apesar de
+também incluí-los. Ela difere, pois não funciona apenas por protocolos institucionalmente
+estabelecidos, mas também pelo reconhecimento de que os gestores dos serviços podem
+pactuar fluxos, reorganizando o processo de trabalho, a fim de facilitar o acesso do usuário
+às Unidades e aos Serviços dos quais necessita”(Pessôa et al., 2011, p. 21).
+
+“Em relação à Saúde Sexual e Reprodutiva, o tema diz respeito ao direito e à vontade
+do indivíduo de planejar a constituição ou não da sua família ou entidade familiar,
+aumentando-a, limitando-a ou evitando a sua prole” (Gomes, 2013, p. 5).
+
+A paternidade diz respeito tanto ao envolvimento dos homens, quanto à possibilidade de
+prazer desses sujeitos no que se refere à gravidez, ao parto e aos relacionamentos mais
+democráticos e equitativos na esfera doméstica (Ribeiro et. al, 2015).
+
+
+
+
+1
+    Matriz elaborada pela equipe do projeto de pesquisa "Os cuidados masculinos voltados para a saúde
+    sexual, a reprodução e a paternidade a partir da perspectiva relacional de gênero"(IFF/Fiocruz).
+50   Ministério da Saúde / Guia do Pré-Natal do Parceiro para Profissionais de Saúde
+
+
+
+
+                                   I - DIMENSÃO POLÍTICO-GERENCIAL
+                  Princípio                                          Descritor
+                                           Igualdade dos direitos entre os gêneros e busca da supe-
+     Equidade de gênero
+                                           ração das desigualdades entre homens e mulheres.
+                                           Concepção sobre as especificidades de socialização dos
+     Pluralidade da concepção masculina    homens a partir de uma visão relacional de gênero, cor/
+                                           raça, classe social, idade e orientação sexual.
+                                           Organização das ações orientadas para o processo
+     Organização voltada para o atendi-
+                                           saúde-doença-cuidado, contemplando as necessidades
+     mento às necessidades de saúde de
+                                           biopsicossociais de homens de diferentes perfis e levando
+     homens de diferentes perfis
+                                           em conta os diferentes contextos locais e regionais.
+                                           Valorização da dimensão simbólica dos vínculos sociais
+     Organização da atenção à saúde
+                                           que atravessam as relações de gênero, promovendo o
+     em rede
+                                           diálogo intersetorial (trabalho, saúde, lazer, dentre outros).
+                                           Acompanhamento e avaliação das ações voltadas para
+                                           homens no âmbito da saúde sexual, da reprodução e da
+                                           paternidade com vistas a, de um lado, gerar evidências
+     Acompanhamento, avaliação e
+                                           sobre seu alcance e impacto e, de outro , promover
+     transparência da gestão
+                                           transparência na comunicação com as pessoas, com
+                                           as famílias, com os responsáveis, com a mídia e com a
+                                           sociedade.
+                                           Organização dos serviços não só a partir de sua função
+                                           instrumental de oferecimento de tratamentos, exames,
+     Ambiência voltada para as relações    remédios, práticas e técnicas; mas como espaços de en-
+     de gênero, de parentalidade e de      contros e mudanças de atitudes. Envolve a promoção de
+     geração                               outros valores que desconstroem a associação exclusiva
+                                           do masculino a contágio/transmissão/periculosidade/
+                                           ameaça.
+                                                                                            Anexos       51
+
+
+
+
+                              II – DIMENSÃO ATENÇÃO À SAÚDE
+                Princípio                                         Descritor
+                                        Organização das práticas dos cuidados masculinos (indivi-
+                                        duais e coletivos), a partir da identificação das necessida-
+Promoção de uma atenção integral
+                                        des biopsicossociais, considerando ações de promoção, de
+                                        prevenção, de tratamento e de reabilitação.
+                                        Garantia da perspectiva intersetorial no diálogo entre os
+                                        espaços onde os homens constroem referências, tais como
+                                        os espaços educacionais, do lar, do mundo do trabalho e
+                                        dos grupos de filiação, que necessariamente não estão re-
+Atenção baseada no acolhimento
+                                        feridos ao sistema de saúde em suas funções e instituições.
+                                        Significa também acolher toda queixa ou relato do usuário
+                                        mesmo quando aparentemente não interessar diretamente
+                                        para o diagnóstico e tratamento.
+                                        Valorização e incentivo à participação dos homens de di-
+Envolvimento dos homens nas
+                                        ferentes perfis em todas as etapas da gravidez (pré-na-
+consultas do pré-natal, do parto e do
+                                        tal, parto e pós-parto), respeitando o direito de escolha do
+pós-parto
+                                        acompanhante pela mulher.
+                                        Problematização da divulgação de imagens que relacionam
+                                        o homem ao risco, principalmente reificando sua imagem
+Atenção relacionada à vulnerabilida-
+                                        como sujeito de contágio, violência, susceptibilidade às
+de e ao risco
+                                        drogas lícitas e ilícitas; ou ainda, como sujeito que não está
+                                        presente em momentos de cuidado aos filhos.
+52   Ministério da Saúde / Guia do Pré-Natal do Parceiro para Profissionais de Saúde
+
+
+
+
+                                 III – DIMENSÃO DA EDUCAÇÃO NA SAÚDE
+                   Princípio                                        Descritor
+                                           Consideração dos possíveis espaços de atenção à saúde,
+     Educação, saúde e comunidades de      em geral, e em especial à masculina, considerando as di-
+     prática                               ferenças relacionais de gênero, de geração,de classe e de
+                                           etnia.
+                                           Qualificação dos profissionais para atuarem com homens
+     Qualificação profissional             de diferentes perfis numa perspectiva de gênero, a partir
+                                           da realidade do trabalho em saúde.
+                                           Incentivo à formação de grupos de discussão com foco
+                                           nas questões de gênero e saúde, voltados para homens,
+     Promoção de grupos de homens e/
+                                           ou para homens e mulheres, no âmbito da saúde sexual,
+     ou mistos
+                                           da reprodução e da paternidade, como uma estratégia de
+                                           transformação das relações de gênero.
+     Reflexão da equipe profissional       Promoção da reflexão sobre temas relacionados à masculi-
+     sobre masculinidade, saúde e          nidade, à saúde, ao cuidado paterno e a metodologias para
+     paternidade                           trabalho com homens.
+                                                                                           Anexos       53
+
+
+
+Anexo D – Fluxo de Envolvimento de Homens
+no Pré-Natal1
+Material apresentado no artigo “Linhas de cuidados masculinos voltados para a saúde
+sexual, a reprodução e a paternidade”. Ciência & Saúde Coletiva, 21(5):1545-1552, 2016.
+DOI: 10.1590/1413-81232015215.26842015.
+
+
+As etapas não estão sendo necessariamente entendidas de forma cronológica. Em outras
+palavras, algumas delas podem ocorrer simultaneamente.
+
+No que se referem às ações, faz-se necessário observar que adaptações devem ser
+realizadas para que possam ser atendidas as especificidades de gênero, geração, cor/raça,
+orientação sexual, escolaridade e aspectos socioeconômicos. Junto a isso, também se faz
+necessário entender que as ações referem-se às diferentes especialidades profissionais,
+articuladas numa perspectiva interdisciplinar e integral.
+
+
+
+
+1
+    Matriz elaborada pela equipe do projeto de pesquisa "Os cuidados masculinos voltados para a saúde
+    sexual, a reprodução e a paternidade a partir da perspectiva relacional de gênero" (IFF/Fiocruz).
+54   Ministério da Saúde / Guia do Pré-Natal do Parceiro para Profissionais de Saúde
+
+
+
+
+         Etapa                                               Ações
+                      • Discutir com o pai e a mãe ou pares do mesmo sexo, ou ainda com a mãe (na
+                      ausência do pai) como pode ser a participação do pai no pré-natal, no parto e no
+                      pós-parto.
+
+                      • Ouvir do pai e da mãe, ou de pares do mesmo sexo suas expectativas em relação
+                      à paternidade, ao pré-natal, ao parto e ao pós-parto.
+
+                      • Elaborar uma linha de cuidado para o pré-natal, com a participação do pai e da
+                      mãe ou de pares do mesmo sexo. Em outras palavras, planejar – com a participação
+                      do pai e da mãe ou de pares do mesmo sexo– as ações e o fluxo de cuidados
+     Acolhimento      que devem ser assegurados para que as necessidades dos pais e da criança sejam
+                      atendidas.
+
+                      • Discutir as expectativas em relação ao planejamento reprodutivo, levando em
+                      conta a geração ou não de outros filhos e, se for o caso, métodos contraceptivos.
+
+                      • Realizar atendimento ao homem no pré-natal da companheira ou par do mesmo
+                      sexo, considerando a existência de especificidades que serão melhor trabalhadas
+                      sem o seu par e favorecendo a importância deste homem neste processo.
+
+                      • Discutir com a mãe, no caso da inviabilidade da presença de seu parceiro ou
+                      parceira, estratégias de participação voltadas para o pré-natal,o parto e o pós-parto.
+
+     Realização       • Discutir com o pai e a mãe ou pares do mesmo sexo a importância da realização
+     de exames,       de exames, testes rápidos e vacinação para a saúde deles e da criança.
+     testes rápidos   • Dentro do planejamento das ações de cuidado, assegurar a realização de exames,
+     e vacinação.     testes rápidos e vacinação.
+                      • Durante as consultas do pré-natal, manter o diálogo com o pai e a mãe ou
+     Acompa-          pares do mesmo sexo acerca dos avanços, possíveis intercorrências e possíveis
+     nhamento e       estressores relacionados à gravidez.
+     avaliação das
+     consultas pré-   • Avaliar periodicamente como o envolvimento e a participação do pai e da mãe ou
+     natais           de pares do mesmo sexo no pré-natal podem assegurar a manutenção da saúde da
+                      criança e deles.
+     Envolvimento
+     dos homens       • Discutir com o pai e a mãe ou pares do mesmo sexo a participação deles,
+     no parto e no    respeitando o direito da escolha do acompanhante pela mulher.
+     puerpério
+                                                     ISBN 978-85-334-2631-3
+
+
+
+
+                                                     9 788533 426313
+
+
+
+
+Biblioteca Virtual em Saúde do Ministério da Saúde
+               www.saude.gov.br/bvs
+

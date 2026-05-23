@@ -11,9 +11,10 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
+    "types": ["node"],
     "noEmit": false,
     "declaration": false,
     "sourceMap": false
   },
-  "include": ["prisma/seed.ts"]
+  "include": ["prisma/seed.ts", "prisma/seedDemoGestanteNutricao.ts"]
 }

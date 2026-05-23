@@ -132,7 +132,7 @@ export function LandingCarousel({
             type="button"
             onClick={() => go(index + 1)}
             className="pointer-events-auto rounded-full border border-slate-200 bg-white/95 p-2.5 text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-pink"
-            aria-label="Pr�ximo slide"
+            aria-label="Próximo slide"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />

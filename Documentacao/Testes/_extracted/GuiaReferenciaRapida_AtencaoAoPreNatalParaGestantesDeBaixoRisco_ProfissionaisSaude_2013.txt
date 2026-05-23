@@ -1,0 +1,1322 @@
+ APS_capa_prenatal_graf.pdf   09/08/2013   15:55:28
+
+
+
+
+                                                      Atenção ao Pré-Natal
+SMS - RJ / SUBPAV / SAP
+                                                      Rotinas para gestantes de baixo risco
+       Superintendência de Atenção Primária
+
+
+
+
+   Guia de Referência Rápida
+
+   Atenção ao Pré-Natal
+Rotinas para gestantes de baixo risco
+
+
+             Versão PROFISSIONAIS
+
+
+
+
+                       2013
+                                                                                                    Coordenação Técnica
+                                                                                                    André Luis Andrade Justino
+                                                                                                    Armando Henrique Norman
+                                                                                                    Nulvio Lermen Junior
+                                                                                                    Organização
+                                                                                                    Inaiara Bragante
+Prefeito                                                                                            Tradução e adaptação
+Eduardo Paes                                                                                        Angela Marta da Silva Longo
+Secretário Municipal de Saúde                                                                       Melanie Noël Maia
+Hans Fernando Rocha Dohmann                                                                         Revisão Técnica
+Subsecretária de Gestão Estratégica e Integração da Rede de Saúde                                   Michael Duncan
+Betina Durovni                                                                                      Colaboração
+Subsecretário de Atenção Primária, Vigilância e Promoção de Saúde                                   Angelmar Roman
+Daniel Soranz                                                                                       Carlo Roberto H da Cunha
+                                                                                                    Cassia Kirsch Lanes
+Superintendente de Atenção Primária em Saúde                                                        Fernanda Lazzari Freitas
+José Carlos Prado Junior                                                                            Marcelo Rodrigues Gonçalves
+
+Coordenadora de Saúde da Família                                                                    Revisão
+Ana Caroline Canedo Teixeira                                                                        Kênia Santos
+
+Coordenadora de Linha de Cuidado e Programas Especiais                                              Diagramação
+Maria de Fátima Gonçalves Enes                                                                      Márcia Azen
+
+Gerente de Programas de Saúde da Mulher
+Fernanda Prudêncio da Silva
+
+
+
+
+    Sobre este Guia
+    Este é um guia de referência rápida que resume as recomendações da Superintendência de Atenção Primária (S/SUBPAV/SAP), construído
+    a partir do conteúdo disponibilizado pelo NICE (National Institute for Health and Clinical Excellence, NHS – Reino Unido) e adaptado para a
+    realidade brasileira e carioca por profissionais que trabalham diretamente na Atenção Primária à Saúde (APS). O documento representa o
+    posicionamento da S/SUBPAV/SAP e tem a função de orientar a assistência clínica nas unidades de APS na cidade do Rio de Janeiro. Em
+    caso de condutas divergentes do que estiver presente neste guia, recomenda-se o devido registro em prontuário.
+  Atenção ao Pré-Natal                                                                              Introdução
+
+Índice
+     Introdução                                                                                                   4
+        Orientações gerais                                                                                        4
+        Uso de medicamentos na gestação                                                                           5
+
+     Classificação de risco gestacional                                                                           6
+     Princípios básicos do cuidado pré-natal                                                                      9
+     Calendário de consultas                                                                                     10
+        Primeiro contato com qualquer profissional de saúde                                                      10
+        Imunizações na gestação / Primeira consulta (idealmente até 12 semanas)                                  11
+        16 - 20 semanas / 20 - 24 semanas                                                                        14
+        24 - 28 semanas / 28 - 32 semanas                                                                        15
+        32 - 34 semanas / 34 - 36 semanas                                                                        16
+        36, 37, 38 e 39 - 40 semanas / 40 - 41 semanas                                                           17
+        Acompanhamento no puerpério                                                                              18
+
+     Intervenções que não são rotineiramente recomendadas                                                        19
+     Aconselhamento sobre o estilo de vida                                                                       20
+     Manejo de situações comuns na gestação                                                                      23
+        Náuseas e vômitos na gestação inicial / Pirose / Outros sintomas gastrintestinais / Hemorroidas          23
+        Varicosidades / Leucorreia / Dor lombar / Anemia                                                         24
+        Bacteriúria assintomática / Infecção do trato urinário / Manejo do ganho de peso na gestação             25
+
+     Manejo de situações especiais na gestação                                                                   26
+        Sífilis                                                                                                  26
+        Hipertensão arterial na gestação                                                                         29
+        Orientações sobre diabetes na gravidez                                                                   32
+        Toxoplasmose na gestação                                                                                 33
+        HIV na gestação / Hepatite B na gestação                                                                 34
+
+     Direitos da gestante                                                                                        35
+Guia de Referência Rápida                                                                                             3
+                                          Introdução                                                                 Atenção ao Pré-Natal
+
+
+
+
+             Introdução
+
+             ■ Orientações gerais
+
+
+                 As gestantes, seus parceiros e suas famílias devem sempre ser tratados com gentileza, respeito e dignidade. O cui-
+                 dado centrado na pessoa deve ser utilizado como ferramenta fundamental da Atenção Primária à Saúde (APS).
+
+                 As mulheres devem ter a oportunidade de tomar decisões informadas sobre seu acompanhamento e tratamento, em
+                 parceria com os profissionais de saúde. Aceitar ou rejeitar os procedimentos propostos são direitos da usuária.
+
+                 Uma boa comunicação entre os profissionais e a gestante é essencial. Forneça informações que: sejam de fácil
+                 compreensão para todas as mulheres, incluindo aquelas com necessidades especiais; possibilitem às mulheres
+                 a tomada de decisões informadas e que sejam consistentes e baseadas nas melhores evidências disponíveis.
+                 Recomenda-se o uso de material escrito para reforço destas informações.
+
+                 As informações devem contemplar: onde e por quem a gestante será acompanhada; o número e a periodicidade
+                 usual de consultas; e o convite para participação em grupos educativos sobre gestação e amamentação, se dis-
+                 poníveis.
+
+                 São atitudes fundamentais para uma atenção pré-natal adequada: respeitar as decisões da mulher, mesmo quan-
+                 do as opiniões são contrárias às suas próprias; prover oportunidades para que sejam discutidas preocupações e
+                 dúvidas; verificar o entendimento das informações prestadas; fornecer tempo suficiente para a tomada de deci-
+                 sões; e fornecer explicações sobre os exames indicados, propiciando discussão sobre o assunto.
+
+                 As mulheres devem sentir-se confortáveis para discutir questões íntimas e revelar problemas. Esteja alerta aos
+
+
+Introdução
+                 sinais e sintomas de violência doméstica.
+
+
+
+             4                                                                                                      Guia de Referência Rápida
+  Atenção ao Pré-Natal                                                                    Introdução
+
+
+
+■ Uso de medicamentos na gestação
+
+A utilização de fármacos na gestação deve ser sempre feita de forma criteriosa, levando-se em consideração a avaliação dos
+riscos e benefícios para cada droga.
+
+A classificação proposta pelo Food and Drug Administration (FDA) e adotada neste protocolo enquadra os fármacos em cinco
+categorias, de acordo com o risco para o uso na gestação, conforme explicitado na tabela abaixo. No decorrer deste guia, a
+classificação de cada medicamento citado encontra-se entre parênteses, após o nome do medicamento.
+
+
+ Classificação              Descrição                          Detalhamento
+
+           A                Sem risco                          Não foram constatados riscos para o feto em ensaios clínicos
+                                                               cientificamente desenhados e controlados.
+
+           B                Não há evidência de risco          Estudos com animais de laboratório não demonstraram risco fetal
+                                                               (mas não existem estudos adequados em humanos) OU estudos
+                                                               em animais indicaram riscos, mas estes não foram comprovados
+                                                               em estudos devidamente controlados em humanos.
+
+           C                Riscos não podem ser descartados   Estudos em animais de laboratório revelaram efeitos adversos ao
+                                                               feto, não existindo estudos em humanos OU medicamentos para
+                                                               os quais não existem estudos disponíveis.
+
+           D                Evidência positiva de risco        A experiência de uso na gestação mostrou associação com surgi-
+                                                               mento de malformações, embora possa ser utilizado se a relação
+                                                               risco-benefício for favorável.
+
+           X                Contraindicados na gestação        Medicamentos associados a anormalidades fetais em estudos
+                                                               com animais e em humanos e/ou cuja relação risco-benefício
+
+
+                                                                                                                                     Introdução
+                                                               contraindica seu uso na gravidez.
+
+
+
+Guia de Referência Rápida                                                                                                        5
+                                                 Classificação de risco gestacional                                                      Atenção ao Pré-Natal
+
+
+
+
+                                     Classificação do risco gestacional
+
+
+                                         A avaliação e classificação do risco gestacional deve ser um processo contínuo ao longo do acompanhamento pré-
+                                         natal. Devem ser iniciadas no momento do diagnóstico da gestação e reavaliadas a cada consulta.
+
+
+
+                                             Fatores de risco que devem ser manejados pela APS:
+                                             Idade <15 ou >35 anos.
+                                             Fatores de riscos ocupacionais.
+                                             Situação familiar/conjugal insegura.
+                                             Baixa escolaridade.
+
+
+
+
+Classificação de risco gestacional
+                                             Condições ambientais desfavoráveis.
+                                             Altura < 1,45m.
+                                             Baixo peso, sobrepeso ou obesidade.
+                                             Ganho ponderal inadequado.
+                                             Infecção urinária.
+                                             Anemia.
+                                             Tuberculose.
+                                             Fatores relacionados à história reprodutiva anterior (com rastreio e medidas preventivas pertinentes): CIUR,
+                                             prematuridade, malformações, macrossomia, síndromes hemorrágicas ou hipertensivas, intervalo interpartal <2 ou
+                                             >5 anos, nuliparidade ou multiparidade, cirurgia uterina anterior, duas ou mais cesarianas anteriores.
+                                     6                                                                                                  Guia de Referência Rápida
+  Atenção ao Pré-Natal                                                                     Classificação de risco gestacional
+
+
+
+
+          Fatores de risco que podem ser manejados na APS com apoio especializado (parecer de obstetra ou
+          acompanhamento conjunto com o NASF), ou encaminhados para nível secundário:
+          Asma brônquica de difícil controle.
+          Epilepsia.
+          Hipo ou hipertireoidismo.
+          Doenças psiquiátricas graves.
+          Usuárias de drogas.
+          HAS sem lesão de órgão-alvo.
+          Diabetes gestacional bem controlado (encaminhar diabetes prévio ou diabetes gestacional sem controle satisfatório
+          com dieta e exercícios).
+          Pré-eclâmpsia.
+          Gestação múltipla.
+
+
+
+
+                                                                                                                                    Classificação de risco gestacional
+          Placenta prévia.
+          Polidramnia ou oligodramnia.
+          Malformação fetal que não necessite de cirurgia imediata (fenda palatina, hidrocefalia).
+          Cardiopatia congênita – estabelecer plano para o parto junto à maternidade de referência.
+          Hepatite B.
+          Má história obstétrica: antecedentes de abortamento espontâneo de repetição (>3), natimorto de causa ignorada, DPP
+          de causa ignorada, pré-eclâmpsia antes de 32 semanas, cerclagem.
+
+
+
+
+Guia de Referência Rápida                                                                                                       7
+                                             Classificação de risco gestacional                                                        Atenção ao Pré-Natal
+
+
+
+
+                                         Fatores de risco que devem ser encaminhados para pré-natal de alto risco, conforme fluxo da CAP:
+                                         HAS com lesão de órgão-alvo.
+                                         Obesidade com comorbidade.
+                                         Cardiopatia materna.
+                                         Nefropatias graves (insuficiência renal crônica, transplantadas).
+                                         Doenças hematológicas (incluindo anemia falciforme, talassemias, anemia severa – Hb<8 e púrpuras).
+                                         Antecedentes de TVP ou embolia pulmonar.
+                                         Doenças autoimunes (LES, outras colagenoses, síndrome antifosfolipídeo).
+                                         Aloimunização.
+                                         Malformação complexa que necessite de cirurgia nas primeiras 24h de vida.
+                                         Doenças malignas.
+                                         Infecção pelo HIV.
+
+                                         Fatores de risco que demandam encaminhamento imediato para emergência (com realização de primeiros
+
+
+
+
+Classificação de risco gestacional
+                                         cuidados na ESF):
+                                         Hipertensão grave (PAS > 160 e/ou PAD >110mmHg).
+                                         Crise convulsiva.
+                                         Eclâmpsia ou sinais premonitórios em gestantes hipertensas (escotomas, cefaleia occipital, epigastralgia ou dor
+                                         intensa em hipocôndrio direito).
+                                         Amniorrexe prematura.
+                                         Hiperêmese com desidratação.
+                                         Ameaça de trabalho de parto prematuro.
+                                         Sangramento vaginal volumoso.
+                                         Infecções graves com repercussão sistêmica.
+                                         Ausência de percepção de movimentos fetais em 24 horas.
+                                     8                                                                                               Guia de Referência Rápida
+  Atenção ao Pré-Natal                                                                       Princípios básicos do cuidado pré-natal
+
+
+
+
+Princípios básicos do cuidado pré-natal
+
+      • Os profissionais de atenção primária devem realizar o pré-natal de baixo risco, provendo cuidado contínuo no
+        decorrer da gravidez. Serviços de atenção secundária e/ou terciária devem ser envolvidos apenas quando se faz
+        necessário cuidado adicional, e a gestante deve permanecer em acompanhamento pela APS, responsável pela
+        coordenação do cuidado.
+      • Todos os membros das equipes devem envolver-se no cuidado à gestante. Idealmente, as consultas devem ser
+        alternadas entre médico e enfermeiro. Os agentes comunitários de saúde (ACS) devem realizar visitas domiciliares
+        mensais à gestante. Para pontuar na variável 3 do pagamento por desempenho, devem estar registradas pelo
+        menos 2 visitas domiciliares do ACS até 38 semanas de gestação.
+      • Não existe uma regra definida para o calendário de consultas. O Ministério da Saúde (MS) recomenda um número
+
+
+
+
+                                                                                                                                           Princípios básicos do cuidado pré-natal
+        mínimo de seis consultas, e não há evidências de que um número maior de consultas melhore os desfechos da
+        gestação, porém aumenta a satisfação. O risco gestacional deve ser reavaliado a cada encontro.
+      • O acompanhamento deve ser iniciado precocemente (no primeiro trimestre), sendo este um indicador de qualidade
+        do cuidado pré-natal. Sugerimos consultas mensais até 32 semanas, quinzenais até 36 semanas e semanais até o
+        parto. Não existe evidência de que o número de consultas isoladamente determina qualidade do pré-natal. A cada
+        consulta: avaliar queixas, avaliar risco, verificar pressão arterial (PA), altura uterina, peso, batimentos cardiofetais
+        (BCF), exames solicitados e a solicitar, tratamentos instituídos e sua adesão.
+      • Os atendimentos no início da gestação podem ser mais longos, a fim de prover informações e tempo para
+        discussão sobre rastreamentos, de forma que a mulher possa tomar decisões informadas.
+      • Não existe alta do pré-natal. O acompanhamento da mulher no ciclo gravídico-puerperal encerra-se apenas após
+        a realização de pelo menos uma consulta puerperal, que deverá ocorrer até o 20º dia pós-parto. O seguimento
+        poderá ser prolongado se forem observados riscos no período puerperal.
+      • Os registros da atenção pré-natal devem ser completos e estruturados, com todas as informações contidas no
+        prontuário e no cartão da gestante, que é uma importante ferramenta para a coordenação do cuidado.
+
+
+Guia de Referência Rápida                                                                                                              9
+                                               Calendário de consultas                                                         Atenção ao Pré-Natal
+
+
+
+
+                          Calendário de consultas
+
+                          ■ Primeiro contato com qualquer profissional de saúde
+                                                                                                                      No momento da
+                          • Iniciar suplementação de Ácido Fólico (A) 5mg 1x ao dia – idealmente 60 a 90 dias         confirmação da
+                            antes da concepção, se possível, devendo ser mantido até 12a semana. Acionar              gestação, ofereça e
+                            médico ou enfermeiro da equipe imediatamente frente ao diagnóstico de gravidez para       realize teste rápido
+                            não atrasar esta conduta.                                                                 para sífilis e HIV na
+                          • Aconselhar sobre o estilo de vida, incluindo cessação do fumo, do uso de drogas           própria Clínica da
+                            recreativas e do consumo de álcool.                                                       Família, mesmo antes
+                                                                                                                      da primeira consulta.
+                          • Orientar sobre hábitos e higiene alimentar, incluindo como reduzir o risco de infecções
+                            alimentares (atentar para condições e limpeza dos alimentos), toxoplasmose (evitar
+                                                                                                                      Forneça informações
+                            contato com fezes de gatos e manipulação de terra) e outras doenças infecto-
+                                                                                                                      (reforçadas por
+                            contagiosas.
+                                                                                                                      material escrito e
+                          • Orientar sobre imunizações que podem ser recomendadas na gestação (ver quadro a           atividades coletivas),
+                            seguir), e solicitar trazer comprovantes vacinais na primeira consulta.                   com oportunidade de
+                                                                                                                      discutir questões e
+                          • Perguntar a data da última menstruação (DUM). Se a mulher recordar, a DUM deve ser
+                                                                                                                      fazer perguntas.
+                            registrada. Lembrar que a primeira consulta deve ocorrer até 12 semanas de gestação.
+
+
+
+
+Calendário de consultas
+                            O enfermeiro ou médico da equipe podem realizar a primeira consulta neste momento,
+                                                                                                                      Fique alerta para
+                            se estiver próximo de completar 12 semanas ou já tiver completado.
+                                                                                                                      fatores clínicos ou
+                          • Fornecer informações sobre exames de rastreamento, incluindo riscos, benefícios e         sociais que possam
+                            limitações dos testes recomendados. Oferecer realização imediata dos testes rápidos       afetar a saúde da
+                            disponíveis.                                                                              mulher e do bebê.
+                          • Orientar que toda gestante deve passar por pelo menos uma consulta odontológica
+                            ou atividade educativa em grupo sobre saúde bucal, que pode ocorrer em qualquer
+                            momento durante a gestação. O período mais adequado para procedimentos
+                            odontológicos é o segundo trimestre.
+                          10                                                                                                 Guia de Referência Rápida
+  Atenção ao Pré-Natal                                                                 Calendário de consultas
+
+
+
+■ Imunizações na gestação
+
+
+ Tétano (dupla adulto – dT ou   A gestante que nunca foi vacinada deve receber 3 doses, com a 2ª dose até no mínimo 20
+ toxoide tetânico – TT)         dias antes da DPP. A gestante previamente vacinada deve receber dose de reforço se esta
+                                não tiver sido realizada nos últimos 5 anos. A gestante que já recebeu 1 ou 2 doses deve
+                                completar seu esquema para 3 doses. Os intervalos entre cada dose devem ser de 30 a 60
+                                dias.
+
+ Hepatite B                     As gestantes não vacinadas devem receber 3 doses com intervalo de 0, 1 e 6 meses, prefe-
+                                rencialmente após o término do 1º trimestre. As gestantes com esquema incompleto devem
+                                completá-lo. Naquelas com incerteza sobre o status vacinal, solicitar anti-HBs e vacinar as
+                                não imunizadas. A todas as gestantes, independente do status vacinal, é preconizado o ras-
+                                treamento com HBsAg (ver adiante).
+
+ Influenza                      Dose única, indicada no período de campanha, para qualquer idade gestacional.
+ Vacinas contraindicadas        As vacinas que contêm vírus vivo atenuado (como sarampo, rubéola, caxumba e febre
+                                amarela) não são recomendadas em situações normais, devendo-se avaliar riscos e be-
+                                nefícios individualmente em situações especiais. Se a gestante não tem comprovação de
+                                imunização prévia para rubéola, planejar a realização desta no período puerperal.
+
+
+
+
+                                                                                                                                   Calendário de consultas
+    A correta definição            ■ Primeira consulta (idealmente até 12 semanas)
+    da idade gestacional
+    diminui a incidência de        • Identificar mulheres que podem precisar de cuidados adicionais e traçar plano de
+    indução do parto por             cuidados individualizado.
+    pós-datismo e a taxa           • Definir a idade gestacional (IG) e a data provável do parto (DPP):
+    de cesariana.
+                                      -- A datação da gestação pode ser feita através de cálculos manuais, gestograma ou
+                                         cálculo automático por prontuário eletrônico.
+
+Guia de Referência Rápida                                                                                                     11
+                                                  Calendário de consultas                                                         Atenção ao Pré-Natal
+
+
+
+                               -- Regra de Naegele (para definição da DPP): definir o 1º dia e o mês da última
+                                  menstruação, acrescentar 7 dias e somar 9 meses (ex: DUM: 03.02.2012, DPP:             O fundo uterino é
+                                  10.11.2012).                                                                           intrapélvico até cerca
+                               -- Datação manual da IG pela DUM: somar todos os dias decorridos desde a data da          de 12 semanas, e
+                                  última menstruação até a presente data, e dividir o total por sete, gerando resulta-   encontra-se na altura
+                                  do em semanas e dias.                                                                  da cicatriz umbilical
+                               -- A datação pela DUM pode ser considerada confiável se o primeiro dia da última          com 20 semanas.
+                                  menstruação for conhecido e os ciclos eram regulares.
+                               -- Deve-se se sempre correlacionar a IG encontrada com parâmetros clínicos: fundo         Entre 20 e 30 semanas,
+                                  uterino, ausculta dos batimentos cardiofetais com sonar (12 semanas) e surgimen-       espera-se correlação
+                                  to dos movimentos fetais (18-20 semanas).                                              numérica do fundo
+                                                                                                                         uterino com a idade
+                               -- Não há indicação de ultrassonografia (US) de 1º trimestre de rotina para obtenção
+                                                                                                                         gestacional.
+                                  da IG, mas esta deve ser solicitada se houver discrepância da IG com parâmetros
+                                  do exame físico, ou se a DUM for desconhecida ou incerta.
+                                                                                                                         A medida do fundo
+                                  -- Se US for solicitada, correlacionar com a DUM.                                      uterino deve sempre
+                                  -- US confirma a DUM se esta cair dentro da margem de erro do exame.                   ser registrada em
+                                  -- A DUM deve ser desconsiderada se cair fora das margens de erro da US                gráfico específico.
+                                     (1 semana no 1º trimestre e 2 semanas no 2º trimestre).
+                                                                                                                         O ganho de peso
+                          • Determinar fatores de risco para pré-eclâmpsia e diabetes gestacional; instituir pro-        recomendado na
+
+
+
+
+Calendário de consultas
+                            filaxia para pré-eclâmpsia e planejar rastreio para diabetes de acordo com a discus-         gestação deve ser
+                            são nos tópicos específicos.                                                                 calculado de acordo
+                          • Medir altura, peso e calcular o índice de massa corporal; aconselhar sobre o ganho           com o IMC da primeira
+                            de peso recomendado de acordo com o IMC da primeira consulta.                                consulta (ver “Manejo
+                                                                                                                         de situações comuns
+                          • Aferir pressão arterial.                                                                     na gestação”).
+
+
+
+
+                          12                                                                                                    Guia de Referência Rápida
+  Atenção ao Pré-Natal                                                                     Calendário de consultas
+
+
+
+                                       • Oferecer e solicitar, conforme decisão da paciente, exames laboratoriais para veri-
+    A gestante deve                      ficar grupo sanguíneo e fator Rh (solicitar coombs indireto se Rh negativo), rastrear
+    ser orientada                        anemia (hemograma), vírus da hepatite B (HBsAg), HIV, sífilis (VDRL) e bacteriúria
+    desde a primeira                     assintomática (urocultura). O MS preconiza a realização de EAS para todas as
+    consulta sobre a                     gestantes.
+    sua maternidade de                 • Perguntar se a gestação foi planejada e sobre aceitação.
+    referência para o parto.
+                                       • Perguntar sobre qualquer história pregressa ou atual de doença mental severa e
+    O nome e endereço                    tratamento psiquiátrico.
+    da maternidade de                  • Perguntar sobre o humor para identificar possível depressão (ver Guia de Referência
+    referência devem ser                 Rápida de Depressão).
+    anotados no cartão de
+    pré-natal.                         • Perguntar sobre a ocupação da gestante para identificar riscos potenciais.
+                                       • Cadastrar a gestante no SISPRENATAL.
+
+
+
+        No primeiro atendimento, fornecer informações específicas sobre:
+        • Como o bebê se desenvolve no decorrer da gestação.
+        • Nutrição e dieta.
+
+
+
+
+                                                                                                                                  Calendário de consultas
+        • Exercícios físicos, incluindo exercícios pélvicos, que podem reduzir a dor perineal no puerpério.
+        • Exames de rastreamento, incluindo riscos e benefícios dos testes.
+        • A maternidade de referência para atendimentos emergenciais e parto.
+        • Amamentação, incluindo participação em atividades educativas de grupo.
+        • Direitos e benefícios legais da gestante.
+
+
+Guia de Referência Rápida                                                                                                    13
+                                               Calendário de consultas                                                                Atenção ao Pré-Natal
+
+
+
+
+                               Realização de ultrassonografia (US) no pré-natal:
+                               • Esclarecer que não há evidências que relacionem diretamente a realização rotineira de US com melhores desfechos
+                                 perinatais.
+                               • O ultrassom de primeiro trimestre só é necessário em casos de incerteza sobre a idade gestacional.
+                               • Se for realizado US para detecção do sexo fetal, este deve ser solicitado a partir da 18ª semana.
+                               • Para mulheres em que a placenta se estende através do orifício cervical interno, oferecer novo US com 32 semanas.
+                               • Na ausência de indicações clínicas específicas, não há motivo para realizar US a partir da 24a semana de gestação.
+                               • Caso a mulher demande a realização de US morfológica, o profissional deve fornecer as seguintes orientações:
+                                 (1) esse exame deve ser realizado entre 18 e 22 semanas; (2) ele não faz parte da rotina de pré-natal de baixo
+                                 risco, por não apresentar impacto nos desfechos da gestação (3) podem ocorrer falso-positivos e (4) a legislação
+                                 brasileira não permite intervenções diante de anormalidades, na grande maioria dos casos.
+
+
+
+                          ■ 16 - 20 semanas
+                                                                                                                           As condutas
+                          • Avaliar, discutir e registrar os resultados dos exames complementares; instituir
+                                                                                                                           preconizadas diante de
+                            conduta adequada diante de resultados alterados.
+                                                                                                                           alterações nos exames
+
+
+
+
+Calendário de consultas
+                          • Aferir pressão arterial, peso e auscultar BCF.                                                 laboratoriais, bem
+                          • Medir altura uterina e registrar no gráfico de acompanhamento.                                 como o tratamento de
+                                                                                                                           pequenos distúrbios da
+                                                                                                                           gestação, estão descritos
+                          ■ 20 - 24 semanas                                                                                nos capítulos sobre
+                          • Aferir pressão arterial, peso e auscultar BCF.                                                 manejo de situações
+                                                                                                                           comuns e de situações
+                          • Medir altura uterina e registrar no gráfico de acompanhamento.
+                                                                                                                           especiais na gestação
+                                                                                                                           deste manual.
+
+                          14                                                                                                         Guia de Referência Rápida
+  Atenção ao Pré-Natal                                                              Calendário de consultas
+
+
+
+
+                               ■ 24 - 28 semanas
+   São fatores de risco para
+                               • Aferir pressão arterial, peso e auscultar BCF.
+   diabetes gestacional:
+   - Idade ≥ 30 anos.          • Oferecer e solicitar exame de coombs indireto para gestantes Rh negativas, a não ser que
+                                 o pai biológico seja sabidamente Rh negativo. Repetir de 4 em 4 semanas até o parto.
+   - IMC ≥ 25 kg/m2.
+                               • Oferecer rastreamento para diabetes gestacional (DMG), seja pela glicemia de jejum
+   - Macrossomia (peso >         para todas as gestantes ou pelo teste de tolerância à glicose para aquelas com fatores
+     4,5kg) em gestação          de risco detectados. (ver capítulo: Manejo de situações especiais na gestação).
+     anterior.
+                               • Medir altura uterina e registrar no gráfico de acompanhamento.
+   - Diabetes gestacional em
+     gestação anterior.
+                               Para tomar uma decisão informada sobre rastreio de DMG, a gestante deve saber que:
+   - História familiar de      1) Na maior parte dos casos, DMG responde à dieta e aos exercícios físicos.
+     diabetes em parentes de
+     1º grau.                  2) 10 a 20% dos casos necessitarão de tratamento medicamentoso.
+                               3) Se o DMG não for detectado e controlado, existe um pequeno risco de complicações
+   - Ganho de peso
+                                  perinatais, como distócia de ombro.
+     excessivo na gestação.
+                               4) O diagnóstico de DMG pode levar ao aumento das intervenções e monitorizações na
+                                  gestação e parto.
+
+
+                               ■ 28 - 32 semanas
+
+
+
+
+                                                                                                                               Calendário de consultas
+                               • Oferecer e solicitar, conforme decisão da paciente, exames laboratoriais para rastrear
+                                 anemia (hemograma), HIV e sífilis (VDRL), bem como EAS. Caso a gestante não tenha
+                                 sido vacinada para Hepatite B até este momento, deve-se solicitar HBsAg.
+                               • Aferir pressão arterial, peso e auscultar BCF.
+                               • Medir altura uterina e registrar no gráfico de acompanhamento.
+                               • Agendar a visita na maternidade de referência.
+
+
+Guia de Referência Rápida                                                                                                 15
+                                                Calendário de consultas                                                    Atenção ao Pré-Natal
+
+
+
+                          ■ 32 - 34 semanas
+                                                                                                                 Orientar a gestante a
+                          • Avaliar, discutir e registrar os resultados dos exames complementares solicitados;   procurar a maternidade
+                            instituir conduta adequada diante de resultados alterados.                           em caso de:
+                          • Aferir pressão arterial, peso e auscultar BCF.                                       - contrações uterinas
+                          • Medir altura uterina e registrar no gráfico de acompanhamento.                         regulares, frequentes (5/5
+                                                                                                                   minutos) e persistentes
+                          Fornecer informações específicas sobre:                                                  (por 60-90 minutos) e
+                                                                                                                   perda líquida abrupta.
+                          • Preparação para o parto, reconhecimento do trabalho de parto ativo e preparação      - A perda do tampão
+                            para lidar com a dor.                                                                  mucoso sugere apenas
+                                                                                                                   proximidade da data do
+                                                                                                                   parto, não sendo critério
+                          ■ 34 - 36 semanas                                                                        para ir à emergência.
+                          • Aferir pressão arterial, peso e auscultar BCF.
+                          • Medir altura uterina e registrar no gráfico de acompanhamento.
+                                                                                                                 O baby blues é uma
+                          • Verificar a posição fetal e registrar no cartão da gestante.
+                                                                                                                 alteração psíquica leve e
+                                                                                                                 transitória que acomete
+                          Fornecer informações específicas sobre:
+                                                                                                                 grande parte das
+
+
+
+
+Calendário de consultas
+                          • Amamentação, incluindo técnicas e boas práticas, como a importância do aleitamento   mulheres nos primeiros
+                            na primeira hora de vida, do alojamento conjunto e da amamentação exclusiva até os   dias do puerpério.
+                            6 meses do bebê.
+                          • Cuidados com o bebê, imunizações e realização do teste do pezinho,                   A depressão puerperal é
+                            preferencialmente até o quinto dia de vida.                                          um transtorno psíquico
+                                                                                                                 que pode ser moderado
+                          • Autocuidado pós-natal, com atenção para sintomas de depressão puerperal e “baby      a severo, de início
+                            blues”.                                                                              insidioso, nas primeiras
+                                                                                                                 semanas do puerpério.
+
+                          16                                                                                              Guia de Referência Rápida
+  Atenção ao Pré-Natal                                                                     Calendário de consultas
+
+
+
+                                      ■ 36, 37, 38 e 39 - 40 semanas
+   Mulheres com                       • A frequência das consultas pode ser ajustada considerando-se o risco gestacional,
+   gestações não                        não sendo recomendado ultrapassar 15 dias de intervalo.
+   complicadas devem                  • Aferir pressão arterial, peso e auscultar BCF.
+   ser encaminhadas para
+   indução do parto a                 • Medir altura uterina e registrar no gráfico de acompanhamento.
+   partir da 41ª semana de            • Verificar a posição fetal e registrar no cartão da gestante.
+   gestação.
+
+   Antes da indução                   ■ 40 - 41 semanas
+   formal, deve ser                   • Aferir pressão arterial, peso e auscultar BCF.
+   oferecido exame vaginal
+                                      • Medir altura uterina e registrar no gráfico de acompanhamento.
+   para descolamento de
+   membranas.                         • Oferecer exame vaginal para realização de descolamento de membranas e discutir
+                                        manejo da gestação prolongada.
+                                      • Ao completar 41 semanas, encaminhar a gestante para maternidade de referência
+                                        para avaliação da indução do parto/terminalidade da gestação.
+
+
+
+      A técnica de descolamento de membranas é relativamente simples: durante o toque vaginal, introduzir o dedo indicador
+
+
+
+
+                                                                                                                                  Calendário de consultas
+      no canal cervical e, após identificar as membranas, realizar movimentos circulares com a ponta do dedo. Os únicos
+      efeitos adversos são desconforto e sangramento durante ou logo após a realização do exame.
+
+
+
+
+Guia de Referência Rápida                                                                                                    17
+                                               Calendário de consultas                                                               Atenção ao Pré-Natal
+
+
+
+                          ■ Acompanhamento no puerpério
+                          • A equipe da APS deve realizar visita domiciliar na primeira semana após a alta hospitalar.
+                          • A consulta puerperal deve ser realizada até o 20º dia após o parto, e a quantidade de contatos deve ser individualizada de
+                            acordo com o risco da puérpera e as necessidades da família.
+                          • Oferecer orientações e suporte efetivo para o aleitamento materno exclusivo, salvo em casos de contraindicações.
+                          • Orientar sobre retorno da atividade sexual (não existe prazo definido, mas geralmente recomenda-se aguardar 2 a 3
+                            semanas após o parto), retorno da fertilidade e instituir as medidas contraceptivas pertinentes. Orientar que mulheres que
+                            amamentam costumam apresentar atrofia vaginal, o que pode dificultar a relação sexual. Se isso ocorrer, pode ser usado
+                            lubrificante.
+                          • Interrogar sobre perdas sanguíneas, aferir pressão arterial e frequência cardíaca, realizar exame das mamas e da
+                            episiotomia ou ferida operatória, quando presentes. O restante do exame físico deve ser orientado pelas queixas.
+                          • Atentar para os sinais de alerta, que demandam encaminhamento para atendimento na maternidade de referência:
+                            hipertensão arterial grave ou acompanhada de sintomas premonitórios de eclampsia; perda sanguínea aumentada ou
+                            acompanhada de sinais de acometimento sistêmico; sinais de trombose venosa profunda ou tromboembolismo pulmonar;
+                            febre persistente por 4 a 6 horas, ou acompanhada de calafrios, dor abdominal, subinvolução uterina ou sangramento
+                            aumentado.
+                          • Solicitar exames complementares somente quando indicado para situações clínicas especiais (seguimento de anemia e
+
+
+
+
+Calendário de consultas
+                            diabetes gestacional, por exemplo).
+
+
+
+
+                          18                                                                                                        Guia de Referência Rápida
+  Atenção ao Pré-Natal                                                                  Intervenções não rotineiramente recomendadas
+
+
+
+
+Intervenções que não são rotineiramente recomendadas
+
+
+      Até o momento, não existem evidências para sustentar as seguintes ações na atenção ao pré-natal:
+
+      • O exame das mamas como rotina não é recomendado para promoção do aleitamento materno durante a gestação.
+      • O exame ginecológico de rotina não é recomendado por não ter acurácia para determinar a idade gestacional, a
+        probabilidade de parto pré-termo ou desproporção céfalo-pélvica.
+
+
+
+
+                                                                                                                                       Intervenções não rotineiramente recomendadas
+      • Suplementação universal de ferro.
+      • Suplementação de ácido fólico para prevenção de anemia megaloblástica. Deve ser usado apenas no período pré-
+        concepcional e no primeiro trimestre da gestação, para prevenção de defeitos do tubo neural.
+      • Rastreamento de rotina para clamídia, citomegalovirus, hepatite C, estreptococos do grupo B (GBS) e vaginose
+        bacteriana.
+      • Ultrassom com doppler de rotina em gestações de baixo risco.
+      • Ultrassom para estimativa de peso fetal em casos de suspeita de fetos grandes para a idade gestacional (GIG),
+        em populações de baixo risco.
+      • Rastreamento de rotina para parto pré-termo.
+      • Monitorização rotineira dos movimentos fetais.
+      • Cardiotocografia anteparto de rotina.
+      • Ultrassom de rotina após 24 semanas.
+
+
+
+
+Guia de Referência Rápida                                                                                                         19
+                                                Aconselhamento sobre o estilo de vida                                                                   Atenção ao Pré-Natal
+
+
+
+
+                                        Aconselhamento sobre o estilo de vida
+
+
+                                         Trabalho                       • Certifique-se da ocupação da gestante para identificar riscos.
+                                                                        • Reafirme às mulheres que usualmente é seguro continuar trabalhando.
+                                                                        • Informe as gestantes sobre seus direitos e benefícios (ver capítulo Direitos da Gestante).
+
+                                         Suplementos                    • Recomende suplementação com ácido fólico no período pré-concepcional e durante o primeiro
+                                         nutricionais                     trimestre (400 mcg ou 0,4mg por dia / apresentação disponível: 5mg). Não está indicado após
+                                                                          esse período.
+                                                                        • Informe as gestantes sobre a importância de ingestão adequada de vitamina D durante a gravi-
+                                                                          dez e a amamentação (10 mcg ou 0,1 mg por dia). Não prescreva suplementação rotineira de
+
+
+
+
+Aconselhamento sobre o estilo de vida
+                                                                          ferro.
+                                                                        • Informe as gestantes sobre o risco de malformações associado à vitamina A, e oriente que
+                                                                          evitem ingestão acima de 700mcg ou 0,7mg por dia, e consumo de fígado.
+
+                                         Evitando infecções             • Aconselhe as mulheres sobre como reduzir o risco de listeriose e salmonela, e como evitar
+                                                                          toxoplasmose na gestação.
+                                                                        • Deve-se evitar o consumo de leite não pasteurizado e carnes cruas.
+                                                                        • Evitar ou, na impossibilidade, reaquecer produtos prontos para o consumo.
+                                                                        • Cozinhar ou adotar cuidados higiênicos no preparo de vegetais crus.
+                                                                        • Atentar para origem, higiene e condições dos produtos que consome.
+                                                                        • Em relação à toxoplasmose, as gestantes susceptíveis devem ser orientadas a evitar contato
+                                                                          com fezes de gatos, evitar o contato com terra, e não ingerir vegetais mal lavados e carnes mal
+                                                                          cozidas.
+
+
+
+
+                                        20                                                                                                             Guia de Referência Rápida
+  Atenção ao Pré-Natal                                                                    Aconselhamento sobre o estilo de vida
+
+
+
+
+  Medicamentos              • Prescreva o menor número possível de medicamentos, e apenas nas circunstâncias em que os
+                              benefícios superem os riscos.
+                            • Aconselhe as mulheres a não utilizar medicamentos não prescritos.
+
+  Terapias                  • Informe as mulheres de que poucas terapias complementares são comprovadamente seguras e
+  complementares              efetivas na gestação.
+
+  Exercícios                • Não há risco associado em iniciar ou continuar exercícios moderados para gestantes de baixo
+                              risco. A atividade física aeróbica regular pode melhorar o bem-estar geral, além de ser útil em
+                              situações em que são necessárias medidas para controle do ganho de peso.
+                            • Esportes que podem levar ao trauma abdominal, quedas ou estresse articular excessivo, além
+                              de mergulho com cilindro, devem ser evitados.
+                            • Gestantes com sangramento vaginal, risco de parto prematuro e outras situações clínicas espe-
+                              ciais, como hipertensão gestacional, não devem praticar exercícios físicos.
+
+
+
+
+                                                                                                                                       Aconselhamento sobre o estilo de vida
+  Relação sexual            • Reafirme às mulheres que relações sexuais são consideradas seguras durante a gestação, não
+                              estando associadas a qualquer efeito adverso, em qualquer idade gestacional.
+                            • As posições do casal podem sofrer mudanças com o passar do tempo: no primeiro trimestre,
+                              não há restrições, mas com o crescimento uterino deve-se evitar compressão sobre o abdome
+                              e sobrecarga da coluna.
+
+  Álcool                    • Aconselhe às mulheres que estão grávidas ou planejando engravidar a evitar o consumo de
+                              álcool, principalmente nos primeiros 3 meses.
+
+  Tabagismo                 • Discuta o uso de tabaco e informe sobre seus riscos durante a gestação.
+                            • Forneça informações, aconselhamento e suporte sobre como parar de fumar durante a gesta-
+                              ção. Incentive a participação em grupos para cessação do tabagismo.
+                            • Discuta a terapia de reposição de nicotina, individualizando riscos e benefícios.
+
+
+Guia de Referência Rápida                                                                                                         21
+                                                Aconselhamento sobre o estilo de vida                                                                 Atenção ao Pré-Natal
+
+
+
+
+                                         Maconha                        • Incentive as gestantes a não fazer uso de maconha.
+
+                                         Viagens aéreas                 • Longos trajetos estão associados com risco aumentado de trombose venosa, embora a possibi-
+                                                                          lidade de qualquer risco adicional na gestação não esteja clara.
+                                                                        • Na população geral, meias elásticas são efetivas para redução do risco.
+                                                                        • As regras para viagens aéreas variam entre as companhias, mas geralmente não há restrição
+                                                                          às viagens até 27 semanas. Após, é exigido atestado médico autorizando a viagem com data
+                                                                          de, no máximo, sete dias antes da viagem, e após 36 semanas só estarão autorizadas a viajar
+                                                                          se acompanhadas pelo médico assistente. Sugere-se consultar o site da companhia aérea para
+                                                                          ver as regras específicas.
+
+                                         Viagens de carro               • Oriente que o cinto de segurança deve passar acima e abaixo da barriga, e não sobre ela.
+
+                                         Viagens para o exterior        • O aconselhamento sobre percurso aéreo, imunizações e segurança da viagem deve ser indivi-
+
+
+
+
+Aconselhamento sobre o estilo de vida
+                                                                          dualizado, de acordo com o destino.
+
+                                         Tintura para cabelo            • Os produtos químicos nas tinturas para cabelo nas doses utilizadas não são altamente tóxicos,
+                                                                          e os estudos disponíveis não mostram maiores riscos para o feto, mas as evidências ainda são
+                                                                          escassas.
+                                                                        • Os eventuais riscos podem ser diminuídos se a gestante aguardar até 12 semanas de gestação.
+                                                                        • Tinturas naturais, como Henna, são menos tóxicas, e o risco também é menor quando não se
+                                                                          pintam as raízes, apenas as pontas (mechas e reflexos).
+                                                                        • Se a gestante optar por pintar o cabelo por conta própria, recomenda-se uso de luvas, am-
+                                                                          biente ventilado, deixar a tintura no cabelo pelo menor tempo possível e lavar o cabelo após a
+                                                                          aplicação.
+                                                                        • Levar em consideração as alterações nos cabelos durante a gestação, que inclusive podem al-
+                                                                          terar a resposta às tinturas usadas. Recomenda-se testar o produto em pequena área do cabelo
+                                                                          antes.
+                                                                        • Formol, por exemplo para alisamento, não deve ser utilizado em nenhum momento na gestação.
+
+                                        22                                                                                                          Guia de Referência Rápida
+  Atenção ao Pré-Natal                                                                     Manejo de situações comuns na gestação
+
+
+
+
+Manejo de situações comuns na gestação
+■ Náuseas e vômitos na gestação inicial:
+• Informar que a maioria dos casos tem resolução espontânea com 16 a 20 semanas, e que os sintomas usualmente não são
+  associados a desfechos gestacionais desfavoráveis.
+• Medidas não farmacológicas: fracionar alimentação (6 ou mais refeições diárias); evitar frituras, gorduras, alimentos condi-
+  mentados e com odor forte; evitar líquidos durante as refeições; ingerir alimentos sólidos (ex., biscoito salgado) ao levantar;
+  ingerir gengibre.
+• Medidas farmacológicas: Dimenidrinato-Piridoxina 50+10mg, 8/8h (B); Metoclopramida 10mg, 8/8h (B); Prometazina 25mg,
+  ao deitar, com repetição pela manhã (C).
+
+■ Pirose:
+
+
+
+
+                                                                                                                                         Manejo de situações comuns na gestação
+• Medidas não farmacológicas: fracionar alimentação; medidas posturais; evitar tabaco, álcool, chocolate, refrigerantes, café e
+  alimentos gordurosos e picantes.
+• Medidas farmacológicas: alginatos ou antiácidos contendo combinações de alumínio e magnésio, em suspensão oral ou
+  comprimidos mastigáveis, em caso de sintomas (A). Considerar supressor da secreção ácida (Ranitidina 150mg 1-2x ao dia)
+  para casos não responsivos (B).
+
+■ Outros sintomas gastrintestinais:
+• Constipação: aumentar ingestão de líquidos e alimentos contendo fibras.
+• Eventualmente, pode-se utilizar Dimeticona, para gases (C); supositório de glicerina, para constipação; e Hioscina, para
+  cólicas (C).
+
+■ Hemorroidas:
+• Medidas não farmacológicas: evitar constipação intestinal (ver orientações acima).
+• Medidas farmacológicas: em caso de persistência do desconforto, cremes podem ser utilizados (apesar da ausência de
+  evidências sobre efetividade e segurança).
+Guia de Referência Rápida                                                                                                           23
+                                               Manejo de situações comuns na gestação                                                               Atenção ao Pré-Natal
+
+
+
+                                         ■ Varicosidades:
+                                         • As mulheres devem ser informadas que as varizes são um sintoma comum na gestação, que não causam danos, e que o
+                                           uso de meias elásticas pode aliviar os sintomas, mas não previne o seu surgimento.
+
+                                         ■ Leucorreia:
+                                         • As mulheres devem ser informadas de que um aumento na secreção vaginal é fisiológico e pode ocorrer durante a gravi-
+                                           dez. Se esta é associada com coceira, dor, odor fétido ou dor ao urinar, talvez haja uma causa infecciosa e a investigação
+                                           deve ser realizada.
+                                         • O uso de Miconazol tópico (creme intravaginal, por 7 noites) é um tratamento eficaz para candidíase vaginal em mulheres
+                                           grávidas (C). Não usar medicamentos antifúngicos orais.
+                                         • Tratar leucorreias infecciosas de outras etiologias de acordo com abordagem sindrômica, utilizando drogas seguras na ges-
+                                           tação (Ver Guia de Referência Rápida de Doenças Sexualmente Transmissíveis).
+
+
+
+
+Manejo de situações comuns na gestação
+                                         ■ Dor lombar:
+                                         • Medidas preventivas: evitar ganho excessivo de peso e uso de salto alto, melhorar a postura, abaixar-se adequadamente,
+                                           com a coluna ereta.
+                                         • Medidas não farmacológicas: exercícios na água, massagens e educação para o cuidado com a coluna.
+                                         • Medidas farmacológicas: Paracetamol 500mg, 6/6h (B) pode ser utilizado.
+
+
+                                         ■ Anemia:
+                                         O tratamento da anemia deve ser realizado de acordo com o valor de Hemoglobina (g/dl):
+                                         • >11 (1ª consulta) ou >10,5 (28 semanas): ausência de anemia, não é necessário realizar suplementação profilática.
+                                         • Entre 8 e 11 (10,5 com 28 semanas): anemia leve a moderada. Tratar com 120-240mg de Ferro elementar (1 a 2 comprimi-
+                                           dos de Sulfato Ferroso 40mg, 1 hora antes das três principais refeições - A); avaliar indicação de anti-helmíntico (Mebenda-
+                                           zol - C); repetir dosagem de Hemoglobina após 30 a 60 dias de tratamento.
+                                         • <8: anemia grave. Encaminhar ao pré-natal de alto risco para manejo.
+                                         • A suplementação universal de ferro não evidenciou benefícios em desfechos materno-fetais.
+                                         24                                                                                                        Guia de Referência Rápida
+  Atenção ao Pré-Natal                                                                     Manejo de situações comuns na gestação
+
+
+
+■ Bacteriúria assintomática / infecção do trato urinário:
+• Preferencialmente, tratar de acordo com o perfil de sensibilidade antibiótica. Algumas opções utilizadas com frequência são:
+  Nitrofurantoína (B) 100mg, 6/6h (evitar após 36 semanas, por risco de anemia hemolítica neonatal), Cefalexina (B) 500mg,
+  6/6h e Amoxicilina (B) 500mg, 8/8h.
+• O tratamento deve ser mantido por 7 dias, e está indicado controle de cura com urocultura 7 dias após o término do trata-
+  mento. A urocultura deverá ser repetida a cada 4-6 semanas até o parto.
+• Se for isolado estreptococo do grupo B em urocultura, é de suma importância destacar esta informação no cartão da gestan-
+  te, uma vez que se trata de indicação de antibioticoterapia intraparto.
+• Em caso de cistite aguda, iniciar tratamento empírico com Cefalexina ou Nitrofurantoína (colher amostra para urocultura no
+  momento do diagnóstico, se disponível). Pode-se usar Paracetamol (B) para alívio da dor. Se houver febre ou dor lombar,
+  suspeitar de pielonefrite e encaminhar para emergência obstétrica.
+• Em casos de recorrência (3 ou mais episódios), está indicada profilaxia com dose única diária, à noite, de Cefalexina ou
+
+
+
+
+                                                                                                                                         Manejo de situações comuns na gestação
+  Nitrofurantoína.
+
+
+■ Manejo do ganho de peso na gestação:
+   Deve ser realizado de acordo com o IMC pré-gestacional ou da primeira consulta, com recomendações claras acerca das
+   alterações de peso e ajustes dietéticos necessários. Desvios do estado nutricional da gestante associam-se com aumento
+   de morbidade materna e fetal.
+
+     Índice massa corpórea (Kg/m2)          Ganho total               Ganho semanal                   Ganho total
+                                            no 1º trimestre (Kg)      no 2º e 3º trimestre (Kg)       na gestação (Kg)
+     Baixo peso (< 18,5)                              2,30                   0,45 - 0,58                      12,60 – 18,00
+     Adequado (18,5 a 24,9)                           1,60                   0,35 – 0,45                      11,25 – 15,75
+     Sobrepeso (25 a 29,9)                            0,90                   0,25 – 0,30                       7,75 - 11,25
+     Obesa (≥ 30)                                     0,00                   0,18 – 0,27                       4,95 – 9,00
+
+
+Guia de Referência Rápida                                                                                                           25
+                                                 Manejo de situações especiais na gestação                                                               Atenção ao Pré-Natal
+
+
+
+
+                                            Manejo de situações especiais na gestação
+                                            ■ Sífilis
+
+
+
+
+                                                  A sífilis na gestação requer intervenção imediata, para que se reduza ao máximo a possibilidade de transmissão
+                                                  vertical.
+                                                  É imprescindível que nenhuma gestante conclua o acompanhamento pré-natal sem que tenha sido assegurada a re-
+                                                  alização de testagem para sífilis, salvo em caso de recusa expressa da mesma. A testagem deve ser disponibilizada
+
+
+
+
+Manejo de situações especiais na gestação
+                                                  a todas as gestantes no primeiro contato, e repetida no terceiro trimestre de gestação (28 semanas).
+                                                  Há dois tipos de testes sorológicos disponíveis: treponêmicos (detectam a presença de anticorpos que podem se
+                                                  manter presentes indefinidamente, portanto não distinguem doença ativa e tratada) e não treponêmicos (tendem à
+                                                  negativação após o tratamento e, por isso, são importantes para seguimento pós-terapêutico; há possibilidade de
+                                                  falso-positivo e de cicatriz sorológica, que é a persistência de positividade em pessoas adequadamente tratadas).
+                                                  O teste rápido é um teste treponêmico e deve ser oferecido às gestantes no primeiro contato com o serviço após a
+                                                  confirmação da gestação, a fim de propiciar o diagnóstico e tratamento precoces da sífilis na gestação. Este teste
+                                                  poderá ser repetido no terceiro trimestre da gestação, sendo fundamental se não houver disponibilidade do resulta-
+                                                  do do teste não treponêmico. A realização do teste rápido não está indicada para gestantes com história documen-
+                                                  tada de sífilis em qualquer fase da vida, uma vez que a positividade pode persistir para toda a vida.
+                                                  O VDRL é um teste não treponêmico, que deve ser solicitado na primeira consulta e repetido no terceiro trimestre da
+                                                  gestação, em caso de primeiro resultado negativo. Este teste é útil para o diagnóstico e essencial para o controle de
+                                                  cura e seguimento da gestante tratada, uma vez que é quantitativo e tem resultado expresso em títulos.
+
+
+
+
+                                            26                                                                                                         Guia de Referência Rápida
+  Atenção ao Pré-Natal                                                                      Manejo de situações especiais na gestação
+
+
+
+Diante dos resultados dos testes sorológicos para sífilis, deve-se proceder da seguinte forma:
+    • Ambos os resultados negativos, ou apenas um teste realizado com resultado negativo: repetir teste rápido e/ou VDRL
+      com 28 semanas.
+    • Ambos os resultados positivos, ou apenas um teste realizado com resultado positivo: instituir tratamento imediato, testar
+      e tratar o(s) parceiro(s), garantir realização de VDRL da gestante e do(s) parceiro(s) para seguimento pós-tratamento
+      (nos casos de diagnóstico por teste rápido).
+    • Em caso de teste rápido positivo com posterior resultado de VDRL negativo, deve-se pesquisar história de tratamento
+      anterior e, se comprovada, o tratamento pode ser descontinuado. Repetir VDRL após 30 dias para confirmar persistência
+      da negatividade.
+    • Em caso de baixos títulos de VDRL (<1/8), o teste rápido deve ser realizado imediatamente. Quando o teste treponêmico
+      for negativo, considerar a possibilidade de reação cruzada com falso-positivo. Quando o teste rápido for positivo ou
+
+
+
+
+                                                                                                                                             Manejo de situações especiais na gestação
+      indisponível, qualquer titulação de VDRL deve ser considerada infecção e o tratamento deve ser instituído, a não ser que
+      haja comprovação de tratamento prévio adequado.
+
+    ●   Tratamento:
+        -- Sífilis primária: Penicilina Benzatina 2,4 milhões UI, IM, dose única.
+        -- Sífilis secundária ou latente recente (menos de 1 ano): Penicilina Benzatina 4,8 milhões UI, IM, 2 doses de 2,4
+           milhões, com intervalo de 7 dias.
+        -- Sífilis terciária ou latente tardia (> 1 ano ou tempo desconhecido): Penicilina Benzatina 7,2 milhões UI, IM, 3
+           doses de 2,4 milhões, com intervalo de 7 dias entre cada dose.
+    • Nas gestantes tratadas, deve-se repetir o VDRL mensalmente. Os títulos devem cair de forma progressiva,
+      permanecendo negativos ou inferiores a 1/8. Se houver elevação de duas diluições no título, a gestante deve ser
+      submetida a novo tratamento, sendo indicado revisar se o(s) parceiro(s) realizou(aram) tratamento adequado. A
+      repetição do tratamento também é indicada em casos de tratamento incompleto.
+
+
+
+Guia de Referência Rápida                                                                                                               27
+                                                   Manejo de situações especiais na gestação                                                               Atenção ao Pré-Natal
+
+
+
+                                                 • Para gestantes alérgicas à Penicilina, é recomendada a dessensibilização, realizada em ambiente hospitalar (verificar
+                                                   fluxo junto à CAP), uma vez que a Penicilina é a única droga capaz de tratar adequadamente o feto. Em caso de
+                                                   impossibilidade, tratar a gestante com Eritromicina (estearato) 500mg, VO, 6/6h, por 15 dias (sífilis recente) ou 30 dias
+                                                   (sífilis tardia), e considerar o feto como não tratado.
+                                                 • O(s) parceiro(s) deve(m) receber tratamento concomitante à gestante, com Penicilina Benzatina 2,4 milhões UI, IM,
+                                                   em dose única, mesmo se a testagem for negativa. Em caso de sorologias positivas, o parceiro deve receber 3 doses
+                                                   da medicação. O tratamento dos parceiros também pode ser realizado com fármacos alternativos, como Eritromicina
+                                                   500mg, 6/6h, ou Doxiciclina 100mg, 12/12h, por 15 ou 30 dias.
+                                                 • Os dados do tratamento da gestante e do parceiro, incluindo as datas em que a medicação foi administrada e o
+                                                   seguimento sorológico pós-tratamento, devem ser anotados no prontuário e cartão da gestante. Os registros no cartão
+                                                   da gestante são particularmente importantes, pois serão usados na maternidade para avaliar a indicação de notificar e
+                                                   tratar sífilis congênita.
+
+
+
+
+Manejo de situações especiais na gestação
+                                                 • A sífilis é considerada inadequadamente tratada se:
+                                                   -- O tratamento for feito de forma incompleta.
+                                                   -- O tratamento for feito com outra droga que não a Penicilina Benzatina.
+                                                   -- O parceiro não for tratado ou fizer tratamento incompleto.
+                                                   -- O tratamento for instituído menos de 30 dias antes da ocorrência do parto.
+                                                   -- Não houver registro do tratamento da gestante e do parceiro no cartão da gestante.
+                                                 • Em casos de sífilis não tratada ou inadequadamente tratada será feita notificação de sífilis congênita na maternidade e
+                                                   instituído tratamento para o recém-nascido.
+
+
+
+
+                                            28                                                                                                           Guia de Referência Rápida
+  Atenção ao Pré-Natal                                                                   Manejo de situações especiais na gestação
+
+
+
+■ Hipertensão arterial na gestação
+
+
+
+      A hipertensão na gestação é definida por PAS ≥ 140 ou PAD ≥ 90 mmHg, e pode corresponder a uma variedade
+      de situações, que demandam seguimentos diversos:
+      • Hipertensão crônica: preexistente, detectada antes de 20 semanas de gestação, ou persistente por mais de 12
+        semanas após o parto.
+      • Hipertensão gestacional: Hipertensão sem proteinúria iniciada após 20 semanas de gestação. É um diagnóstico
+        transitório, podendo ser seguida por pré-eclâmpsia (se surgir proteinúria), hipertensão crônica (se persistir 12
+        semanas após o parto), ou ser chamada Hipertensão Transitória, quando se resolve em até 12 semanas após o
+
+
+
+
+                                                                                                                                          Manejo de situações especiais na gestação
+        parto.
+      • Pré-eclâmpsia: Hipertensão com proteinúria (≥300mg em 24h) iniciada após 20 semanas de gestação.
+      • Eclâmpsia: Pré-eclâmpsia associada à crise convulsiva.
+
+
+
+
+Conduta frente a gestantes com Hipertensão crônica:
+    • Suspender inibidores da enzima conversora de angiotensina (IECA - D) ou bloqueadores dos receptores de angiotensina
+      (BRA - D) imediatamente após a confirmação da gestação. O Atenolol (D) também não deve ser utilizado.
+    • Instituir profilaxia para pré-eclâmpsia (conforme orientações adiante).
+    • Solicitar US precoce para datação acurada da idade gestacional, e com 25-28 semanas para avaliar crescimento fetal.
+    • Solicitar creatinina sérica e EAS, no 1º trimestre, para eventual necessidade de comparação no decorrer da gestação.
+      Complementar a investigação com proteinúria de 24 horas diante da presença de proteína.
+
+
+Guia de Referência Rápida                                                                                                            29
+                                                   Manejo de situações especiais na gestação                                                           Atenção ao Pré-Natal
+
+
+
+                                                 • Rastrear lesão de órgão-alvo em gestantes com doença há longa data (ECG, fundoscopia, clearance de creatinina em
+                                                   urina de 24 horas). Referenciar casos com investigação positiva para serviço terciário.
+                                                 • Referenciar ao especialista de acordo com a segurança do médico da APS e a existência de matriciamento com
+                                                   especialista.
+                                                 • As evidências disponíveis são insuficientes para determinar as metas de controle pressórico, mas há uma tendência
+                                                   em se recomendar manutenção da PAS entre 130-155 mmHg e da PAD entre 80-105 mmHg em gestantes hipertensas
+                                                   sem lesão de órgão-alvo. Para tanto, pode-se usar medicamentos anti-hipertensivos como Metildopa 0,5-3,0 g/dia (B),
+                                                   Hidralazina 50-300 mg/dia (C). A Hidroclorotiazida (C) não deve ser iniciada, mas pode ser mantida.
+                                                 • No decorrer da gestação, permanecer atento aos sinais de surgimento de pré-eclâmpsia sobreposta: piora dos níveis
+                                                   pressóricos ou sintomas premonitórios de eclâmpsia (escotomas cintilantes, cefaleia, epigastralgia).
+                                                 • No puerpério, pode-se reintroduzir o uso dos IECA (Captopril e Enalapril), pois tratam-se de drogas seguras na
+
+
+
+
+Manejo de situações especiais na gestação
+                                                   amamentação.
+
+                                            Conduta frente a gestantes com alto risco para pré-eclâmpsia:
+                                                 • São consideradas de alto risco para o desenvolvimento de pré-eclâmpsia na gestação as gestantes que apresentem:
+                                                   história de pré-eclâmpsia em gestação anterior, diabetes, hipertensão arterial crônica, doença renal crônica, doença
+                                                   autoimune e gestação múltipla.
+                                                 • Nestas mulheres, está indicado o uso de Ácido acetilsalicílico (C/D) em baixas doses (50-100mg/dia), após o primeiro
+                                                   trimestre de gestação.
+                                                 • A suplementação de cálcio (1,5-2,0g/dia de Ca+2 = 3-4 comprimidos de Carbonato e cálcio 1250mg) deve ser considerada
+                                                   em gestantes com alto risco de pré-eclâmpsia que sejam de comunidades com dieta pobre em cálcio (<900 mg/dia).
+                                                 • Há outros fatores que aumentam o risco para desenvolver pré-eclâmpsia (como primiparidade e ganho excessivo de
+                                                   peso na gestação), mas não foi encontrado benefício na instituição de medidas profiláticas nestas situações.
+
+
+
+
+                                            30                                                                                                        Guia de Referência Rápida
+  Atenção ao Pré-Natal                                                                  Manejo de situações especiais na gestação
+
+
+
+Conduta frente a gestantes com suspeita de pré-eclâmpsia:
+    • O encaminhamento à emergência obstétrica para avaliação laboratorial de urgência e avaliação da necessidade de
+      internação está indicado, de acordo com as principais diretrizes mundiais e do MS.
+    • Caso a gestante seja elegível para seguimento ambulatorial, deve ser encaminhada para acompanhamento com
+      especialista.
+    • Para gestantes com pré-eclâmpsia confirmada, serão necessários: vigilância diária dos níveis tensionais, exames
+      laboratoriais a cada 1-2 semanas e avaliação semanal do bem-estar fetal. A corticoterapia para aceleração da maturação
+      pulmonar deve ser instituída sempre que o diagnóstico for anterior a 34 semanas de gestação. A gestação não deve se
+      estender além do termo, podendo ser interrompida precocemente, em casos de maior gravidade.
+    • As gestantes com hipertensão gestacional também devem receber ações de vigilância materna e fetal, mas a natureza e
+      frequência destas não está bem estabelecida.
+
+
+
+
+                                                                                                                                         Manejo de situações especiais na gestação
+    • Embora a única resolução efetiva para pré-eclâmpsia e hipertensão gestacional seja o parto, a pressão arterial pode
+      levar até 12 semanas para retornar aos seus níveis habituais.
+
+
+
+
+     Tratamento da hipertensão aguda grave:
+     • Independente da etiologia da hipertensão, valores de PAS ≥ 160 e/ou PAD ≥ 110 mmHg devem ser sempre
+       reduzidos de maneira aguda (confirmar aferição após 15 minutos antes de intervir).
+     • As gestantes com hipertensão aguda grave devem ser sempre encaminhadas à emergência obstétrica.
+     • Se houver disponibilidade dos medicamentos na APS, pode-se iniciar a redução da PA com: Hidralazina 5mg IV
+       (máximo: 20mg) ou Nifedipina 10mg (cápsulas ou comprimidos de liberação intermediária) VO. Em ambos os
+       casos, repetir a cada 30 minutos até PAS < 160 e PAD < 110 mmHg (respeitar dose máxima).
+
+
+
+
+Guia de Referência Rápida                                                                                                           31
+                                                 Manejo de situações especiais na gestação                                                          Atenção ao Pré-Natal
+
+
+
+
+                                            ■ Orientações sobre diabetes na gravidez
+
+                                            • O diabetes na gravidez é uma categoria ampla que inclui o diabetes prévio à gestação e o diabetes gestacional, que é
+                                              uma elevação da glicemia, detectada na gravidez, em geral a partir das semanas 24-28 de gestação, e está associada a
+                                              desfechos adversos gestacionais, como macrossomia, distócia de ombro e pré-eclâmpsia.
+
+                                            • Esses conceitos estão em processo de mudança nos consensos internacionais, embora sem evidências consistentes
+                                              que apoiem as mudanças sugeridas, especialmente sem evidência de custo-efetividade da aplicação dos novos critérios
+                                              diagnósticos para o diabetes gestacional. Por esse motivo, neste guia de consulta rápida optou-se por não adotar ainda
+                                              os novos critérios, mas reavaliar as evidências em 1 ano.
+
+                                            • Toda mulher com diabetes tipo 1 ou tipo 2 em idade fértil deve receber aconselhamento pré-concepcional, com método
+
+
+
+
+Manejo de situações especiais na gestação
+                                              contraceptivo eficaz e, se plano de gestar, suplementação com ácido fólico, adequação do controle metabólico (HbA1C
+                                              <7%) e avaliação de complicações diabéticas (retinopatia e nefropatia). Em caso de gestação confirmada, ela deve ser
+                                              encaminhada ao pré-natal de alto risco.
+
+                                            • Tradicionalmente é solicitada a glicemia de jejum na primeira consulta para detectar possível diabetes prévio à gestação
+                                              que não havia ainda sido diagnosticado. Ela é solicitada prioritariamente para grupos com maior risco para diabetes,
+                                              como aqueles com hipertensão, obesidade, história familiar de diabetes, diabetes gestacional prévio, história prévia
+                                              de macrossomia ou escore do FINDRISC > 12 (ver guia de Diabetes). É feito o diagnóstico de diabetes na presença
+                                              de glicemia de jejum > 126 mg/dl, devendo a paciente nesse caso ser encaminhada ao pré-natal de alto risco, após
+                                              confirmação em nova amostra.
+
+                                            • Embora ainda apoiado por evidências fracas, o rastreamento para o diabetes gestacional é tradicionalmente feito
+                                              internacionalmente. O período mais propício para sua detecção é entre as semanas 24-28 de idade gestacional, mas os
+                                              novos critérios que vêm sendo sugeridos apontam que níveis diagnósticos de diabetes gestacional podem ser detectados
+                                              mais cedo, a partir do rastreamento para o diabetes realizado na primeira consulta; porém não há consenso sobre como
+                                              proceder com esses casos.
+
+
+
+
+                                            32                                                                                                     Guia de Referência Rápida
+  Atenção ao Pré-Natal                                                                Manejo de situações especiais na gestação
+
+
+
+• Devido à limitação das evidências, o rastreamento deve ser uma decisão conjunta entre o médico e a gestante, levando
+  em conta, por um lado, a prevenção de eventos adversos na gestação e, por outro, a falta de evidências consistentes,
+  o risco de efeito do rótulo e a presença de outros problemas que possam agravar o efeito do rótulo (ex., má aceitação
+  da gestação, problemas familiares etc.). Caso se opte por não fazer o rastreamento, é importante monitorar o ganho de
+  peso na gestação e prevenir ganho excessivo de peso, o que ajuda a prevenir desfechos adversos semelhantes àqueles
+  associados ao diabetes gestacional.
+
+• O rastreamento pode ser feito pela solicitação do TTG-75g em mulheres com fatores de risco (ex., história de
+  macrossomia em gestação prévia, história prévia de diabetes gestacional, hipertensão, história familiar de diabetes em
+  familiar de primeiro grau, IMC ≥ 25, idade superior a 30 anos ou ganho de peso excessivo na gestação). Nesse caso, se
+  glicemia em jejum > 100mg/dL ou glicemia de 2 horas > 140mg/dL, deve-se confirmar em nova amostra e diagnosticar
+  diabetes gestacional. Outra opção é seguir a conduta que vinha sendo recomendada pelo Ministério da Saúde e fazer
+  o rastreamento em dois passos, primeiramente solicitando glicemia de jejum para todas as gestantes entre as semanas
+
+
+
+
+                                                                                                                                       Manejo de situações especiais na gestação
+  24-28 de idade gestacional e, se > 85mg/dL, solicitar TTG-75g. Se a glicemia de 2 horas for > 140mg/dL, é feito o
+  diagnóstico de diabetes gestacional.
+
+• Caso seja diagnosticado diabetes gestacional, a paciente deve ser encaminhada ao pré-natal de alto risco ou
+  acompanhada em conjunto com matriciador em ginecologia/obstetrícia.
+
+
+
+■ Toxoplasmose na gestação
+
+O rastreamento para a toxoplasmose é controverso, principalmente porque as evidências que apoiam a efetividade do tratamen-
+to na gestação são fracas. A partir do momento em que é feito o diagnóstico de infecção por toxoplasmose na gestação, muito
+provavelmente já houve infecção fetal, não havendo benefício do tratamento da gestante. Por esse motivo, a SUBPAV não reco-
+menda o rastramento para toxoplasmose na gestação.
+
+
+
+
+Guia de Referência Rápida                                                                                                         33
+                                                 Manejo de situações especiais na gestação                                                          Atenção ao Pré-Natal
+
+
+
+                                            ■ HIV na gestação
+
+                                            As gestantes portadoras de HIV devem ser acompanhadas por serviço de referência, devendo a equipe da Atenção Primária
+                                            envolver-se na coordenação do cuidado. Nesta situação, a amamentação está contraindicada, devendo a mulher ser orientada
+                                            e acompanhada adequadamente.
+
+
+
+
+                                            ■ Hepatite B na gestação
+
+                                            Quando a sorologia para o HBsAg é positiva, esta informação deve ser destacada no cartão da gestante, e ela orientada para
+                                            as medidas de profilaxia que devem ser realizadas logo após o parto (primeira dose da vacina e imunoglobulina nas primeiras
+
+
+
+
+Manejo de situações especiais na gestação
+                                            12 horas de vida do recém-nascido). Se a gestante for HBeAg reagente, deverá ser encaminhada a serviço especializado. A
+                                            amamentação é permitida, desde que não haja fissura mamilar.
+
+
+
+
+                                            34                                                                                                    Guia de Referência Rápida
+  Atenção ao Pré-Natal                                                               Direitos da gestante
+
+
+
+
+Direitos da gestante
+
+
+
+     • Cartão da gestante;
+     • Conhecimento e vinculação à maternidade onde receberá assistência para o parto;
+     • Estabilidade no emprego, desde a confirmação da gestação até 5 meses pós-parto;
+     • Mudar de função ou setor de acordo com necessidade de saúde (atestado), com garantia de retorno após;
+     • Dispensa para consultas e exames;
+     • Presença de acompanhante durante o trabalho de parto, parto e pós-parto imediato;
+     • Alojamento conjunto, sempre que possível;
+     • Licença-maternidade: 120 dias após nascimento ou a partir do 8º mês. Poderá ser prorrogada para 6 meses a
+       critério do empregador;
+     • Dois descansos diários de 30 minutos para amamentação (até 6 meses);
+     • Duas semanas de repouso em caso de abortamento.
+
+
+
+
+                                                                                                                        Direitos da gestante
+
+
+Guia de Referência Rápida                                                                                          35
+ APS_capa_prenatal_graf.pdf   09/08/2013   15:55:28
+
+
+
+
+                                                      Atenção ao Pré-Natal
+SMS - RJ / SUBPAV / SAP
+                                                      Rotinas para gestantes de baixo risco
+

@@ -32,6 +32,7 @@ Edite **`.env`** e garanta estes itens (valores reais, não placeholder de tutor
 | `PACIENTE_IDS_PEPPER` | Segredo longo para HMAC de CPF/Cartão; obrigatório no Compose para o `backend`. |
 | `DATABASE_URL` | Para Prisma **no seu PC** (host): `postgresql://USUARIO:SENHA@127.0.0.1:PORTA/sus_prenatal` com **a mesma** senha/usuário que `POSTGRES_*`. Dentro do Docker o backend usa outra URL montada pelo Compose (`@db:5432`). |
 | `SEED_PROFISSIONAL_EMAIL` / `SEED_PROFISSIONAL_PASSWORD` | Credenciais do profissional criadas pelo **seed** (login na API). |
+| `SEED_DEMO_GESTANTE` | `1` (padrão em DB local): cria gestante **An\*\*\* Demo** com altura/peso pré e 4 consultas para o gráfico nutricional. Use `0` para desativar. |
 | `CLINICAL_AI_URL` | Opcional: `http://clinical_ai:4010` no Compose para proxies `/api/v1/dev/...` e sanitize via serviço Python. |
 
 **Senha do Postgres e URL:** use preferencialmente letras e números. Caracteres como `@`, `:`, `/`, `#` na senha podem **quebrar** a montagem de `postgresql://user:password@db:5432/...` e derrubar migração ou conexão.
@@ -44,6 +45,21 @@ Sempre a partir de **`Codigo/`**:
 cd F:\TCC\sus-prenatal-ai-icei-puc-minas-cc\Codigo
 docker compose up -d --build
 ```
+
+**Escriba (STT):** o serviço `stt` está no perfil Compose **`ai`** e **não** entra no comando acima por padrão. Se `WHISPER_HTTP_URL=http://stt:8000`, defina no `.env`:
+
+```env
+COMPOSE_PROFILES=ai
+WHISPER_HTTP_URL=http://stt:8000
+```
+
+(com isso, o mesmo `docker compose up -d --build` passa a incluir o `stt`), **ou** use explicitamente:
+
+```powershell
+docker compose --profile ai up -d --build
+```
+
+Requer NVIDIA Container Toolkit e GPU; preflight: `./scripts/demo-gpu-preflight.sh`. Ver [`docs/STT_GPU_DEMO.md`](docs/STT_GPU_DEMO.md).
 
 O contêiner `backend` só inicia o Node **depois** de `prisma migrate deploy` no `docker-entrypoint.sh`. O `db` precisa passar no healthcheck antes.
 
@@ -326,7 +342,9 @@ Corpus padrão na imagem: `clinical-ai/corpus/CartilhasSUS` (`RAG_CORPUS_DIR`; v
 
 ## IA opcional (Compose comentado)
 
-Em `docker-compose.yml` há exemplos comentados (`ollama`, `faster-whisper`) e perfil `ai`. O backend usa **`OLLAMA_HTTP_URL`**, **`WHISPER_HTTP_URL`** e, para desidentificação, **`CLINICAL_AI_URL`** ou **`MCP_SERVER_URL`** conforme `.env.example`. Sem Ollama no host, o clinical-ai sobe mas `/mcp/test/direct-question` falha na chamada ao modelo.
+O perfil Compose **`ai`** sobe o serviço **`stt`** ([`stt-service/`](stt-service/)) com GPU (Whisper `large-v3`). Ordem recomendada: `db` → `clinical_ai` → `stt` → `backend` → `frontend`. No `.env`: `WHISPER_HTTP_URL=http://stt:8000`. Preflight: `./scripts/demo-gpu-preflight.sh`. Docs: [`docs/Escriba_STT.md`](docs/Escriba_STT.md), [`docs/STT_GPU_DEMO.md`](docs/STT_GPU_DEMO.md).
+
+O backend usa **`OLLAMA_HTTP_URL`** (host), **`WHISPER_HTTP_URL`** e **`CLINICAL_AI_URL`** conforme `.env.example`. Sem Ollama no host, o clinical-ai sobe mas rotas que chamam o modelo local falham.
 
 ## PowerShell no Windows
 

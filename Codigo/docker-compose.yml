@@ -1,5 +1,8 @@
 # Subir/rebuild a partir da pasta **Codigo/** (onde está este arquivo):
 #   docker compose up -d --build
+# Escriba (STT/GPU): o serviço `stt` usa perfil `ai` — inclua com uma das opções:
+#   COMPOSE_PROFILES=ai no Codigo/.env   (recomendado se WHISPER_HTTP_URL=http://stt:8000)
+#   docker compose --profile ai up -d --build
 # Depois de mudar o código do backend, use `--build` para o container `prenatal_backend` receber o `dist/` novo.
 
 name: prenatal-digital
@@ -39,6 +42,12 @@ services:
       OLLAMA_HTTP_URL: ${OLLAMA_HTTP_URL:-}
       OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2}
       WHISPER_HTTP_URL: ${WHISPER_HTTP_URL:-}
+      WHISPER_MODEL: ${WHISPER_MODEL:-large-v3}
+      STT_CHUNK_MIN_MS: ${STT_CHUNK_MIN_MS:-2500}
+      STT_USE_PREPROCESS: ${STT_USE_PREPROCESS:-true}
+      STT_CONCURRENCY_LIMIT: ${STT_CONCURRENCY_LIMIT:-1}
+      GPU_DEMO_MODE: ${GPU_DEMO_MODE:-time_slice}
+      STREAM_RAG_DEBOUNCE_MS: ${STREAM_RAG_DEBOUNCE_MS:-1500}
       MCP_SERVER_URL: ${MCP_SERVER_URL:-}
       JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in Codigo/.env (RF14)}
       JWT_EXPIRES_SEC: ${JWT_EXPIRES_SEC:-28800}
@@ -57,11 +66,16 @@ services:
     networks:
       - backend-nw
       - data-nw
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       db:
         condition: service_healthy
       clinical_ai:
         condition: service_healthy
+      stt:
+        condition: service_healthy
+        required: false
     restart: unless-stopped
 
   frontend:
@@ -71,6 +85,7 @@ services:
       # "/" = mesma origem (nginx faz proxy de /api e /ws). Funciona no celular na LAN sem apontar para localhost.
       args:
         VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/}
+        VITE_LANDING_FEEDBACK_FORM_URL: ${VITE_LANDING_FEEDBACK_FORM_URL:-}
     container_name: prenatal_frontend
     ports:
       - "${FRONTEND_PUBLISH_PORT:-5173}:80"
@@ -129,17 +144,44 @@ services:
       start_period: 300s
     restart: unless-stopped
 
-  # --- Placeholders IA (perfil opcional): ancorar na data-nw ---
-  # ollama:
+  # STT local (Whisper large-v3) — perfil ai; requer NVIDIA Container Toolkit
+  stt:
+    profiles: [ai]
+    build:
+      context: ./stt-service
+      dockerfile: Dockerfile
+    container_name: prenatal_stt
+    environment:
+      WHISPER_MODEL: ${WHISPER_MODEL:-large-v3}
+      WHISPER_COMPUTE_TYPE: ${WHISPER_COMPUTE_TYPE:-float16}
+      WHISPER_DEVICE: ${WHISPER_DEVICE:-cuda}
+      STT_PREPROCESS_ENABLED: ${STT_PREPROCESS_ENABLED:-true}
+      STT_DIARIZATION_ENABLED: ${STT_DIARIZATION_ENABLED:-true}
+      STT_LANGUAGE: ${STT_LANGUAGE:-pt}
+    volumes:
+      - whisper_models:/root/.cache/huggingface
+    networks:
+      - backend-nw
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8000/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 8
+      start_period: 180s
+    restart: unless-stopped
+
+  # ollama (opcional no Compose; demo usa Ollama no host):
   #   profiles: [ai]
   #   image: ollama/ollama:latest
   #   networks: [data-nw]
   #   volumes: [ollama_data:/root/.ollama]
-  #
-  # faster-whisper:
-  #   profiles: [ai]
-  #   image: fedirz/faster-whisper-server:latest
-  #   networks: [data-nw]
 
 networks:
   frontend-nw:
@@ -152,4 +194,5 @@ networks:
 volumes:
   prenatal_pg_data:
   clinical_rag_data:
+  whisper_models:
   # ollama_data:

@@ -1,28 +1,28 @@
 /**
- * Estratificao de risco obsttrico (regras determinsticas) alinhada ao
- * Guia de Ateno  Sade da Gestante  Critrios para estratificao de risco
- * e acompanhamento da gestante (Ministrio da Sade, 2024).
+ * EstratificaÂÂo de risco obstÂtrico (regras determinÂsticas) alinhada ao
+ * Guia de AtenÂÂo Â SaÂde da Gestante Â CritÂrios para estratificaÂÂo de risco
+ * e acompanhamento da gestante (MinistÂrio da SaÂde, 2024).
  *
- * O guia prev trs nveis (habitual, intermedirio, alto). O produto persiste
- * apenas `HABITUAL` | `ALTO`; critrios do guia em **intermedirio** so
- * mapeados para `ALTO` (deciso de produto: fila conservadora).
+ * O guia prevÂ trÂs nÂveis (habitual, intermediÂrio, alto). O produto persiste
+ * apenas `HABITUAL` | `ALTO`; critÂrios do guia em **intermediÂrio** sÂo
+ * mapeados para `ALTO` (decisÂo de produto: fila conservadora).
  *
- * Lacunas do DER em relao ao guia (no computveis sem novos campos/API):
- * - Escores de tabagismo (ex.: Fagerstrm) e de lcool (ex.: T-ACE).
- * - Classificao fina de sfilis (terciria / resistncia) e estgio clnico.
+ * Lacunas do DER em relaÂÂo ao guia (nÂo computÂveis sem novos campos/API):
+ * - Escores de tabagismo (ex.: FagerstrÂm) e de Âlcool (ex.: T-ACE).
+ * - ClassificaÂÂo fina de sÂfilis (terciÂria / resistÂncia) e estÂgio clÂnico.
  * - Muitos achados de exames laboratoriais (HIV, VDRL quantitativo, Hb, glicemia)
- *   enquanto no houver escrita estruturada na API clnica.
- * - Condies descritas s em texto livre de consulta.
+ *   enquanto nÂo houver escrita estruturada na API clÂnica.
+ * - CondiÂÂes descritas sÂ em texto livre de consulta.
  *
- * Reviso clnica: conferir quadros do PDF e ajustar limiares/cdigos conforme
- * verso institucional em uso.
+ * RevisÂo clÂnica: conferir quadros do PDF e ajustar limiares/cÂdigos conforme
+ * versÂo institucional em uso.
  */
 
 import { RiscoGestacional } from "../lib/prismaBarrel.js";
 
-/** Cdigos estveis para testes, auditoria e futura UI (tooltip). */
+/** CÂdigos estÂveis para testes, auditoria e futura UI (tooltip). */
 export type RiscoCriterioCodigo =
-  // --- Alto risco (guia / manual de referncia) ---
+  // --- Alto risco (guia / manual de referÂncia) ---
   | "ALTO_HAS_GESTACAO_ATUAL"
   | "ALTO_DIABETES_GESTACIONAL"
   | "ALTO_CARDIOPATIA"
@@ -39,7 +39,7 @@ export type RiscoCriterioCodigo =
   | "ALTO_IDADE_40_OU_MAIS"
   | "ALTO_SIFILIS_ANTECEDENTE"
   | "ALTO_SIFILIS_TRATAMENTO_NA_GESTACAO"
-  // --- Intermedirio no guia ? persistido como ALTO ---
+  // --- IntermediÂrio no guia â†’ persistido como ALTO ---
   | "INT_IDADE_15_A_17"
   | "INT_IDADE_35_A_39"
   | "INT_IMC_30_A_39_9"
@@ -122,7 +122,7 @@ function imcKgM2(alturaM: number | null, pesoKg: number | null): number | null {
 function isGestacaoMultipla(tipoGravidez: string | null | undefined): boolean {
   if (!tipoGravidez?.trim()) return false;
   const t = tipoGravidez.trim().toLowerCase();
-  return t.includes("gemel") || t.includes("tripla") || t.includes("mltipl") || t.includes("multipl");
+  return t.includes("gemel") || t.includes("tripla") || t.includes("mÂltipl") || t.includes("multipl");
 }
 
 function hasSifilisTratamentoGestacao(g: RiscoEstratificacaoGestacao): boolean {
@@ -196,7 +196,7 @@ function dedupe<T>(arr: T[]): T[] {
 }
 
 /**
- * Calcula `tipo_risco` e a lista de critrios disparados (alto antes de intermedirio).
+ * Calcula `tipo_risco` e a lista de critÂrios disparados (alto antes de intermediÂrio).
  */
 export function computeTipoRisco(input: RiscoEstratificacaoInput): ComputeTipoRiscoResult {
   const alto = dedupe(collectAlto(input));

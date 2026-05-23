@@ -1,7 +1,10 @@
 import { ConsultaStreamEventoTipo } from "../lib/prismaBarrel.js";
+import { gpuDemoGate } from "../lib/gpuDemoGate.js";
 import { mcpGateway } from "../lib/privacyMcpGateway.js";
 import { OllamaStreamClient } from "../lib/llm/ollamaStreamClient.js";
 import { FasterWhisperClient } from "../lib/stt/fasterWhisperClient.js";
+import { SttChunkBuffer } from "../lib/stt/sttChunkBuffer.js";
+import { normalizeObstetricJargon } from "../lib/obstetricJargonNormalize.js";
 import { ConsultaRepository } from "../repository/consultaRepository.js";
 
 const SENTENCE_END = /[.!?…]\s*$/;
@@ -23,13 +26,14 @@ function hasSentenceBoundary(text: string): boolean {
 }
 
 /**
- * Sessão por WebSocket: acúmulo efêmero de STT, debounce/VAD para RAG,
+ * Sessão por WebSocket: acúmulo efêmero de STT, debounce/VAD para insight,
  * sanitização MCP antes do Ollama e persistência de trechos commitados.
  */
 export class ConsultationStreamSession {
   private sttLive = "";
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
   private ragRunning = false;
+  private readonly sttBuffer: SttChunkBuffer;
 
   constructor(
     private readonly consultaId: string,
@@ -37,30 +41,60 @@ export class ConsultationStreamSession {
     private readonly consultas: ConsultaRepository,
     private readonly stt: FasterWhisperClient,
     private readonly llm: OllamaStreamClient,
-  ) {}
+  ) {
+    this.sttBuffer = new SttChunkBuffer(stt.chunkMinMs);
+  }
 
   dispose(): void {
     if (this.debounceTimer) {
       clearTimeout(this.debounceTimer);
       this.debounceTimer = null;
     }
+    gpuDemoGate.setMicActive(false);
+  }
+
+  onMicState(active: boolean): void {
+    gpuDemoGate.setMicActive(active);
+    if (!active) {
+      void this.flushSttBuffer();
+    }
   }
 
   async onBinaryAudio(chunk: ArrayBuffer | Uint8Array): Promise<void> {
     const u8 = chunk instanceof Uint8Array ? chunk : new Uint8Array(chunk);
-    const partial = await this.stt.transcribePartialChunk(this.consultaId, u8);
+    const merged = this.sttBuffer.push(u8);
+    if (merged) {
+      await this.transcribeAndApply(merged);
+    }
+  }
+
+  private async flushSttBuffer(): Promise<void> {
+    const merged = this.sttBuffer.flush();
+    if (merged) {
+      await this.transcribeAndApply(merged);
+    }
+  }
+
+  private async transcribeAndApply(merged: Uint8Array): Promise<void> {
+    const partial = await this.stt.transcribeBuffer(this.consultaId, merged);
     if (partial) {
-      await this.applySttPartial(partial);
+      await this.applySttPartial(partial.text, true);
     }
   }
 
   /** Pausa VAD ou comando explícito do cliente: força avaliação do buffer atual. */
   async onVadPause(): Promise<void> {
+    await this.flushSttBuffer();
     await this.flushRagReason("vad");
   }
 
-  async applySttPartial(text: string): Promise<void> {
-    this.sttLive = text;
+  async applySttPartial(text: string, append = false): Promise<void> {
+    const normalized = normalizeObstetricJargon(text.trim());
+    if (append && this.sttLive.trim()) {
+      this.sttLive = `${this.sttLive.trim()}\n${normalized}`;
+    } else {
+      this.sttLive = normalized;
+    }
     this.send({ type: "stt_partial", text: this.sttLive });
 
     if (hasSentenceBoundary(this.sttLive)) {
@@ -76,13 +110,17 @@ export class ConsultationStreamSession {
     }, DEBOUNCE_MS);
   }
 
-  private async flushRagReason(_reason: "vad" | "punctuation" | "debounce"): Promise<void> {
+  private flushRagReason(_reason: "vad" | "punctuation" | "debounce"): void {
+    gpuDemoGate.scheduleLlmFlush(() => this.runLlmFlush());
+  }
+
+  private async runLlmFlush(): Promise<void> {
     if (this.debounceTimer) {
       clearTimeout(this.debounceTimer);
       this.debounceTimer = null;
     }
 
-    const raw = this.sttLive.trim();
+    const raw = normalizeObstetricJargon(this.sttLive.trim());
     if (raw.length === 0) {
       return;
     }
@@ -97,6 +135,7 @@ export class ConsultationStreamSession {
     const snapshot = raw;
     this.sttLive = "";
 
+    const releaseGpu = await gpuDemoGate.acquire("llm");
     try {
       const gateway = mcpGateway();
       const sanitized = (await gateway.sanitizeForModel(snapshot)).trim();
@@ -120,6 +159,7 @@ export class ConsultationStreamSession {
       const message = e instanceof Error ? e.message : "Falha no pipeline de IA.";
       this.send({ type: "error", message });
     } finally {
+      releaseGpu();
       this.ragRunning = false;
     }
   }

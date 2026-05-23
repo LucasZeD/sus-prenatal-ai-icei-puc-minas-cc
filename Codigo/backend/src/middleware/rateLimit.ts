@@ -89,7 +89,7 @@ export const rateLimit: MiddlewareHandler = async (c, next) => {
     return c.json(
       {
         code: "rate_limit_exceeded",
-        message: "Muitas requisi��es em pouco tempo. Tente novamente em instantes.",
+        message: "Muitas requisies em pouco tempo. Tente novamente em instantes.",
       },
       429,
     );

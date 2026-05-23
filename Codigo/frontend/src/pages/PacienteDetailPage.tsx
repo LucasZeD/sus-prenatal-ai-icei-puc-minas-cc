@@ -4,6 +4,9 @@ import { useAuth } from '../context/AuthContext.js'
 import { useLiviaDesktopAsideOpen } from '../hooks/useLiviaDesktopAsideOpen.js'
 import { isUuid } from '../lib/uuid.js'
 import { LiviaAssistantPanel } from '../components/LiviaAssistantPanel.js'
+import { LiviaDesktopFab } from '../components/LiviaDesktopFab.js'
+import { LiviaMobileFab } from '../components/LiviaMobileFab.js'
+import { GanhoPesoGestacionalPanel } from '../components/nutricao/GanhoPesoGestacionalPanel.js'
 import { BoolTriState } from '../components/BoolTriState.js'
 import { DerModulosProntuario, type DerModulosPersistHandle } from './paciente-detail/DerModulosProntuario.js'
 import { useProntuarioDrafts } from './paciente-detail/useProntuarioDrafts.js'
@@ -1437,7 +1440,7 @@ export function PacienteDetailPage() {
                       )}
                     </dd>
                   </div>
-                  <div>
+                  <div id="perfil-antropometria">
                     <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Altura</dt>
                     <dd className="mt-1">
                       {isEditing ? (
@@ -2097,6 +2100,27 @@ export function PacienteDetailPage() {
             </details>
           </section>
 
+          {selG ? (
+            <section
+              id="acompanhamento-nutricional"
+              className="rounded-3xl border border-slate-200 bg-white shadow-sm overflow-hidden mt-8"
+            >
+              <div className="border-b border-brand-pink/10 bg-brand-pink/5 px-8 py-6">
+                <h2 className="text-xl font-black text-brand-navy">Acompanhamento nutricional (Caderneta 2024)</h2>
+                <p className="mt-2 text-sm font-medium text-slate-500">
+                  Ganho de peso acumulado por idade gestacional, conforme orientação do Ministério da Saúde.
+                </p>
+              </div>
+              <div className="p-8">
+                <GanhoPesoGestacionalPanel
+                  pacienteId={validId}
+                  paciente={paciente}
+                  consultas={cronologico}
+                />
+              </div>
+            </section>
+          ) : null}
+
           {/* Timeline Expandida de Consultas */}
           <section className="rounded-3xl border border-slate-200 bg-white shadow-sm overflow-hidden mt-8">
             <div className="border-b border-brand-pink/10 bg-brand-pink/5 px-8 py-6">
@@ -2357,35 +2381,12 @@ export function PacienteDetailPage() {
           />
         </aside>
       ) : (
-        <button
-          type="button"
-          onClick={() => setLiviaAsideOpen(true)}
-          className="fixed bottom-6 right-6 z-40 hidden h-14 w-14 items-center justify-center rounded-full border border-rose-200/90 bg-white text-xl shadow-lg transition-[box-shadow,transform] hover:scale-[1.03] hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 focus-visible:ring-offset-2 lg:flex"
-          aria-label="Mostrar assistente Lívia"
-          title="Mostrar assistente Lívia"
-        >
-          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-rose-600 text-base text-white shadow-inner">✨</span>
-        </button>
+        <LiviaDesktopFab onClick={() => setLiviaAsideOpen(true)} />
       )}
 
-      {/* Mobile-first: assistente Lívia expansível (mobile apenas) */}
-      <div className="lg:hidden fixed bottom-4 right-4 z-40">
-        <details className="rounded-2xl border border-brand-pink/50 bg-white shadow-[0_4px_25px_rgba(251,160,167,0.3)] w-[calc(100vw-2rem)] max-w-sm ml-auto origin-bottom-right group transition-all">
-          <summary className="cursor-pointer list-none rounded-2xl px-5 py-4 text-sm font-bold text-brand-navy marker:content-none [&::-webkit-details-marker]:hidden bg-brand-pink/5 hover:bg-brand-pink/10 transition-colors">
-            <span className="flex items-center justify-between gap-2">
-              <span className="flex items-center gap-3">
-                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-pink text-white text-sm shadow-sm ring-2 ring-white">✨</span>
-                 Conversar com LívIA
-              </span>
-              <span className="text-xs font-bold text-brand-pink/70 group-open:hidden">ABRIR</span>
-              <span className="text-xs font-bold text-brand-pink/70 hidden group-open:block">FECHAR</span>
-            </span>
-          </summary>
-          <div className="border-t border-brand-pink/20 bg-white rounded-b-2xl h-[min(65vh,36rem)] overflow-hidden flex flex-col">
-            <LiviaAssistantPanel pacienteId={validId ?? undefined} gestacaoId={isUuid(selG) ? selG : undefined} />
-          </div>
-        </details>
-      </div>
+      <LiviaMobileFab>
+        <LiviaAssistantPanel pacienteId={validId ?? undefined} gestacaoId={isUuid(selG) ? selG : undefined} />
+      </LiviaMobileFab>
 
     </div>
   )

@@ -11,10 +11,10 @@ const SUGESTOES = [
   'Critérios de encaminhamento obstétrico',
 ]
 
-type LlmProvider = 'ollama' | 'gemini' | 'auto'
+type LlmProvider = 'ollama' | 'gemini'
 
 function coerceLlmProvider(v: unknown): LlmProvider {
-  if (v === 'gemini' || v === 'auto' || v === 'ollama') return v
+  if (v === 'gemini') return 'gemini'
   return 'ollama'
 }
 
@@ -289,7 +289,7 @@ export function LiviaAssistantPanel({
 
   useEffect(() => {
     if (!infraHealthLoaded) return
-    if (!geminiConfigured && (llmProvider === 'gemini' || llmProvider === 'auto')) {
+    if (!geminiConfigured && llmProvider === 'gemini') {
       setLlmProvider('ollama')
     }
   }, [infraHealthLoaded, geminiConfigured, llmProvider])
@@ -559,9 +559,9 @@ export function LiviaAssistantPanel({
 
   return (
     <div className={`flex h-full flex-col ${className}`}>
-      <div className="flex shrink-0 flex-col gap-2.5 border-b border-rose-100 bg-rose-50/30 px-4 py-3 sm:px-6">
+      <div className="flex shrink-0 flex-col gap-2 border-b border-rose-100 bg-rose-50/30 px-3 py-2.5 sm:px-4">
         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-rose-400 to-rose-600 text-white shadow-sm shadow-rose-200">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-rose-400 to-rose-600 text-white shadow-sm shadow-rose-200">
             ✨
           </div>
           <h2 className="min-w-0 flex-1 text-sm font-bold leading-snug text-slate-900 sm:text-base">
@@ -581,31 +581,36 @@ export function LiviaAssistantPanel({
             </button>
           ) : null}
         </div>
-        <div className="flex flex-wrap items-center gap-2 border-t border-rose-100/80 pt-2.5 sm:gap-2.5">
+        <div className="flex flex-wrap items-center gap-2 border-t border-rose-100/80 pt-2 sm:gap-2">
           <div
             className="flex shrink-0 items-center gap-0.5 rounded-full border border-slate-200 bg-white p-0.5"
-            title="Onde rodar a geração da resposta (RAG/embeddings seguem no Ollama). Gemini exige GEMINI_API_KEY no clinical-ai."
+            title="Modelo local (Ollama) ou Gemini na nuvem. RAG/embeddings continuam no Ollama. Gemini exige GEMINI_API_KEY no clinical-ai."
           >
-            {(['ollama', 'auto', 'gemini'] as const).map((p) => {
-              const disabled =
-                busy || (p !== 'ollama' && !geminiConfigured)
-              const label = p === 'ollama' ? 'Local' : p === 'gemini' ? 'Gemini' : 'Auto'
-              return (
-                <button
-                  key={p}
-                  type="button"
-                  disabled={disabled}
-                  onClick={() => setLlmProvider(p)}
-                  className={`rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-wider transition-colors ${
-                    llmProvider === p
-                      ? 'bg-rose-500 text-white shadow-sm'
-                      : 'text-slate-500 hover:bg-rose-50 hover:text-rose-800'
-                  } disabled:cursor-not-allowed disabled:opacity-35`}
-                >
-                  {label}
-                </button>
-              )
-            })}
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => setLlmProvider('ollama')}
+              className={`rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-wider transition-colors ${
+                llmProvider === 'ollama'
+                  ? 'bg-rose-500 text-white shadow-sm'
+                  : 'text-slate-500 hover:bg-rose-50 hover:text-rose-800'
+              } disabled:cursor-not-allowed disabled:opacity-35`}
+            >
+              Local
+            </button>
+            <button
+              type="button"
+              disabled={busy || !geminiConfigured}
+              onClick={() => setLlmProvider('gemini')}
+              className={`rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-wider transition-colors ${
+                llmProvider === 'gemini'
+                  ? 'bg-violet-600 text-white shadow-sm'
+                  : 'text-slate-500 hover:bg-violet-50 hover:text-violet-900'
+              } disabled:cursor-not-allowed disabled:opacity-35`}
+              title={geminiConfigured ? 'Usar Gemini' : 'Gemini indisponível (sem chave no clinical-ai)'}
+            >
+              Gemini
+            </button>
           </div>
           <span className="hidden h-4 w-px shrink-0 bg-slate-200 sm:block" aria-hidden />
           <button
@@ -621,15 +626,14 @@ export function LiviaAssistantPanel({
             type="button"
             disabled={busy}
             onClick={() => setThinkOn((v) => !v)}
-            title="Análise passo a passo antes da resposta (mais lento). Em dúvidas complexas pode atrasar ou impedir o texto final; desligue se precisar de resposta direta."
-            className={`min-w-0 max-w-full shrink rounded-full border px-2.5 py-1 text-left text-[10px] font-black uppercase leading-tight tracking-wider transition-colors sm:max-w-none sm:text-center ${
+            title="Análise passo a passo antes da resposta (mais lento). Desligue para resposta direta."
+            className={`min-w-0 max-w-full shrink rounded-full border px-2.5 py-1 text-[10px] font-black uppercase leading-tight tracking-wider transition-colors sm:text-center ${
               thinkOn
-                ? 'border-amber-400 bg-amber-100 text-amber-900'
-                : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-50'
+                ? 'border-rose-500 bg-rose-600 text-white shadow-sm'
+                : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
             } disabled:opacity-40`}
           >
-            <span className="hidden sm:inline">Raciocínio aprofundado: {thinkOn ? 'sim' : 'não'}</span>
-            <span className="sm:hidden">Raciocínio: {thinkOn ? 'sim' : 'não'}</span>
+            Raciocínio aprofundado
           </button>
         </div>
       </div>

@@ -1,0 +1,11 @@
+=== Validação do benchmark ===
+
+Linhas: 110
+Documentos: {'CadernetaGestante_3ed_2016.pdf': 1, 'CadernetaGestante_8ed_rev_2024.pdf': 13, 'CadernetaGestante_ANS.pdf': 1, 'CadernoDeAtencaoAoPreNatal_RiscoHabitual_.pdf': 3, 'CadernosDeAtencaoBasica_AtencaoAoPreNatalDeBaixoRisco_2012.pdf': 12, 'CartilhaDaGestante.pdf': 12, 'FichaPerinatal-Ambulatorio.pdf': 3, 'GestacaoAltoRisco_2010.pdf': 11, 'GuiaDeAtencaoSaudeDaGestante_CriteriosParaEstratificacaoDeRiscoAcompanhamentoDaGestante_2024.pdf': 11, 'GuiaDoPreNatal_PuerperioNaAtencaoPrimariaSaude_2024.pdf': 11, 'GuiaPreNatalDoParceiro_ProfissionaisSaude_2018.pdf': 1, 'GuiaPreNatalDoParceiro_ProfissionaisSaude_2023.pdf': 7, 'GuiaReferenciaRapida_AtencaoAoPreNatalParaGestantesDeBaixoRisco_ProfissionaisSaude_2013.pdf': 4, 'ManualGestacaoAltoRisco_2022.pdf': 12, 'ManualTecnico_GestacaoAltoRisco.pdf': 4, 'ManualTecnico_OficinaAtualizacaoEmPreNatal_ProfissionaisAtencaoBasica_2014.pdf': 1, 'ManualTecnico_PrenatalPuerperio.pdf': 3}
+Dificuldade: {'easy': 44, 'medium': 39, 'hard': 27}
+Modos de avaliação: {'contains_all': 71, 'contains_any': 20, 'human_judge': 6, 'boolean_exact': 13}
+Tags: {'alerta': 8, 'alto_risco': 10, 'gestante_pro': 5, 'list': 17, 'literal': 19, 'parceiro': 6, 'reasoning': 10, 'sequential': 15, 'trap': 10, 'vacina': 10}
+must_not (hard/trap): 12
+Corpus extraído: /run/media/lucaszd/SSD_Shared-Win_Ide-models/Dev/TCC/sus-prenatal-ai-icei-puc-minas-cc/Documentacao/Testes/corpus_extracted
+
+OK: todas as verificações passaram.

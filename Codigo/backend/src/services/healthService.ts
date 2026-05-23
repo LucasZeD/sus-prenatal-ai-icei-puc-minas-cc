@@ -16,6 +16,10 @@ export type HealthPayload = {
   clinicalAiReachable: boolean;
   /** true se o clinical-ai reportou `gemini_configured` no /health (chave API definida). */
   clinicalAiGeminiConfigured: boolean;
+  /** `WHISPER_HTTP_URL` definido. */
+  whisperConfigured: boolean;
+  /** true se `GET /health` do serviço STT respondeu OK. */
+  whisperReachable: boolean;
   timestamp: string;
 };
 
@@ -71,6 +75,11 @@ export async function getHealthStatus(): Promise<{ httpStatus: 200 | 503; body: 
   const clinicalAiReachable = clinicalProbe.reachable;
   const clinicalAiGeminiConfigured = clinicalProbe.geminiConfigured;
 
+  const whisperRaw = process.env.WHISPER_HTTP_URL?.trim();
+  const whisperConfigured = Boolean(whisperRaw);
+  const whisperBase = normalizeHttpBase(whisperRaw);
+  const whisperReachable = whisperBase ? await probeGetOk(`${whisperBase}/health`) : false;
+
   let db = false;
   try {
     await pingDb();
@@ -88,6 +97,8 @@ export async function getHealthStatus(): Promise<{ httpStatus: 200 | 503; body: 
     clinicalAiConfigured,
     clinicalAiReachable,
     clinicalAiGeminiConfigured,
+    whisperConfigured,
+    whisperReachable,
     timestamp,
   };
 
@@ -101,7 +112,8 @@ export async function getHealthStatus(): Promise<{ httpStatus: 200 | 503; body: 
     };
   }
 
-  const degraded = gateway.kind === "noop";
+  const degraded =
+    gateway.kind === "noop" || (whisperConfigured && !whisperReachable) || (ollamaConfigured && !ollamaReachable);
 
   return {
     httpStatus: 200,

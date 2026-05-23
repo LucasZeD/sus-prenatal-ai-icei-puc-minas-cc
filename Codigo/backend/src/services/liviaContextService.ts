@@ -9,7 +9,7 @@ const MAX_GESTACAO_CHARS = 3500;
 const MAX_CONSULTA_CHARS = 3500;
 const CONSULTAS_RECENT = 5;
 
-/** IDs usados para escopo cl�nico (L�via / sugest�es); `question` s� � obrigat�rio em `buildLiviaContext`. */
+/** IDs usados para escopo clnico (Lívia / sugestes); `question` s  obrigatrio em `buildLiviaContext`. */
 export type LiviaScopeIds = {
   paciente_id?: string;
   gestacao_id?: string;
@@ -36,7 +36,7 @@ function normalizeQuestion(q: string): string {
 function truncate(s: string, max: number): string {
   const t = s.trim();
   if (t.length <= max) return t;
-  return `${t.slice(0, max - 1)}�`;
+  return `${t.slice(0, max - 1)}`;
 }
 
 type Intent = {
@@ -152,7 +152,7 @@ function hasAnyGestacaoMarker(g: {
   );
 }
 
-/** Quando a ficha tem pouco al�m da tag de risco: instrui o LLM a avisar o profissional explicitamente. */
+/** Quando a ficha tem pouco alm da tag de risco: instrui o LLM a avisar o profissional explicitamente. */
 function buildProntuarioCoberturaNote(
   gestacao: { dum: Date | null; dpp: Date | null; dpp_eco: Date | null; consultas: { length: number } },
   pac: { idade: number | null; abo_rh: string | null },

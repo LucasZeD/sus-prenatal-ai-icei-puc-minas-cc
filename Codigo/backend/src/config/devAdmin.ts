@@ -1,14 +1,14 @@
 /**
- * Criação de profissionais via Dev Sandbox ? desligado por padrão.
- * Ative com DEV_ALLOW_PROFISSIONAL_CREATE=1 e restrinja com DEV_ADMIN_EMAILS (lista separada por vírgula).
+ * CriaÃ§Ã£o de profissionais via Dev Sandbox â†’ desligado por padrÃ£o.
+ * Ative com DEV_ALLOW_PROFISSIONAL_CREATE=1 e restrinja com DEV_ADMIN_EMAILS (lista separada por vÃ­rgula).
  */
 
 export function isProfissionalCreateAllowed(): boolean {
   return process.env.DEV_ALLOW_PROFISSIONAL_CREATE?.trim() === "1";
 }
 
-/** E-mails que podem chamar POST /dev/profissionais. Se DEV_ADMIN_EMAILS vazio, usa só SEED_PROFISSIONAL_EMAIL. */
-/** Exclusão de pacientes/gestações via Dev Sandbox ? desligado por padrão. Requer também JWT de admin (DEV_ADMIN_EMAILS). */
+/** E-mails que podem chamar POST /dev/profissionais. Se DEV_ADMIN_EMAILS vazio, usa sÃ³ SEED_PROFISSIONAL_EMAIL. */
+/** ExclusÃ£o de pacientes/gestaÃ§Ãµes via Dev Sandbox â†’ desligado por padrÃ£o. Requer tambÃ©m JWT de admin (DEV_ADMIN_EMAILS). */
 export function isSandboxDbDeleteAllowed(): boolean {
   return process.env.DEV_ALLOW_SANDBOX_DB_DELETE?.trim() === "1";
 }

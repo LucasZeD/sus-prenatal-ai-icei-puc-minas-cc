@@ -37,6 +37,9 @@ SPA usada pelos profissionais de saúde: landing com login, agenda, lista de ges
 | [Tailwind CSS](https://tailwindcss.com/) 4 + `@tailwindcss/vite` | Estilos (`src/index.css`) |
 | [react-router-dom](https://reactrouter.com/) 7 | Rotas |
 | [react-markdown](https://github.com/remarkjs/react-markdown) + [remark-gfm](https://github.com/remarkjs/remark-gfm) | Markdown (Lívia, sandbox) |
+| [recharts](https://recharts.org/) | Gráfico de ganho de peso gestacional (painel Caderneta 2024 no prontuário) |
+
+Documentação do painel nutricional: [`../docs/Caderneta_Grafico_Peso.md`](../docs/Caderneta_Grafico_Peso.md).
 
 Scripts em `package.json`: `npm run dev`, `build`, `preview`, `lint`.
 

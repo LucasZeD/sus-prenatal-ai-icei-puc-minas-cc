@@ -2,6 +2,8 @@
 
 interface ImportMetaEnv {
   readonly VITE_API_BASE_URL: string
+  /** Exibe painel de diagnóstico do stream Escriba (chunks, STT, logs). */
+  readonly VITE_DEV_STREAM_METRICS?: string
   /** URL de embed (iframe) para o bloco de demonstração na landing; opcional. */
   readonly VITE_LANDING_DEMO_VIDEO_URL?: string
   /** URL absoluta ou caminho em `/` para PDF de exemplo na landing (cartilha). Opcional. */

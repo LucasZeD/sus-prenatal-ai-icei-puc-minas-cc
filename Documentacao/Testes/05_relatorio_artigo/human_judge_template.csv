@@ -1,0 +1,13 @@
+question_id,difficulty,llm_provider,pass_manual,notas_revisor
+Q012,easy,ollama,,
+Q012,easy,gemini,,
+Q016,hard,ollama,,
+Q016,hard,gemini,,
+Q028,medium,ollama,,
+Q028,medium,gemini,,
+Q082,medium,ollama,,
+Q082,medium,gemini,,
+Q096,medium,ollama,,
+Q096,medium,gemini,,
+Q110,hard,ollama,,
+Q110,hard,gemini,,

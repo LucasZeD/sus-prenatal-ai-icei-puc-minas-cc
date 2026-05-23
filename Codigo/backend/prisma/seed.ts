@@ -8,6 +8,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { config } from "dotenv";
+import { seedDemoGestanteNutricao, shouldSeedDemoGestante } from "./seedDemoGestanteNutricao.js";
 
 const prismaDir = path.dirname(fileURLToPath(import.meta.url));
 const backendRoot = path.join(prismaDir, "..");
@@ -68,6 +69,13 @@ async function main(): Promise<void> {
   });
 
   console.log("seed_ok profissional", email);
+
+  if (shouldSeedDemoGestante()) {
+    await seedDemoGestanteNutricao(prisma);
+  } else {
+    console.log("seed_demo_gestante_skip: SEED_DEMO_GESTANTE desativado ou ambiente não local.");
+  }
+
   await prisma.$disconnect();
 }
 

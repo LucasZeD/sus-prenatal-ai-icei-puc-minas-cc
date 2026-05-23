@@ -14,6 +14,7 @@ import { PacienteRepository } from "../../repository/pacienteRepository.js";
 import { ProfissionalRepository } from "../../repository/profissionalRepository.js";
 import { isUuid } from "../../lib/validation/uuid.js";
 import { hashSenhaProfissional } from "../../services/authService.js";
+import { FasterWhisperClient } from "../../lib/stt/fasterWhisperClient.js";
 
 function clinicalAiBaseUrl(): string | null {
   const u = process.env.CLINICAL_AI_URL?.trim();
@@ -287,6 +288,75 @@ export function registerDevV1Routes(v1: Hono<{ Variables: AuthVariables }>): voi
       sanitizedChars: sanitized.length,
       output: out,
       truncated: out.length >= maxChars,
+    });
+  });
+
+  v1.post("/dev/stt/transcribe", async (c) => {
+    const stt = new FasterWhisperClient();
+    if (!stt.isConfigured()) {
+      throw new AppError("service_unavailable", "Defina WHISPER_HTTP_URL no Codigo/.env para usar o teste de STT.", 503);
+    }
+    let form: FormData;
+    try {
+      form = await c.req.raw.formData();
+    } catch {
+      throw new AppError("bad_request", "Envie multipart/form-data com o campo `file`.", 400);
+    }
+    const file = form.get("file");
+    if (!(file instanceof File)) {
+      throw new AppError("validation_error", "Campo `file` é obrigatório (audio WebM).", 400);
+    }
+    const audio = new Uint8Array(await file.arrayBuffer());
+    if (audio.byteLength === 0) {
+      throw new AppError("validation_error", "Arquivo de áudio vazio.", 400);
+    }
+    const startedAt = Date.now();
+    const uploadName =
+      typeof file.name === "string" && file.name.trim() ? file.name.trim() : "chunk.webm";
+    const diag = await stt.transcribeWithDiagnostic("dev-stt", audio, uploadName);
+    if (!diag.ok || !diag.transcription) {
+      const reasonMessages: Record<string, string> = {
+        not_configured: "WHISPER_HTTP_URL não está definida no backend.",
+        empty_chunk: "Chunk de áudio vazio.",
+        network_error: "Falha de rede ao contactar o serviço STT.",
+        http_error: "Serviço STT respondeu com erro HTTP.",
+        empty_text: "STT respondeu OK, mas sem texto (silêncio ou decode falhou).",
+        json_error: "Resposta do STT não é JSON válido.",
+      };
+      const message =
+        (diag.reason && reasonMessages[diag.reason]) ||
+        "STT indisponível ou sem transcrição para este trecho.";
+      return c.json(
+        {
+          code: "stt_failed",
+          message,
+          debug: {
+            reason: diag.reason ?? "unknown",
+            httpStatus: diag.httpStatus ?? null,
+            upstreamError: diag.upstreamError ?? null,
+            upstreamBody: diag.upstreamBody ?? null,
+            whisperUrl: diag.whisperUrl ?? null,
+            audioBytes: audio.byteLength,
+            uploadFilename: uploadName,
+            hint:
+              diag.reason === "empty_text"
+                ? "Grave ≥3 s de fala contínua. Chunks WebM precisam do sufixo .webm (não .pcm)."
+                : diag.reason === "http_error" &&
+                    (diag.upstreamError?.includes("ffmpeg") || diag.upstreamBody?.includes("ffmpeg"))
+                  ? "WebM inválido para o ffmpeg. Atualize o frontend (envio stop-and-send) e grave de novo; teste o .webm no VLC; se persistir, reinicie o container stt."
+                  : diag.reason === "not_configured"
+                    ? "Defina WHISPER_HTTP_URL e suba o perfil ai: COMPOSE_PROFILES=ai"
+                    : null,
+          },
+        },
+        503,
+      );
+    }
+    return c.json({
+      text: diag.transcription.text,
+      segments: diag.transcription.segments,
+      speakers: diag.transcription.speakers,
+      latencyMs: Date.now() - startedAt,
     });
   });
 

@@ -344,6 +344,70 @@ export function buildOpenApiDoc(baseUrl = "/"): OpenApiDoc {
           responses: { 200: { description: "OK" }, 400: { description: "Bad request" } },
         },
       },
+      "/api/v1/dev/stt/transcribe": {
+        post: {
+          tags: ["Dev"],
+          summary: "Teste isolado de STT (faster-whisper) sem UUID de consulta",
+          security: [{ bearerAuth: [] }],
+          requestBody: {
+            required: true,
+            content: {
+              "multipart/form-data": {
+                schema: {
+                  type: "object",
+                  required: ["file"],
+                  properties: {
+                    file: { type: "string", format: "binary", description: "Trecho de áudio (WebM/Opus)." },
+                  },
+                },
+              },
+            },
+          },
+          responses: {
+            200: {
+              description: "OK",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    required: ["text", "segments", "speakers", "latencyMs"],
+                    properties: {
+                      text: { type: "string" },
+                      latencyMs: { type: "number" },
+                      segments: {
+                        type: "array",
+                        items: {
+                          type: "object",
+                          required: ["start", "end", "text"],
+                          properties: {
+                            start: { type: "number" },
+                            end: { type: "number" },
+                            text: { type: "string" },
+                          },
+                        },
+                      },
+                      speakers: {
+                        type: "array",
+                        items: {
+                          type: "object",
+                          required: ["id", "label", "text"],
+                          properties: {
+                            id: { type: "number" },
+                            label: { type: "string" },
+                            text: { type: "string" },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            400: { description: "Payload inválido" },
+            503: { description: "STT indisponível / WHISPER_HTTP_URL ausente" },
+          },
+        },
+      },
       "/api/v1/dev/clinical-ai/health": {
         get: {
           tags: ["Dev"],

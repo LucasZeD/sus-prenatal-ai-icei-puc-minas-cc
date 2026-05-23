@@ -1,0 +1,1130 @@
+    SECRETARIA DE ESTADO DE
+     SAÚDE DE MINAS GERAIS
+
+
+
+
+GUIA DE ATENÇÃO À
+SAÚDE DA GESTANTE
+
+     Critérios para a
+Estratificação de Risco e
+ Acompanhamento da
+         Gestante
+                        Nota Técnica Conjunta
+       SECRETARIA DE ESTADO DE SAÚDE DE MINAS GERAIS – SES/MG
+ ASSOCIAÇÃO DE GINECOLOGISTA S E OBSTETRAS DE MINAS GERAIS – SOGIMIG
+   ASSOCIAÇÃO MINEIRA DE MEDICINA DE FAMÍLIA E COMUNIDADE - AMMFC
+FACULDADE DE MEDICINA DE UNIVERSIDADE FEDERAL DE MINAS GERAIS - UFMG
+
+
+
+
+                GUIA DE ATENÇÃO À SAÚDE DA GESTANTE:
+  Critérios para Estratificação de Risco e Acompanhamento da Gestante
+
+
+
+
+                             Minas Gerais
+                            OUTUBRO 2024
+GOVERNADOR DO ESTADO DE MINAS GERAIS
+Romeu Zema Neto
+
+
+VICE-GOVERNADOR DO ESTADO DE MINAS GERAIS
+Mateus Simões
+
+
+SECRETÁRIO DE ESTADO DE SAÚDE DE MINAS GERAIS
+Fábio Baccheretti Vitor
+
+
+ASSESSOR DE COMUNICAÇÃO SOCIAL
+Antônio Cotta
+
+
+SUBSECRETÁRIA DE REDES DE ATENÇÃO À SAÚDE
+Camila Moreira de Castro
+
+
+SUPERINTENDENTE DE ATENÇÃO PRIMÁRIA
+Camila Helen de Almeida Silva Oliveira
+
+
+DIRETORA DE GESTÃO DA INTEGRALIDADE DO CUIDADO
+Lírica Salluz Mattos Pereira
+
+
+COORDENAÇÃO DE CICLOS DE VIDA
+Natália Oliveira Dias
+
+
+RESPONSÁVEIS TÉCNICOS-SES/MG
+Ane Karine Alkmim de Sousa
+Bruna Luiza Soares Pinheiro
+Inessa Beraldo de Andrade Bonomi
+
+
+
+COLABORADORES
+Ana Paula Torres de Camargos                 Mayara Cristina Marques de Almeida
+Débora Cristina Silva Lara                   Priscila de Faria Pereira
+Carolina Vital Cardoso                       Tamara Cristina de Souza
+Marilene Pereira de Sousa                    Tatianna Mendes da Rocha
+
+                                         3
+DIRETORIA DA SOCIEDADE MINEIRA DE GINECOLOGIA E OBSTETRÍCIA
+SOGIMIG – Gestão 2023-2025
+Presidente: Inessa Beraldo de Andrade Bonomi
+Vice-Presidente: Angélica Lemos Debs Diniz
+Diretor de Relações Sociais: Larissa Volpini Barreto Borém
+Diretor Administrativo Adjunto: Márcio Alexandre Hipólito Rodrigues
+Diretora Administrativa: Liv Braga de Paula
+Diretora Científica: Ines Katerina Damasceno Cavallo Cruzeiro
+Diretora Comercial e Financeiro: Mariana Seabra Leite Praça
+Diretor de Ensino e Residência Médica: Guilherme de Castro Rezende
+Diretor de Marketing e Comunicação: Eduardo Cunha da Fonseca
+Diretor de Relações Institucionais: Gabriel Costa Osanan
+Diretora Sociocultural: Luiza Liboreiro Motta Ferrari
+Diretora de Tecnologias Da Informação e Mídias Sociais: Laura Maria Almeida Maia
+Diretor de Valorização e Defesa Profissional: Eduardo Siqueira Fernandes
+Diretor das Vice-Presidências e Regionais: Eduardo Batista Cândido
+
+
+
+ASSOCIAÇÃO MINEIRA DE MEDICINA DE FAMÍLIA E COMUNIDADE – AMMFC
+– Gestão 2024-2025
+PRESIDENTE: Douglas Vinicius Reis Pereira
+VICE-PRESIDENTE: Luísa Chaves Simões Silva
+SECRETÁRIA-GERAL: Jéssica da Cruz Arantes
+TESOUREIRO: Artur Torres Araújo
+DIRETOR CIENTÍFICO: Pedro Henrique Miranda
+DIRETOR CULTURAL: Antônio Aparecido Branco Junior
+
+
+FACULDADE DE MEDICINA - UFMG
+Departamento de Ginecologia e Obstetrícia:
+Eura Martins Lage
+Fernando Macedo Bastos
+
+
+Produção, distribuição e informações: Secretaria de Estado de Saúde de Minas
+Gerais.
+Site: www.saude.mg.gov.br
+
+                                       4
+                                         APRESENTAÇÃO
+
+      Considerando a alta razão de mortalidade materna no estado de Minas
+Gerais no triênio 2019-2021 (62,45%), segundo dados do Relatório Anual de Mor-
+talidade Materna, Infantil e Fetal de Minas Gerais, publicado em 2023, o enfren-
+tamento desta realidade ainda se coloca como uma das prioridades da política
+pública de saúde, em todas as instâncias de gestão e assistência. Neste sentido,
+a Secretaria de Estado de Saúde de Minas Gerais (SES-MG), em consonância
+com a Rede Cegonha, instituída nacionalmente em 2011, atualizada em 2024
+como Rede Alyne, vem desenvolvendo ações para a construção de uma rede
+de cuidados que assegure à mulher e à criança o acesso a serviços e ações de
+planejamento reprodutivo, atenção humanizada à gravidez, parto e puerpério,
+bem como ao nascimento seguro e ao crescimento e desenvolvimento saudá-
+veis.
+      No processo de construção das Redes de Atenção à Saúde (RAS), uma
+das estratégias que visa ordenar o cuidado é a adoção de diretrizes clínicas ba-
+seadas em evidências, que direcionam os diferentes pontos de atenção e servi-
+ços em relação às condições de saúde da população. Além disso, objetiva-se a
+otimização de recursos; a adequação do manejo clínico; o diagnóstico e trata-
+mento, bem como a organização da assistência, baseando-a na estratificação
+de risco, competências e atribuições de serviços e profissionais dentro da linha
+de cuidados.
+      Sob esta perspectiva, destaca-se a adoção de modelos de atenção à saú-
+de baseados em estratégias voltadas para as necessidades de saúde de uma
+população específica, segundo riscos. Considerando que o conhecimento da
+população total é insuficiente, é necessário que sejam realizadas segmenta-
+ções e divisões em subpopulações de acordo com fatores de risco, em relação
+às condições de saúde estabelecidas (MENDES, 2010, p.2300-2301).
+      Esta nota técnica tem o objetivo de atualizar os critérios de estratificação
+de risco da gestante de forma a direcionar os fluxos assistenciais na rede e o
+acompanhamento do pré-natal no Estado de Minas Gerais. Para tanto foram
+estabelecidas parcerias internas na SES/MG e com associações afins - SOGIMIG,
+AMMFC e UFMG – no que tange a colaboração técnica.
+      A seguir são apresentados orientações e diretrizes para a prática clínica
+qualificada e segura para atenção às gestantes e aos conceptos, direcionadas
+aos profissionais e aos serviços de saúde público do Estado, em uma perspecti-
+va de interface entre os pontos componentes da RAS.
+
+
+
+
+Fonte: Valle, Denise. Arboviroses na prática [livro eletrônico] :guia rápido para profissionais de saúde / Denise Valle,
+Raquel Aguiar. -- Rio de Janeiro, RJ : SB Comunicação, 2023.
+
+
+                                                             5
+1. ESTRATIFICAÇÃO DE RISCO DA GESTANTE E FLUXO DE ATEN-
+DIMENTO NA REDE DE ATENÇÃO À SAÚDE
+      A estratificação do risco da população perinatal é uma estratégia de or-
+ganização da rede de atenção à saúde da mulher e da criança, possibilitando
+uma atenção diferenciada segundo as necessidades de saúde, ou seja, assis-
+tência integral e oportuna para cada indivíduo.
+
+      Os componentes da RAS se distribuem nos níveis de atenção primária,
+secundária e terciária, organizados no território em municípios, microrregiões
+de saúde e macrorregiões de saúde. No intuito de otimizar os recursos disponí-
+veis na RAS, ressalta-se que a prevalência estimada de gestantes de risco habi-
+tual é de aproximadamente 85%, enquanto a de alto risco representa de dez a
+15% do total de gestantes. Dessa forma, objetiva-se o acesso equânime dos di-
+ferentes estratos da população de gestantes/conceptos e recém-nascidos aos
+serviços de saúde.
+
+      O Ministério da Saúde (BRASIL, 2022) classifica os fatores de risco entre
+habitual, médio e alto risco, além de destacar situações de urgência e emer-
+gência obstétrica. No entanto, considerando as especificidades do território,
+esta nota técnica propõe estratificar o risco gestacional em Minas Gerais nos
+níveis: Habitual e Alto Risco, cada qual com seu fluxo específico na RAS. A ava-
+liação dos critérios de risco e consequentemente a estratificação da gestante
+deve ser realizada especialmente na Atenção Primária à Saúde (APS), logo após
+a confirmação da gestação e reavaliada a cada consulta pré-natal.
+
+      Existem ainda algumas situações denominadas nesta nota como “Fato-
+res de risco que permitem a realização do pré-natal pela equipe da APS com
+apoio de equipe multiprofissional”. A adoção desta classificação objetiva alertar
+as equipes de saúde para algumas condições que representam risco relativo à
+gestação.
+
+      De forma a abranger a amplitude dos fatores de risco relevantes para a
+condição de saúde, operacionalmente, os critérios utilizados para esta estrati-
+ficação foram agrupados nos tópicos descritos abaixo. Entretanto, ressalta-se
+que podem existir outras condições que não foram contempladas nesta nota e
+que devem ser consideradas.
+      Características individuais e condições sociodemográficas;
+      História reprodutiva anterior;
+      Condições clínicas prévias à gestação;
+      Intercorrências clínicas/ obstétricas na gestação atual.
+
+                                       6
+      Os estratos por fatores de risco gestacional e nível de atendimento no
+pré-natal e parto estão explicitados no QUADRO 01.
+
+      Nas situações classificadas como Alto Risco deve-se prontamente reali-
+zar o encaminhamento da gestante ao serviço de referência para gestação de
+alto risco do município/região de saúde. Estes pontos da RAS dispõem de recur-
+sos assistenciais, tecnológicos e laboratoriais adequados às gestantes de alto
+risco. Além do encaminhamento ao Pré-Natal de Alto Risco (PNAR) a gestante
+deve ser referenciada, preferencialmente, ao Hospital de Referência à Gestação
+e ao Puerpério de Alto risco que ofereça o aparato necessário às intercorrências
+durante a gestação, ao parto, nascimento e assistência neonatal. Considerando
+a APS como ordenadora do cuidado, ressalta-se que, durante todo o percurso
+da gestante pela RAS, deve-se manter a vinculação com a equipe de saúde do
+seu território.
+
+      Reforça-se ainda a existência de situações em que, além da assistência
+no nível especializado, demandam fluxo especial para o serviço de medicina
+fetal. A medicina fetal é composta por um conjunto de ações preventivas, diag-
+nósticas e terapêuticas que visam proteger, avaliar e assistir a saúde do feto e
+da gestante, utilizando como pilares: o diagnóstico (história e exames de ultras-
+sonografia), o aconselhamento genético, o tratamento fetal e a anatomia pato-
+lógica. A gestante pode ser encaminhada para a medicina fetal ou ser realizada
+teleconsultoria pelo profissional que assiste a mulher no território, para auxiliar
+no diagnóstico e estabelecer plano terapêutico adequado.
+
+      No QUADRO 01 também estão descritas, na categoria “Urgência e Emer-
+gência”, situações comuns em obstetrícia e que podem ocorrer durante a ges-
+tação e pós-parto. Estas demandam encaminhamento imediato à maternidade
+de referência. Porém, ressalta-se que existem condições/situações não especí-
+ficas da gestação e que também devem ser assistidas em caráter de urgência/
+emergência em serviço da Rede de Urgências e Emergências (RUE). Para mais
+informações sobre fatores classificados em Urgência e Emergência, recomen-
+da-se o Manual de Gestação de Alto Risco do Ministério da Saúde (BRASIL, 2022).
+
+      Destaca-se que independente da situação ou ponto de atenção em que a
+gestante/puérpera for atendida, o acolhimento com escuta qualificada e olhar
+diferenciado é um pressuposto fundamental da assistência humanizada, ba-
+seando-se nos princípios de responsabilização, integralidade, resolutividade e
+articulação com os serviços de saúde da RAS: “Assim o acolhimento deixa de
+ser um ato isolado para ser também um dispositivo de acionamento de redes
+‘internas’, ‘externas’, multiprofissionais, comprometidas com as respostas às
+necessidades dos usuários e famílias” (BRASIL, 2014, p. 8).
+
+                                         7
+QUADRO 1:
+
+                                       RISCO
+     PRÉ-NATAL      PARTO                                                      FATORES
+                                    GESTACIONAL
+                 Hospital com
+Unidade Básica   leitos obstétri-      Risco           Ausência de critérios que determinem a caracterização
+de Saúde         cos, cirúrgicos      habitual               nos outros estratos de risco gestacional.
+                 e clínicos
+                                                   Características individuais
+
+                                                   • Idade menor que 15 e maior que 35 anos;
+
+                                                   • Condições de trabalho desfavoráveis: esforço físico exces-
+                                                       sivo, carga horária extensa, exposição a agentes físicos,
+                                                       químicos e biológicos nocivos, níveis altos de estresse;
+                                                   • Indícios ou ocorrência de violência;
+
+                                                   • Situação conjugal insegura, insuficiência de apoio familiar
+
+                                                    ou não aceitação da gestação;
+                                                   • Capacidade de autocuidado insuficiente;
+
+                                                   • Baixa escolaridade (< 5 anos de estudo);
+
+                                                   • Etilismo com baixo grau de dependência e sem
+                                                       comprometimento do crescimento fetal;
+                                     Fatores de    • Tabagismo ativo ou passivo, com baixo grau de depen-
+
+                  Hospital            risco que        dência e sem comprometimento do crescimento fetal;
+                  com leitos         permitem      • Altura menor que 1,45 m;
+Unidade Básica
+                  obstétricos,      a realização
+de Saúde                                           • IMC <18,5 OU> 30-39kg/m² (IMC≥40 kg/m² vide alto risco);
+                  cirúrgicos e      do pré-natal
+                  clínicos          pela equipe    • Gestante em situação de rua, privada de liberdade, indíge-
+                                       da APS          nas, quilombola, migrantes ou gestante negra (cor de pele
+                                                       preta e parda);
+                                                   • Uso ocasional de drogas ilícitas sem comprometimento
+
+                                                    do crescimento fetal.
+                                                   História reprodutiva anterior:
+                                                   • Histórico de, no máximo, 2 abortamentos precoces (até 12
+                                                       semanas de gestação) consecutivos em gestações anteriores;
+                                                   • Desvio quanto ao crescimento uterino: Restrição de
+                                                       crescimento intrauterino (RCIU), macrossomia, suspeita
+                                                       de RCIU por altura uterina quando não houver ecografia
+                                                       disponível OU Desvio quanto ao volume de líquido
+                                                       amniótico: oligodrâmnio ou polihidrâmnio;
+                                                   • Nuliparidade OU multiparidade (5 ou mais partos);
+
+                                                   • Síndromes hemorrágicas OU hipertensivas sem critérios
+
+                                                    de gravidade OU Diabetes Gestacional;
+                                                   • Cesáreas prévias (02 ou mais) ou cirurgia uterina anterior
+
+                                                    recente (exceto cesárea com incisão clássica / corporal /
+                                                    longitudinal - vide alto risco);
+                                                   • Intervalo interpartal < 2 anos OU > 5 anos.
+
+
+
+
+                                                   8
+                                           RISCO
+     PRÉ-NATAL             PARTO                                                    FATORES
+                                        GESTACIONAL
+                                                       Condições clínicas prévias à gestação:
+                                                       • Depressão leve ou transtorno de ansiedade leve (sem
+                                                         necessidade de tratamento medicamentoso);
+                                                       • Asma controlada sem uso de medicamento contínuo;
+
+                                                       • Hipotireoidismo subclínico diagnosticado na gestação.
+
+                                         Fatores de    Intercorrências clínicas / obstétricas
+                         Hospital         risco que    na gestação atual:
+                         com leitos      permitem      • Infecção urinária (1 ou 2 ocorrências) ou 1 episódio
+Unidade Básica
+                         obstétricos,   a realização       de pielonefrite;
+de Saúde
+                         cirúrgicos e   do pré-natal   • Ganho de peso inadequado (insuficiente ou excessivo);
+                         clínicos       pela equipe
+                                                       • Anemia leve a moderada (hemoglobina entre 8g/dl
+                                           da APS
+                                                           e 10,9g/dl);
+                                                       • Doenças infecciosas: Sífilis (exceto sífilis terciária, resis-
+                                                           tente ao tratamento com penicilina benzatina ou achados
+                                                           ecográficos suspeitos de sífilis congênita - vide alto risco);
+                                                           Suspeita/confirmação de dengue, Zika ou chikungunya
+                                                           (quadro febril e/ou exantemático).
+                                                       Características individuais
+
+                                                       • Dependência OU uso abusivo de drogas lícitas ou ilícitas;
+
+                                                       • Gestação em homens transsexuais;
+
+                                                       • Agravos alimentares e nutricionais: obesidade grau III
+                                                           (IMC ≥ 40kg/m²), desnutrição, carências nutricionais
+                                                           (hipovitaminoses), transtornos alimentares (anorexia
+                                                           nervosa, bulimia, dentre outros).
+                                                       História reprodutiva anterior:
+                                                       • Morte perinatal inexplicada;
+
+                                                       • Histórico de abortamento tardio ou recorrente (ocorrência
+                                                           de 3 ou mais abortamentos consecutivos);
+                                                       •
+
+                                                           istmo-cervical;
+                                                       • Isoimunização Rh em gestação anterior;
+
+UBS + Atenção            Hospital de                   • Infertilidade;
+Ambulatorial             Referência à                  • Cesariana prévia com incisão clássica /corporal / longitudinal;
+Especializada / Serviços Gestação e      Alto Risco
+                                                       • Acretismo placentário;
+de Referência para       ao Puerpério
+Gestação de Alto Risco de Alto risco                   • Síndrome hemorrágica ou hipertensiva grave
+                                                           (Pré-eclâmpsia; síndrome HELLP, eclâmpsia, parada
+                                                           cardiorrespiratória ou admissão em UTI durante a
+                                                           internação e/ou no período puerperal);
+                                                       • Prematuridade anterior.
+
+                                                       Condições clínicas prévias à gestação:
+                                                       • Doença psiquiátrica grave: psicoses, depressão grave,
+                                                           transtorno afetivo bipolar e outras;
+                                                       • Hipertensão arterial crônica com ou sem uso
+                                                           de anti-hipertensivo;
+
+
+                                                       9
+                                              RISCO
+     PRÉ-NATAL               PARTO                                                    FATORES
+                                           GESTACIONAL
+                                                         • Doenças genéticas maternas;
+
+                                                         • Antecedente de tromboembolismo (TVP ou embolia pulmonar);
+
+                                                         • Cardiopatias (reumáticas, congênitas, hipertensivas, arritmias,
+
+                                                             valvulopatias, endocardites na gestação) OU infarto agudo
+                                                             do miocárdio;
+                                                         • Pneumopatias graves (asma em uso de medicamentos con-
+
+
+
+                                                         •
+
+                                                         • Endocrinopatias (diabetes mellitus 1 e 2, hipotireoidismo
+                                                             com tratamento medicamentoso e hipertireoidismo);
+                                                         • Doenças hematológicas -doença falciforme, púrpura trombo-
+
+                                                             citopênica idiopática, talassemia, coagulopatias;
+                                                         • Doenças neurológicas (epilepsia, acidente vascular, paraple-
+
+                                                             gia, tetraplegia e outras);
+                                                         • Doenças autoimunes (lúpus eritematoso, síndrome anti-
+
+                                                             fosfolipídeo, artrite reumatoide, esclerose múltipla, outras
+                                                             colagenoses);
+                                                         • Ginecopatias (malformações uterinas, útero bicorno, miomas
+
+                                                             intramurais com diâmetro > 4 cm ou múltiplos e miomas
+                                                             submucosos, miomectomia);
+    UBS + Centro           Hospital de                   • Câncer: os de origem ginecológica OU invasores OU que es-
+ Estadual de Atenção       Referência à
+Especializada / Serviços   Gestação e       Alto Risco       tejam em tratamento OU que possam repercutir na gravidez;
+  de Referência para       ao Puerpério                  • Doenças infecciosas: tuberculose; hanseníase; hepatites;
+
+Gestação de Alto Risco     de Alto risco                     Diagnóstico de HIV;
+                                                         • Transplantes;
+
+                                                         • Cirurgia bariátrica.
+
+                                                         Intercorrências clínicas/obstétricas
+                                                         na gestação atual:
+                                                         • Doença psiquiátrica grave: psicoses, depressão grave, transtorno
+                                                           afetivo bipolar e outras;
+                                                         • Câncer: os de origem ginecológica OU invasores OU que esteja
+                                                           em tratamento OU que possam repercutir na gravidez;
+                                                         • Gestação múltipla;
+
+                                                         • Gestação resultante de estupro;
+
+                                                         • Hipertensão arterial crônica diagnosticada na gestação OU
+
+                                                             hipertensão arterial gestacional OU pré-eclampsia sem cri-
+                                                             térios de gravidade;
+                                                         • Diabetes Mellitus Gestacional - DMG (após diagnóstico
+
+                                                             laboratorial, conforme parâmetros do Ministério da Saúde);
+                                                         • Infecção urinária de repetição (≥ 3 episódios) OU ≥ 2
+
+                                                             episódios de pielonefrite;
+                                                         • Trabalho de parto pré-termo inibido na gestação atual;
+
+                                                         • Anemia grave (hemoglobina < 8g/dl) OU anemia refratária a
+                                                             tratamento (em caso de Hb < 7 g/dl - vide urgência/emergência);
+
+
+
+                                                         10
+                                          RISCO
+     PRÉ-NATAL            PARTO                                                      FATORES
+                                       GESTACIONAL
+                                                       • Desvio quanto ao crescimento uterino: RCIU, macrossomia,
+
+                                                           suspeita de RCIU por altura uterina quando não houver
+                                                                              OU desvio quanto ao volume de líquido
+                                                           amniótico: oligodrâmnio ou polihidrâmnio;
+                                                       •
+
+                                                           istmo-cervical;
+                                                           Doenças infecciosas: sífilis terciária OU resistente ao tratamento
+                                                           com penicilina benzatina OU com achados ecográficos suspeitos
+                                                           de sífilis congênita; toxoplasmose; rubéola; citomegalovírus;
+                                                           herpes simples; tuberculose; hanseníase; hepatites; condiloma
+                                                           acuminado - verruga viral no canal vaginal OU colo uterino OU
+    UBS + Centro         Hospital de                       lesões extensas/ numerosas localizadas em região genital OU
+ Estadual de Atenção Referência à                          perianal; diagnóstico de HIV/Aids;
+Especializada / Serviços Gestação e    Alto Risco
+                                                       • Hemorragias da gestação (sangramento ativo -
+  de Referência para ao Puerpério
+                                                           vide urgência/emergência);
+Gestação de Alto Risco de Alto risco
+                                                       • Acretismo placentário OU placenta prévia não sangrante
+                                                           (diagnóstico confirmado após 22 semanas);
+                                                       • Colestase gestacional (prurido gestacional, icterícia persistente);
+
+                                                       • Malformação fetal (defeitos do tubo neural, do sistema
+                                                           nervoso central, cardiopatias fetais, cervicais e da face,
+                                                           torácicas, da parede abdominal, do aparelho digestório,
+                                                           do trato urinário, esqueléticas-osteocondrodisplasias);*
+                                                       • Aloimunização Rh;*
+
+
+                                                       Qualquer patologia clínica que repercuta na gestação
+                                                       e/ou necessite de acompanhamento especializado.
+
+IMPORTANTE! De acordo com o risco gestacional, o acompanhamento da mulher pode ser necessário em
+outros serviços de saúde, como serviços da Rede de Atenção Psicossocial e outras especialidades médicas.
+
+                                                       • Síndromes hemorrágicas (descolamento prematuro de pla-
+                                                           centa, placenta prévia com sangramento ativo - indepen-
+                                                           dentemente da dilatação cervical e da idade gestacional);
+                                                       • Gravidez ectópica;
+
+                                                       • Sinais e sintomas de abortamento em curso ou inevitável;
+
+
+                                                       • Condições clínicas de emergência: cefaleia intensa e súbita,
+     Encaminhamento imediato           Urgência e          sinais neurológicos (convulsões, confusão mental), crise
+    à maternidade de referência        Emergência          aguda de asma, edema agudo de pulmão, hipertermia (tem-
+                                                           peratura axilar ≥ 37,8ºC, na ausência de sinais ou sinto-
+                                                           mas clínicos de infecção das vias aéreas superiores), anor-
+                                                           malidades visuais (escotomas cintilantes, visão turva, foto-
+                                                           fobia), epigastralgia ou dor intensa no hipocôndrio direito
+                                                           com ou sem hipertensão arterial grave e/ou proteinúria,
+                                                           dispnéia, dor retroesternal;
+                                                       • Crise hipertensiva (PAS ≥ 160mmHg OU PAD ≥ 110 mmHg);
+
+
+                                                       • Prurido gestacional/ icterícia;
+
+
+
+*Estas condições demandam um fluxo especial composto por serviço de medicina fetal.
+
+
+                                                        11
+                                     RISCO
+     PRÉ-NATAL            PARTO                                             FATORES
+                                  GESTACIONAL
+                                                • Suspeita/diagnóstico de infecção (pielonefrite, infecção ovu-
+                                                    lar ou outra infecção que necessite de internação hospitalar);
+                                                • Anidrâmnio, polidrâmnio grave OU polidrâmnio sintomático
+                                                    (dor, dispnéia);
+                                                • Hemoglobina ≤ 7g/dL OU anemia associada a sinais e sin-
+
+                                                    tomas de gravidade, como dispneia, taquicardia, hipotensão;
+                                                •                        E alergia à penicilina para dessen -
+                                                    sibilização OU
+                                                    sintomas neurológicos ou oftalmológicos;
+
+                                                • Ruptura prematura de membrana;
+     Encaminhamento imediato      Urgência e
+    à maternidade de referência   Emergência    • Trabalho de parto a termo ou pré-termo;
+
+                                                • Hipertonia uterina;
+
+                                                •
+
+                                                • Dor abdominal intensa; suspeita/diagnóstico de abdome
+
+                                                    agudo;
+                                                • Suspeita de trombose venosa profunda (TVP) em
+                                                    gestantes (dor no membro inferior, edema localizado
+                                                    e/ou varicosidade aparente);
+                                                • Vômitos incoercíveis não responsivos ao tratamento ambu-
+
+                                                    latorial (hiperêmese gravídica);
+                                                • Vômitos inexplicáveis a partir de 20 semanas de idade
+
+                                                    gestacional;
+                                                •
+
+
+                                                    tranquilizador; ausência ou redução de movimentação fetal
+                                                    por mais de 12 horas, em gestação ≥ 26 semanas), incluindo
+                                                    suspeita de morte fetal;
+                                                •
+
+                                                    gestacional;
+                                                Outras condições clínicas agudas.
+
+
+
+
+2. MAPEAMENTO DO CUIDADO NO PRÉ-NATAL
+     O QUADRO 2 sugere a organização do cuidado que deve ser oferecido à
+gestante durante o pré-natal, de acordo com a estratificação de risco.
+
+      Estas recomendações referem-se especialmente à assistência ao pré-na-
+tal na atenção primária à saúde, uma vez que abordam as condutas de rotina
+
+
+                                                12
+para tal acompanhamento. Nos casos de gestações de alto risco todo o acom-
+panhamento pré-natal será ajustado às necessidades de saúde da gestante e
+concepto, prezando pela singularidade e qualidade do cuidado.
+
+
+QUADRO 2 - Mapeamento do cuidado
+
+
+
+       ITEM                   ESPECIFICAÇÃO                                  OBSERVAÇÕES
+
+
+
+
+ gestante e início   Unidade Básica de Saúde             Início do pré-natal no primeiro trimestre gestacional
+ do Pré-Natal
+
+                     • Avaliação clínico-obstétrica;
+
+
+                     • Avaliação nutricional;
+
+                     • Cálculo inicial da DPP
+
+                         pela DUM;
+                     •
+
+                         risco gestacional;
+                     • Avaliação/orientação sobre
+
+                         o calendário vacinal;
+                                                                 A primeira consulta de pré-natal deve ser
+                     • Solicitação de exames                  realizada, preferencialmente, até a 12ª semana
+ Ações da                de rotina de pré-natal;             de gestação. Além disso, recomenda-se que esta
+ 1ª consulta                                                 primeira consulta seja realizada pelo enfermeiro,
+ de pré-natal        • Coleta de citopatológico,
+                                                               considerando todas as ações/orientações que
+ (médico ou              se necessário;                        devem ser realizadas nesta primeira consulta.
+ enfermeiro)
+                     • Registrar a condição de gravi-
+                         dez no sistema de informa-
+                         ção (e-SUS APS/PEC, coleta
+                         de dados simplificada ou
+                         sistema próprio)/Prontuário
+                         Eletrônico do Cidadão (PEC);
+                     • Preenchimento e entrega da
+
+                         caderneta da gestante;
+                     • Vinculação à maternidade
+
+                         de referência;
+                     • Orientações/esclarecimento
+
+                         de dúvidas;
+                     • Suplementações (vide
+                         medicamentos profiláticos);
+                     • Agendamento do retorno;
+
+
+
+
+                                                        13
+         ITEM                         ESPECIFICAÇÃO                                      OBSERVAÇÕES
+
+
+                         • Avaliação clínico-obstétrica;
+
+                         • Avaliação nutricional;
+                         • Cálculo da idade gestacional;
+
+                         •
+                         • Acompanhamento do calendário vacinal;
+Ações da                 • Análise dos resultados dos exames;                   Deve ocorrer até um mês após a
+2ª consulta              • Preenchimento da caderneta                        primeira consulta e/ou de acordo com
+de pré-natal (médico)                                                        a periodicidade por idade gestacional
+                             da gestante;
+                                                                                    e estratificação de risco.
+                         • Preenchimento do atendimento no
+                             Prontuário Eletrônico do Cidadão (PEC);
+                         • Orientações/esclarecimento de dúvidas;
+
+                         • Agendamento do retorno;
+
+
+                                                                       Recomenda-se o encaminhamento à consulta
+Consulta                       Avaliação clínico-odontológica
+                                                                       odontológica para todas as gestantes, realizada
+odontológica                         e plano terapêutico.
+                                                                        o mais breve possível.
+                         • Avaliação clínico-obstétrica;
+                                                                        *PNRH
+                         • Avaliação nutricional;                       - Periodicidade de consultas: uma consulta
+                                                                        mensal até a 28ª semana, quinzenal da 28ª até
+                         • Cálculo da idade gestacional;                a 36ª semana de gestação e semanal a partir
+                         •
+                                                                        da 36ª semana, sendo que o intervalo entre as
+                                                                        consultas não deve ser superior a 4 semanas.
+                         • Acompanhamento do calendário vacinal;        Reforça-se a importância da realização de
+                                                                        consultas intercaladas entre médicos e
+                         • Solicitação de exames de rotina de           enfermeiros durante todo o pré-natal.
+Consultas subsequentes
+                             pré-natal e análise dos resultados         *PNAR:
+no pré-natal
+                             dos exames;                                - O acompanhamento deve ser realizado por
+(médico e enfermeiro)
+                                                                        equipe multiprofissional (obstetra, enfermeiro,
+                         • Preenchimento da caderneta                   psicólogo, nutricionista e assistente social,
+                             da gestante;                               dentre outros conforme avaliação clínica
+                                                                        individual).
+                         • Preenchimento do atendimento no              - Deve-se manter a vinculação com a APS
+                             Prontuário Eletrônico do Cidadão (PEC);    seguindo plano de cuidados prescrito pela
+                                                                        atenção especializada, mesmo após o
+                         • Orientações/esclarecimento de dúvidas;       encaminhamento ao PNAR.
+
+                         • Agendamento do retorno;                      **NÃO EXISTE ALTA DO PRÉ-NATAL.
+
+
+
+
+                                                           14
+         ITEM                          ESPECIFICAÇÃO                                    OBSERVAÇÕES
+
+
+                          • Avaliação clínico-obstétrica;
+
+                          • Avaliação nutricional;
+                                                                  Recomenda-se a realização de, no mínimo, duas
+                                                                  consultas: uma na primeira semana após o parto
+                          • Acompanhamento do calendário vacinal; associada às ações da saúde da criança e a
+
+                          • Avaliação de sinais de alerta;        segunda no período de 30 a 42 dias pós parto.
+                           • Preenchimento do atendimento no
+Consulta puerperal                                                    **Caso a gestação tenha sido considerada de
+                            Prontuário Eletrônico do Cidadão (PEC);
+                                                                      alto risco, deve ser realizada a consulta puerperal
+                          • Avaliação das mamas e amamentação;        no serviço de referência que a mulher realizou o
+                          • Ações de planejamento sexual              PNAR compartilhando o cuidado com a APS.
+                            e reprodutivo;
+IMPORTANTE! De acordo com o risco gestacional e as condições do parto e nascimento, o acompanhamento
+da mulher pode ser necessário em outros serviços de saúde, como serviços da Rede de Atenção Psicossocial e
+outras especialidades médicas.
+                1º trimestre                                       Solicitados na 1ª consulta do pré-natal, de acordo
+                                                                   com o protocolo;
+                • Hemograma completo;
+
+                • Grupo sanguíneo e fator Rh;
+
+                                                                  Solicitar em caso de fator Rh negativo. Se Coombs
+                • Coombs indireto;                                indireto negativo, deve-se repetir o exame
+                                                                  mensalmente;
+
+                •                                                 • Caso a mulher exponha a situação de risco, repetir
+
+                                                                 o exame com intervalo de 30 dias;
+                • TR para HIV (1ª escolha) ou sorologia para • Recomenda-se a utilização de testes rápidos, pois
+ Exames                                                          estes atendem à crescente demanda por diagnósti-
+ laborato-        HIV (2ª escolha);
+                                                                 cos, aumentam a agilidade na resposta aos
+ riais de                                                        indivíduos, e permitem o rápido encaminhamento
+ rotina do      • TR para hepatite B (1ª escolha) ou Sorologia
+                                                                 para a assistência médica, possibilitando o início
+ pré-natal        para hepatite B (HbsAg) (2ª escolha);          do tratamento em tempo oportuno;
+ de risco
+                                                               • Em caso de resultados positivos nos exames
+ habitual       • TR para hepatite C;                            treponêmico e não treponêmico para sífilis,
+ (PNRH) ou
+                                                                 recomenda-se repetir o exame não treponêmico
+ alto risco
+                                                                 mensalmente para controle de cura.
+ (PNAR)
+                • Glicemia de jejum;
+
+                • Urina rotina e urocultura;
+
+                • Toxoplasmose IgM e IgG;
+
+
+                                                                  Rastreamento deve seguir as recomendações de
+                                                                  periodicidade e faixa etária estabelecidas para todas
+                                                                  as mulheres. Salienta-se que, a coleta de espécime
+                • Colpocitologia oncótica (se necessário);
+                                                                  endocervical, quando realizada com técnica
+                                                                  adequada, não aumenta o risco para a gestação.
+                                                                  Por isso, recomenda-se a coleta tanto da ectocérvice
+                                                                  quanto da endocérvice.
+
+
+
+
+                                                             15
+   ITEM                        ESPECIFICAÇÃO                                        OBSERVAÇÃO
+
+
+              • TSH - Hormônio Tireoestimulante;
+
+                                                               Solicitar para todas as gestantes que não possuírem
+                                                               o resultado do teste do pezinho das mesmas ou
+              • Eletroforese de hemoglobina;
+                                                               que não tenham realizado o exame em gestação
+                                                               anterior/não possuírem resultado
+
+              • Sorologia anti HTLV – 1/2                      Caso a triagem sorológica seja positiva ou
+                                                               indeterminada, deve-se realizar testes sorológicos de
+                                                               maior especificidade para confirmação da infecção.
+              2º trimestre
+              • Hemograma completo;                            Para gestantes com resultado de Hb ≤11g/dl no
+ Exames                                                        1º trimestre;
+ laborato-    • Toxoplasmose IgM e IgG (se susceptível);
+ riais de
+ rotina do    • Teste de tolerância oral a glicose após
+                                                               Deve ser realizado, preferencialmente, entre a 24ª e 28ª
+ pré-natal                                                     semana de gestação, para todas as gestantes sem o
+                  75g de dextrosol;
+ de risco                                                      diagnóstico de diabetes mellitus.
+ habitual
+              • Coombs indireto (se Rh negativo).
+ (PNRH) ou
+ alto risco   3º trimestre
+ (PNAR)
+              • Hemograma completo;
+
+              • Coombs indireto (se Rh negativo);
+
+                                                               • Caso a mulher exponha a situação de risco, repetir
+              •
+                                                               o exame com intervalo de 30 dias;
+                                                             • Recomenda-se a utilização de testes rápidos, pois
+              • TR para HIV (1ª escolha) ou sorologia para     estes atendem à crescente demanda por
+                HIV (2ª escolha);                              diagnósticos, aumentam a agilidade na resposta
+                                                               aos indivíduos, e permitem o rápido encaminha-
+              • TR para hepatite B (1ª escolha) ou Sorologia   mento para a assistência médica, possibilitando o
+                para hepatite B (HbsAg) (2ª escolha);          início do tratamento em tempo oportuno;
+                                                             • Em caso de resultados positivos nos exames
+                                                               treponêmico e não treponêmico para sífilis,
+              • TR para hepatite C (1ª escolha);
+                                                               recomenda-se repetir o exame não treponêmico
+                                                               mensalmente para controle de cura.
+                                                             • Apenas para gestantes que não realizaram o
+              • Glicemia de jejum;
+                                                               TOTG no 2º trimestre.
+              • Urina rotina e urocultura;
+
+              • Toxoplasmose IgM e IgG (se susceptível);
+
+
+                                                                Para gestantes de risco habitual:
+                                                                Situação ideal: US entre 11 e 13 semanas e entre
+                                                                18 e 22 semanas de gestação;
+Outros                                                          Situação mínima: US entre 18 e 22 semanas.
+              • US obstétrico                                   Para gestantes de alto risco:
+exames
+                                                                O quantitativo de US será conforme avaliação
+                                                                clínica e indicação obstétrica.
+                                                                Para gestantes com confirmação de Zika:
+                                                                US mensal
+
+
+
+                                                          16
+   ITEM                         ESPECIFICAÇÃO                                            OBSERVAÇÃO
+
+
+               • Ultrassom obstétrico com doppler
+
+               •
+                                                                     Apenas para gestantes de alto risco, conforme
+               • ECG                                                 indicação obstétrica
+Outros         • Ecocardiograma materno e fetal
+exames
+               • Exame Parasitológico de Fezes                       Conforme indicação clínica
+               • Proteinúria (de fita) OU Relação Proteína/          Realizar em gestantes com alteração nos níveis
+                   Creatinina Urinária OU Proteinúria 24h            pressóricos e/ou suspeita de pré-eclâmpsia.
+               Para gestantes de alto risco, considerar as especificidades de cada agravo para
+               solicitar demais exames necessários conforme indicação obstétrica
+
+                                                                     Ácido fólico de início pré-concepcional (mínimo
+                                                                     um mês antes da concepção, mas idealmente três
+                                                                     meses antes da concepção) até o final da gravidez
+                                                                     em dose de 2ml/dia (solução oral de 0,2mg/ml -
+                                 Ácido fólico                        40 gotas). O ácido Fólico pré-concepcional até 12
+                                                                     semanas é utilizado para redução do risco de defei-
+                                                                     to em tubo neural e até o final da gestação tem a
+                                                                     finalidade de evitar anemia da gestante, infecção
+                                                                     puerperal, baixo peso ao nascer e parto prematuro.
+
+                                                                    • Recomenda-se o uso de AAS (100mg/dia à noite),
+
+                                                                      iniciado a partir da 12ª semana de gestação até 36
+                                                                      semanas, além do cálcio até o parto (suplementação
+                                                                      mínima de 1g/dia), caso a mulher apresente os
+Medicamentos                                                          seguintes fatores de risco para a pré-eclâmpsia:
+                                                                    • Um fator de alto risco: história de pré-eclâmpsia,
+
+                                                                      gestação múltipla, obesidade (IMC > 30mg/dl), HAC,
+                       Ácido Acetilsalicílico (AAS) e Cálcio
+                                                                      diabetes tipo 1 ou 2, doença renal ou autoimune.
+                                                                    • Combinação de dois fatores de risco moderados:
+                                                                      nulipridade, história familiar de pré-eclâmpsia, baixo
+                                                                      nível socioeconômico, etnia afrodescendente, idade
+                                                                      ≥ 35 anos, história pessoal de baixo peso ao
+                                                                      nascer, gravidez prévia com desfecho adverso e
+                                                                      intervalo > 10 anos desde a última gestação.
+
+                                                                     Sulfato ferroso profilático: 40mg de ferro
+                                                                     elementar/dia) a partir da 20ª semana de gestação
+Medicamentos                                                         até o terceiro mês pós-parto e/ou pós-aborto;
+                                 Sulfato ferroso
+                                                                     Sulfato ferroso terapêutico: em casos de
+                                                                     anemia materna em qualquer época da gestação.
+
+                                                                     Esquema vacinal completo de dT: administrar
+                                                                     1 dose de dTpa;
+                            Vacina dupla tipo adulto
+                                                                     Esquema vacinal incompleto e/ou desconhe-
+Imunização                  - dT (tétano + difteria)
+                                                                     cido: completar esquema sendo 2 doses de dT e 1
+                                                                     dose de dTpa¹.
+
+
+
+
+                                                               17
+    ITEM             ESPECIFICAÇÃO                                        OBSERVAÇÃO
+
+                                                       A vacina dTpa deve ser administrada em todas as
+                 Vacina tríplice bacteriana            gestantes, independente da situação vacinal prévia,
+               acelular do tipo adulto - dTpa          a partir da 20ª semana de gestação, preferencial-
+             (difeteria + tétano + coqueluche)         mente até a 36ª semana de gestação, até 45 dias
+Imunização                                             pós-parto;
+
+                                                       Gestante não vacinada ou com status vacinal
+                                                       desconhecido e HbsAg negativo deve completar o
+                                                       esquema de 3 doses, sendo o intervalo da primeira
+                 Vacina contra Hepatite B
+                                                       dose para a segunda é de 30 dias e a terceira dose
+                                                       deve ser administrada 6 meses após a primeira;
+
+                                                       Deve ser administrada em dose única, a qualquer
+                  Vacina contra Influenza              tempo no pré-natal até 45 dias após o parto,
+                                                       conforme campanha do Ministério da Saúde.
+
+                 Vacina contra COVID-19                Administrada conforme recomendações atuais do
+                                                       Ministério da Saúde
+
+
+             Visita a maternidade de referência        Preferencialmente no início do terceiro trimestre
+
+
+                                                       No mínimo 3 grupos operativos por gestante.
+                                                       Temas sugeridos: gravidez na adolescência,
+                                                       cuidados na gestação, preparação para o trabalho
+Demais
+                   Atividades educativas               de parto e parto, cuidados com recém-nascido,
+atividades
+                                                       aleitamento materno, rede de apoio e importância
+                                                       do acompanhamento em relação à saúde mental
+                                                       durante a gestação e o puerpério.
+
+
+                      Visita domiciliar                Mensal (monitorar plano de cuidados)
+
+
+
+
+                                                  18
+GLOSSÁRIO
+Abortamento precoce - perda espontânea ocorrida até a 12ª semana
+de gestação.
+
+Abortamento tardio - perda espontânea ocorrida após a 12ª semana de
+gestação e antes da 20ª semana.
+
+Abortamento recorrente - perda espontânea e consecutiva de três ou mais
+gestações antes da 20ª semana.
+
+Anidrâmnio - ausência de líquido amniótico.
+
+APS – Atenção Primária à Saúde
+
+RCIU: Restrição do crescimento intrauterino: feto não alcança o crescimento
+potencial que seria esperado pelo seu potencial genético e nutricional.
+
+CTI – Centro de Terapia Intensiva
+
+DMG- Diabetes Mellitus Gestacional
+
+DPOC- Doença Pulmonar Obstrutiva Crônica
+
+DPP – Data Provável do Parto
+
+DUM – Data da Última Menstruação (primeiro dia)
+
+ECG – Eletrocardiograma
+
+Eclâmpsia - crises convulsivas em pacientes com pré-eclâmpsia
+
+Hipertensão arterial crônica – pressão arterial maior ou igual a 140x90 mmHg
+antes da 20ª semana de gestação
+
+Hipertensão arterial gestacional – pressão arterial sistólica maior ou igual a
+140 mmHg e/ou pressão arterial diastólica maior ou igual a 90 mmHg após a
+20ª semana de gestação, na ausência de proteinúria ou sinais de gravidade de
+pré-eclâmpsia
+
+HELLP – síndrome laboratorial composta pela presença de hemólise, ele-
+vação de enzimas hepáticas e trombocitopenia em gestante em pacientes
+com pré-eclâmpsia
+
+ILA - Índice de Líquido Amniótico
+
+IMC - Índice de Massa Corporal
+
+Infertilidade - ausência de concepção após um ano de relações sexuais regula-
+res sem uso de contracepção
+
+Insuficiência cervical /Incompetência istmo-cervical - dilatação cervical
+indolor no 2º trimestre seguida de expulsão de feto imaturo
+
+
+
+                                      19
+Macrossomia – peso fetal estimado acima do percentil 90 para a idade
+gestacional
+
+Morte perinatal – morte intraútero com idade gestacional maior ou igual a
+20 semanas, ou morte neonatal (até 28 dias).
+
+Obesidade Grau I - IMC 30,0 a 34,9kg/m2
+
+Obesidade Grau II - IMC 35,0 a 39,9kg/m2
+
+Obesidade Grau III - IMC ≥ 40 kg/m2
+
+Oligoidrâmnio - ILA menor que 8 cm associado a CIUR OU bolsão
+menor que 2cm
+
+PAS – Pressão Arterial Sistólica
+
+PAD – Pressão Arterial Diastólica
+
+Placenta prévia - inserção total/parcial da placenta no segmento inferior do
+útero após 28 semanas de idade gestacional;
+
+PNAR – Pré-Natal de Alto Risco
+
+Polidrâmnio - ILA maior que 18 cm ou maior bolsão maior que 8 cm
+
+Polidrâmnio grave – ILA maior que 35 cm ou maior bolsão maior que 16 cm
+
+RAS – Redes de Atenção à Saúde
+
+TR- Teste Rápido
+
+Trabalho de Parto Pré-termo/ Prematuro - contrações e modificação de colo
+uterino em gestantes com menos de 37 semanas;
+TVP- Trombose Venosa Profunda
+
+US- Ultrassonografia
+
+
+
+
+                                      20
+REFERÊNCIAS
+American Academy of Pediatrics and The American College of Obstetri-
+cians and Gynecologists. Guidelines for Perinatal Care. AAP/ACOG. 6th ed.
+2008. 450 p.
+
+American Academy of Pediatrics and The American College of Obstetricians
+and Gynecologists. Hypertension in pregnancy. Vol 122. N 5. 2013. 99 p.
+
+Associação Brasileira para o Estudo da Obesidade e da Síndrome Metabólica
+(ABESO). Diretrizes brasileiras de obesidade 2009/2010 - Associação Brasileira
+para o Estudo da Obesidade e da Síndrome Metabólica. - 3.ed. - Itapevi, SP : AC
+Farmacêutica, 2009.
+
+BRASIL. Ministério da Saúde. Secretaria de Atenção à Saúde. Protocolo de Aten-
+ção à Saúde e Resposta à Ocorrência de Microcefalia relacionada à Infecção
+pelo Vírus ZIKA – versão 2.0. Disponível em: <http://www.saude.go.gov.br/public/
+media/ZgUINSpZiwmbr3/64622069021204406934.pdf>. Acesso em: 29 fev. 2016
+
+BRASIL. Ministério da Saúde. Secretaria de Atenção à Saúde. Departamento
+de Ações Programáticas Estratégicas. Manual de acolhimento e classifica-
+ção de risco em obstetrícia / Ministério da Saúde, Secretaria de Atenção à
+Saúde, Departamento de Ações Programáticas Estratégicas. – Brasília: Mi-
+nistério da Saúde, 2014.
+
+BRASIL. Ministério da Saúde. Cadernos de Atenção Básica. Atenção ao Pré-na-
+tal de baixo risco. 1 ed. N 32. Brasília: Ministério da Saúde, 2013a. 320p.
+
+BRASIL. Ministério da Saúde. Secretaria de Atenção à Saúde. Departamento de
+Ações Programáticas Estratégicas. Coordenação Geral de Saúde das Mulheres.
+Nota técnica: Inserção da Eletroforese de Hemoglobina nos exames de pré-na-
+tal. Rede cegonha. 2013b.
+
+BRASIL. Ministério da Saúde. Gabinete do Ministro. PORTARIA Nº 1.459, DE 24
+DE JUNHO DE 2011, Brasília, 2011.
+
+BRASIL. Ministério da Saúde. Secretaria de Atenção à Saúde. Departamento
+de Ações Programáticas Estratégicas. Gestação de Alto Risco: Manual Técni-
+co. 5. ed. Brasília: Ministério da Saúde, 2010. 302 p. – (Série A. Normas e Ma-
+nuais Técnicos).
+
+GREGORY, A. L.; DAVIES, M. D.; FRCSC, Kingston ON. Antenatal fetal assessment.
+SOGC Clinical Guidelines, 2000, 90:1-7.
+
+
+
+                                       21
+MENDES, E.V. As redes de atenção à saúde. Ciência & Saúde Coletiva, v.15, n.5,
+p.2297-2305, 2010.
+
+MENDES, Eugênio Vilaça. O cuidado das condições crônicas na atenção pri-
+mária à saúde: o imperativo da consolidação da estratégia da saúde da família.
+Brasília: Organização Pan-Americana da Saúde, 2012.
+
+MINAS GERAIS. Secretaria de Estado de Saúde (SES). Associação de Ginecolo-
+gistas e Obstetras de Minas Gerais (SOGIMIG). Atenção à Saúde da Gestante
+- Novos critérios para estratificação de risco e acompanhamento da gestante.
+Nota técnica conjunta. Programa Viva Vida. Projeto Mães de Minas. Autêntica:
+Belo Horizonte. 2013. 16p.
+
+Royal College of Obstetricians and Gynecologists. National Collaboration Cen-
+tre for Womens and Childrens Health. Antenatal Care: Routine care for the heal-
+thy pregnant women. London, RCOG 2008. 454 p. (Clinical Guideline).
+
+UNIVERSIDADE FEDERAL DO RIO GRANDE DO SUL. TelessaúdeRS. Regula-
+SUS: Protocolos de Regulação Ambulatorial. Obstetrícia (Pré-Natal de Alto
+Risco). HARZHEIM, E; AGOSTINHO, M.R; KATZ, N (Organizadores). Porto Ale-
+gre- RS, 2015.
+
+BRASIL. Ministério da Saúde. Manual de Gestação de Alto Risco. 1 ed. 2022. 659p.
+
+Brasil. Ministério da Saúde. Nota Técnica para organização da rede de atenção
+à saúde com foco na atenção primária à saúde e na atenção ambulatorial espe-
+cializada - saúde da mulher na gestação, parto e puerpério. Sociedade Benefi-
+cente Israelita Brasileira Albert Einstein. São Paulo, 2019. 73p.
+
+Brasil. Ministério da Saúde. Protocolos da Atenção Básica: Saúde das Mulheres.
+Instituto Sírio Libanês de Ensino e Pesquisa. Brasília, 2016. 230p.
+
+CEPMMIF. Comitê Estadual de Prevenção da Mortalidade Materna, Infantil e
+Fetal. Relatório anual de mortalidade infantil e fetal de Minas Gerais – 2021. Belo
+Horizonte, 2023. 29p.
+
+
+BRASIL. Ministério da Saúde. Portaria GM/MS nº 5.350, de 12 de setembro de 2024
+que altera a Portaria de Consolidação GM/MS Nº 3, de 28 de setembro de 2017
+para dispor sobre a Rede Alyne. Brasília, 2024. Disponível em http://www.in.gov.
+br/web/dou/-/portaria-gm/ms-n-5.350-de-12-de-setembro-de-2024-584287025
+
+
+
+
+                                        22
+23
+

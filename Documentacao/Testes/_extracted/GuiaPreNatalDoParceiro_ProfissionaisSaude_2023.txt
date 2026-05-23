@@ -1,0 +1,2583 @@
+  MINISTÉRIO DA SAÚDE
+
+
+
+                        GUIA DO
+
+   PRÉ-NATAL
+ DO PARCEIRO
+PARA PROFISSIONAIS
+         DE SAÚDE
+
+
+
+
+    BRASÍLIA – DF
+       2023
+   MINISTÉRIO DA SAÚDE
+
+
+
+
+                         GUIA DO
+   PRÉ-NATAL
+ DO PARCEIRO
+PARA PROFISSIONAIS
+         DE SAÚDE
+
+
+
+
+       Brasília – DF
+          2023
+         MINISTÉRIO DA SAÚDE
+  Secretaria de Atenção Primária à Saúde
+Departamento de Gestão do Cuidado Integral
+
+
+
+
+                                   GUIA DO
+      PRÉ-NATAL
+    DO PARCEIRO
+ PARA PROFISSIONAIS
+          DE SAÚDE
+
+
+
+
+               Brasília – DF
+                  2023
+2016 Ministério da Saúde.
+                        Esta obra é disponibilizada nos termos da Licença CreativeCommons – Atribuição – Não
+                        Comercial – Compartilhamento pela mesma licença 4.0 Internacional. É permitida a
+                        reprodução parcial ou total desta obra, desde que citada a fonte.
+A coleção institucional do Ministério da Saúde pode ser acessada, na íntegra, na Biblioteca Virtual em Saúde do
+Ministério da Saúde: http://bvsms.saude.gov.br.
+
+Tiragem: 1ª edição – 2023 – versão eletrônica
+
+Elaboração, distribuição e informações:                      Marcos Nascimento (Fiocruz)
+MINISTÉRIO DA SAÚDE                                          Daniel Campos (UFRJ)
+Secretaria de Atenção Primária à Saúde                       Vanessa Fonseca (UFF)
+Departamento de Gestão do Cuidado Integral                   Áurea Corrêa (UFMT)
+Coordenação Geral de Articulação do Cuidado Integral         Jeane Anschau (UFMT)
+Coordenação de Atenção à Saúde do Homem                      Patricia Caetano (UFPE)
+SRTV 702, Via W 5 Norte,                                     Juliana Keila (UFPE)
+CEP: 70723-040Brasília – DF                                  Maríllia Torres (UFPE)
+Site: aps.saude.gov.br                                       Francisco Norberto Moreira da Silva
+E-mail: dgci@saude.gov.br                                    (COPID/DGCI/SAPS)
+                                                             Renata Gomes Soares (DGCI/SAPS)
+Editor geral:
+Nésio Fernandes de Medeiros Junior                           Coordenação editorial:
+Marcos Vinícius Soares Pedrosa                               Júlio César de Carvalho e Silva
+Grace Fátima Souza Rosa
+                                                             Revisão:
+Coordenação:                                                 Claudia de Amorim Souto
+Celmário Castro Brandão
+
+Elaboração de texto:                                         Roosevelt Ribeiro Texeira
+Celmário Castro Brandão
+Fernando Pessoa de Albuquerque                               Normalização:
+Isabela Machado Sampaio Costa Soares                         Delano de Aquino Silva – Editora MS/CGDI
+José Maria Viana dos Santos
+Julianna Miwa Takarabe
+Patrícia Santana Santos do Amaral
+Rafael da Silva Magalhães
+
+Colaboração:
+Benedito Medrado (UFPE)
+Jorge Lyra (UFPE)
+Maria Lúcia Chaves Lima (UFPA)
+Eric Alvarenga (UFPA)
+
+
+
+
+__________________________________________________________________________________________________
+Brasil. Ministério da Saúde. Secretaria de Atenção Primária à Saúde. Departamento de Gestão do Cuidado Integral.
+
+de Atenção Primária à Saúde. Departamento de Gestão do Cuidado Integral. – Brasília: Ministério da Saúde, 2023.
+   73 p. : il.
+
+   Modo de acesso: World Wide Web: http://bvsms.saude.gov.br/bvs/publicacoes/guia_pre_natal
+
+   ISBN 978-65-5993-477-5 (versão impressa)
+   ISBN 978-65-5993-482-9 (versão eletrônica)
+
+   1. Cuidado Pré-natal. 2.Paternidade 3. Homens. 4. Atenção Primária à Saúde I. Título.
+
+                                                                               CDU 616-022.6:578.834
+___________________________________________________________________________________________________
+  Catalogação na fonte – Coordenação-Geral de Documentação e Informação – Editora MS – OS 2023/0273
+Título para indexação:
+Agradecimentos
+A Coordenação de Atenção à Saúde do Homem agradece o empenho e as relevantes contribuições
+dos gestores, técnicos e pesquisadores que elaboraram a 1ª edição desta publicação:
+
+Michelle Leite da Silva
+Eduardo Schwarz Chakora
+Daniel Costa Lima
+Cícero Ayrton Brito Sampaio
+Francisco Norberto Moreira da Silva
+Renata Gomes Soares
+Juliano Mattos Rodrigues
+
+Também são prestados agradecimentos aos técnicos e gestores do Ministério da Saúde que
+contribuíram no processo de revisão desta 2ª edição:
+
+Aline Gonçalves Pereira
+Ana Luiza Ferreira Rodrigues Caldas
+Jacqueline Paula Silva Barbosa
+Danielle da Silva Gois Araújo
+Julio Mariano Kersul de Carvalho
+Kelly Viviane Gomes Marques
+
+Nossa profunda gratidão aos gestores e profissionais de saúde das 27 Unidades Federativas que
+enviaram seus comentários e sugestões, e que participaram das discussões que subsidiaram a
+revisão e aprimoramento do Guia do Pré-Natal do Parceiro para profissionais de saúde.
+                                                                        SUMÁRIO
+
+APRESENTAÇÃO...........................................................................................................6
+     A Estratégia Pré-Natal do Parceiro (EPNP).......................................8
+     Parceiro, parceira ou parceria...................................................................10
+
+INTRODUÇÃO...............................................................................................................12
+     Homens, Gênero, Paternidade e Cuidado. ......................................13
+
+A PATERNIDADE COMO OPORTUNIDADE
+DE PROMOÇÃO DA SAÚDE DOS HOMENS.......................................... 20
+
+A REDE DE ATENÇÃO À SAÚDE E A
+ESTRATÉGIA PRÉ-NATAL DO PARCEIRO. ..............................................28
+
+ACOLHIMENTO DO(A) PARCEIRO(A). .......................................................34
+     Número de atendimentos...........................................................................36
+     Dinâmica dos atendimentos......................................................................37
+     Fluxo de introdução ao pré-natal da
+     gestante e do parceiro...................................................................................38
+     Etapas do Procedimento Consulta
+     Pré-natal do Parceiro. .....................................................................................39
+
+CALENDÁRIO VACINAL....................................................................................... 50
+
+ESTRATÉGIA ORGANIZACIONAL PARA
+AMPLIAÇÃO DA ADESÃO AO PRÉ-NATAL. ............................................62
+
+LICENÇA-PATERNIDADE. ...................................................................................65
+
+REFERÊNCIAS. ........................................................................................................... 70
+APRESENTAÇÃO
+                                Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+E  ste Guia do Pré-Natal do Parceiro para Profissionais
+   de Saúde foi originalmente publicado em
+2016 para apresentar a Estratégia Pré-Natal do
+Parceiro (EPNP), que, em linhas gerais, visa orientar
+profissionais e gestores(as) do Sistema Único de
+Saúde (SUS) sobre a importância do envolvimento
+masculino em todo o ciclo gravídico-puerperal.
+
+Mais recentemente, entre 2021 e 2023, este material
+passou por processo de revisão/atualização –
+conduzido pela Coordenação de Atenção à Saúde
+do Homem (Cosah/CGACI/DGCI/Saps/MS), com
+a participação de pesquisadores/as vinculados/
+as a instituições públicas de pesquisa e formação
+acadêmica (Gema/UFPE; UFPA; UFMT e IFF/Fiocruz).
+Esse processo contou também com diálogos e
+a apreciação de gestores(as), das Coordenações
+Estaduais e Municipais de Saúde do Homem, das
+áreas técnicas da Secretaria de Atenção Primária
+à Saúde (Saps) do Ministério da Saúde, além de
+trabalhadores(as) da atenção primária à saúde (APS)
+e representantes da sociedade civil.
+
+Para ampliarmos a participação dos homens na APS
+é necessário que trabalhadores(as) e gestores(as)
+revejam práticas e ideias e estejam mais atentos(as)
+às construções socioculturais de gênero e às
+singularidades das pessoas e dos territórios, a fim
+de garantir espaços de reflexão sobre as práticas de
+cuidado em saúde. Faz-se necessário desenvolver
+e rever estratégias para ampliar a participação dos
+homens no pré-natal. E, na mesma medida, garantir
+
+
+
+                                                                                        7
+Ministério da Saúde
+
+
+
+
+    o registro adequado das ações realizadas em uma dimensão
+    institucional e programática nos sistemas de informação da saúde.
+
+    Assim, é com muita satisfação que apresentamos esta nova edição,
+    que pôde ser construída com a participação daqueles(as) que, com
+    base em seus conhecimentos e atuação profissional cotidiana,
+    contribuem para o fortalecimento e expansão do SUS: universal,
+    integral e equânime.
+
+
+
+
+    A Estratégia Pré-Natal
+    do Parceiro (EPNP)
+    A Cosah/CGACI/DGCI/Saps/MS vem trabalhando, desde
+    2009, com vistas à redução de agravos à saúde do homem que,
+    em linhas gerais, estão associados a um modelo cultural que
+    preconiza que os homens não cuidam nem de si, nem dos outros.
+    Nesse sentido, os eixos Acesso e acolhimento e Paternidade e
+    cuidado da Política Nacional de Atenção Integral à Saúde do
+    Homem (Pnaish) assumem um lugar especial.
+
+    Com base no eixo Acesso e acolhimento, pretende-se sensibilizar
+    trabalhadores(as) da saúde e homens em geral sobre a
+    importância de promover a presença dos homens na atenção
+    primária, com a oferta da promoção e prevenção da saúde,
+    evitando a procura pela assistência especializada, motivada, em
+    geral, por algum agravo já instalado.
+
+    No caso do eixo Paternidade e cuidado, ressalta-se a importância
+    de promover o envolvimento do homem em todo o processo
+    de planejamento reprodutivo, gestação, parto, puerpério e
+
+
+
+8
+                               Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+desenvolvimento infantil, proporcionando oportunidades para
+criação de vínculos afetivos e saudáveis, em consonância com
+princípios da humanização do pré-natal, parto e nascimento e a Lei
+do Acompanhante (11.108/2005), entre outros dispositivos formais.
+
+Em 2016, o Ministério da Saúde instituiu a Estratégia Pré-Natal do
+Parceiro (EPNP) como uma das propostas para a efetivação de um
+dos eixos da Pnaish nos territórios, que é o eixo de Paternidade e
+cuidado. A EPNP é inspirada em diversas experiências locais, com
+vistas a estimular o envolvimento consciente e ativo de homens,
+pais e/ou parceiros, sejam eles adolescentes, jovens, adultos ou
+idosos, em todas as ações voltadas ao planejamento reprodutivo,
+gestação, parto, puerpério e ao longo do desenvolvimento
+da criança, que, durante muito tempo, foram considerados
+atribuições ou funções exclusivamente femininas e focados no
+binômio mãe-bebê.
+
+Busca-se, então, por meio da EPNP, o rompimento e a transformação,
+na prática, de construções sociais de gênero que, por um lado,
+direcionam todas as responsabilidades relacionadas à reprodução
+e aos cuidados das crianças às mulheres e, por outro, afastam
+os parceiros tanto dos compromissos e dos deveres quanto dos
+prazeres e dos aprendizados que circundam esse universo. O
+envolvimento dos homens em todas as etapas do planejamento
+reprodutivo e da gestação pode ser determinante para a criação
+e/ou fortalecimento de vínculos afetivos saudáveis entre eles e
+suas parceiras e filhos(as).
+
+Ao mesmo tempo, do ponto de vista do cotidiano dos(as)
+trabalhadores(as) da APS, a EPNP visa contribuir para a ampliação
+e a melhoria do acesso e acolhimento desses homens nos serviços
+de saúde, com enfoque na atenção primária à saúde, o que
+expande a Pnaish nos territórios.
+
+
+                                                                                       9
+Ministério da Saúde
+
+
+
+
+  Ao aproximá-los de suas unidades básicas de saúde (UBS) e
+  equipe de Saúde da Família (eSF) de referência, é favorecida a
+  criação de vínculo e confiança entre esses atores, oportunizados
+  no momento em que os homens acompanham as gestantes em
+  consultas de pré-natal. A partir disso, possibilita-se ou potencializa-
+  se o desenvolvimento de ações orientadas à promoção da
+  saúde, prevenção de doenças e de cuidados integrais à sua
+  saúde. E um ponto importante que é trabalhado nessas ações é
+  a ideia de desconstruir o conceito de que o homem é um mero
+  acompanhante, reforçando, assim, a sua participação de modo
+  ativo em todo o processo da gestação.
+
+  Este Guia vem, portanto, para incentivar e apoiar o desenvolvimento
+  de ações norteadas pela EPNP, pelos(as) trabalhadores(as) da APS
+  junto aos homens, nos diversos territórios do país.
+
+
+
+
+  Parceiro, parceira
+  ou parceria
+  No âmbito da atenção integral à saúde do homem, esta publicação
+  utiliza o termo “parceiro” entendendo que os benefícios da
+  EPNP se estendem a todos os homens, pais biológicos ou não,
+  cisgêneros ou transgêneros, gays, bissexuais ou heterossexuais,
+  independentemente de raça, cor, origem ou classe social, mas que
+  se colocam ao lado de uma pessoa que gesta (que pode ser tanto
+  uma mulher cisgênero como homem transgênero), apoiando e
+  cumprindo sua função de parceiro no exercício da parentalidade.
+
+  Ao mesmo tempo, como veremos adiante, a Cosah reconhece
+  a diversidade de arranjos familiares e configurações de gênero
+
+
+
+10
+                                Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+diversas e plurais, que incluem casais heterossexuais, casais
+formados por duas mulheres, por dois homens, famílias
+monoparentais (pai solo ou mãe solo) e outras tantas possibilidades
+de desenhos de famílias, legitimadas pela sociedade e
+reconhecidas pelo Código Civil Brasileiro.
+
+Também é importante o reconhecimento das questões relativas
+à dimensão racial, à dimensão territorial e às condições físicas
+singulares, dando atenção especial aos homens negros, aos
+homens com deficiência e às demandas e necessidades
+particulares dos territórios.
+
+Essa diversidade precisa ser reconhecida e merece atenção
+especial, tal qual preconiza o SUS, reconhecendo a equidade
+como um dos seus princípios fundamentais. Todas as pessoas
+têm direitos iguais, no entanto as pessoas não são iguais nem
+vivem as mesmas condições e, por isso, têm necessidades
+particulares.
+
+Além disso, em nossa sociedade, muitas vezes, as pessoas são
+discriminadas por não se enquadrarem em um sistema patriarcal
+– marcadamente sexista e racista. Assim, equidade significa tratar
+com mais atenção as pessoas que, por diferentes condições ou
+contextos, são tratadas em nossa sociedade de modo desigual.
+
+Essa compreensão implica o compromisso dos serviços públicos
+de saúde, especialmente as UBS, em ofertar um atendimento
+humanizado, singular, que respeite as particularidades e
+condições das pessoas.
+
+
+
+
+                                                                                        11
+INTRODUÇÃO
+                        Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+Homens, gênero,
+paternidade e cuidado
+Em nossa cultura e em nossas práticas cotidianas (inclusive
+profissionais), reproduzimos, frequentemente, a ideia
+de que o cuidado é uma atribuição das mulheres. Esse
+padrão cultural muitas vezes não nos permite reconhecer
+a diversidade de experiências de homens e mulheres,
+plurais, dos arranjos familiares e de modos de cuidar
+(Medrado; Lyra, 2002).
+
+Porém, nas últimas décadas, a importância e a necessidade
+de maior participação dos homens no planejamento
+reprodutivo, gestação, parto e puerpério, bem como
+na divisão sexual do trabalho doméstico e do cuidado
+infantil, têm-se consolidado no campo da saúde e
+direitos reprodutivos, promovendo debates, ações e,
+principalmente, uma mudança de olhar por parte dos
+formuladores de políticas públicas, gestores, trabalhadores
+da saúde, pesquisadores e ativistas (Arilha; Unbehaum;
+Medrado, 1998).
+
+Usualmente, a gestação é definida pelas mudanças
+observadas no corpo da pessoa que gesta, a partir dos
+meses iniciais. Nesse contexto, muitas vezes, o exercício da
+paternidade se expressa apenas quando a criança nasce
+ou mesmo quando ela já está mais crescida. Porém, a
+gestação é uma experiência que extrapola o corpo da
+pessoa que gesta, envolve dimensões subjetivas e
+culturais, abrange toda a família e a comunidade à qual a
+futura criança se integrará.
+
+
+
+                                                                                13
+Ministério da Saúde
+
+
+
+
+     No cotidiano dos serviços de saúde, há recorrentes relatos de
+     homens que não se envolvem com a gestação de suas parceiras
+     e outros que não chegam a desenvolver qualquer vínculo
+     com seus filhos ou filhas, ainda mais quando não estão em um
+     relacionamento afetivo com a mãe. Porém, há um grande esforço
+     para mudar essa situação.
+
+     Por isso, considera-se relevante dar visibilidade às diversas
+     formas de ser pai e de exercitar práticas de cuidado com os(as)
+     filhos(as) e reconhecer a diversidade de possibilidades de vivenciar
+     a paternagem, seja por casais heterossexuais, homossexuais
+     ou homens de outras identidades de gênero, como homens
+     transgêneros; ou ainda diversos arranjos familiares, como família
+     monoparental ou unilinear (pai solo), famílias constituídas a partir de
+     adoção (bilateral ou unilateral), pai viúvo, pai divorciado ou padrasto.
+
+
+
+
+14
+                               Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+A EPNP contempla e reconhece qualquer pessoa que se
+identifique como homem e se dedica a promover o fortalecimento
+da diversidade das paternidades, sob suas várias possibilidades
+referentes à formação de uma família. Pai biológico, pai adotivo,
+pai socioafetivo, pais do mesmo sexo ou mesma identidade de
+gênero etc., visto que todas as configurações familiares precisam
+ser acolhidas.
+
+Quem já passou por todas as fases de uma gestação, até o
+desenvolvimento de uma criança, pode facilmente comprovar
+que independentemente da configuração familiar, esse período
+traz à tona uma série de emoções e de decisões que impactam
+o cotidiano das já formadas ou futuras famílias.
+
+Nesse sentido, o período da gestação deve ser de grande
+importância para todas as pessoas envolvidas, para que as
+mudanças de rotina e as adaptações decorrentes da chegada
+da nova vida transcorram de forma fluida e tranquila para todos.
+
+Tradicionalmente, as estratégias e ações de saúde do Sistema
+Único de Saúde (SUS) voltadas aos direitos reprodutivos, incluindo
+o acompanhamento da gestação e o momento do parto, têm se
+centrado quase que exclusivamente nas mulheres e nos bebês.
+
+No entanto, há fortes evidências de resultados positivos do
+engajamento dos parceiros em todo esse processo. Por exemplo,
+bebês que têm a figura e os cuidados paternos na dinâmica
+familiar, desenvolvem uma melhor segurança emocional e têm
+menos problemas de saúde na infância.
+
+A ausência do pai, além do baixo peso ao nascer e da renda
+familiar, está associada a riscos de atraso do desenvolvimento
+neuropsicomotor (Araújo; Melo; Israel, 2017). A ausência paterna
+
+
+                                                                                       15
+Ministério da Saúde
+
+
+
+
+  na gestação também interfere negativamente no peso do bebê,
+  ou seja, a criança apresenta baixo peso ao nascer.
+
+  A inserção do parceiro nas etapas de gestação, parto, pós-parto
+  e cuidado com o bebê é fator de proteção não só para a criança,
+  mas também para a saúde materna. Existem comprovações da
+  existência de relação entre o cuidado paterno e a atenuação dos
+  sintomas da depressão pós-parto. A participação paterna durante
+  as consultas de pré-natal possibilita a orientação do pai quanto às
+  alterações emocionais e físicas vivenciadas durante o parto e o pós-
+  parto, ajudando assim a diminuir a violência doméstica (Henz, 2018).
+
+  O exercício da paternidade pode representar uma âncora de
+  segurança identitária para homens privados e marginalizados de
+  outros símbolos de prestígio do masculino (trabalho, provimento
+  de renda familiar, segurança etc.), afetados pela superficialidade
+  e instabilidade das relações socioafetivas (Cruz et al., 2015). Com
+  isso, o exercício da paternidade pode ser considerado um fator de
+  proteção e de promoção da saúde (Albuquerque, 2020).
+
+  Por outro lado, ainda é possível encontrar barreiras socioculturais,
+  obstáculos e resistências, comuns a qualquer processo que
+  envolva mudança de paradigmas e novos modos de trabalho,
+  por parte de alguns gestores(as), trabalhadores(as) da saúde e
+  uma parcela significativa da população masculina e feminina no
+  que tange ao engajamento dos parceiros nesses temas.
+
+  Isso é compreensível, pois seguindo valores passados por uma
+  cultura e uma sociedade patriarcal, ainda predominantemente
+  machista, essa mentalidade defende a manutenção de padrões
+  rígidos e convencionais de gênero para mulheres e homens.
+
+  Muitas vezes, isso inclui a percepção de que a gestação e o
+  cuidado de filhos(as) dizem respeito exclusivamente às mulheres.
+
+16
+                               Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+Especificamente relacionado à população masculina, percebemos
+que a vivência de um número significativo de homens brasileiros
+é marcada por uma constante vigilância e questionamento sobre
+o que, de fato, representa ser um “homem de verdade” e como
+este deveria se comportar para tal.
+
+Nesse cenário, a necessidade de negação de qualquer aspecto
+que possa ser interpretado como “feminino” é algo estritamente
+ligado às experiências masculinas, o que afasta os homens, por
+exemplo, do afeto e cuidado com os seus filhos e também do
+cuidado com a própria saúde.
+
+Em outras palavras, como pontua o pesquisador canadense
+Michael Kaufman, observamos um “paradoxo do poder masculino”,
+em que, para ter acesso a uma série de privilégios e mais poder
+em relação às mulheres, os homens constroem armaduras que os
+isolam do contato afetivo com o próximo e da esfera do cuidado e
+da saúde, seja para outros ou para eles mesmos (Kaufman, 1999).
+
+Com base nesse estereótipo, que permeia ainda o imaginário
+simbólico e concreto de muitos homens, podemos compreender
+não apenas o distanciamento deles em relação à paternidade,
+como também a exposição a diversas situações de riscos
+desnecessários à saúde, que têm colaborado decisivamente
+para que, no Brasil, eles vivam em média sete anos menos do
+que as mulheres.
+
+Dentro dessa mesma lógica, sabemos que um número significativo
+de homens não se envolve com a gestação de suas parceiras e
+que outros não chegam a desenvolver qualquer vínculo com seus
+filhos e filhas, ainda mais quando não estão em um relacionamento
+afetivo com a mãe.
+
+
+
+                                                                                       17
+Ministério da Saúde
+
+
+
+
+     Para alguns homens, o período da gestação pode suscitar as mais
+     diversas emoções e até mesmo sintomas físicos. Assim como
+     as mulheres, alguns futuros pais engordam, sofrem enjoos, têm
+     desejos e crises de choro, entre outros sintomas.
+
+     Característicos da síndrome de Couvade, esses sintomas não
+     representam um distúrbio ou doença, pelo contrário, podem
+     demonstrar que os parceiros sentem, assumem e desejam a
+     gravidez juntamente com a sua parceira.
+
+
+
+
+18
+                  Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+A gravidez é assunto de homem e estimular a participação
+do parceiro durante todo esse processo é fundamental
+para o bem-estar biopsicossocial da mãe, do bebê e
+dele próprio, sendo o pré-natal o momento oportuno e
+propício para isso!
+
+
+
+
+É importante reforçar que, apesar de o pré-natal do
+parceiro ser uma prática de longa data, mas disseminada
+pelo Ministério da Saúde desde 2016, a adesão à
+estratégia por parte dos(as) profissionais da atenção
+primária à saúde, mais ainda, dos(as) usuários(as)
+desses serviços, ainda tem muito o que avançar. Esse
+fato coloca em evidência o tamanho do desafio que
+tem sido dar visibilidade à estratégia, apontando seus
+principais benefícios diretos: aumento do acesso dos
+homens aos serviços de saúde, redução da transmissão
+vertical/horizontal de IST e diminuição dos casos de
+violência doméstica, entre outros.
+
+
+
+
+Os homens adolescentes e jovens ainda carecem
+de olhar inclusivo, pois frequentemente são vistos
+como “obstáculos para o planejamento reprodutivo
+e sem reconhecimento de poderem ser participantes
+imprescindíveis nos eventos da sexualidade e da
+reprodução” (Brasil, 2013).
+
+
+
+
+                                                                          19
+A PATERNIDADE
+COMO OPORTUNIDADE
+DE PROMOÇÃO DA
+SAÚDE DOS HOMENS
+                                Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+A   Política Nacional de Atenção Integral à Saúde do
+    Homem (Pnaish), instituída em 2009, visa promover
+a melhoria das condições de saúde da população
+masculina brasileira entre 20 e 59 anos, contribuindo,
+de modo efetivo, para a redução da morbidade
+e da mortalidade dessa população, por meio do
+enfrentamento dos fatores de risco e vulnerabilidades,
+promovendo o acesso às ações e aos serviços de
+atenção integral à saúde, respeitando as diferentes
+expressões de masculinidades, a partir da perspectiva
+de gênero, que considera as masculinidades como
+construções socioculturais envolvidas nas relações
+de poder entre homens e mulheres mediante a
+atuação nos aspectos socioculturais, sob a perspectiva
+relacional de gênero.
+
+A Pnaish aposta na perspectiva da inclusão do tema
+da paternidade e cuidado, por meio da Estratégia Pré-
+Natal do Parceiro, nos debates e nas ações voltadas
+para o planejamento reprodutivo como uma estratégia
+essencial para qualificar a atenção à gestação, ao parto,
+ao nascimento e ao desenvolvimento das crianças,
+estreitando a relação entre os(as) trabalhadores(as) de
+saúde e a comunidade e, sobretudo, aprimorando os
+vínculos afetivos familiares dos usuários e das usuárias
+nos serviços ofertados.
+
+A Coordenação de Atenção à Saúde do Homem,
+responsável pela condução da Pnaish, tem desenvolvido
+diferentes ações, como campanhas, elaboração de
+materiais educativos, seminários e qualificações voltadas
+à valorização da paternidade e à organização dos serviços,
+
+
+
+                                                                                        21
+Ministério da Saúde
+
+
+
+
+               a partir da sensibilização de homens e mulheres, famílias
+               e comunidades, gestores(as) e trabalhadores(as) da saúde
+               sobre o tema.
+
+               Essas ações buscam ressaltar a importância de:
+
+                      • disseminar imagens e mensagens positivas sobre
+                        parcerias, pais e paternidades, reconhecendo a
+                        importância da participação dos homens para a
+                        socialização e a educação das crianças, considerando
+                        a complexidade desse lugar, muito além da visão
+                        tradicional em que pai significa apenas provedor;
+                      • sensibilizar e qualificar os(as) trabalhadores(as) da
+                        saúde para acolher e envolver os parceiros, desde
+                        o teste de gravidez, permitindo que se identifiquem
+                        com a proposta e possam vincular-se desde cedo à
+                        criança que virá a nascer, com especial atenção aos
+                        pais adolescentes e jovens;
+
+
+
+
+22
+                            Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+• desenvolver material de comunicação com vistas
+  à divulgação dos princípios, diretrizes e ações que
+  configuram a Estratégia do Pré-Natal do Parceiro;
+• explicar para a gestante e para o parceiro os
+  benefícios de sua participação em todas as etapas
+  da gestação, desde as consultas de pré-natal até o
+  momento do parto e do pós-parto;
+• incentivar e orientar pais, parceiros e gestantes
+  sobre a importância do registro civil de nascimento
+  de seus(suas) filhos(as), com especial atenção para
+  pais, parceiros e gestantes adolescentes e jovens;
+• valorizar a participação do parceiro durante todo
+  o pré-natal, com base na escuta qualificada, a fim
+  de abrir um canal de comunicação para que o
+  homem, pai ou parceiro(a) possa compartilhar suas
+  dúvidas, dificuldades e emoções vivenciadas nesse
+  período, favorecendo e fortalecendo o vínculo com
+  os profissionais de saúde;
+• divulgar amplamente a Lei n.º 11.108/2005,
+  conhecida como Lei do Acompanhante, estimulando
+  que esse acompanhante - inclusive no caso de pais
+  adolescentes - seja o pai ou o parceiro, respeitando
+  a livre escolha da gestante;
+• valorizar a participação do parceiro em ações simples
+  durante todo o trabalho de parto, como o suporte
+  à parceira, realizando o clampeamento (corte) do
+  cordão umbilical e o primeiro banho, por exemplo;
+• destacar a presença do parceiro incluindo gestos
+  simples, como a inclusão do seu nome na placa de
+  identificação dos recém-nascidos e nos consultórios
+  dos serviços de saúde;
+
+
+                                                                                    23
+Ministério da Saúde
+
+
+
+
+       • enfatizar, no cotidiano dos serviços, que “pai não é visita!”,
+         ressaltando que que o parceiro nunca deve ser visto(a) como
+         uma “visita”, mas sim como cuidador e como integrante da família,
+         devendo ter livre e irrestrito acesso a sua parceira e ao seu filho
+         ou filha, no ambiente onde se encontram;
+       • convidar o parceiro a engajar-se no Método Canguru
+         (BRASIL, 2018), em especial quando o recém-nascido for
+         prematuro e/ou de baixo peso;
+       • orientar como o parceiro pode estimular e favorecer a
+         amamentação, além de dividir as atividades domésticas e
+         tarefas de cuidado com a criança.
+
+  Para todas essas ações, a Pnaish ressalta a importância da reflexão
+  contínua sobre as construções sociais de gênero voltadas às
+  masculinidades, buscando descontruir estereótipos e ideias que
+  afastam os homens da saúde, do cuidado, do afeto e da construção
+  de relações mais equitativas e humanizadas em suas parcerias
+  sexuais e afetivas
+
+
+
+
+24
+                             Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+      VIOLÊNCIA
+A violência doméstica durante a gravidez, causada
+principalmente por parceiros íntimos , tem demonstrado
+potenciais impactos negativos sobre a saúde das gestantes
+e dos bebês. Sua prevalência varia de 1% a 28%, segundo
+estudo multinacional da ONU Mulheres (Al Shidhani; Al
+Kendi; Al Kiyumi, 2020; Jahanfar; Howard; Medley, 2014).
+
+Por isso, durante a gestação, o pré-natal, seja da gestante ou
+do parceiro, favorece a identificação de situações de risco ou
+de violência, podendo as equipes de saúde atuarem, tanto
+na prevenção quanto no cuidado das pessoas afetadas.
+
+Ressalta-se ainda que estimular o parceiro no cuidado
+ativo com a mãe e com a criança durante a gestação
+e após o nascimento fortalece os vínculos familiares e
+afetivos, colaborando com a saúde da família como um
+todo, potencialmente reduzindo, também, os casos de
+violência doméstica.
+
+          Para maiores informações, acesse o Caderno
+          de Atenção Básica n.º 8 – Violência intrafamiliar:
+          orientações para prática em serviço, do Ministério da
+          Saúde. Disponível em: https://bvsms.saude.gov.
+          br/bvs/publicacoes/violencia_intrafamiliar_
+          cab8.pdf
+
+
+
+
+                                                                                     25
+Ministério da Saúde
+
+
+
+
+        Com isso, a política busca enfatizar que o momento da
+        gestação e os cuidados posteriores com as crianças também
+        devem ser aproveitados para valorizar modelos positivos
+        de masculinidade, pautados por cooperação, diálogo,
+        respeito, cuidado, não violência e relações entre gêneros
+        que respeitem a diversidade, a pluralidade e a equidade
+        como princípios básicos.
+
+
+
+
+26
+                              Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+        PATERNIDADES NEGRAS
+        E INDÍGENAS
+É importante destacar que as paternidades negras e
+indígenas têm suas particularidades, muitas vezes oprimidas
+e invisibilizadas pelos processos colonizatórios que silenciaram
+práticas de cuidados comunitários e tradicionais.
+
+De acordo com o 1º Relatório sobre Paternidades Negras no
+Brasil, produzido pelo Instituto Promundo:
+
+Há um provérbio africano que diz que “é preciso uma aldeia
+para se educar uma criança”. O povo negro possuiu, ao longo
+da história, a cultura do afeto e do cuidado coletivo.
+
+Esse movimento comunitário pode apoiar o homem preto
+no exercício da paternidade. Faz-se importante dizer que o
+movimento coletivo não retira a responsabilidade individual.
+Outro elemento importante a considerar é o fato de que as
+paternidades negras têm as suas peculiaridades. E estas
+precisam ser respeitadas pela comunidade de não pretos. Os
+medos e desafios dos pais pretos, no exercício da paternagem,
+se distinguem dos pais não pretos, por exemplo, o medo
+constante da morte pela violência do Estado, a instabilidade
+financeira que afeta diretamente a população preta etc. Logo,
+é urgente uma abordagem interseccional quando tratamos o
+tema de “paternidades”.
+      Sem esta abordagem não conseguiremos considerar as
+      distinções e pensar em Políticas Públicas que deem conta
+      das precariedades a que estes homens pretos foram e
+      são submetidos socialmente e assim vulnerabilizados no
+      exercício de suas paternidades.
+
+          Disponível em: https://promundo.org.br/recursos/
+          primeiro-relatorio-sobre-as-paternidades-negras-
+          no-brasil/
+
+
+
+
+                                                                                      27
+A REDE DE
+ATENÇÃO À SAÚDE
+E A ESTRATÉGIA
+PRÉ-NATAL DO
+PARCEIRO
+                               Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+D
+    esde 2005, o Ministério da Saúde já preconizava que
+    uma atenção pré-natal e puerperal de qualidade
+e humanizada é fundamental para a saúde materna e
+neonatal, e, para sua humanização e qualificação, faz-
+se necessário:
+
+ 1   construir um novo olhar sobre o processo
+     saúde-doença que compreenda a pessoa em
+     sua integralidade – totalidade corpo-mente – e
+     considere o ambiente social, econômico, cultural
+     e físico no qual vive;
+
+ 2   estabelecer novas bases de relacionamento para
+     os diversos sujeitos envolvidos na produção de
+     saúde, entre eles os(as) trabalhadores(as) de saúde,
+     usuários(as) e gestores(as);
+
+ 3   construir uma cultura de respeito aos direitos
+     humanos, incluídos direitos sexuais e direitos
+     reprodutivos, com a devida valorização dos aspectos
+     subjetivos envolvidos.
+
+A rede de atenção à saúde no período gravídico-puerperal
+visa proporcionar às mulheres saúde, qualidade de vida
+e bem-estar durante a gestação, o parto, o pós-parto e
+o desenvolvimento da criança até os dois primeiros anos
+de vida. Ainda tem a finalidade de reduzir a mortalidade
+materna e infantil e garantir os direitos sexuais e
+reprodutivos de mulheres e de homens.
+
+
+
+
+                                                                                       29
+Ministério da Saúde
+
+
+
+
+  Essa rede deve, antes de mais nada, promover os “dez passos para
+  o pré-natal de qualidade” (Brasil, 2012):
+
+     1     iniciar o pré-natal na atenção primária à saúde até a 12ª
+           semana de gestação (captação precoce);
+           garantir os recursos humanos, físicos, materiais e técnicos
+     2
+           necessários à atenção pré-natal;
+
+     3     toda gestante deve ter asseguradas a solicitação, a realização
+           e a avaliação em tempo oportuno do resultado dos exames
+           preconizados no atendimento pré-natal;
+
+     4     promover a escuta qualificada da gestante e de seus
+           acompanhantes, considerando aspectos intelectuais,
+           emocionais, sociais e culturais, e não somente um cuidado
+           biológico: “rodas de gestantes”;
+
+     5     garantir o transporte público gratuito da gestante para o
+           atendimento pré-natal, quando necessário;
+
+     6     é direito do parceiro ser cuidado (realização de consultas e
+           exames e ter acesso a informações) antes, durante e depois
+           da gestação: pré-natal do parceiro;
+
+     7
+           garantir o acesso à unidade de referência especializada,
+           caso seja necessário;
+
+     8     estimular e informar sobre os benefícios do parto fisiológico,
+           incluindo a elaboração do plano de parto;
+
+     9     toda gestante tem direito de conhecer e visitar previamente
+           o serviço de saúde no qual realizará seu parto (vinculação);
+
+     10    gestantes e parceiros devem conhecer e exercer os direitos
+           garantidos por lei no período gravídico-puerperal.
+
+
+
+
+30
+                                        Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+      A continuidade do cuidado é um dos princípios que deve ser garantido à gestante
+      durante todo o ciclo gravídico-puerperal. As equipes da Atenção Primária e da
+      Atenção Especializada devem atuar como uma única equipe, “falando a mesma
+      língua”, com relação aos critérios de manejo recomendados pelas diretrizes
+      clínicas e os instrumentos pactuados, e com canais de comunicação e apoio
+      recíproco, ágeis e úteis, para uma gestão compartilhada do cuidado da gestante
+      (Brasil, 2019, grifo do autor).
+
+
+A Rede de Atenção à Saúde no período
+gravídico-puerperal foi constituída para
+qualificar os serviços do Sistema Único
+de Saúde (SUS), no que se refere ao
+planejamento reprodutivo, pré-natal,
+parto e puerpério, constituindo uma
+oportunidade propícia para a inclusão e
+participação dos parceiros.
+
+Além disso, o Ministério da Saúde preconiza
+um modelo de atenção ao parto e ao
+nascimento que vem sendo discutido e
+construído no país desde 1990, com
+base no pioneirismo e na experiência de
+médicos(as), enfermeiros(as), parteiras,
+doulas, acadêmicos(as), antropólogos(as),
+sociólogos(as), gestores(as), formuladores
+de políticas públicas, gestantes, ativistas e
+instituições de saúde, entre outros.
+
+O governo federal instituiu também,
+conforme já citado, desde 2005, a Lei
+Federal n.º 11.108/05, que garante o direito
+a um acompanhante de livre escolha da
+mulher durante todo o período de trabalho
+de parto, parto e pós-parto imediato.
+
+
+
+                                                                                                31
+Ministério da Saúde
+
+
+
+
+  Nesse contexto, tanto a Estratégia de Pré-Natal do
+  Parceiro quanto a Lei do Acompanhante podem contribuir
+  positivamente para a inserção dos homens nas consultas de
+  pré-natal e consolidar a mudança crucial do binômio mãe-
+  criança para o trinômio pai-mãe-criança.
+
+  Para isso, as equipes de saúde devem incentivar o envolvimento
+  do parceiro e sua participação desde o teste de gravidez, passando
+  pelo puerpério até o acompanhamento do desenvolvimento
+  integral do filho.
+
+
+
+
+32
+                               Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+O(a) enfermeiro(a) e/ou o(a) médico(a), como integrantes dessa
+equipe, são responsáveis pela realização do pré-natal na atenção
+primária, devendo proporcionar o acesso e o acolhimento à
+gestante e ao parceiro na unidade e sua integração ao processo.
+
+Dessa forma, a Estratégia Pré-Natal do Parceiro pode constituir-
+se em uma importante “porta de entrada positiva” para os
+homens nos serviços de saúde, aproveitando sua presença
+nas consultas relacionadas à gestação para ofertar exames
+de rotina e testes rápidos, convidando-os a participar das
+atividades educativas e ao exercício da paternidade, buscando
+a integralidade no cuidado para essa população.
+
+Isso parte da constatação de que os homens geralmente acessam
+o sistema de saúde por meio da atenção especializada, já com o
+problema de saúde instalado e evoluindo de maneira insatisfatória.
+Esse contexto aumenta os agravos da morbidade para a população
+masculina, causa maior sofrimento, menor possibilidade de
+resolução e um maior ônus para o sistema.
+
+A conclusão é que muitas doenças e sofrimento poderiam ser
+evitados se os homens procurassem os serviços de saúde com
+mais regularidade pela porta de entrada prioritária do SUS, a APS.
+
+
+
+
+                                                                                       33
+ACOLHIMENTO DO(A)
+PARCEIRO(A)
+                                Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+N
+    o momento em que a mulher e/ou parceiro
+    procuram o serviço de saúde com a suspeita de
+uma gravidez, devem ser seguidas as orientações
+contidas no Teste rápido de gravidez (TRG) na Atenção
+Básica: guia técnico (Brasil, 2013), elaboradas pela
+Coordenação-Geral de Saúde das Mulheres em 2014,
+que indica o TRG para mulheres em idade fértil que
+apresentem atraso menstrual, sendo, em sua maioria,
+igual ou superior a sete dias. Deve ser amplamente
+ofertado o acesso ao TRG, com respeito e atenção
+específica às adolescentes devido às singularidades
+da faixa etária.
+
+Independentemente do resultado do teste rápido de
+gravidez ou do exame laboratorial de beta HCG, esse
+primeiro contato deve ser aproveitado para incorporar
+o homem nas ações voltadas para o cuidado integral à
+saúde, as quais podem ser desenvolvidas em grupos
+de saúde do homem, durante as visitas dos agentes
+comunitários de saúde (ACS), nos locais estratégicos
+do território (empresas, áreas de lazer, bares etc.),
+entre outras ofertas em saúde. É oportuno ofertar, já
+na primeira consulta, os testes rápidos de sífilis, HIV,
+hepatites virais e o aconselhamento.
+
+Já na busca ativa das gestantes realizada pelos ACS, é
+possível fazer o convite ao parceiro para acompanhar
+o pré-natal, sendo também, a partir daí, desenvolvida
+a Estratégia do Pré-Natal do Parceiro.
+
+Destacamos que, nesse momento, deve ser realizado
+um acolhimento humanizado, e alguns aspectos,
+
+
+
+                                                                                        35
+Ministério da Saúde
+
+
+
+
+     pontuados a seguir, devem ser observados pelos profissionais de
+     todas as categorias de formação, para a abordagem de homens ou
+     de mulheres. Caso o parceiro não possa estar presente, deve ser
+     explicada à pessoa que gesta a importância do envolvimento deste
+     e ofertar orientação de que ele pode comparecer em outro horário.
+
+     Vale a pena uma atenção especial a esse respeito, na medida em
+     que há casos em que a gestante não tem parceiro(a), por diferentes
+     motivos, sendo-lhe facultado o direito de decidir se, e que deseja
+     como acompanhante, como garantido pela Lei n.º 11.108/2005.
+
+
+     Número de atendimentos
+     Destaca-se a partir daqui a necessidade de pelo menos duas
+     consultas de pré-natal do parceiro, pois ele terá a oportunidade de
+     realizar a 1ª consulta, com escuta acolhedora de profissionais dos
+     serviços e ter a oportunidade de avaliar como está sua saúde de
+     forma integral, sendo convidado e orientado a realizar exames de
+     rotina e exames direcionados para o pré-natal, visando a eliminação
+     de qualquer possibilidade de transmissão de doenças, como sífilis
+     e hepatites ou até mesmo HIV/aids.
+
+     A 2ª consulta é fundamental para que esses homens possam
+     receber os resultados dos exames, serem direcionados para os
+     tratamentos adequados, caso necessário, e vinculem-se ao serviço
+     para uma continuidade do cuidado. Nesta segunda consulta, os
+     parceiros trazem questionamentos elaborados, muitas vezes, após
+     o primeiro encontro, que os despertam para questões sobre as
+     quais não haviam pensado antes.
+
+
+
+
+36
+                              Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+     Dinâmica dos atendimentos
+     Lembramos, então, que o acolhimento não é um momento
+     fixo ou uma etapa, mas uma postura ética, política e,
+     sobretudo, empática, que pode ocorrer em boa parte
+     dos momentos de interação entre usuários e todos os
+     profissionais de saúde que atuam dentro do serviço. Quanto
+     maior o vínculo estabelecido, mais trocas verdadeiras se
+     potencializam entre o parceiro e os profissionais que o
+     assistem, possibilitando, então, o acesso respeitoso às
+     informações mais íntimas desses homens no que tange
+     a sexualidade, práticas e eventuais comportamentos de
+     risco, dinâmica conjugal e divisão de tarefas na relação.
+
+     Uma vez confirmada a gravidez por meio de TRG positivo
+     e estando a pessoa gestante sozinha, é importante
+     discutir a situação de saúde do parceiro. Vale orientá-la
+     para que o identifique e o corresponsabilize, se for de sua
+     vontade. Sendo o parceiro identificado, é possível orientar
+     a pessoa gestante sobre a importância de convidá-lo para
+     a realização do PNP. Além disso, a eSF deve realizar, se
+     necessário, uma busca ativa para localizá-lo, convidando-o
+     a participar das atividades ofertadas pela unidade de
+     saúde, agendando seu atendimento.
+
+
+
+Uma vez que o TRG seja negativo, pode-se aproveitar o momento
+para conversar com a pessoa gestante sobre sua saúde sexual e
+saúde reprodutiva, sobre seu planejamento reprodutivo, modos
+de evitar IST, verificar se seu cartão de vacinas está atualizado,
+entre outras ações.
+
+
+
+                                                                                      37
+Ministério da Saúde
+
+
+
+
+     Fluxo de introdução ao pré-natal
+     da gestante e do parceiro
+
+                          Chegada da
+                          mulher à UBS
+
+
+
+
+                         Teste de gravidez
+
+
+
+
+         Negativo                                     Positivo
+
+
+
+
+     Orientações sobre
+       saúde sexual e               Sozinha                      Com o parceiro
+     saúde reprodutiva
+
+
+
+
+                                               Verificar a
+                                              possibilidade
+                                              de convidar o       Realizar ou
+                                              parceiro para       agendar a
+                                                  o PNP          consulta PNP
+
+
+
+                                              Realizar busca
+                                             ativa do parceiro
+
+
+
+
+                                               Realizar ou
+                                               agendar a
+                                              consulta PNP
+
+
+
+
+38
+                            Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+Etapas do Procedimento
+Consulta Pré-natal do Parceiro
+                                    2º - Início da realização
+1º- Primeiro contato com                  do registro do
+ o homem, com postura               atendimento (dos testes
+acolhedora e integrada à             rápidos, procedimento
+equipe multiprofissional.            “consulta pré-natal do
+                                     parceiro”, entre outros)
+                                         no e-SUS APS.
+
+
+
+
+4º- Avaliação da situação             3º - Realização da
+vacinal e imunização com           anamnese, exame físico,
+    eventuais doses/               testes rápidos, exames,
+    vacinas faltantes.              aconselhamento etc..
+
+
+
+
+   5º - Abordagem de                   6º - Esclarecimento
+temas como autocuidado              sobre o direito da mulher
+   em saúde, exercício                a um acompanhante
+  da paternidade, entre               no pré-parto, parto e
+outros temas, com o foco             puerpério, destacando
+  na criação de vínculo              todos os benefícios da
+ entre homem e equipe               participação do parceiro.
+    multiprofissional.
+
+
+
+
+ 8º - Agendamento e/                   7º - Orientação aos
+ ou orientação sobre o                 pais sobre cuidados
+retorno do parceiro para              com o recém-nascido,
+ avaliação dos exames                 compartilhamento de
+     e continuidade                  responsabilidades com
+     dos cuidados.                    a puérpera e licença-
+                                           paternidade.
+
+
+
+                                                                                    39
+ Ministério da Saúde
+
+
+
+
+    Após a confirmação da gravidez, em consulta médica ou de
+    enfermagem, dá-se início à participação do parceiro nas rotinas de
+    acompanhamento da pessoa gestante e inserção no autocuidado.
+    Esse processo é composto por oito passos.
+
+
+
+
+Para realizar a consulta de pré-natal do parceiro, o homem não
+precisa estar necessariamente acompanhando a gestante. A
+consulta é um atendimento individual e, como tal, só deve ter
+a participação de outra pessoa se o usuário assim quiser.
+
+
+
+
+ 40
+                                    Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+                  PRIMEIRO CONTATO, COM POSTURA
+1º PASSO
+                  ACOLHEDORA E INTEGRADA.
+
+           Incentivar a participação nas consultas de pré-natal da
+           pessoa gestante e nas atividades educativas da UBS.
+           Informar sobre os direitos trabalhistas que garantem o
+           acompanhamento do pré-natal da companheira e das suas
+           próprias consultas. Informar, também, que ele poderá tirar
+           dúvidas e se preparar adequadamente para compartilhar
+           tarefas durante a gestação, parto, pós-parto e nos cuidados
+           com o bebê. Explicar a importância da prevenção da saúde
+           e ofertar a realização imediata ou o agendamento de
+           atendimentos com a equipe multiprofissional, incluindo a
+           odontologia, e/ou exames de rotina e preventivos.
+
+           As equipes multiprofissionais (eMulti) desempenham um
+           papel fundamental apoiando e matriciando as equipes
+           de Saúde da Família para ampliação da participação
+           dos parceiros durante o pré-natal e ampliação da oferta
+           de ações e serviços de saúde focadas no seu próprio
+           cuidado. As ações multiprofissionais podem fornecer
+           ao público masculino uma atenção ampliada, por meio
+           de um conjunto de saberes em diferentes áreas, como
+           a psicologia, fisioterapia, nutrição, assistência social,
+           entre outras.
+
+           As interconsultas (entre duas ou mais categorias
+           profissionais), por exemplo, podem ser uma importante
+           estratégia de matriciamento entre os profissionais e de
+           alcance de melhores resultados em saúde da população
+           masculina. Construindo uma rede de cuidados mais
+
+
+                                                                                            41
+     Ministério da Saúde
+
+
+
+
+                   abrangente e efetiva, as eMulti podem ajudar a identificar
+                   necessidades específicas antes não abordadas, sugerindo
+                   encaminhamentos para serviços especializados quando
+                   necessário e facilitando a coordenação do cuidado entre
+                   diferentes profissionais e níveis de atenção.
+
+                   Nesse cenário, também é importante considerar que é
+                   frequente que os homens tenham maior dificuldade de
+                   expressar certos sentimentos, como medos e ansiedades
+                   sobre o futuro. Com isso, os profissionais de saúde devem
+                   estar atentos e buscar espaços de diálogo para que essas
+                   dúvidas e anseios sejam expressos.
+
+
+
+                     REGISTRO DO PROCEDIMENTO
+2º PASSO             “CONSULTA PRÉ-NATAL DO PARCEIRO”
+                     E DOS TESTES RÁPIDOS (Brasil, 2022)
+
+                   O registro nos sistemas de informação da saúde de
+                   qualquer procedimento é importante para que as eSF
+                   e gestores planejem, executem e monitorem ações
+                   direcionadas à realidade de seus territórios.
+
+                   Reforça-se a importância desse registro para o
+                   monitoramento e avaliação de ações relacionadas ao
+                   pré-natal do parceiro.
+
+                   Faz-se necessário esclarecer que, embora se chame “consulta
+                   pré-natal do parceiro”, trata-se de um procedimento incluído
+                   na tabela de Procedimentos, Medicamentos e OPM do SUS
+                   (SIGTAP), em 2017 (Brasil, 2017).
+
+
+
+42
+                                 Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+Fluxo registro do procedimento consulta pré-natal do parceiro
+
+    No e-SUS
+
+
+    Em Plano do SOAP
+   (Subjetivo, Objetivo,
+    Avaliação e Plano)                                 Teste rápido para
+                                                      detecção de HIV na
+                                                      gestante ou parceiro
+                                                     SIGTAP - 0214010040
+
+
+
+
+     Em Intervenção
+  Procedimento Clínico
+                                                    Teste rápido para sífilis
+                                                    na gestante ou parceiro
+                                                     SIGTAP - 0214010082
+
+
+
+
+ Em “Procedimentos e/
+  ou Administrativos”
+                                                         Procedimento
+                                                      “Consulta Pré-Natal
+                                                          do Parceiro”
+                                                     SIGTAP - 0301010234
+
+
+
+
+   As nomenclaturas e códigos dos procedimentos de testes
+   rápidos encontram-se em processo de revisão, podendo receber
+   atualizações no eSUS APS. Caso não identifique os códigos aqui
+   descritos, sugerimos a busca nas bases e manuais dos sistema.
+
+
+
+                                                                                         43
+     Ministério da Saúde
+
+
+
+
+              No Prontuário Eletrônico do Cidadão (PEC), na tela do
+              SOAP, em “subjetivo” preencha o “motivo da consulta” com
+              “consulta com profissional de APS”. Em “objetivo”, insira
+              todas as informações necessárias, inclusive os dados
+              antropométricos e sinais vitais. Em “avaliação”, preencha
+              o campo “problema e/ou condição detectada” de acordo
+              com a queixa apresentada pelo parceiro.
+              Caso ele não apresente nenhuma queixa, sugerimos a
+              utilização dos códigos abaixo:
+                   • CID-10 (Código Internacional de Doenças):
+                     Z76.8 - contatos com serviços de saúde por outras
+                     circunstâncias especificadas; e/ou
+                   • CIAP (Classificação Internacional de Atenção
+                     Primária): A29 - outros sinais/ sintomas gerais.
+
+
+
+          Para registro dos procedimentos no e-SUS, utilize os seguintes
+          códigos SIGTAP:
+             • Teste rápido para detecção de HIV na gestante ou
+               parceiro – SIGTAP – 0214010040.
+             • Teste rápido para sífilis na gestante ou parceiro –
+               SIGTAP – 0214010082.
+
+
+              Em “plano”, registre o plano de cuidado em “intervenção
+              e/ou procedimentos clínicos” e registre os testes rápidos
+              para detecção de HIV na gestante ou pai/parceiro e
+              teste rápido para sífilis na gestante ou parceiro. Selecione
+              aqueles indicados para o caso.
+
+              Inclua no campo “procedimentos administrativos” o
+              código ou o termo parceiro e inclua “Consulta Pré-natal
+              do Parceiro”.
+44
+                                     Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+           Acima foram apresentados os detalhes relacionados ao
+           registro do PNP e dos testes rápidos relacionados. Os
+           demais campos devem ser preenchidos de acordo com
+           as orientações do PEC. O PNP e demais procedimentos
+           devem ser realizados e registrados, conforme a autonomia
+           dos profissionais de saúde ao longo de todo o atendimento,
+           que, naturalmente, não se encerra neste passo.
+           No caso das fichas de Coleta de Dados Simplificada (CDS),
+           para registro do pré-natal do parceiro, o(a) profissional
+           deve registrar as informações da consulta na Ficha de
+           Atendimento Individual e na Ficha de Procedimentos.
+
+           Os municípios que utilizam sistemas próprios/terceiros
+           precisam manter a atualização constante da versão
+           de integração entre o sistema local e o e-SUS APS,
+           para que os(as) profissionais registrem a produção dos
+           procedimentos da Estratégia Pré-Natal do Parceiro e,
+           assim, os dados possam constar na base nacional.
+                        Para maiores informações sobre o registro no
+                        PEC e no CDS, consulte o Manual do Sistema
+                        e-SUS APS no endereço: https://saps-ms.
+                        github.io/Manual-eSUS_APS/.
+
+
+
+            REALIZAR OS TESTES RÁPIDOS E SOLICITAR
+3º PASSO
+            EXAMES DE ROTINA.
+
+           Ampliar o acesso, a oferta da testagem e o aconselhamento
+           é uma importante estratégia para a prevenção de vários
+           agravos. A operacionalização dessas ações permite
+           a redução do impacto das infecções sexualmente
+
+
+
+                                                                                             45
+     Ministério da Saúde
+
+
+
+
+                 transmissíveis na população, a promoção de saúde e a
+                 melhoria da qualidade do serviço prestado nas unidades
+                 de saúde. Permite, também, conhecer e aprofundar
+                 o perfil social e epidemiológico da comunidade de
+                 abrangência, dimensionar e mapear a população de maior
+                 vulnerabilidade e, com isso, reformular estratégias de
+                 prevenção e monitoramento.
+
+                 O aconselhamento nas UBS aprimora as práticas em
+                 saúde; favorece uma atenção integral; e contribui para que
+                 o indivíduo participe ativamente do processo de promoção
+                 da saúde, da prevenção e do tratamento principalmente
+                 das IST, do HIV/aids e das hepatites virais – para isso,
+                 deve-se avaliar a necessidade de realização dos testes
+                 em ambiente sem a ausência da gestante.
+
+                 A atenção primária é um campo propício para o
+                 desenvolvimento do aconselhamento. Essa prática se
+                 assemelha aos princípios adotados pela ESF, quando estes
+                 se propõem a resgatar o modo como se dá o relacionamento
+                 entre o serviço e seus usuários, enfatizando o caráter
+                 preventivo e a articulação com a prática assistencial e com
+                 a comunidade.
+
+                 O aconselhamento é o momento em que emerge a
+                 responsabilidade individual com a prevenção e a sua
+                 abordagem, reforça o compromisso coletivo.
+
+                 A inserção do aconselhamento e dos exames de rotina nos
+                 serviços da rede de atenção à saúde, em especial na APS,
+                 implica uma reorganização do processo de trabalho da
+                 equipe e do serviço como um todo. Requer uma atenção
+                 para o tempo de atendimento, reformulações de fluxo da
+                 demanda, funções e oferta de atividades no serviço.
+
+46
+                          Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+Estimular mudanças de valores e práticas exige
+uma preparação da equipe/serviço para acolher a
+subjetividade dos usuários. É parte essencial (re)conhecer
+as principais vulnerabilidades e as necessidades
+particulares dos usuários, suas características e estilos
+de vida e desenvolver uma abordagem sobre os riscos,
+respeitando as suas especificidades.
+
+É importante incluir o parceiro na promoção e na
+ampliação do acesso ao serviço, aos insumos de
+prevenção e ao diagnóstico.
+
+É importante também ações articuladas entre os(as)
+agentes comunitários de saúde e os(as) demais
+profissionais presentes na unidade.
+
+
+Lembrete: conhecer o diagnóstico e ter acesso ao
+tratamento é um direito de todas as pessoas.
+
+
+
+No que diz respeito aos exames e aos procedimentos
+de rotina, sugerimos os seguintes:
+
+ 1   anamnese e exame físico;
+
+ 2   tipagem sanguínea e fator RH (no caso da mulher
+     ter RH negativo);
+
+ 3   pesquisa de antígeno de superfície do vírus da
+     hepatite B (HBsAg);
+ 4   teste treponêmico e/ou não treponêmico para
+     detecção de sífilis;
+ 5   pesquisa de anticorpos anti-HIV;
+
+                                                                                  47
+ Ministério da Saúde
+
+
+
+
+                       pesquisa de anticorpos do vírus da hepatite C
+                  6
+                       (anti-HCV);
+                       em caso de sintomas presentes, testagem para
+                   7
+                       covid-19;
+                  8    hemograma;
+                       lipidograma: dosagem de colesterol total, HDL e
+                  9
+                       triglicerídeos;
+
+                  10   dosagem de glicemia de jejum;
+                       eletroforese da hemoglobina (para detecção da
+                  11
+                       doença falciforme);
+
+                  12   aferição de pressão arterial;
+                       verificação de peso e altura para cálculo de IMC
+                  13   (índice de massa corporal).
+
+               Lembrando que esses procedimentos e exames devem
+               ser solicitados respeitando os protocolos estabelecidos
+               pelo Ministério da Saúde. Caso seja detectada alguma
+               alteração em algum desses exames, o parceiro deve
+               ser referenciado para exames de confirmação, quando
+               necessário, ou diretamente para o tratamento na unidade
+               ou dentro de outro serviço da rede SUS. O mesmo
+               procedimento deve ser adotado caso o profissional
+               verifique a necessidade de outros exames.
+               A vacinação é a medida mais eficaz para a prevenção de
+
+
+
+
+48
+                                            Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+            IMUNIZAR O PARCEIRO CONFORME
+4º PASSO    A SITUAÇÃO VACINAL ENCONTRADA.
+
+
+       doenças que podem ser prevenidas. Com esse objetivo,
+       o Programa Nacional de Imunizações (PNI) disponibiliza
+       para toda a família, o Calendário Nacional de Vacinação,
+       que atende a todas as etapas da vida, tanto para a criança
+       quanto para o adolescente, o adulto e o idoso.
+
+       O parceiro, durante o acompanhamento do período
+       gestacional, deve atualizar o seu cartão de vacina e buscar
+       participar do processo de vacinação de toda família, em
+       especial da gestante e da criança.
+
+       Assim, com o intuito de possibilitar conhecimento e
+       acesso às vacinas oferecidas pelo PNI e a participação do
+       parceiro na vacinação da família, segue quadro contendo
+       o Calendário Nacional de Vacinação1 :
+
+
+
+
+       1
+        Informações sobre as vacinas podem ser obtidas no site do PNI – Programa
+       Nacional de Imunização https://www.gov.br/saude/pt-br/acesso-a-
+       informacao/acoes-e-programas/programa-nacional-de-imunizacoes-
+       vacinacao. O Calendário Nacional de Vacinação está em conformidade
+       com a Portaria Ministerial n° 1.498, de 19 de julho de 2013, que o redefine,
+       e é atualizado com certa frequência, o que torna importante o parceiro/
+       pai estar atento a essas atualizações.
+
+
+
+                                                                                                    49
+CALENDÁRIO
+VACINAL2
+
+
+
+
+2
+    https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/c/calendario-nacional-
+de-vacinacao
+                                                                                                                                                                                                   VACINAS PARA A CRIANÇA
+                                                                                                                                                                                                                                                                                                                Intervalo entre
+                                                                                                                                                                                                                            Número de Doses
+                                                                                                                                                                                                                                                                                                                   as Doses
+                                                                                                                       Vacina                     Proteção Contra                     Composição                                                                 Idade Recomendada
+                                                                                                                                                                                                                     Esquema
+                                                                                                                                                                                                                                              Reforço                                           Recomendado                        Mínimo
+                                                                                                                                                                                                                      Básico
+                                                                                                                                               “Formas graves de tuberculose,
+                                                                                                        BCG (1)                                                                 Bactéria viva atenuada           Dose única              -                       Ao nascer                      -                        -
+                                                                                                                                               meníngea e miliar”
+
+                                                                                                                                                                                Antígeno recombinante de
+                                                                                                        “Hepatite B recombinante (2)”          Hepatite B                                                        Dose ao nascer          -                       Ao nascer                      -                        -
+                                                                                                                                                                                superfície do vírus purificado
+
+                                                                                                                                                                                                                                                                 “1ª dose: 2 meses 2ª dose:
+                                                                                                                                                                                                                                         2 reforços com a
+                                                                                                        Poliomielite 1,2,3 (VIP - inativada)   Poliomielite                     Vírus inativado tipos 1,2, e 3   3 doses                                         4meses                         60 dias                  30 dias
+                                                                                                                                                                                                                                         vacina VOP
+                                                                                                                                                                                                                                                                 3ª dose: 6 meses”
+     Notas:
+                                                                                                                                                                                                                                                                 “1° reforço:15 meses                                    “1º reforço: 6 meses após
+                                                                                                        Poliomielite 1 e 3 (VOP - atenuada)    Poliomielite                     Vírus vivo atenuadotipos 1 e 3                           2 reforços                                                                      3ª dose daVIP 2º reforço:
+                                                                                                                                                                                                                                                                 2° reforço: 4 anos de idade”                            6 meses após 1º reforço”
+                                                                                                                                                                                                                 -                                                                              -
+                                                                                                                                                                                                                                                                 1ª dose: 2 meses
+                                                                                                        “Rotavírus humano G1P1 (VRH) (3)”      Diarreia porRotavírus            Vírus vivo atenuado              2 doses                                                                        60 dias                  30 dias
+                                                                                                                                                                                                                                                                 2ª dose: 4 meses
+                                                                                                                                                                                                                                         -
+                                                                                                                                                                                “Toxoides diftérico e tetânico
+                                                                                                                                                                                purificados e bactéria da
+                                                                                                                                               Difteria, Tétano, Coqueluche,
+                                                                                                                                                                                coquelucheinativada.                                     2 reforços com a        1ª dose: 2 meses 2ª dose:
+                                                                                                        “DTP+Hib+HB (Penta)”                   Haemophilus influenzae B                                          3 doses                                                                        60 dias                  30 dias
+                                                                                                                                                                                Oligossacarídeos conjugados                              vacina DTP              4meses 3ª dose: 6 meses
+                                                                                                                                               e Hepatite B
+     (1) Devido à situação epidemiológica do país é recomendável que a vacina BCG seja administrada
+                                                                                                                                                                                do HiB, -antígeno de
+                                                                                                                                                                                superfície de HB”
+
+                                                                                                                                               “Pneumonias, Meningites,
+                                                                                                                                                                                Polissacarídeo capsularde                                                        1ª dose: 2 meses 2ª dose:                               30 dias da 1ª para
+                                                                                                        Pneumocócica 10- valente               Otites, Sinusites pelos
+                                                                                                                                                                                                                 2 doses                 Reforço                                                60 dias                  2ª dose e de 60 dias da
+                                                                                                        (PCV 10) (4)                           sorotipos que                    10 sorotipos pneumococos                                                         4meses Reforço: 12meses                                 2ª dose para o reforço
+                                                                                                                                               compõem a vacina”
+
+                                                                                                                                                                                “Polissacarídeos capsulares
+                                                                                                                                               Meningite                                                                                                         “1ª dose:3 meses 2ª dose: 5                             “30 dias da 1ª para
+                                                                                                                                                                                purificadosda Neisseria
+                                                                                                        Meningocócica C (Conjugada) (4)                                                                          2 doses                 Reforço                                                60 dias                  2ª dose e de 60 dias da
+                                                                                                                                               meningocócica tipo C             meningitidis                                                                     mesesReforço: 12 meses”                                 2ª dosepara o 1º reforço”
+                                                                                                                                                                                do sorogrupo C”
+                                                                                                                                                                                                                                                                 Dose: 9 meses Reforço:
+     na maternidade. Caso não tenha sido administrada na maternidade aplicá-la na primeira visita ao
+                                                                                                        “Febre Amarela (Atenuada) (5)”         Febre Amarela                    Vírus vivo atenuado              1 dose                  Reforço                                                -                        30 dias
+                                                                                                                                                                                                                                                                 4anos de idade
+                                                                                                                                                                                                                 “2 doses (primeira
+                                                                                                        Sarampo, Caxumba e                     Sarampo, Caxumba e                                                dose com SCR e
+                                                                                                                                                                                Vírus vivos atenuados                                    -                       12 meses                       -                        30 dias
+                                                                                                        Rubéola (SCR) (6)                      Rubéola                                                           segunda dose
+                                                                                                                                                                                                                 com SCRV)”
+
+                                                                                                        Sarampo, Caxumba, Rubéola e            Sarampo, Caxumba                                                  2 doses (segunda                                                                                        “30 dias entre a dose de
+                                                                                                                                                                                Vírus vivos atenuados            dose da SCR e           -                       15 meses                       -                        tríplice viral e a dose
+                                                                                                        Varicela (SCRV) (4) (7)                Rubéola e Varicela                                                primeira de varicela)                                                                                   de tetraviral”
+                                                                                                                                                                                Antígeno do vírus da
+                                                                                                        Hepatite A (HA) (4)                    Hepatite A                                                        1 dose                  -                       15 meses                       -                        -
+                                                                                                                                                                                hepatite A, inativada
+     serviço de saúde. Crianças que não apresentarem cicatriz vacinal após receberem a dose da vacina
+                                                                                                                                                                                Toxoides diftérico e tetânico    Considerar doses
+                                                                                                                                                                                                                                                                 “1º reforço: 15 meses          “1º ref. 9 meses após    “1º reforço: 6 meses
+                                                                                                                                                                                purificados
+                                                                                                        Difteria, Tétano e Pertussis (DTP)     Difteria Tétanoe Coqueluche                                       anteriores com          2 reforços                                             3ª dose 2º ref. 3 anos   após 3ª dose 2ºreforço: 6
+                                                                                                                                                                                e bactéria da coqueluche,                                                        2º reforço: 4 anos de idade”
+                                                                                                                                                                                                                 penta e DTP                                                                    após 1ºreforço”          meses após 1º reforço”
+                                                                                                                                                                                inativada
+
+                                                                                                                                                                                                                 3 doses (Considerar     “A cada 10 anos.
+                                                                                                                                                                                Toxoides diftérico e tetânico
+                                                                                                        Difteria e Tétano (dT)                 Difteria e Tétano                                                 doses anteriores com    Em caso de ferimentos   A partir dos 7 anos de idade   60 dias                  30 dias
+                                                                                                                                                                                purificados, inativada
+                                                                                                                                                                                                                 penta e DTP)            graves a cada 5 anos”
+
+                                                                                                                                               “Papilomavírus Humano 6,         Partícula da cápsula dovírus                                                     “9 a 14 anos parameninas       “2ª dose: 6 meses
+                                                                                                        Papilomavírus humano (HPV)                                                                               2 doses                 -                                                                               -
+                                                                                                                                               11, 16 e 18 (recombinante)”      antígeno de superfície                                                           11 a14 anos para meninos”      após 1ª dose”
+
+                                                                                                                                                                                                                                                                 “A partir de 5 anos de idade
+     BCG não precisam ser revacinadas.
+                                                                                                        Pneumocócica 23-valente                Meningite, Sepse Pneumonias,     Polissacarídeo capsularde                                                        para os povos indígenas,
+                                                                                                                                                                                                                 1 dose                  -                                                      -                        -
+                                                                                                                                                                                                                                                                                                                                                     Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+                                                                                                        (PPV 23) (8)                           Sinusite, Otite e Bronquite      23 sorotipos pneumococos                                                         sem comprovação da vacina
+51                                                                                                                                                                                                                                                               PCV 10”
+                                                                                                                                                                                                                 “1 dose (corresponde
+                                                                                                        Varicela (9)                           Varicela                         Vírus vivo atenuado              à segunda dose          -                       4 anos                         -                        30 dias
+                                                                                                                                                                                                                 da varicela)”
+Ministério da Saúde
+
+
+
+
+     (2) A vacina Hepatite B deve ser administrada nas primeiras 24 horas, preferencialmente, nas
+     primeiras 12 horas de vida, ainda na maternidade. Esta dose pode ser administrada até 30 dias após
+     o nascimento. Crianças até 6 (seis) anos 11 meses e 29 dias, sem comprovação ou com esquema
+     vacinal incompleto, iniciar ou completar esquema com penta que está disponível na rotina dos
+     serviços de saúde, com intervalo de 60 dias entre as doses, mínimo de 30 dias, conforme esquema
+     detalhado no tópico da vacina penta. Crianças com 7 anos completos sem comprovação ou com
+     esquema vacinal incompleto: completar 3 (três) doses com a vacina hepatite B com intervalo de
+     30 dias para a 2ª dose e de 6 meses entre a 1ª e a 3ª.
+     (3) A idade mínima para a administração da primeira dose é de 1 mês e 15 dias e a idade máxima
+     é de 3 meses e 15 dias. A idade mínima para a administração da segunda dose é de 3 meses e
+     15 dias e a idade máxima é de 7 meses e 29 dias. Se a criança regurgitar, cuspir ou vomitar apósa
+     vacinação, não repita a dose. Nestes casos, considere a dose válida.
+     (4) Administrar 1 (uma) dose da vacina Pneumocócica 10V (conjugada), da vacina Meningocócica
+     C (conjugada), da vacina hepatite A e da vacina tetra viral em crianças até 4 anos (4 anos 11 meses
+     e 29 dias) de idade, que tenham perdido a oportunidade de se vacinar.
+     (5) A recomendação de vacinação contra a febre amarela é para todo Brasil, devendo seguir o
+     esquema de acordo com as indicações da faixa etária e situação vacinal, sendo que, crianças
+     entre 9 (nove) meses a menores de 5 (cinco) anos de idade, administrar 1 (uma) dose aos 9 (nove)
+     meses e 1 (uma) dose de reforço aos 4 (quatro) anos. Para as crianças a partir de 5 (cinco) anos de
+     idade, administrar 1 (uma) dose única.
+     (6) A vacinação em bloqueios está indicada em contatos de casos suspeitos de sarampo e rubéola,
+     a partir dos 6 meses.
+     (7) A vacina tetra viral corresponde à segunda dose da tríplice viral e à primeira dose da vacina
+     varicela. Na sua indisponibilidade, pode ser substituída pelas vacinas tríplice viral e vacina varicela
+     (monovalente).
+     (8) Esta vacina está indicada para população indígena a partir dos 5 (cinco) anos de idade.
+
+
+
+
+52
+                                                                                                 VACINAS PARA A GESTANTE
+                                                                                                                         Número de Doses                                Idade               Intervalo entre as Doses
+               Vacina                     Proteção Contra                  Composição
+                                                                                                                                                                    Recomendada
+                                                                                                           Esquema Básico                       Reforço                            Recomendado                      Mínimo
+
+
+                                                                                                      “3 doses (iniciar ou
+                                                                                                                                                                                  “2ª dose: 1 mês após
+                                                                                                      completar oesquema,                                                                                “2ª dose: 1 mês após 1ª dose
+                                                                     Antígeno recombinante de                                                                                     1ª dose
+      Hepatite B recombinante (1)     Hepatite B                                                      deacordo com situação               -                         -                                    3ª dose: 4 meses após
+                                                                     superfície do vírus purificado                                                                               3ª dose: 6 meses
+                                                                                                      vacinal,independentemente da                                                                       1ª dose”
+                                                                                                                                                                                  após 1ª dose”
+                                                                                                      idade gestacional)”
+
+
+
+
+                                                                                                      “3 doses (iniciar ou completar
+                                                                                                                                          A cada 10 anos. Em caso
+                                                                                                      o esquema, de acordo com
+      Difteria e Tétano (dT)          Difteria e Tétano              Toxoides diftérico e tetânico                                        de ferimentos graves a    -             60 dias                30 dias
+                                                                                                      situação
+                                                                                                                                          cada 5 anos
+                                                                                                      vacinal)”
+
+
+
+
+                                                                     Toxoides diftérico e tetânico
+      “Difteria, Tétano e Pertussis                                                                   1 dose para gestantes a partir da
+                                      Difteria, Tétanoe Coqueluche   purificados e bactéria da                                            1 dose a cada gestação    -             60 dias após dT        30 dias após dT
+      acelular (dTpa) (2)”                                                                            20ª semana de gravidez
+                                                                     coqueluche, inativada
+
+
+
+
+     Nota:
+     (1) Administrar 3 (três) doses da vacina hepatite B, considerando a situação de vacinal anterior e os intervalos
+     preconizados entre as doses. Caso não seja possível completar o esquema durante a gestação, deverá concluir
+     após o parto.
+
+     (2) Gestantes que perderam a oportunidade de serem vacinadas durante o período gestacional, administrar 1 (uma)
+     dose de dTpa no puerpério (até 45 dias), o mais precocemente possível. A vacina dTpa também será ofertada para
+     todos os profissionais de saúde. Gestantes sem histórico vacinal da dT, administrar 2 (duas) doses da vacina dupla
+     adulto (dT) e 1 (uma) dose da vacina dTpa a partir da 20ª semana de gestação
+                                                                                                                                                                                                                                        Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+53
+                                                                                            VACINAS PARA O ADOLESCENTE
+
+54                                                                                                         Número de Doses                                                                                Intervalo entre as Doses
+             Vacina              Proteção Contra            Composição                                                                                          Idade Recomendada
+
+                                                                                            Esquema Básico                           Reforço                                                        Recomendado               Mínimo
+      Hepatite B                Hepatite B                 Antígeno                “3 doses (iniciar ou completar o          -                              -                                   “2ª dose:               “2ª dose: 1 mêsapós
+      recombinante                                         recombinante de         esquema, de acordo com situação                                                                              1 mês após 1ª dose      1ª dose
+                                                           superfície do vírus     vacinal)”                                                                                                    3ª dose: 6 meses        3ª dose: 4 meses após 1ª
+                                                           purificado                                                                                                                           após 1ª dose”           dose”
+                                                                                                                                                                                                                                                   Ministério da Saúde
+
+
+      Difteria e Tétano (dT)    Difteria e Tétano          Toxoides diftérico e    “3 doses (iniciar ou completar o          A cada 10 anos. Em caso de     -                                   60 dias                 30 dias
+                                                           tetânico purificados,   esquema, de acordo com situação           ferimentos graves a cada
+                                                           inativada               vacinal)”                                 5 anos
+
+
+
+      Febre amarela             Febre Amarela              Vírus vivo atenuado     Dose única, para pessoas que nunca        Reforço, caso a pessoa tenha   Dose única para pessoas que         -                       -
+      (Atenuada)                                                                   foram vacinadas ou sem comprovante        recebido uma dose da vacina    nunca foram vacinadas ou sem
+                                                                                   de vacinação                              antes de completar 5 anos      comprovante de vacinação
+                                                                                                                             de idade
+
+      Sarampo, Caxumba e        Sarampo, Caxumba e         Vírus vivos             “Iniciar ou completar 2 doses, de         -                              -                                   -                       30 dias
+      Rubéola (SCR) (1) (2)     Rubéola                    atenuados               acordo com
+                                                                                   situação vacinal”
+
+
+      Papilomavírus             “Papilomavírus humano 6,   Partícula da            Iniciar ou completar 2 doses, de acordo   -                              “9 a 14 anos para                   2ª dose: 6 meses após   -
+      humano(HPV) (3)           11, 16 e 18                cápsulado vírus         com situação vacinal                                                     meninas                             1ª dose
+                                (recombinante)”            antígeno de                                                                                      11 a14 anos para
+                                                           superfície                                                                                       meninos”
+
+
+
+      Pneumocócica              “Meningite, Sepse          Polissacarídeo          1 dose                                    -                              “A partir de 5 anos de idade para   -                       -
+      23-valente (PPV 23) (4)   Pneumonias, Sinusite,      capsular de                                                                                      os povos indígenas, sem
+                                Otite e Bronquite”         23 sorotipos                                                                                     comprovação da vacina PCV 10”
+                                                           pneumococos
+
+      Meningocócica ACWY        “Meningite meningocócica   “Polissacarídeos        1 dose                                    -                              11 e 12 anos                        -                       -
+      (Conjugada)               sorogrupos A, C, W e Y”    capsulares
+                                                           purificados da
+                                                           Neisseria
+                                                           meningitidis
+                                                           dossorogrupos A, C,
+                                                           W e Y”
+
+
+     Notas:
+     (1) As pessoas que tiverem esquema vacinal completo, independentemente da idade em que foram vacinadas, não precisam receber doses adicionais.
+     (2) A vacinação em bloqueios está indicada em contatos de casos suspeitos de sarampo e rubéola, a partir dos 6 meses. Recomenda-se não engravidar por
+         um período de 30 dias, após a aplicação da vacina.
+     (3) A vacina HPV também está disponível em de esquema de 3 (três) doses aos 0, 2 e 6 meses, para as mulheres (de nove a 45 anos de idade) e homens (de
+         nove a 26 anos de idade) vivendo com HIV/AIDS, transplantados de órgãos sólidos, de medula óssea e pacientes oncológicos.
+     (4) Esta vacina está indicada para povos indígenas a partir dos 5 (cinco) anos de idade.
+                                                                                          VACINAS PARA O ADULTO E IDOSO
+
+                                                                                                                       Número de Doses                                              Idade                     Intervalo entre as Doses
+                     Vacina                    Proteção Contra                Composição
+                                                                                                                                                                             Recomendada
+                                                                                                       Esquema Básico                          Reforço                                                    Recomendado             Mínimo
+     Hepatite B recombinante                   Hepatite B                    Antígeno                  3 doses (iniciar ou completar      -                              -
+                                                                             recombinantede            o esquema, de acordo com                                                                           “2ª dose: 1 mês após    “2ª dose: 1 mês
+                                                                                                                                                                                                          1ª dose                 após 1ª dose
+                                                                             superfície do vírus       situação vacinal)
+                                                                                                                                                                                                          3ª dose: 6 meses após   3ª dose: 4meses
+                                                                             purificado                                                                                                                    1ª dose”               após 1ª dose”
+
+
+
+     Difteria e Tétano (dT)                    Difteria e Tétano             Toxoides diftérico        3 doses (iniciar ou completar      A cada 10 anos. Em caso        -                                60 dias                 30 dias
+                                                                             etetânico                 o esquema, de acordo com           de ferimentos graves a
+                                                                                                       situação vacinal)
+                                                                             purificados,inativada                                        cada 5 anos
+
+
+
+
+     Febre Amarela (Atenuada)                  Febre Amarela                 Vírus vivo atenuado       Dose única, para pessoas           “Reforço, caso a pessoa        Dose única para pessoas até 59   -                       -
+                                                                                                       que nunca foram vacinadas          tenha recebido uma
+                                                                                                                                          dose da vacina antes           anos de idade, não vacinada.
+                                                                                                       ou sem comprovante de              de completar 5 anos de
+                                                                                                       vacinação                          idade até 59 anos de
+                                                                                                                                          idade.”
+
+
+     Sarampo, Caxumba e Rubéola(SCR) (1) (2)   Sarampo, Caxumba              Vírus vivo atenuado       “2 doses (20 a 29 anos)            -                              -                                -                       30 dias
+                                               e Rubéola                                               1 dose (30 a 59 anos) (verificar
+                                                                                                       situação vacinal anterior)”
+
+
+
+
+     Pneumocócica 23-valente (PPV 23) (3)      Meningite, Sepse              Polissacarídeo capsular   1 dose                             1 dose deve ser feita 5 anos   60   anos    (acamados     ou    -                       -
+                                               Pneumonias, Sinusite, Otite   de 23 sorotipos                                              após a primeira dose           institucionalizados)
+                                               e Bronquite                   pneumococos
+
+
+     Notas:
+     (1) As pessoas que tiverem esquema vacinal completo, independentemente da idade em que foram vacinadas, não precisam receber doses
+     adicionais.
+     (2) A vacinação em bloqueios está indicada em contatos de casos suspeitos de sarampo e rubéola, a partir dos 6 meses. Para os adultos com
+     até 29 anos e profissionais de saúde de qualquer idade, recomenda-se duas doses da vacina SCR, com intervalo de 30 dias. Recomenda-se
+     não engravidar por um período de 30 dias, após a aplicação da vacina.
+     (3) Esta vacina está indicada para pessoas a partir dos 60 anos de idade em condições clínicas especiais (acamados, hospitalizados ou
+     institucionalizados) e povos indígena a partir dos 5 (cinco) anos de idade
+                                                                                                                                                                                                                                                    Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+55
+     Ministério da Saúde
+
+
+
+
+                           TODO ENCONTRO, ATENDIMENTO
+5º PASSO
+                           OU CONSULTA É UMA OPORTUNIDADE!
+
+
+                    Uma escuta qualificada possibilita a criação de vínculo entre
+                    os homens e os(as) profissionais de saúde, propiciando
+                    o esclarecimento de dúvidas e orientação sobre temas
+                    relevantes, tais como o exercício da paternidade, o
+                    relacionamento com o parceiro, atividade sexual, gestação,
+                    parto e puerpério, aleitamento humano, cuidados com o
+                    bebê, prevenção da violência doméstica etc.
+
+                    Seguem algumas sugestões de atividades educativas com
+                    temas voltados para o público masculino cuja realização
+                    é de responsabilidade das equipes de saúde e cuja
+                    participação dos homens deve ser fomentada durante e
+                    após a consulta de PNP:
+
+                           • Orientação de hábitos saudáveis, como: prática de
+                             atividades físicas regulares, alimentação balanceada
+                             e saudável (preferência por alimentos in natura; usar
+                             óleos, gorduras, sal e açúcar com moderação; limitar
+                             o uso de produtos prontos para consumo; evitar
+                             comidas prontas tipo fast food etc.), diminuir ou cessar
+                             consumo de bebida alcoólica, cigarro e outras drogas.
+                             Para saber mais, acesse o Guia Alimentar para a
+                             população brasileira;
+
+                           • Palestras e rodas de conversa com a população
+                             masculina, abordando temas como: Política
+                             Nacional de Atenção Integral à Saúde do Homem;
+                             gênero, socialização masculina e impactos para a
+
+
+56
+                             Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+           vida de homens, mulheres e crianças; sexualidade,
+           direitos sexuais e direitos reprodutivos; política
+           de reprodução assistida (pensando nos pais que
+           necessitam de inseminação artificial e tecnologias
+           reprodutivas); paternidade, como ser um parceiro
+           presente, dividindo atividades e responsabilidades
+           com a parceira; e prevenção de acidentes e de
+           violência entre a população masculina, entre outros.
+
+     É importante lembrar que o envolvimento do homem pode
+     acontecer mesmo quando ele e a pessoa gestante não
+     estiverem em um relacionamento afetivo ou dividindo o
+     mesmo teto.
+
+
+
+
+Nos casos de pais separados, é essencial conversar com a pessoa
+gestante e saber a forma como ela deseja que o homem participe
+desse momento. Caso ela não deseje, é importante respeitar a
+sua decisão, buscar informações e perguntar se ela quer que
+outra pessoa a acompanhe nesse processo. Ainda nesses casos,
+recomenda-se que, mesmo que o pai não acompanhe o pré-
+natal presencialmente, as ações relacionadas ao pré-natal do
+parceiro tenham sequência, abordando as responsabilidades
+compartilhadas e a necessidade dos cuidados inerentes à saúde
+do homem.
+
+
+
+
+                                                                                     57
+     Ministério da Saúde
+
+
+
+
+                      ESCLARECER SOBRE O DIREITO DA PESSOA QUE
+                      GESTA A UM ACOMPANHANTE NO PRÉ-PARTO,
+6º PASSO              PARTO E PUERPÉRIO E INCENTIVAR O PARCEIRO
+                      SOBRE A POSSIBILIDADE DA SUA PARTICIPAÇÃO
+                      NESSE MOMENTO
+
+
+
+                     Conversar com os futuros pais sobre a relevância de
+                     sua participação no pré-parto, parto e puerpério, dando
+                     exemplos do que ele poderá fazer, como: ser encorajado
+                     a clampear o cordão umbilical em momento oportuno,
+                     levar o recém-nascido ao contato pele a pele e apoiar a
+                     puérpera no início da amamentação.
+
+                     Recomenda-se incentivar os pais/parceiros a conhecerem
+                     a unidade neonatal da maternidade de referência, para
+                     que haja uma vinculação ao serviço independentemente
+                     de risco gestacional.
+
+                     Além disso, o(a) profissional deve mostrar ao futuro pai
+                     que, ao participar do parto, ele pode ajudar a:
+                           • garantir um melhor atendimento para sua parceira,
+                             reduzindo com isso a possibilidade de eventuais
+                             situações de violência obstétrica e/ou institucional;
+                           • estimular o parto normal;
+                           • diminuir a duração do trabalho de parto;
+                           • diminuir o medo e a tensão e, consequentemente,
+                             aliviar a dor;
+                           • aumentar a sensação de prazer e satisfação no parto;
+
+
+
+
+58
+                           Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+   • diminuir a ocorrência de depressão pós-parto;
+   • favorecer o aleitamento humano;
+   • fortalecer o vínculo entre parceiro, mãe e bebê.
+
+Todos esses benefícios são defendidos pela Organização
+Mundial da Saúde desde 1985.
+
+
+
+Lei do Acompanhante
+Gestores e profissionais de saúde, saibam que os pais/
+parceiros podem participar do pré-natal, parto e pós-
+parto se for escolha da gestante, de acordo com a Lei n.º
+11.108/2005.
+
+Essa lei é mais conhecida como a Lei do Acompanhante, que
+determina que os serviços de saúde do SUS, da rede própria
+ou conveniada, são obrigados a permitir à gestante o direito
+a acompanhante durante todo o período de trabalho de
+parto, parto e pós-parto. Esse acompanhante será indicado
+pela gestante, podendo ser o pai do bebê, o parceiro atual,
+a mãe, um (a) amigo(a), ou outra pessoa de sua escolha. Se
+ela preferir, pode decidir não ter acompanhante.
+
+Se esse direito não for respeitado, oriente que o casal entre
+em contato com a Ouvidoria do SUS pelo telefone 136.
+
+Além disso, a Iniciativa Hospital Amigo da Criança – IHAC
+prevê como critério que seja garantido “livre acesso à mãe
+e ao pai e permanência da mãe ou pai, junto ao recém-
+nascido, durante 24 horas, conforme Portaria n.º 930 de 10
+de maio de 2012”.
+
+
+
+
+                                                                                   59
+     Ministério da Saúde
+
+
+
+
+                           ORIENTAR OS PAIS OU PARCEIROS SOBRE
+7º PASSO                   CUIDADO COM O RECÉM-NASCIDO E APOIO
+                           À PUÉRPERA
+
+                    Durante as consultas de pré-natal e/ou na primeira
+                    consulta do recém-nascido, os(as) profissionais de saúde
+                    devem orientar os pais/parceiros a realizarem os cuidados
+                    de saúde e higiene e incentivarem a amamentação do
+                    recém-nascido, bem como apoiar a puérpera no pós-parto.
+
+                    Seguem algumas sugestões de atividades simples
+                    e rotineiras para os pais/parceiros participarem mais
+                    ativamente desses primeiros meses da vida do bebê
+                    (adaptadas das orientações da ONG Prematuridade.com):
+
+                           • Tirar a licença-paternidade e aproveitar esse período
+                             para se dedicar exclusivamente ao bebê e à mãe;
+                           • Com o bebê em casa, o parceiro pode continuar se
+                             encarregando do banho, além de trocar as fraldas
+                             e também as roupas do bebê;
+                           • Acompanhar e incentivar a amamentação. Ele pode
+                             estar ao lado da mãe nesse momento e depois da
+                             mamada, e pode segurar e ajudar o bebê a arrotar;
+                           • Acalentar o filho na hora de dormir e, caso necessário,
+                             buscar orientações com profissionais de saúde sobre
+                             como proceder em caso de cólicas do bebê;
+                           • Responsabilizar-se pelas tarefas gerais da casa. O
+                             parceiro pode providenciar as refeições, a limpeza
+                             e outras tarefas domésticas;
+                           • Apoiar a autoestima da puérpera. No pós-parto,
+                             é normal que as mães se sintam mais sensíveis e
+                             incomodadas com o seu próprio corpo, que vive
+
+60
+                                  Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+             alterações com a gravidez. E não é apenas a variação
+             hormonal que influencia esse sentimento, mas também
+             a própria alteração da rotina. Aproveitar o sol da manhã
+             e do fim da tarde para passear com o bebê. Geralmente,
+             as saídas são liberadas a partir de 1 mês, mas é indicado
+             falar com os profissionais de saúde antes;
+           • Conversar com o bebê, fazer brincadeiras para estimular
+             a visão, audição e tato.
+
+
+
+
+8º PASSO
+             AGENDAR RETORNO PARA AVALIAÇÃO DOS
+             RESULTADOS DOS EXAMES.
+
+            Já finalizando o atendimento, é importante que o usuário
+            saia com a próxima consulta agendada. Nos casos em que
+            não é possível o agendamento, informar como ele deve
+            proceder logo ao sair da consulta, na UBS. A consulta
+            de retorno dá ao profissional de saúde a oportunidade
+            de acolher e orientar o usuário mais detalhadamente,
+            promovendo vínculo e continuidade do cuidado.
+
+
+
+
+                                                                                          61
+ESTRATÉGIA
+ORGANIZACIONAL
+PARA AMPLIAÇÃO DA
+REALIZAÇÃO
+DO PRÉ-NATAL
+                         Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+P   ara fortalecer o acompanhamento pré-natal, tanto para o
+    parceiro quanto para a gestante, é essencial que gestores
+e profissionais de saúde desenvolvam ações estratégicas, que
+lhes favoreçam o exercício desse direito. Neste sentido, propõe-
+se a adoção de uma abordagem abrangente no âmbito da APS,
+tendo em mente os desafios que essa população enfrenta
+para se encaixar nos horários comerciais convencionalmente
+praticados pelos serviços de saúde.
+
+Pensando na ampliação do acesso da população aos
+serviços de APS, algumas medidas organizacionais que
+podem facilitar a presença dos homens nas consultas de
+pré-natal podem ser adotadas, consequentemente, a sua
+introdução no pré-natal do parceiro.
+
+Horários de funcionamento estendidos e flexíveis nas
+UBS, que se ajustem às demandas e compromissos da
+população como um todo, considerando suas rotinas de
+trabalho, reduzem as barreiras socioculturais e ampliam
+a possibilidade de participação masculina nos serviços:
+
+        Funcionamento das UBS aos fins de semana: abrir
+  1
+        as unidades durante os finais de semana buscando
+        a oferta de atendimento ao público masculino,
+        possibilita que eles possam comparecer sem
+        interferir em suas atividades semanais;
+
+
+  2
+        Atendimentos no horário do almoço e noturno:
+        oferecer horários de atendimento no intervalo de
+        almoço e noturno para atender as necessidades
+        daqueles que têm compromissos durante os
+        demais horários.
+
+
+
+                                                                                 63
+Ministério da Saúde
+
+
+
+
+     É importante considerar a opinião de gestantes e parceiros nas
+     decisões sobre os melhores dias e horários para o acompanhamento
+     do pré-natal, levando em conta a disponibilidade de ambos e a
+     partilha na escolha para a marcação de consulta.
+
+     Reconhecendo os desafios vislumbrados pelos homens para se
+     sentirem pertencentes aos serviços de saúde, especialmente
+     em cenários de rotinas de trabalho ininterruptas, recomenda-se
+     aos gestores a ampliação do horário de funcionamento das UBS.
+     Somada ao aumento da cobertura da eSF, com o cuidado em
+     saúde bucal, esta estratégia aumenta a efetividade e eficiência
+     do sistema, diminuindo filas em unidades de pronto atendimento
+     e emergências hospitalares, além dos elevados custos nestes
+     outros níveis de atenção.
+
+
+
+
+64
+LICENÇA-
+PATERNIDADE
+                          Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+D   e acordo com a Constituição Federal/88 em seu
+    artigo 7º, XIX, e art.10, §1º, do Ato das Disposições
+Constitucionais Transitórias – ADCT, o pai tem direito a cinco
+dias de licença-paternidade. É importante o profissional de
+saúde ter conhecimento da existência de legislações locais
+que ampliem o período da licença-paternidade.
+
+Com o objetivo de ampliar esse direito, no dia 8 de março de
+2016, foi sancionada a Lei n.º 13.257/2016, que dispõe sobre
+as políticas públicas para primeira infância. Essa lei prevê
+artigos específicos ligados ao exercício da paternidade, como
+ampliação da licença-paternidade para os funcionários das
+Empresas Cidadãs, que agora têm direito a vonte (20) dias.
+
+O Programa Empresa Cidadã, instituído pela Lei n.º
+11.770/2008 e regulamentado pelo Decreto n.º 7.052/2009,
+destina-se a prorrogar por sessenta (60) dias a duração da
+licença-maternidade e por quinze (15) dias , além dos cinco
+(5) já estabelecidos, a duração da licença-paternidade. Para
+tanto, o empregado deve solicitar em até 2 (dois) dias úteis
+após o parto e comprovar participação em programa ou
+atividade de orientação sobre paternidade.
+
+Essa ampliação para participação do parceiro proporcionará
+vários benefícios como os destacados abaixo:
+
+   • A ampliação da licença-paternidade em quinze 15
+     dias é vantajosa para as crianças, para os pais e para
+     o Brasil. Há evidências de impactos positivos para o
+     desenvolvimento das crianças e para a igualdade de
+     gênero em países onde essa licença é mais extensa
+     e está em vigor há mais tempo;
+
+
+
+
+                                                                                  66
+Ministério da Saúde
+
+
+
+
+        • A licença-paternidade promove um maior envolvimento dos
+          pais no cuidado dos filhos, sobretudo quando atraente para
+          os homens, do ponto de vista da duração e da remuneração,
+          e quando não pode ser transferida para a mulher. O
+          envolvimento paterno se estende para além do período de
+          licença e tem reflexos importantes para a vida das crianças;
+        • O envolvimento dos pais no cuidado com os filhos
+          afeta as crianças de muitas formas. Foram observados
+          ganhos como maior desenvolvimento cognitivo, melhor
+          desempenho escolar e menores taxas de delinquência
+          (Levtov et al., 2015);
+        • Outro efeito positivo da licença-paternidade diz respeito à
+          amamentação. Crianças de pais que usaram esta licença têm
+          mais probabilidade de serem amamentadas no primeiro ano
+          em comparação a filhos de pais que não utilizaram a licença;
+        • Há evidências de que o aumento da licença-paternidade
+          também ajudaria a mudar o comportamento das famílias
+          quanto à divisão de tarefas domésticas e a diminuir a
+          diferença entre homens e mulheres no mercado de trabalho;
+        • O Brasil foi um dos primeiros países a oferecer a licença-
+          paternidade no mundo, em 1943, segundo a Organização
+          Internacional do Trabalho (OIT). Desde 1988, essa licença é
+          de cinco dias remunerados;
+        • No mundo todo, o número de países que concedem o direito
+          à licença-paternidade aumentou de 41 para 79, entre 1994 e
+          2013. Na maior parte deles (90%), o benefício é remunerado.
+
+     A Cosah orienta que os profissionais de saúde estimulem o Pré-
+     Natal do Parceiro, a participação nas atividades educativas durante
+     o pré-natal e as visitas à maternidade onde acontecerá o parto
+
+
+
+67
+                                 Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+para vinculação do casal. Essas ações podem ser consideradas
+como comprovantes de participação para que os homens tenham
+direito ao benefício.
+
+
+Existem legislações que apresentam novos regramentos para a
+licença-paternidade em discussão em âmbitos nacional e local. Outras
+aguardam regulamentação, por exemplo, a Lei n.º 14.457/2022, que
+estabelece uma série de incentivos ao exercício da parentalidade,
+entre eles as seguintes possibilidades:
+
+•   liberação dos homens para acompanhamento da esposa
+    ou companheira em até seis consultas médicas ou exames
+    complementares durante o período de gravidez;
+•   suspensão do contrato de trabalho para o acompanhamento do
+    desenvolvimento dos filhos;
+•   flexibilização do uso da prorrogação da licença-maternidade;
+•   teletrabalho;
+•   flexibilização da jornada de trabalho dos profissionais que tenham
+    filhos, enteados ou pessoas sob sua guarda com até 6 anos de
+    idade ou com deficiência.
+Busque constantemente se manter informado sobre atualizações
+acerca dessas legislações para comunica-las à gestão, caso esta as
+desconheça, e aos parceiros para que se utilizem desse direito para
+apoiarem a parceira e também se cuidarem.
+
+
+Buscando apoiar e incentivar o exercício da paternidade e promover
+impactos positivos para o desenvolvimento das crianças, além de
+aumentar os vínculos dos homens com a suas parceiras e com seu
+filho e, ao mesmo tempo, estimular o seu autocuidado com a saúde,
+o Ministério da Saúde disponibiliza cursos EAD sobre a temáticas de
+paternidade e cuidado, com emissão de certificado para comprovação
+de participação em programa ou atividade de orientação.
+
+                                                                                         68
+Ministério da Saúde
+
+
+
+
+                  Promoção do Envolvimento dos Homens na Paternidade
+                  e no Cuidado (60h- para os profissionais da saúde). -
+                  https://avasus.ufrn.br/local/avasplugin/cursos/curso.
+                  php?id=77
+
+                  Pai Presente Cuidado e Compromisso (12h – para os
+                  pais) - https://avasus.ufrn.br/local/avasplugin/cursos/
+                  curso.php?id=67
+
+ SAIBA MAIS:
+
+                  Prevenção da transmissão vertical – https://www.gov.br/
+                  aids/pt-br/assuntos/transmissao-vertical/prevencao-
+                  da-transmissao-vertical
+
+                  Calendário Nacional de Vacinação – https://www.gov.br/
+                  saude/pt-br/assuntos/saude-de-a-a-z/c/calendario-
+                  nacional-de-vacinacao
+
+                  Guia de saúde do homem para agente comunitário de
+                  saúde (ACS) – https://pesquisa.bvsalud.org/bvsms/
+                  resource/pt/mis-38648
+                  Divulgue os benefícios do parceiro ser o acompanhante
+                  no parto. (https://www.partodoprincipio.com.br/
+                  beneficios-acompanhante)
+                  Fique atento: na caderneta da gestante tem informações
+                  específicas para o parceiro. – https://aps.saude.gov.br/
+                  biblioteca/visualizar/MjE2NQ==
+                  A Caderneta da Criança – Passaporte da Cidadania tem
+                  orientações específicas para os pais. https://aps.saude.
+                  gov.br/biblioteca/visualizar/MjE2NA==
+
+
+
+
+69
+                               Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+REFERÊNCIAS
+AL SHIDHANI, Nuhour Ali; AL KENDI, Asma Ali; AL KIYUMI,
+Maisa Hamed. Prevalence, risk factors and effects of domestic
+violence before and during pregnancy on birth outcomes: an
+observational study of literate Omani women. International
+journal of women’s health, v. 12, p. 911-925, 2020.
+ALBUQUERQUE, Fernando Pessoa de. Sofrimento mental
+e gênero: os homens e o cuidado na rede de atenção
+psicossocial. 2020. Tese (Doutorado em Saúde Coletiva) –
+Faculdade de Medicina, Universidade de São Paulo, São Paulo,
+2020.
+ARAÚJO, Luize Bueno de; MELO, Tainá Ribas e ISRAEL, Vera
+Lúcia. Baixo peso ao nascer, renda familiar e ausência do pai
+como fatores de risco ao desenvolvimento neuropsicomotor.
+J. Hum. Growth Dev., v. 27, n. 3, p. 272-280, 2017. ISSN 0104-
+1282. DOI: http://dx.doi.org/10.7322/jhgd.124072.
+ARILHA, Margareth; UNBEHAUM, Sandra; MEDRADO, Benedito
+(org.). Homens e Masculinidades: outras palavras. São Paulo:
+Editora 34, 1998.
+
+BRASIL. Ministério da Saúde. Portaria n.º 397, de 16 de março
+de 2020. Altera as Portarias de Consolidação n.º 2/GM/
+MS, de 28 de setembro de 2017, n.º 5 de 28 de setembro
+de 2017, e n.º 6/GM/MS, de 28 de setembro de 2017, para
+dispor sobre o Programa Saúde na Hora, no âmbito da Política
+Nacional de Atenção Básica. Brasília, DF: MS, 2022.Disponível
+em: https://bvsms.saude.gov.br/bvs/saudelegis/gm/2020/
+prt0397_16_03_2020.html. Acesso em: 30 jun. 2023.
+
+BRASIL. Ministério da Saúde. Secretaria de Atenção à Saúde.
+Departamento de Ações Programáticas Estratégicas. Teste
+rápido de gravidez na Atenção Básica: guia técnico. Brasília, DF:
+MS, 2013.
+
+                                                                                       70
+Ministério da Saúde
+
+
+
+
+     BRASIL. Ministério da Saúde. Secretaria de Atenção à Saúde.
+     Departamento de Atenção Básica. Atenção ao pré-natal de
+     baixo risco. Brasília, DF: MS, 2012. (Série A. Normas e Manuais
+     Técnicos) (Cadernos de Atenção Básica, n. 32).
+     BRASIL. Ministério da Saúde. Secretaria de Atenção Primária à
+     Saúde. Departamento de Ações Programáticas Estratégicas.
+     Método canguru: diretrizes do cuidado. 1. ed. rev. Brasília, DF:
+     MS, 2018. Disponível em: http://bvsms.saude.gov.br/bvs/
+     publicacoes/metodo_canguru_diretrizes_cuidado_revisada.pdf.
+     Acesso em: 30 jun. 2023.
+     BRASIL. Ministério da Saúde; CONSELHO NACIONAL DE
+     SECRETÁRIOS DE SAÚDE; SOCIEDADE BENEFICENTE ISRAELITA
+     BRASILEIRA ALBERT EINSTEIN. Nota Técnica para organização da
+     Rede de Atenção à Saúde com foco na Atenção Primária à Saúde
+     e na Atenção Ambulatorial Especializada: saúde da mulher na
+     gestação, parto e puerpério. São Paulo: Hospital Israelita Albert
+     Einstein; Brasília, DF: MS, 2019.
+     BRASIL. Presidência da República. Lei n.º 11.108, de 7 de
+     abril de 2005. Altera a Lei n.º 8.080, de 19 de setembro de
+     1990, para garantir às parturientes o direito à presença de
+     acompanhante durante o trabalho de parto, parto e pós-
+     parto imediato, no âmbito do Sistema Único de Saúde – SUS.
+     Brasília, DF, 2005. Disponível em: https://www.planalto.gov.br/
+     ccivil_03/_ato2004-2006/2005/lei/l11108.htm. Acesso em: 30
+     jun. 2023.
+     BRASIL. Presidência da República. Lei n.º 11.770, de 9 de
+     setembro de 2008. Cria o Programa Empresa Cidadã, destinado
+     à prorrogação da licença-maternidade mediante concessão de
+     incentivo fiscal, e altera a Lei no 8.212, de 24 de julho de 1991.
+     Brasília, DF, 2008. Disponível em: http://www.planalto.gov.br/
+     ccivil_03/_ato2007-2010/2008/lei/l11770.htm. Acesso em: 30
+     jun. 2023.
+
+
+
+
+71
+                                 Guia do pré-natal do parceiro para profissionais de saúde
+
+
+
+
+BRASIL. Presidência da República. Lei n.º 14.457, de 21 de
+setembro de 2022. Institui o Programa Emprega + Mulheres;
+e altera a Consolidação das Leis do Trabalho, aprovada pelo
+Decreto-Lei n.º 5.452, de 1º de maio de 1943, e as Leis n.ºs
+11.770, de 9 de setembro de 2008, 13.999, de 18 de maio de
+2020, e 12.513, de 26 de outubro de 2011. Brasília, DF, 2022.
+Disponível em: https://www.planalto.gov.br/ccivil_03/_Ato2019-
+2022/2022/Lei/L14457.htm. Acesso em: 30 jun. 2023.
+CRUZ, L. et al. Homem contemporâneo: cavaleiro medieval,
+enigmático ou toxicômano? Estudos de Psicanálise, v. 43, p. 57-
+66, 2015.
+HENZ, Gabriela Sofia. A inclusão paterna durante o pré-natal.
+2018. Disponível em: https://www.univates.br/bduserver/api/
+core/bitstreams/9f9ba4ae-71e4-4f5f-a644-7cdc983ff647/
+content. Acesso em: 30 jun. 2023.
+JAHANFAR, Shayesteh; HOWARD, Louise M.; MEDLEY, Nancy.
+Interventions for preventing or reducing domestic violence
+against pregnant women. Cochrane database of systematic
+reviews, n. 11, 2014. Disponível em: https://www.cochranelibrary.
+com/cdsr/doi/10.1002/14651858.CD009414.pub3/full. Acesso
+em: 30 jun. 2023.
+
+KAUFMAN, M. The 7 P’s of men’s violence. Toronto: [s. n.], 1999.
+Disponível em: https://michaelkaufman.com/1999/10/the-7-
+ps-of-mens-violence/. Acesso em: 30 jun. 2023.
+LEVTOV, R. et al. State of the World’s Fathers: s MenCare
+Advocacy Publication. Washington, DC: Promundo, Rutgers,
+Save the Children, Sonke Gender Justice, and the MenEngage
+Alliance, 2015.
+MEDRADO, Benedito; LYRA, Jorge. Produzindo sentidos sobre o masculino:
+da hegemonia à ética da diversidade. In: ADELMAN, Mirian; SILVESTRIN,
+Celsi (org.). Coletânea Gênero Plural. Curitiba: UFPR, 2002. p. 63-76.
+
+
+
+
+                                                                                         72
+Conte-nos o que pensa sobre esta publicação.
+     Clique aqui e responda a pesquisa.
+Biblioteca Virtual em Saúde do Ministério da Saúde
+                bvsms.saude.gov.br
+

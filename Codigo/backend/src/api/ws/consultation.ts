@@ -106,6 +106,12 @@ export function registerConsultationWebSocket(app: Hono, upgradeWebSocket: Upgra
             }
             if (parsed?.type === "vad_pause") {
               await session.onVadPause();
+              return;
+            }
+            if (parsed?.type === "mic_state") {
+              const active = Boolean((parsed as { active?: boolean }).active);
+              session.onMicState(active);
+              return;
             }
             return;
           }

@@ -635,18 +635,14 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section
-        id="feedback-interesse"
-        className="border-t border-slate-200 bg-slate-50 px-6 py-14 sm:py-18"
-        aria-labelledby="feedback-titulo"
-      >
+      <section id="feedback-interesse" className="border-t border-slate-200 bg-slate-50 px-6 py-14 sm:py-18" aria-labelledby="feedback-titulo">
         <div className="mx-auto max-w-2xl rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-10">
           <p className="text-xs font-semibold uppercase tracking-wide text-brand-pink">Participação</p>
           <h2 id="feedback-titulo" className="mt-2 text-xl font-semibold tracking-tight text-brand-navy sm:text-2xl">
             Sua opinião importa
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
-            Profissional de saúde, pesquisador ou avaliador: queremos ouvir críticas, sugestões e ideias para evoluir este projeto. Sua experiência é o que torna esta ferramenta relevante.
+            Profissional de saúde, pesquisador, avaliador ou interessados: queremos ouvir críticas, sugestões e ideias para evoluir este projeto. Sua experiência é o que torna esta ferramenta relevante.
           </p>
           {feedbackFormUrl ? (
             <div className="mt-8">

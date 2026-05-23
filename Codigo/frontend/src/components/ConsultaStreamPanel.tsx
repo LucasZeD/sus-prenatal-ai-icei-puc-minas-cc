@@ -8,8 +8,18 @@ import {
   type ConsultationSocketHandle,
   type StreamHistoryItem,
 } from '../lib/consultationSocket.js'
+import {
+  cutSttMediaRecorderSegment,
+  pickWebmMimeType,
+  startSttMediaRecorder,
+  type SttRecorderSession,
+} from '../lib/sttMediaRecorder.js'
+import { AudioLevelMeter } from './escriba/AudioLevelMeter.js'
+import { EscribaRecordingBar, type RecordingPhase } from './escriba/EscribaRecordingBar.js'
+import { EscribaStreamDiagnostics } from './escriba/EscribaStreamDiagnostics.js'
 
 const uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+const STT_CHUNK_MIN_MS = Number.parseInt(import.meta.env.VITE_STT_CHUNK_MIN_MS ?? '2500', 10)
 
 type AudioInputDevice = { deviceId: string; label: string }
 
@@ -113,7 +123,26 @@ export function ConsultaStreamPanel({
   const [verificacaoMsg, setVerificacaoMsg] = useState<string | null>(null)
 
   const socketRef = useRef<ConsultationSocketHandle | null>(null)
-  const recorderRef = useRef<MediaRecorder | null>(null)
+  const sttSessionRef = useRef<SttRecorderSession | null>(null)
+  const recorderMimeRef = useRef('')
+  const sttRotateTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const micStreamRef = useRef<MediaStream | null>(null)
+  const micPreviewRef = useRef<MediaStream | null>(null)
+  const [recordingPhase, setRecordingPhase] = useState<RecordingPhase>('idle')
+  const [micStream, setMicStream] = useState<MediaStream | null>(null)
+  const [micPreviewStream, setMicPreviewStream] = useState<MediaStream | null>(null)
+  const [micMonitorActive, setMicMonitorActive] = useState(false)
+  const [audioChunksSent, setAudioChunksSent] = useState(0)
+  const [audioBytesSent, setAudioBytesSent] = useState(0)
+  const [lastSttAt, setLastSttAt] = useState<number | null>(null)
+  const [sttLatencyMs, setSttLatencyMs] = useState<number | null>(null)
+  const sttRequestStarted = useRef<number>(0)
+
+  const isStreamOnly = variant === 'streamOnly'
+  const showDevMetrics = import.meta.env.DEV || import.meta.env.VITE_DEV_STREAM_METRICS === '1'
+  const showEscribaDiagnostics = isStreamOnly && showDevMetrics
+  const levelStream = micStream ?? micPreviewStream
+  const micCapturing = recordingPhase === 'recording' || recordingPhase === 'paused'
 
   useEffect(() => {
     if (variant === 'streamOnly' && initialConsultaId && initialConsultaId !== consultaId) {
@@ -168,6 +197,12 @@ export function ConsultaStreamPanel({
   useEffect(() => {
     void refreshMicDevices()
   }, [refreshMicDevices])
+
+  useEffect(() => {
+    if (isStreamOnly && token) {
+      void requestMicPermissionAndRefresh()
+    }
+  }, [isStreamOnly, token, requestMicPermissionAndRefresh])
 
   const loadWorklist = useCallback(async () => {
     if (!token) return
@@ -259,14 +294,26 @@ export function ConsultaStreamPanel({
   }, [selPacienteId, loadGestacoes])
 
   const disconnect = useCallback(() => {
-    if (recorderRef.current && recorderRef.current.state !== 'inactive') {
+    if (sttRotateTimerRef.current) {
+      clearInterval(sttRotateTimerRef.current)
+      sttRotateTimerRef.current = null
+    }
+    if (sttSessionRef.current?.recorder.state !== 'inactive') {
       try {
-        recorderRef.current.stop()
+        sttSessionRef.current?.recorder.stop()
       } catch {
         /* noop */
       }
     }
-    recorderRef.current = null
+    sttSessionRef.current = null
+    micStreamRef.current?.getTracks().forEach((t) => t.stop())
+    micStreamRef.current = null
+    setMicStream(null)
+    micPreviewRef.current?.getTracks().forEach((t) => t.stop())
+    micPreviewRef.current = null
+    setMicPreviewStream(null)
+    setMicMonitorActive(false)
+    setRecordingPhase('idle')
     socketRef.current?.close()
     socketRef.current = null
     setStreamStatus('desconectado')
@@ -293,6 +340,11 @@ export function ConsultaStreamPanel({
           break
         case 'stt_partial':
           setSttText(msg.text)
+          setLastSttAt(Date.now())
+          if (showDevMetrics && sttRequestStarted.current > 0) {
+            setSttLatencyMs(Date.now() - sttRequestStarted.current)
+            sttRequestStarted.current = 0
+          }
           break
         case 'ia_token':
           setIaText((t) => t + msg.token)
@@ -309,7 +361,7 @@ export function ConsultaStreamPanel({
           break
       }
     },
-    [pushLog],
+    [pushLog, showDevMetrics],
   )
 
   const connect = useCallback(() => {
@@ -329,6 +381,10 @@ export function ConsultaStreamPanel({
     setSttText('')
     setIaText('')
     setHistory([])
+    setAudioChunksSent(0)
+    setAudioBytesSent(0)
+    setLastSttAt(null)
+    setSttLatencyMs(null)
     pushLog(`Conectando… ${wsBase}/ws/consultation/…`)
 
     const handle = openConsultationSocket(id, token, {
@@ -347,10 +403,98 @@ export function ConsultaStreamPanel({
     socketRef.current = handle
   }, [consultaId, disconnect, onServerEvent, pushLog, token, wsBase])
 
+  useEffect(() => {
+    if (!isStreamOnly || !token || !uuidRe.test(consultaId.trim())) return
+    if (streamStatus === 'desconectado') {
+      connect()
+    }
+  }, [isStreamOnly, token, consultaId, streamStatus, connect])
+
+  const apsStatusLabel = useCallback((): string => {
+    if (streamStatus === 'conectando') return 'Conectando…'
+    if (streamStatus === 'erro') return 'Erro de conexão'
+    if (recordingPhase === 'recording') return 'Ouvindo'
+    if (recordingPhase === 'paused') return 'Pausado'
+    if (streamStatus === 'conectado') return 'Pronto para gravar'
+    return 'Desconectado'
+  }, [recordingPhase, streamStatus])
+
   const sendVad = useCallback(() => {
     socketRef.current?.sendVadPause()
     pushLog('vad_pause enviado')
   }, [pushLog])
+
+  const getAudioConstraints = useCallback(
+    (opts?: { deviceId?: string; forceBrowserPrompt?: boolean }): MediaStreamConstraints => {
+      const deviceId = opts?.deviceId?.trim() || ''
+      const forceBrowserPrompt = opts?.forceBrowserPrompt === true
+      const devicePart: MediaTrackConstraints =
+        !forceBrowserPrompt && deviceId ? { deviceId: { exact: deviceId } } : {}
+      return {
+        audio: {
+          ...devicePart,
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      }
+    },
+    [],
+  )
+
+  const stopMicPreview = useCallback(() => {
+    micPreviewRef.current?.getTracks().forEach((t) => t.stop())
+    micPreviewRef.current = null
+    setMicPreviewStream(null)
+    setMicMonitorActive(false)
+  }, [])
+
+  const startMicMonitor = useCallback(async () => {
+    if (recordingPhase !== 'idle') return
+    stopMicPreview()
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia(
+        getAudioConstraints({ deviceId: micDeviceId || undefined }),
+      )
+      micPreviewRef.current = stream
+      setMicPreviewStream(stream)
+      setMicMonitorActive(true)
+      pushLog('Monitor de microfone ativo (sem gravar).')
+      setStreamError(null)
+    } catch {
+      setStreamError('Permissão de microfone negada ou indisponível.')
+    }
+  }, [getAudioConstraints, micDeviceId, pushLog, recordingPhase, stopMicPreview])
+
+  const clearSttRotateTimer = useCallback(() => {
+    if (sttRotateTimerRef.current) {
+      clearInterval(sttRotateTimerRef.current)
+      sttRotateTimerRef.current = null
+    }
+  }, [])
+
+  const sendMicBlob = useCallback((blob: Blob) => {
+    if (!blob.size) return
+    socketRef.current?.sendBinary(blob)
+    setAudioChunksSent((n) => n + 1)
+    setAudioBytesSent((n) => n + blob.size)
+  }, [])
+
+  const flushMicSegment = useCallback(
+    async (restart: boolean) => {
+      const stream = micStreamRef.current
+      const mime = recorderMimeRef.current
+      if (!stream || !mime || !sttSessionRef.current) return
+      try {
+        const cut = await cutSttMediaRecorderSegment(stream, mime, sttSessionRef.current, restart)
+        sttSessionRef.current = cut.session
+        if (cut.blob?.size) sendMicBlob(cut.blob)
+      } catch {
+        pushLog('Falha ao cortar segmento WebM para STT.')
+      }
+    },
+    [pushLog, sendMicBlob],
+  )
 
   const startMic = useCallback(async (opts?: { deviceId?: string; forceBrowserPrompt?: boolean }) => {
     if (!socketRef.current || socketRef.current.readyState() !== WebSocket.OPEN) {
@@ -358,45 +502,65 @@ export function ConsultaStreamPanel({
       return
     }
     try {
-      const deviceId = opts?.deviceId?.trim() || ''
-      const forceBrowserPrompt = opts?.forceBrowserPrompt === true
-      const audioConstraint: MediaTrackConstraints | boolean =
-        !forceBrowserPrompt && deviceId ? ({ deviceId: { exact: deviceId } } as MediaTrackConstraints) : true
-
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: audioConstraint })
-      const mime = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
-        ? 'audio/webm;codecs=opus'
-        : MediaRecorder.isTypeSupported('audio/webm')
-          ? 'audio/webm'
-          : ''
+      stopMicPreview()
+      const stream = await navigator.mediaDevices.getUserMedia(getAudioConstraints(opts))
+      micStreamRef.current = stream
+      setMicStream(stream)
+      setAudioChunksSent(0)
+      setAudioBytesSent(0)
+      socketRef.current?.sendMicState(true)
+      const mime = pickWebmMimeType()
       if (!mime) {
         setStreamError('MediaRecorder WebM indisponível neste navegador.')
         stream.getTracks().forEach((t) => t.stop())
         return
       }
-      const rec = new MediaRecorder(stream, { mimeType: mime })
-      recorderRef.current = rec
-      rec.ondataavailable = (ev) => {
-        if (ev.data && ev.data.size > 0) {
-          socketRef.current?.sendBinary(ev.data)
-        }
-      }
-      rec.start(400)
-      pushLog(`Gravação iniciada (${mime})${deviceId && !forceBrowserPrompt ? ` · mic=${deviceId.slice(0, 8)}…` : ''}.`)
+      recorderMimeRef.current = mime
+      clearSttRotateTimer()
+      sttSessionRef.current = startSttMediaRecorder(stream, mime)
+      sttRotateTimerRef.current = setInterval(() => {
+        void flushMicSegment(true)
+      }, STT_CHUNK_MIN_MS)
+      setRecordingPhase('recording')
+      sttRequestStarted.current = Date.now()
+      pushLog(`Gravação iniciada (${mime}); segmento ${STT_CHUNK_MIN_MS} ms (stop-and-send).`)
     } catch {
       setStreamError('Permissão de microfone negada ou indisponível.')
     }
-  }, [pushLog])
+  }, [clearSttRotateTimer, flushMicSegment, getAudioConstraints, pushLog, stopMicPreview])
+
+  const pauseMic = useCallback(() => {
+    if (recordingPhase !== 'recording') return
+    clearSttRotateTimer()
+    setRecordingPhase('paused')
+    void flushMicSegment(false)
+    pushLog('Gravação pausada.')
+  }, [clearSttRotateTimer, flushMicSegment, pushLog, recordingPhase])
+
+  const resumeMic = useCallback(() => {
+    const stream = micStreamRef.current
+    const mime = recorderMimeRef.current
+    if (recordingPhase !== 'paused' || !stream || !mime) return
+    sttSessionRef.current = startSttMediaRecorder(stream, mime)
+    clearSttRotateTimer()
+    sttRotateTimerRef.current = setInterval(() => {
+      void flushMicSegment(true)
+    }, STT_CHUNK_MIN_MS)
+    setRecordingPhase('recording')
+    pushLog('Gravação retomada.')
+  }, [clearSttRotateTimer, flushMicSegment, pushLog, recordingPhase])
 
   const stopMic = useCallback(() => {
-    const rec = recorderRef.current
-    if (rec && rec.state !== 'inactive') {
-      rec.stop()
-      rec.stream.getTracks().forEach((t) => t.stop())
-      pushLog('Gravação parada.')
-    }
-    recorderRef.current = null
-  }, [pushLog])
+    clearSttRotateTimer()
+    void flushMicSegment(false)
+    micStreamRef.current?.getTracks().forEach((t) => t.stop())
+    micStreamRef.current = null
+    setMicStream(null)
+    socketRef.current?.sendMicState(false)
+    sttSessionRef.current = null
+    setRecordingPhase('idle')
+    pushLog('Gravação parada.')
+  }, [clearSttRotateTimer, flushMicSegment, pushLog])
 
   const verificarIdentificadores = useCallback(async () => {
     const cpf = novoPacienteCpf.trim()
@@ -558,12 +722,16 @@ export function ConsultaStreamPanel({
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold text-slate-900">
-            {variant === 'streamOnly' ? 'Escriba — captura em tempo real' : 'Área técnica — stream e cadastro rápido'}
+            {variant === 'streamOnly' ? 'Atendimento — transcrição ao vivo' : 'Área técnica — stream e cadastro rápido'}
           </h2>
-          <p className="mt-1 text-sm text-slate-600">
-            UUID da consulta no <code className="rounded bg-slate-100 px-1">POST /api/v1/consultas</code> ou na
-            worklist. WebSocket: <span className="font-mono text-xs">{wsBase}/ws/consultation/:id</span>.
-          </p>
+          {!isStreamOnly ? (
+            <p className="mt-1 text-sm text-slate-600">
+              UUID da consulta no <code className="rounded bg-slate-100 px-1">POST /api/v1/consultas</code> ou na
+              worklist. WebSocket: <span className="font-mono text-xs">{wsBase}/ws/consultation/:id</span>.
+            </p>
+          ) : (
+            <p className="mt-1 text-sm text-slate-600">Grave a consulta; a transcrição e as sugestões da IA aparecem abaixo.</p>
+          )}
         </div>
         {variant === 'streamOnly' ? (
           <Link
@@ -807,6 +975,157 @@ export function ConsultaStreamPanel({
           </div>
         ) : null}
 
+
+        {isStreamOnly ? (
+          <div className="space-y-6 pb-28">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch">
+              <aside className="flex shrink-0 flex-col items-center gap-3 rounded-3xl border border-emerald-200/80 bg-gradient-to-b from-emerald-50/80 to-white p-5 shadow-sm lg:w-36">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-800">Nível do mic</p>
+                <AudioLevelMeter stream={levelStream} orientation="vertical" />
+                <p className="text-center text-[10px] font-medium text-slate-500 leading-snug">
+                  {levelStream
+                    ? micCapturing
+                      ? 'Enviando áudio…'
+                      : 'Fale para testar'
+                    : 'Ligue o monitor abaixo'}
+                </p>
+              </aside>
+
+              <div className="min-w-0 flex-1 space-y-4">
+                <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Status</p>
+                      <p className="text-lg font-black text-brand-navy">{apsStatusLabel()}</p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500">
+                      <span
+                        className={`rounded-full px-2 py-0.5 font-bold ${streamStatus === 'conectado' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'}`}
+                      >
+                        WS: {streamStatus}
+                      </span>
+                      {showDevMetrics && audioChunksSent > 0 ? (
+                        <span>
+                          {audioChunksSent} chunks · {(audioBytesSent / 1024).toFixed(1)} KB
+                        </span>
+                      ) : null}
+                      {showDevMetrics && sttLatencyMs != null ? <span>STT ~{sttLatencyMs} ms</span> : null}
+                    </div>
+                  </div>
+                  {streamError ? <p className="mt-3 text-sm font-bold text-rose-700">{streamError}</p> : null}
+                  <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto_auto] items-end">
+                    <div>
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Microfone</label>
+                      <select
+                        value={micDeviceId}
+                        onChange={(e) => setMicDeviceId(e.target.value)}
+                        className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm bg-slate-50"
+                      >
+                        <option value="">Automático</option>
+                        {micDevices.map((d) => (
+                          <option key={d.deviceId} value={d.deviceId}>
+                            {d.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <button
+                      type="button"
+                      disabled={micBusy || micCapturing}
+                      onClick={() => (micMonitorActive ? stopMicPreview() : void startMicMonitor())}
+                      className={`rounded-xl border px-4 py-2 text-sm font-bold disabled:opacity-50 ${
+                        micMonitorActive
+                          ? 'border-emerald-400 bg-emerald-50 text-emerald-900'
+                          : 'border-brand-navy/20 text-brand-navy hover:bg-slate-50'
+                      }`}
+                    >
+                      {micMonitorActive ? 'Parar monitor' : 'Ligar monitor'}
+                    </button>
+                    <button
+                      type="button"
+                      disabled={micBusy}
+                      onClick={() => void requestMicPermissionAndRefresh()}
+                      className="rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-50"
+                      title="Atualizar lista de dispositivos"
+                    >
+                      Atualizar mics
+                    </button>
+                  </div>
+                  <div className="mt-3 lg:hidden">
+                    <AudioLevelMeter stream={levelStream} orientation="horizontal" />
+                  </div>
+                </div>
+
+                <div className="grid gap-4 lg:grid-cols-2">
+                  <section className="rounded-3xl border border-brand-navy/15 bg-slate-50 p-5 min-h-[12rem] flex flex-col">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-brand-navy mb-2">O que foi dito</h3>
+                    <div className="flex-1 overflow-y-auto max-h-64">
+                      <p className="text-sm text-slate-800 whitespace-pre-wrap leading-relaxed">
+                        {sttText || 'Aguardando fala… (grave ≥3 s ou finalize o trecho)'}
+                      </p>
+                    </div>
+                  </section>
+                  <section className="rounded-3xl border border-brand-pink/30 bg-brand-pink/5 p-5 min-h-[12rem] flex flex-col">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-brand-pink mb-2 flex items-center gap-2">
+                      <span aria-hidden>🧠</span> Sugestão da IA
+                    </h3>
+                    <p className="text-[10px] text-brand-pink/80 mb-2">
+                      Rascunho automático — não salva no prontuário até você revisar e confirmar a consulta.
+                    </p>
+                    <div className="flex-1 overflow-y-auto max-h-64">
+                      <p className="text-sm text-brand-navy whitespace-pre-wrap leading-relaxed">
+                        {iaText || 'Insight após finalizar um trecho de fala.'}
+                      </p>
+                    </div>
+                  </section>
+                </div>
+
+                {showEscribaDiagnostics ? (
+                  <EscribaStreamDiagnostics
+                    streamStatus={streamStatus}
+                    recordingPhase={recordingPhase}
+                    micMonitorActive={micMonitorActive}
+                    micCapturing={micCapturing}
+                    audioChunksSent={audioChunksSent}
+                    audioBytesSent={audioBytesSent}
+                    lastSttAt={lastSttAt}
+                    sttText={sttText}
+                    sttLatencyMs={sttLatencyMs}
+                    streamError={streamError}
+                    logLines={logLines}
+                    wsUrl={`${wsBase}/ws/consultation/${consultaId.trim() || '…'}`}
+                    onReconnect={connect}
+                    onDisconnect={disconnect}
+                    defaultOpen={import.meta.env.DEV}
+                  />
+                ) : (
+                  <details className="rounded-2xl border border-slate-200 bg-white">
+                    <summary className="cursor-pointer px-4 py-3 text-sm font-bold text-slate-600">Avançado</summary>
+                    <div className="border-t border-slate-100 p-4 space-y-3 text-xs font-mono text-slate-600">
+                      <button type="button" onClick={disconnect} className="rounded-lg border px-2 py-1">
+                        Desconectar
+                      </button>
+                      <pre className="max-h-24 overflow-auto bg-slate-900 text-slate-100 p-2 rounded">
+                        {logLines.slice(-15).join('\n') || '—'}
+                      </pre>
+                    </div>
+                  </details>
+                )}
+              </div>
+            </div>
+
+            <EscribaRecordingBar
+              phase={recordingPhase}
+              statusLabel={apsStatusLabel()}
+              disabled={streamStatus !== 'conectado'}
+              onStart={() => void startMic({ deviceId: micDeviceId || undefined })}
+              onPause={pauseMic}
+              onResume={resumeMic}
+              onFinishSegment={sendVad}
+            />
+          </div>
+        ) : (
+        <>
         <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2">
@@ -944,6 +1263,9 @@ export function ConsultaStreamPanel({
             {logLines.length ? logLines.join('\n') : '—'}
           </pre>
         </div>
+        </>
+        )}
+
       </div>
     </section>
   )

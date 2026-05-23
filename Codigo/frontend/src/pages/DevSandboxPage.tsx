@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { AssistantMarkdown } from '../components/AssistantMarkdown.js'
-import { ConsultaStreamPanel } from '../components/ConsultaStreamPanel.js'
+import { DevSttLabPanel } from '../components/dev/DevSttLabPanel.js'
 import { useAuth } from '../context/AuthContext.js'
 import { getApiBaseUrl } from '../lib/apiBase.js'
 import { readNdjsonStream } from '../lib/readNdjsonStream.js'
@@ -17,6 +17,8 @@ type HealthPayload = {
   clinicalAiConfigured?: boolean
   clinicalAiReachable?: boolean
   clinicalAiGeminiConfigured?: boolean
+  whisperConfigured?: boolean
+  whisperReachable?: boolean
   timestamp: string
 }
 
@@ -689,6 +691,23 @@ export function DevSandboxPage() {
                 </div>
                 <div className="w-px h-5 bg-slate-200 hidden sm:block"></div>
                 <div className="flex items-center gap-2">
+                   <span
+                     className={`h-3 w-3 rounded-full ${statusDot(
+                       Boolean(health?.whisperReachable),
+                       Boolean(health?.whisperConfigured) && !health?.whisperReachable,
+                     )}`}
+                   ></span>
+                   <span className="text-sm font-semibold text-slate-700">
+                     Escriba STT (faster-whisper){' '}
+                     {health?.whisperReachable
+                       ? '(/health OK)'
+                       : health?.whisperConfigured
+                         ? '(/health falhou — veja logs: docker compose logs stt)'
+                         : '(sem WHISPER_HTTP_URL)'}
+                   </span>
+                </div>
+                <div className="w-px h-5 bg-slate-200 hidden sm:block"></div>
+                <div className="flex items-center gap-2">
                    <span className={`h-3 w-3 rounded-full ${token ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-slate-300'}`}></span>
                    <span className="text-sm font-semibold text-slate-700">Auth Token {token ? '(OK)' : '(Faça login)'}</span>
                 </div>
@@ -713,7 +732,15 @@ export function DevSandboxPage() {
               </div>
            </div>
            
-           <div className={`px-4 py-3 rounded-xl border ${health?.status === 'ok' ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-rose-50 border-rose-200 text-rose-800'}`}>
+           <div
+             className={`px-4 py-3 rounded-xl border ${
+               health?.status === 'ok'
+                 ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                 : health?.status === 'degraded'
+                   ? 'bg-amber-50 border-amber-200 text-amber-900'
+                   : 'bg-rose-50 border-rose-200 text-rose-800'
+             }`}
+           >
               <span className="text-xs font-bold uppercase tracking-wider block mb-1">Status Global</span>
               {healthLoading ? 'Verificando...' : (health?.status ? `SISTEMA ${health.status.toUpperCase()}` : 'FALHA DE REDE')}
            </div>
@@ -1002,12 +1029,12 @@ export function DevSandboxPage() {
           </div>
         </div>
 
-        {/* Painel 2: Escriba & Worklist (ConsultaStreamPanel original) */}
+        {/* Painel 2: STT isolado (sem UUID/consulta) */}
         <div className="lg:col-span-4 mt-4">
-           {/* Re-usando o container complexo original que já faz cadastro e WS. Passamos variant=embedded e ele fará sua própria box. 
-               Ele já tem seu próprio look and feel refatorado na task anterior se foi alterado, 
-               mas aqui ele atua inteiramente isolado. */}
-           <ConsultaStreamPanel variant="embedded" />
+          <DevSttLabPanel
+            whisperConfigured={Boolean(health?.whisperConfigured)}
+            whisperReachable={Boolean(health?.whisperReachable)}
+          />
         </div>
 
         {/* Painel 3: Teste MCP API */}

@@ -20,7 +20,7 @@ O deploy é focado em isolamento rigoroso de redes internas. O WebApp ou serviç
 
 2. **`backend-nw` (Camada Lógica):**
    - **FastAPI / Node.js (Hub Orquestrador):** Atua como a ponte central (Cross-Network Bridge). Componente com prerrogativa de autenticar a requisição e distribuí-la.
-   - **Faster-Whisper (Motor Local de Áudio - STT):** Processa os áudios gravados capturados do dispositivo, transcrevendo em texto plano de forma veloz e 100% offline.
+   - **stt-service (Faster-Whisper `large-v3`, perfil Docker `ai`):** FastAPI em `backend-nw` com decode WebM (ffmpeg), pré-processamento e diarização simples; expõe `POST /v1/audio/transcriptions` consumido pelo Hub Node via `WHISPER_HTTP_URL`.
 
 3. **`data-nw` (Camada de Persistência e RAG):**
    - **Servidor MCP (Model Context Protocol):** "Sidecar de Privacidade". O MCP barra a string suja enviada pelo Hub e extirpa Nomes, CPFs, e Cartões SUS antes de entregar pro llm (ex: converte em "Paciente hipertensa, 32 anos"). Nenhuma Query SQL vaza à IA Generativa.

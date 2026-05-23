@@ -1,0 +1,9 @@
+corpus_extracted/
+**/results/**/*.csv
+**/results/**/*.jsonl
+**/results/**/summary.txt
+**/results/**/rag_*.csv
+**/results/**/rag_summary*.txt
+**/results/**/rag_summary_for_article.md
+.venv/
+.venv-bench/

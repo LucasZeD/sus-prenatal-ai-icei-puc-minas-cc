@@ -29,7 +29,7 @@ Os requisitos funcionais ditam as ações técnicas que o sistema deve realizar 
 | :--- | :--- | :--- |
 | RF01 | Calendário de Consultas | O sistema deve permitir que o profissional de saúde veja um calendário com suas consultas marcadas. |
 | RF02 | CRUD de Pacientes | O sistema deve permitir que o profissional de saúde cadastre, atualize, visualize e exclua pacientes, incluindo dados de identificação completos (Cartão SUS, NIS, Sisprenatal, endereço, raça, ocupação). |
-| RF03 | Agente Escriba (STT) | O WebApp deve capturar áudio do microfone e processar a conversão *Speech-to-Text* (via motor offline **Faster-Whisper**) isolado da internet. |
+| RF03 | Agente Escriba (STT) | O WebApp deve capturar áudio do microfone e processar a conversão *Speech-to-Text* (via motor offline **Faster-Whisper**) isolado da internet. O serviço `stt-service` aplica pré-processamento de áudio (normalização, high-pass) e diarização MVP (2 falantes) antes de expor o texto ao WebSocket; ver `docs/Escriba_STT.md`. |
 | RF04 | Preenchimento Estruturado | O sistema deve injetar os resultados da transcrição mapeados diretamente nas variáveis e input-fields virtuais da caderneta utilizando o Agente LLM local, **sem persistir a transcrição bruta**. |
 | RF05 | Consulta às Cartilhas (Chat RAG) | O sistema deve disponibilizar um *Chat* (LívIA) que recupere dados em bases vetoriais relativas aos Manuais do Ministério da Saúde. |
 | RF06 | Painel de Condutas da IA | O servidor deve processar os dados inseridos e retornar na interface "cards" de Sugestões / Condutas textuais (Ação/Reação). |

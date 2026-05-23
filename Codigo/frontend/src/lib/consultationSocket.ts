@@ -24,6 +24,7 @@ import { getWsBaseUrl } from './apiBase.js'
 export type ConsultationSocketHandle = {
   close: () => void
   sendVadPause: () => void
+  sendMicState: (active: boolean) => void
   sendBinary: (data: ArrayBuffer | Blob) => void
   readyState: () => number
 }
@@ -102,6 +103,11 @@ export function openConsultationSocket(
     sendVadPause: () => {
       if (ws.readyState === WebSocket.OPEN) {
         ws.send(JSON.stringify({ type: 'vad_pause' }))
+      }
+    },
+    sendMicState: (active: boolean) => {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ type: 'mic_state', active }))
       }
     },
     sendBinary: (data) => {

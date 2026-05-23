@@ -1,0 +1,63 @@
+{
+  "date": "20260520",
+  "figures": {
+    "fig01_instrumento_dificuldade": {
+      "png": "figures/20260520/fig01_instrumento_dificuldade.png",
+      "pdf": "figures/20260520/fig01_instrumento_dificuldade.pdf"
+    },
+    "fig02_instrumento_modos": {
+      "png": "figures/20260520/fig02_instrumento_modos.png",
+      "pdf": "figures/20260520/fig02_instrumento_modos.pdf"
+    },
+    "fig03_rag_hit_at_6": {
+      "png": "figures/20260520/fig03_rag_hit_at_6.png",
+      "pdf": "figures/20260520/fig03_rag_hit_at_6.pdf"
+    },
+    "fig04_rag_mrr": {
+      "png": "figures/20260520/fig04_rag_mrr.png",
+      "pdf": "figures/20260520/fig04_rag_mrr.pdf"
+    },
+    "fig05_llm_pass_provider": {
+      "png": "figures/20260520/fig05_llm_pass_provider.png",
+      "pdf": "figures/20260520/fig05_llm_pass_provider.pdf"
+    },
+    "fig06_llm_pass_global": {
+      "png": "figures/20260520/fig06_llm_pass_global.png",
+      "pdf": "figures/20260520/fig06_llm_pass_global.pdf"
+    },
+    "fig07_roteiro_pass_por_caso": {
+      "png": "figures/20260520/fig07_roteiro_pass_por_caso.png",
+      "pdf": "figures/20260520/fig07_roteiro_pass_por_caso.pdf"
+    },
+    "fig08_roteiro_clinico_rag_llm": {
+      "png": "figures/20260520/fig08_roteiro_clinico_rag_llm.png",
+      "pdf": "figures/20260520/fig08_roteiro_clinico_rag_llm.pdf"
+    },
+    "fig09_roteiro_pii_mascaramento": {
+      "png": "figures/20260520/fig09_roteiro_pii_mascaramento.png",
+      "pdf": "figures/20260520/fig09_roteiro_pii_mascaramento.pdf"
+    },
+    "fig10_roteiro_guardrail_escopo": {
+      "png": "figures/20260520/fig10_roteiro_guardrail_escopo.png",
+      "pdf": "figures/20260520/fig10_roteiro_guardrail_escopo.pdf"
+    }
+  },
+  "roteiro": {
+    "fig07_roteiro_pass_por_caso": {
+      "png": "figures/20260520/fig07_roteiro_pass_por_caso.png",
+      "pdf": "figures/20260520/fig07_roteiro_pass_por_caso.pdf"
+    },
+    "fig08_roteiro_clinico_rag_llm": {
+      "png": "figures/20260520/fig08_roteiro_clinico_rag_llm.png",
+      "pdf": "figures/20260520/fig08_roteiro_clinico_rag_llm.pdf"
+    },
+    "fig09_roteiro_pii_mascaramento": {
+      "png": "figures/20260520/fig09_roteiro_pii_mascaramento.png",
+      "pdf": "figures/20260520/fig09_roteiro_pii_mascaramento.pdf"
+    },
+    "fig10_roteiro_guardrail_escopo": {
+      "png": "figures/20260520/fig10_roteiro_guardrail_escopo.png",
+      "pdf": "figures/20260520/fig10_roteiro_guardrail_escopo.pdf"
+    }
+  }
+}

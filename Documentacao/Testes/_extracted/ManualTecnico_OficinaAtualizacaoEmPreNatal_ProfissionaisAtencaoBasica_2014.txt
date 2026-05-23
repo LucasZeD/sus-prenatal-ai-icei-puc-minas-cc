@@ -1,0 +1,2018 @@
+                             Estado de Santa Catarina
+                    SECRETARIA DE ESTADO DA SAÚDE
+                   Superintendência de Planejamento e Gestão
+             Diretoria de Planejamento, Controle e Avaliação do SUS
+                   Gerência de Coordenação da Atenção Básica
+
+
+
+
+ATUALIZAÇÃO EM PRE NATAL
+   PARA PROFISSIONAIS DA
+             ATENÇÃO BÁSICA
+
+
+
+
+ Equipe Elaboração
+ Camila Boff
+ Carmem Regina Delziovo
+ Daniela Eda Silva
+ Glaúcia Diniz Borges Rossa
+ Maria Cecília Hechrath
+
+
+
+
+                               SC , Junho 2014
+
+
+                                                                      3
+4
+                                            SUMÁRIO
+  10 Passos para o Pré-Natal de Qualidade na Atenção Básica ............................... 7
+DIAGNÓSTICO DE GESTAÇÃO, ANAMNESE E ORIENTAÇÕES ................... 8
+  Diagnóstico de Gestação ....................................................................................... 8
+  Anamnese da Gestante........................................................................................... 8
+  Orientações Importantes ........................................................................................ 9
+  Orientações Específicas Quanto à Amamentação ............................................... 11
+O EXAME FÍSICO DA GESTANTE ..................................................................... 13
+  Exame Físico na Primeira Consulta de Pré-Natal ............................................... 13
+  Cálculo e Anotação da Idade Gestacional ........................................................... 13
+  Interrogatório Sobre a Amenorréia (FESCINA, 2007): ...................................... 13
+  Biometria fetal por ecografía (FESCINA, 2007)................................................. 14
+  Medida da Pressão Arterial.................................................................................. 14
+  Recomendações Específicas para Detecção de Pré-Eclâmpsia ........................... 16
+  Determinação do Peso para Avaliação do Índice de Massa Corporal ................. 17
+  Palpação Obstétrica e Medida da Altura Uterina ................................................ 18
+  Pesquisa de Edema .............................................................................................. 19
+  Exame Especular e Toque Vaginal ...................................................................... 20
+  Descolamento de Membranas Amnióticas .......................................................... 20
+  Exame Rotineiro das Mamas ............................................................................... 21
+  Propedêutica Fetal Ausculta dos Batimentos Cardíacos ..................................... 21
+SOLICITAR E AVALIAR EXAMES COMPLEMENTARES .............................. 22
+  Exames Sugeridos para Serem Solicitados ao Parceiro da Gestante ................... 22
+  Exames Complementares a Serem Solicitados para a Gestante em Pré-Natal .... 22
+  Hemograma ......................................................................................................... 23
+  Tipagem Sanguínea e fator D (Rh) ...................................................................... 23
+  Sumário de Urina e Urocultura ............................................................................ 23
+  Hepatite B ............................................................................................................ 24
+  Hepatite C ............................................................................................................ 24
+  Pesquisa da Sífilis ................................................................................................ 24
+  Pesquisa de Anti-HIV .......................................................................................... 25
+  Pesquisa de Diabete Melito na Gestação ............................................................. 25
+  Avaliação dos Resultados dos Exames Solicitados ............................................. 27
+
+
+                                                                                                                          5
+              Ecografia Fetal .................................................................................................... 29
+     DIAGNÓSTICO E MANEJO DE INTERCORRÊNCIAS CLÍNICAS MAIS
+FREQUENTES ................................................................................................................... 31
+              Náuseas, Vômitos e Hiperêmese......................................................................... 31
+              Constipação e Hemorróidas ................................................................................ 32
+              Azia ..................................................................................................................... 32
+              Síndrome do Corrimento Vaginal ....................................................................... 32
+              Condiloma ........................................................................................................... 32
+              Sífilis ................................................................................................................... 33
+              Gonorréia e Clamídia .......................................................................................... 34
+              Síndromes Hemorrágicas .................................................................................... 34
+              Distúrbios Hipertensivas que Complicam a Gestação ........................................ 35
+              Infecção do Tracto Urinário (ITU)...................................................................... 37
+              Bacteriúria Assintomática ................................................................................... 37
+              Cistite .................................................................................................................. 37
+              Pielonefrite Aguda .............................................................................................. 38
+              Trabalho de Parto Prematuro (TPP) .................................................................... 38
+              Gestação Prolongada ........................................................................................... 38
+              Ruptura Prematura de Membranas ...................................................................... 39
+              Asma ................................................................................................................... 39
+              Anemia ................................................................................................................ 39
+              Atenção ao Puerpério .......................................................................................... 41
+              Orientações a Serem dadas a Puérpera ............................................................... 42
+              Uso de Método Anticoncepcional Durante o Aleitamento ................................. 43
+              Intercorrências que se Caracterizam como Sinais de Alerta no Puerpério ......... 43
+              Endometrite......................................................................................................... 44
+              Infecção da ferida Operatória (cesárea) ou da Episiotomia (parto vaginal) ........ 44
+              Mastite e Fissura Mamilar .................................................................................. 44
+              Depressão Puerperal............................................................................................ 45
+          PLANEJANDO UM PARTO SEGURO ................................................................ 46
+           Critérios para Encaminhamento de Serviços Ambulatoriais de Gestação Alto
+   Risco ............................................................................................................................... 47
+
+
+
+
+          6
+   10 Passos para o Pré-Natal de Qualidade na Atenção Básica
+                            Ministério da Saúde – 2012
+
+
+        1° PASSO: Iniciar o pré-natal na Atenção Primária à Saúde até a 12ª semana
+de gestação (captação precoce)
+        2° PASSO: Garantir os recursos humanos, físicos, materiais e técnicos
+necessários à atenção pré-natal.
+        3° PASSO: Toda gestante deve ter assegurado a solicitação, realização e
+avaliação em termo oportuno do resultado dos exames preconizados no atendimento
+pré-natal.
+        4° PASSO: Promover a escuta ativa da gestante e de seus(suas)
+acompanhantes, considerando aspectos intelectuais, emocionais, sociais e culturais e
+não somente um cuidado biológico: "rodas de gestantes".
+        5° PASSO: Garantir o transporte público gratuito da gestante para o
+atendimento pré-natal, quando necessário.
+        6° PASSO: É direito do(a) parceiro(a) ser cuidado (realização de consultas,
+exames e ter acesso a informações) antes, durante e depois da gestação: "pré-natal
+do(a) parceiro(a)".
+        7° PASSO: Garantir o acesso à unidade de referência especializada, caso seja
+necessário.
+        8° PASSO: Estimular e informar sobre os benefícios do parto fisiológico,
+incluindo a elaboração do "Plano de Parto".
+        9° PASSO: Toda gestante tem direito de conhecer e visitar previamente o
+serviço de saúde no qual irá dar à luz (vinculação).
+        10° PASSO: As mulheres devem conhecer e exercer os direitos garantidos por
+lei no período gravídico-puerperal.
+
+
+
+
+                                                                                  7
+    DIAGNÓSTICO DE GESTAÇÃO, ANAMNESE E
+                ORIENTAÇÕES
+                                      Maria Lucia Medeiros Lenz,Felipe Anselmi Correa
+
+
+
+Diagnóstico de Gestação
+
+         A confirmação da gravidez pelo profissional poderá ser feita através da anamnese,
+do exame físico e dos resultados dos exames complementares, quando forem necessários
+(BRASIL, 2006; FESCINA et al; FREITAS et al, 2006).
+         Presume-se q u e há gestação quando ocorrer: atraso menstrual, manifestações
+clínicas (náuseas, vômitos, tonturas, salivação excessiva, mudança no apetite, aumento da
+freqüência urinária e sonolência) e/ou modificações anatômicas (aumento do volume da
+mama, hipersensibilidade nos mamilos, tubérculos de Montgomery, saída do colostro pelo
+mamilo, coloração violácea vulvar, cianose vaginal e cervical).
+         A probabilidade de gestação aumenta com a presença de amolecimento da
+cérvice, o aumento do volume uterino, o aumento da revascularização das paredes
+vaginais (pode-se observar pulsação da artéria vaginal nos fundos de saco laterais) e a
+positividade da fração beta do hCG no soro materno, a partir do oitavo ou nono dia após
+a fertilização, ou seja, antes que se perceba o atraso menstrual. Em caso de resultado
+negativo, poderá ser repetido o B-hCG em 15 dias, caso a amenorréia persista.
+         A certeza da gestação dá-se com a presença de batimentos cardíacos fetais (BCF)
+detectados por sonar (a partir da 10a semana), a percepção dos movimentos fetais (a
+partir da18a a 20a semana), e através da ultrassonografia (saco gestacional com 4-5
+semanas menstruais, vesícula vitelina e atividade cardíaca como primeira manifestação do
+embrião com 6 semanas menstruais) (FREITAS et al, 2006).
+
+       Logo que for identificada a gestação, deve-se proceder com o registro no SIS
+prenatal Web!
+
+
+
+Anamnese da Gestante
+
+        Durante a primeira consulta de pré-natal, principalmente se a consulta pré-
+concepcional não foi realizada, é importante obter a história clínica e familiar da
+paciente, identificando especialmente a presença de história prévia de hipertensão
+arterial sistêmica (HAS), cardiopatias, diabetes, infecções, doenças sexualmente
+transmissíveis (DST) e doenças psiquiátricas.
+        Deve-se identificar o uso de medicações e, se necessário, suspendê-las ou
+substituí-las por outras melhor estudadas quanto à segurança à saúde da mãe e do bebê.
+        A história obstétrica busca conhecer o número de gestações, a ocorrência de
+partos prematuros, intervalos entre os partos, peso do bebê ao nascimento, a ocorrência
+
+
+       8
+de aborto, de perdas fetais, hemorragias, diabetes, pré-eclâmpsia, eclampsia e outras
+situações relacionadas a um maior risco para a saúde da mãe e bebê.
+
+       A classificação de risco gestacional está orientada no anexo A
+
+                            Fatores de risco para pré-eclâmpsia
+
+                            -     Nulíparas ou multíparas
+                            -     Gestação gemelar
+                            -     Gestante com 40 anos ou mais
+                            -     Intervalo entre as gestações > que 10 anos
+                            -     Hipertensão arterial prévia
+                            -     História familiar ou prévia de pré-eclâmpsia
+                            -     Diabetes
+                            -     Colagenoses
+                            -     Isoimunização ao fator Rh
+                            -     trombofilias
+                            -     Raça negra
+
+                            -     Obesidade (IMC = ou > 30 Kg/m2)
+                            -     Doença renal pré-existente
+
+
+
+
+Orientações Importantes
+
+1.     Orientar a gestante sobre a importância do pré-natal.
+2.     A gestante deve ser informada sobre os objetivos e a importância do pré-natal. O
+ número de consultas, assim como forma de agendamento devem ser pactuados com
+ as gestantes (NICE,
+3.     2010). A recomendação do MS preconiza que a equipe de saúde necessita
+ garantir um número mínimo de 6 consultas à gestante; a primeira deve ocorrer no 1º
+ trimestre; duas no segundo e três no terceiro trimestre da gestação (BRASIL, 2006).
+ Segundo recomendação do NICE (2010), gestantes nulíparas e que já tiveram filhos, e
+ sem complicações, devem realizar 10 e 7 consultas respectivamente (NICE, 2010).
+4.     A rotina recomenda a realização de consultas mensais até o sétimo mês, passando,
+ então, a quinzenais no oitavo mês e semanais no último mês, totalizando 12 consultas
+ durante a gestação.
+5.     Recomenda também minimamente uma consulta com a equipe de saúde bucal que
+ deve ser realizada preferencialmente no segunto trimestre .
+6.     Incentivar a participação do pai no pré-natal, no parto e nos cuidados com o
+ recém-nascido.Segundo recomendação da OMS, o cuidado pré-natal precisa ser
+ estendido para o casal e para a família, não se restringindo apenas ao cuidado da mulher
+ e do seu filho (BRASIL, 2006).
+7.     Orientar a mãe sobre mudanças físicas e psicológicas que ocorrem na
+ gestação e procurar identificar a presença de depressão
+8.     É necessário incentivar a manutenção de atividade física habitual e ginástica
+ orientada, evitando exercícios violentos. As atividades físicas moderadas não se
+
+
+                                                                                       9
+ relacionam com efeitos adversos. A prática de alguns esportes que implicam em
+ contatos físicos que possam causar acidentes, traumas abdominais (NICE, 2008) e
+ mergulhos (pelo risco de doença descompressiva no feto) devem ser evitada
+ (FREITAS et al, 2011).
+9.      Orientar uma alimentação saudável.
+10.     Orientar sobre hábitos de vida (NICE, 2010) abordando o banho quente com
+ hidromassagem tendo em vista a sua associação com o risco de abortamento antes da
+ 20ª semana de IG. A exposição a dois ou mais tipos de calor (ex: sauna, banhos quentes
+ de imersão, febre) no primeiro trimestre está associada a maior risco de defeitos no tubo
+ neural e a outras malformações congênitas (VILLAR et al, 2007). Embora a associação
+ entre defeitos no tubo neural e hipertermia seja pequena recomenda-se que a temperatura
+ materna não ultrapasse repetidamente 38,9ºC. Para mulheres que costumam tomar
+ banhos quentes ou fazer tratamento de imersão em água quente, a exposição deve ser
+ limitada a 15 minutos em água a 39ºC ou a 10 minutos em água a 40 ou 41º C. O uso de
+ antipiréticos em doenças febris durante o início da gestação também aparenta ser uma
+ prática prudente (HOSPITAL DE CLÍNICAS DE PORTO ALEGRE. SIAT, 2010).
+11.     Não foram encontradas evidências de que existe uma quantidade segura de
+ volume de álcool que possa ser ingerida durante a gestação, sendo assim, a abstinência
+ é recomendada (FREITAS et al,
+12.     2011). O consumo de álcool durante a gestação está associado a defeitos
+ físicos e alterações psíquicas e de desenvolvimento neurocomportamental denominados
+ de síndrome alcoólico fetal O consumo de álcool durante a lactação pode diminuir a
+ ejeção do leite e provocar transtornos neurológicos menores ao recém-nascido
+ (FESCINA et al, 2007).
+13.     O CDC estima que 3% das mulheres gestantes usam drogas ilícitas como
+ maconha, cocaína, crack, e outras. O uso de cocaína durante a gestação aumenta o risco
+ de abortamento, prematuridade, retardo de crescimento intra-uterino, descolamento
+ prematuro de placenta, rotura prematura de membranas, defeitos congênitos, retardo
+ mental e outras alterações neurológicas (FESCINA et al, 2007). Freitas et al (2011)
+ acrescenta o risco aumentado para hipertensão, proteinúria e convulsões. O uso de
+ maconha relaciona-se ao retardo de crescimento intra-uterino, prematuridade e
+ alterações neurológicas como uma síndrome de abstinência. As gestantes devem ser
+ orientadas para não utilizarem maconha na gestação (NICE, 2010).
+14.     São efetivas as intervenções sobre gestantes tabagistas, empregando material
+ visual, com o objetivo de suspensão do uso de cigarro. E a gestante deve ser informada
+ que parar de fumar em qualquer estágio da gestação traz benefícios. Entre os riscos
+ relacionados ao tabagismo durante a gestação, encontramos: baixo peso ao nascer,
+ restrição do crescimento fetal, parto prematuro, aborto espontâneo, morte fetal, morte
+ neonatal e diminuição da qualidade e quantidade de leite materno. O fumo passivo
+ durante a gestação também aumenta as probabilidades de retardo de crescimento intra-
+ uterino e risco de baixo peso ao nascer (FESCINA et al, 2007)
+15.     Em relação a viagens, não existem restrições, sendo consideradas seguras até
+ quatro semanas antes da data provável do parto (FREITAS et al, 2011). Em relação às
+ viagens de carro é importante orientar a gestante sobre o uso do cinto de segurança de
+ três pontas. As gestantes devem usar o cinto de segurança no automóvel, mantendo o
+
+       10
+ abdômen livre, a porção superior deve cruzar sobre o peito, entre os seios, e a inferior
+ deve cruzar o corpo sobre a pélvis. (NICE, 2008).
+16.     Em longas viagens de avião recomenda-se o uso de meias elásticas visto que o
+ seu emprego é efetivo na redução do risco de trombose (NICE, 2008; FREITAS et al,
+ 2011).
+17.     Identificar e discutir sentimentos comuns relacionados à sexualidade como:
+ rejeição pelo companheiro, medo de lesar o feto, modificação na libido, ansiedade (vide
+ capítulo 5). A gestante deve ser orientada que a atividade sexual na gestação não se
+ encontra associada a nenhum resultado adverso (NICE, 2008). Atividade sexual no 3º
+ trimestre não está associada com aumento do risco para trabalho de parto prematuro e
+ deve ser evitada apenas em situações especiais como trabalho de parto prematuro vigente
+ e ruptura prematura de membranas (FREITAS et al, 2011).
+18.     Orientar sintomas de pré-eclâmpsia (NICE, 2010): cefaléia intensa, alterações
+ visuais (visão borrada, luzes diante dos olhos), dor intensa abaixo das costelas, vômitos,
+ edema súbito nas mãos, pés e face. Estes sintomas podem aparecer tanto na gestação
+ quanto no puerpério imediato.
+19.     Orientar sobre o trabalho de parto (sinais e sintomas) e o tipo de parto (BRASIL,
+ 2006), reforçando às vantagens do parto vaginal e as indicações mais freqüentes de
+ cesárea, tais como: procedimentos repetidos (2 ou mais cesáreas prévias), distócia ou
+ falha na progressão do trabalho de parto, apresentação pélvica, feto não reativo.
+20.     Estimular e orientar como realizar uma visita à maternidade A gestante tem
+ direito, garantido por lei (Lei nº 11.108, de 7/04/2005, regulamentada pela Portaria
+ GM 2.418, de 2/12/2005), a acompanhante de sua escolha durante o trabalho de parto,
+ no parto e no pós-parto.
+21.     Orientar sobre a importância da consulta de puerpério) e os cuidados com o
+ recém-nascido (BRASIL, 2006).
+
+
+
+Orientações Específicas Quanto à Amamentação
+
+        A orientação para a amamentação durante a gestação merece uma atenção
+especial uma vez que pode aumentar a sua incidência e prolongar o período de
+aleitamento. É importante orientar também as mães que não poderão amamentar sobre
+formas de inibir a produção de leite e a alimentação a ser instituída.
+        As gestantes que poderão amamentar devem ser orientadas sobre a importância do
+aleitamento materno exclusivo até os 6 meses de vida, enfatizar a livre demanda, não
+oferecer bicos ou chupetas,iniciar a amamentação preferencialmente na primeira hora de
+vida do bebê e sobre as vantagens do aleitamento materno exclusivo para a mulher,
+criança, família e sociedade. As vantagens serão listadas a seguir (DUNCAN; SCHMIDT;
+GIUGLIANI, 2006):
+        Para a mãe: Fortalecimento do vínculo afetivo entre mãe e filho, favorecimento
+da involução uterina, contribui para o retorno do peso normal, contribui para o aumento
+dos intervalos entre os partos, previne osteoporose, reduz risco para câncer de mama.
+        Para o bebê: fortalecimento do vínculo afetivo, alimento completo, facilita
+
+
+                                                                                        11
+eliminação de mecônioe diminui incidência de icterícia no RN, protege contra infecções,
+diminui riscos para alergias, diarréias, asma, bronquiolite, obesidade infantil. Ocasiona
+um melhor desenvolvimento cognitivo e melhor desenvolvimento motor-oral
+(mastigação, deglutição, fala, respiração). Reduz hospitalizações, doenças em geral e
+óbitos.
+        Para a família e sociedade: O leite é limpo, pronto, na temperatura certa e
+gratuito. Diminui as internações hospitalares e seus custos.
+        Desde já se deve enfatizar que para amamentar é importante escolher um lugar
+mais tranqüilo, uma posição confortável para ambos (mãe e bebê) e uma boa pega.
+
+
+
+
+       12
+                O EXAME FÍSICO DA GESTANTE
+                                                                    Lucia Naomi Takimi
+
+
+
+Exame Físico na Primeira Consulta de Pré-Natal
+
+        Durante a primeira consulta, além de calcular a idade gestacional, o
+profissional deve estar atento para patologias prévias assim como para as que possam
+desenvolver-se precocemente durante o período gravídico. Idealmente, a primeira consulta
+deveria ocorrer próximo da 10ª semana de gestação (NICE, 2010).
+        O exame físico da gestante na primeira consulta pode ser dividido em exame
+físico completo e gineco-obstétrico (BRASIL, 2006). Nas consultas subseqüentes, a
+avaliação deve ser mais dirigida aos aspectos específicos da gestação (BUCHABQUI;
+ABECHE; NICKEL, 2011).
+        Alem disto, profissionais de saúde devem estar alerta para sinais e sintomas de
+violência doméstica e a mulher deve ser dada oportunidade de expor-se, em um local
+onde se sinta segura [D] (NICE, 2010).
+
+
+
+Cálculo e Anotação da Idade Gestacional
+
+        Confirmada a gestação (capítulo 3), a idade gestacional (IG) e a data provável do
+parto (DPP) devem ser estabelecidas. Os métodos habitualmente usados para calcular
+IG são (FESCINA, 2007): interrogatório sobre a amenorréia; avaliação do tamanho
+uterino, especialmente no primeiro trimestre e, biometria ecográfica
+
+
+
+Interrogatório Sobre a Amenorréia (FESCINA, 2007):
+
+       O cálculo do tempo transcorrido desde o primeiro dia da última menstruação
+(DUM) é o método de eleição para calcular a IG em mulheres com ciclos menstruais
+regulares, que não estavam usando contraceptivos hormonais ou não estavam em
+aleitamento nos últimos meses. A data provável do parto (DPP) pode ser calculada
+facilmente com o gestograma (ou disco obstétrico). Caso não haja um, pode- se
+determiná-la mediante o uso de uma destas regras:
+       -      Naegele: a DUM some 7 dias e ao mês subtraia 3;
+       -      Wahl: a DUM some 10 dias e ao mês subtraia 3;
+       -      Pinard: ao ultimo dia da menstruação some 10 e ao mês subtraia 3.
+       -      280 dias: a partir da DUM, conte 280 dias sobre um calendário. A data
+correspondente ao dia 280 será a DPP.
+
+
+
+
+                                                                                      13
+Biometria fetal por ecografía (FESCINA, 2007)
+
+       Quando não for possível determinar a IG pela anamnese e exame físico ou
+especialmente se a paciente apresente fator de risco para desenvolver pré-eclampsia
+(MARTINS-COSTA et al, 2011), a ecografia obstétrica deve ser solicitada.
+
+
+
+Medida da Pressão Arterial
+
+        A medida da pressão arterial é recomendada na consulta pré-concepcional e em
+todas as consultas do pré-natal [D] (ICSI, 2009; BUCHABQUI; ABECHE; NICKEL,
+2011), pois a melhor estratégia para diagnosticar a hipertensão na gestação parece ser a
+detecção precoce de uma pressão arterial anormal. Apesar de não haver evidências
+diretas que a pesquisa regular da pressão arterial reduza a mortalidade materna ou
+perinatal, eticamente não seria possível permitir estudos sem este exame ou tratamento
+com grupos-controle. Além disso, o estabelecimento de desordens hipertensivas em
+        quaisquer categorias é geralmente assintomático. Por essa razão, somente a
+pesquisa universal pode detectá-las precocemente [D] (ICSI, 2009). Sendo um teste
+simples, barato e aceitável para as pacientes, recomenda-se em bases empíricas [D]
+(USPSTF apud ICSI, 2009).
+        Uma mudança importante e universalmente aceita ocorrida nos últimos anos foi o
+abandono do edema como critério para o diagnostico de pré-eclâmpsia. Também,
+aumentos relativos de 15mmHg e 30mmHg para pressão diastólica e sistólica,
+respectivamente, não são mais reconhecidos como definidores de hipertensão por
+importantes institutos na Austrália, Estados Unidos e a International Society for the
+Study of Hypertension in Pregnancy (ISSHP), sendo melhor utilizados como sinal de
+alerta para agendamentos de controles mais próximos. Os mesmos institutos usam uma
+PAS > 140 mmHg e/ou > 90 mmHg para definição de aumento de pressão arterial na
+gestação. O uso de limiares absolutos para PAS e PAD não é arbitrário, há evidência
+suportanto seu uso, de estudos de desfecho em diferentes níveis de PA. Estes pontos de
+corte alertam clínicos e pacientes para doenças hipertensivas e são estabelecidos em
+práticas clínicas e de pesquisa. Finalmente, o uso da “diminuição” dos sons (fase IV de
+Korotkoff) não é mais recomendado, e a fase V de Korotkoff (desaparecimento dos sons)
+deve ser usada como PAD. Isto remove importantes áreas de potencial variação na
+pesquisa e prática clínica que confundiam a padronização (RHODES, 2009).
+        A Pré-eclampsia é definida como hipertensão e proteinúria excessiva, ocorrendo a
+partir de 20 semanas da gestação. (ICSI, 2009; NICE, 2010). O National High Blood
+Pressure Working Group recomenda o uso da expressão “hipertensão gestacional” em
+substituição a “hipertensão induzida pela gravidez”, em mulheres com pressão arterial
+elevada SEM proteinúria (ICSI, 2009).
+
+
+
+
+       14
+       O Ministério da Saúde (BRASIL, 2006) assim conceitua hipertensão arterial na
+gestação:
+
+       1.       A presença de pressão arterial diastólica de 110 mmHg em uma única
+oportunidade ou aferição
+       2.       A observação de níveis tensionais iguais ou maiores que 140 mmHg de
+pressão sistólica, e iguais ou maiores que 90 mmHg de pressão diastólica, mantidos em
+duas ocasiões e resguardado intervalo de quatro horas entre as medidas.
+       Esse conceito é mais simples e preciso
+       O quadro abaixo apresenta as condutas frente aos achados durante medida da
+pressão arterial da gestante.
+
+       Níveis de pressão arterial (PA) , avaliação e conduta recomendada (BRASIL, 2006)
+                                 A                                               Avaliação e Conduta
+          Níveis de PA conhecidos
+                       chad       e normais antes da             Níveis tensionais normais:
+  gestação:
+                        o
+                                                                 • Manter calendário habitual
+          • Manutenção dos mesmos níveis de PA                   • Cuidar da alimentação
+                                                                 • Praticar atividade física
+          Níveis de PA desconhecidos antes da                    • Diminuir a ingestão de sal
+  gestação:                                                      • Aumentar a ingestão hídrica
+          • Valores da pressão inferiores a
+          140/90de
+          Níveis  mmHg
+                    PA conhecidos e normais antes        Paciente com suspeita de pré-
+          da gestação:                            eclâmpsia leve:
+
+                                                                  •repetir medida após período de repouso
+            • Aumento da PA em nível menor do que (preferencialmente após quatro horas)
+  140/90 mmHg(sinal de alerta)                                    • remarcar consulta
+            Níveis       de        PA                   em 7 ou 15 dias
+  desconhecidos          antes      da                            •orientar para presença de sintomas como:
+  gestação:                                             cefaléia, epigastralgia, escotomas, edema, redução no
+            • Valores da PA, ≥1 40/90 mmHg e volume ou presença de “espuma” na urina, redução
+  <160/110, sem sintomas e sem ganho ponderal de movimentos fetais
+  maior que 500 g semanal                                         •         orientar      repouso,
+                                                        principalmente pós-prandial e controle de
+                                                        movimentos fetais
+                                                                  •verificar    presença   de   proteína  em
+                                                        uroanálise tipo 1 (EQU). Se possível, dosagem em
+                                                        urina de 24 horas (positivo: a partir de 300
+                                                        mg/24h)
+            Níveis de PA superiores a                             Paciente com suspeita de pré-eclâmpsia
+  140/90 mmHg:                                                    grave:
+            proteinúria positiva e/ou sintomas clínicos
+  (cefaléia,    epigastralgia,    escotomas,   reflexos           • No SSC, devemos encaminhar para o CO
+  tendíneos aumentados) ou paciente assintomática
+  porém com níveis de PA superiores a 160/110 mmHg
+           Paciente com hipertensão arterial crônica             Paciente de risco:
+           moderada, ou grave,
+  ou em uso de medicação anti-                                   • Referir ao pré-natal de alto risco. Caso a
+  hipertensiva                                          paciente esteja utilizando drogas contraindicadas na
+                                                        gestação     essas    devem    ser    suspensas    ou
+                                                        substituídas, se necessário.
+          Obs: o acompanhamento da PA deve ser avaliado em conjunto com o ganho súbito de peso,
+ principalmente a partir da 24ª semana. Mulheres com ganho de peso superior a 500 g por semana,
+ mesmo sem aumento da pressão arterial, devem ter seus retornos antecipados, considerando maior
+ risco de pré-eclâmpsia
+
+
+
+
+                                                                                                    15
+Recomendações Específicas para Detecção de Pré-Eclâmpsia
+
+       Além das medidas de pressão arterial em todas as consultas, a avaliação de risco
+individual na primeira consulta, a testagem para proteinúria e educação da gestante de
+risco para reconhecer os sintomas de pré-eclâmpsia fazem parte de uma estratégia mais
+ampla para detecção de pré-eclâmpsia (DI MARIO, 2005; NICE, 2010).
+       A OMS refere que no mínimo um terço das pré-eclampsias desenvolver-se-ão em
+mulheres com pressão arterial normal. Hipertensão ou proteinúria podem estar ausentes
+em 38% das mulheres com eclâmpsia e 10-15% das pacientes com Síndrome HELLP
+(RHODES, 2009). Sendo assim, toda a gestante deve ser alertada para necessidade de
+procurar IMEDIATAMENTE um profissional de saúde se experimentar algum dos
+sintomas de pré-eclâmpsia, tanto no gestação quanto no puerpério imediato, que incluem
+(DI MARIO, 2005; NICE, 2010):
+
+       -      Cefaléia intensa;
+       -      Alterações visuais, como visão borrada ou luzes diante dos olhos;
+       -      Dor intensa no rebordo costal;
+       -      Vômitos;
+       -      Edema súbito em mãos, pés ou face.
+
+
+
+
+       16
+     Fatores de risco para Pré-eclâmpsia (PE) (DI MARIO, 2005; NICE, 2010,
+RHODEN, 2009)
+                           Fator de risco                          Comentários
+
+                         Evidência forte                      RR:2,4 (2,1 – 2,7)
+                      Primigestação Diabete melito            RR: 2-3 e maior se DM
+                 Gestação gemelar Irmã com PE             descompensado
+                      Irmã, mãe ou avó com                    RR: 3 (2-4,2)
+                 eclâmpsia                                    RR: 3,3 (1,5-7,5)
+                      HAS crônica                             Respectivamente 37, 26 e
+                      PE sobreposta em gestação           16% de PE
+                 prévia Hidropsia fetal (não imune)           25%      desenvolvem  PE
+                 Gestação molar                           sobreposta
+                      Nova paternidade                        70% de recorrência
+                                                              RR: 10
+                                                              RR: 10
+                                                              Risco semelhante ao da
+                                                          primigestação
+                           Evidência média ou fraca
+                      IMC> ou = 25,8                            RR: 2,3-2,7
+                      Idade média > 40 anos                     RR:3-4
+                      Uso de método anticoncepcional            Aumento          do   risco
+                 de barreira                               Diminuição do risco Diminuição
+                      Maior duração da atividade           do risco Aumento do risco
+                 sexual                                    Aumento do risco RR: 1,8 (1,2 –
+                      Aborto prévio                        2,6)
+                      Ganho excessivo de peso
+                      Inseminação artificial
+                      “homem de risco” (parceria
+                 anterior teve PE)
+                         Fonte: Adaptada de Correa Junior, Aguiar e Corrêa (2009) e Sibai, Dekker e
+                Kupferminc (2005) in Martins-Costa et al. in Freitas et al, 2011
+
+        A medida da pressão e uroanálise para proteinúria devem ser feitas para pesquisa
+de pré- eclâmpsia. A presença de hipertensão E/OU proteinúria devem alertar o pré-
+natalista para necessidade de maior atenção (DI MARIO, 2005; NICE, 2010; NCC-WCH,
+2010). A proteinúria significativa é definida como excreção de 300mg de proteína em
+coleta de 24 horas de urina.
+
+
+Determinação do Peso para Avaliação do Índice de Massa
+Corporal
+
+       O IMC deverá ser calculado na primeira consulta de pré-natal e o ganho de
+peso durante a gestação será monitorado nas próximas visitas [D] (ICSI, 2009;
+OPPERMANN et al, 2011). Os valores encontrados devem ser anotados no gráfico e, o
+sentido da curva deve ser observado para avaliação no estado nutricional.
+
+  Risco gestacional de acordo com o IMC na primeira consulta de pré-natal (ICSI, 2009)
+  Baixo Peso (IMC <18,5)     Risco aumentado de trabalho de parto prematuro (Spinillo, 1998 [C] apud ICSI)
+  Sobrepeso (IMC 25,0      - Risco aumentado para diabete gestacional, hipertensão, pré-eclâmpsia, parto
+  29,9)                      distócico, cesariana, indução do trabalho de parto, aumento de infecção na
+                             ferida operatória, tromboembolia venosa anteparto e complicações anestésicas
+                             [B] (Robinson, 2005 apud ICSI)
+  Obesas (IMC> 30,0)        Risco aumentado de hipertensão gestacional [A] (Thornton apud ICSI).
+
+
+
+
+                                                                                                   17
+      Aumento de peso recomendado para mulheres, segundo o IMC pré-gestacional
+(IOM apud ICSI, 2009)
+ Categoria de       IMC         Aumento total de     Aumento de peso no segundo e terceiro
+     peso         (kg/m2)          peso(kg)                        trimestre
+                                                                                 (kg/sem)
+  Baixo peso     12,0-18,4         12,5- 8,0                  0,5 (entre 0,5-0,6)
+
+ Peso normal     18,5-24,9         11,5-16,0                   0,5 (entre 0,4-0,5)
+
+  Sobrepeso      25,0-29,9         7,0-11,5                    0,3 (entre 0,2-0,3)
+
+
+  Obesidade        30,0             5,0-9,0                    0,2 (entre 0,2-0,3)
+
+
+
+
+Palpação Obstétrica e Medida da Altura Uterina
+
+        A palpação obstétrica deve ser realizada antes da medida da altura uterina,
+através das manobras de Leopold-Zweisfel (fig 1). Ela deve iniciar-se pela
+delimitação do fundo uterino, bem como de todo o contorno da superfície uterina
+(esse procedimento reduz o risco de erro da medida da altura uterina). A
+identificação da situação e da apresentação fetal é feita por meio da palpação
+obstétrica, procurando identificar os pólos cefálico e pélvico e o dorso fetal,
+facilmente identificados a partir do terceiro trimestre.
+                                                                                      a
+        A palpação obstétrica e a identificação da apresentação fetal, a partir da 36
+semana, influirá na determinação da via de parto. Apresentações desfavoráveis para
+o parto vaginal devem ser confirmadas com ecografia [D] (NICE, 2010).
+
+       Figura 1. Manobras de Leopold-Zweifel. Fonte: CLAP, 2007
+
+
+
+
+       A medida da altura uterina não é exata e esta sujeita a erros inter e
+intraobservadores [C] (ICSI, 2009). Porém, é uma manobra simples, barata e
+amplamente usada em todas as consultas de pré-natal. Tem uso limitado em identificar
+crescimento fetal restrito (CFR), mas faltam estudos melhor delineados (NICE, 2010).
+Não há evidências que sugiram benefícios em medir antes de 24 semanas (NICE,
+2010), embora seja um método auxiliar no diagnóstico da gestação.
+       Realiza-se colocando a fita métrica apoiada sobre a borda superior da sínfise
+púbica e no fundo uterino, com a paciente em decúbito dorsal, em uma superfície plana,
+com os membros em extensão e bexiga vazia (ZUGAIB, 2008). A medida deverá ser
+sempre registrada no gráfico com o objetivo de possibilitar a observação do padrão de
+crescimento e detectar alterações. O padrão de referência são duas curvas de altura uterina
+
+
+       18
+desenhadas a partir de dados do Centro Latino-Americano de Perinatologia (FESCINA,
+2007). Recentemente, Freitas et al (2011) apresenta curva desenvolvida por Operman
+e colab. (2006) a partir de um estudo multicêntrico em seis capitais brasileiras, para
+rastreamento de diabete gestacional. No SSC, optamos por continuar utilizando a curva do
+CLAP, preconizada pelo MS.
+        Medidas isoladas, abaixo do percentil 10 ou acima do percentil 90, devem atentar
+para a possibilidade de erro de cálculo da idade gestacional. Se possível, deve-se solicitar
+ecografia e retorno em 15 dias para reavaliação. Deverá ainda ser avaliada, quando acima
+do percentil 90, a possibilidade de polidrâmnio, macrossomia, gemelar, mola hidatiforme,
+miomatose e obesidade. Evidências sugerem entretanto que a medida da altura uterina
+não é um bom preditor ou exclui fetos grandes para idade gestacional (GIG).
+Recomenda-se não realizar estudo ecográfico em fetos suspeitos de macrossomia, em
+gestações de baixo risco (NICE, 2010).
+        Quando abaixo do percentil 10, deverá ser descartado feto morto, oligodrâmnio
+ou CFR. Nas situações de crescimento fetal restrito evidenciado por ecografia, deverá ser
+realizado dopplervelocimetria para avaliar vitalidade fetal (FESCINA, 2007). A gestante
+deverá ser encaminhada para o CO ou alto-risco, conforme a situação encontrada.
+        A figura abaixo evidencia a curva da altura uterina de acordo com a idade
+gestacional e a localização do fundo uterino de acordo com as semanas aproximadas da
+gestação.
+
+      Curva de altura uterina (AU) e idade gestacional e desenho da posição aproximada
+da AU de acordo com a idade gestacional:
+
+
+
+
+         Fontes:Curva de Altura uterina e idade gestacional. Fonte Clap, 2007
+         Posição aproximada da AU de acordo com idade gestacional.
+         Fonte: Xunta de Galicia; Servizo Galego de Saúde, 2008
+
+
+
+
+Pesquisa de Edema
+
+      O American College of Obstetricians and Gynecologists define edema como
+“acúmulo generalizado de fluidos representado por mais de 1+ de edema
+depressível após 12 horas de repouso no leito, ou ganho de peso de 5lbs (2,27 kg)
+
+
+
+                                                                                         19
+ou mais em uma semana” (ICSI, 2009).
+        O edema já foi tradicionalmente um importante critério diagnóstico para pré-
+eclampsia. Porém, por si, não é útil para predizer o desenvolvimento de pré-
+eclampsia porque é de baixa especificidade e sensibilidade (SMITH, 1993 [R] apud
+ICSI, 2009). Edema isolado no final da gestação é freqüente (25% das gestações) e
+não representa maior risco.
+        Recomenda-se observar a presença de edema perimaleolar (tornozelo), região
+pré-tibial, sacral, facial. Edema na face, tronco e membros (+++) indica alto risco e
+deve ser melhor avaliada quanto a presença de outros sinais de pré-eclâmpsia ou
+ICC.Tratando-se de edema unilateral de membro inferior, acompanhado de sinais
+flogísticos, deve-se suspeitar de processos trombóticos e a gestante deve ser
+encaminhada ao Centro Obstétrico (BRASIL,2006).
+
+
+
+
+Exame Especular e Toque Vaginal
+
+        O exame pélvico e o toque vaginal devem ser guiados pela história e queixas
+da paciente. Exame pélvico pode ser usado para detectar algumas condições clínicas
+como anormalidades anatômicas e doenças sexualmente transmissíveis, para avaliar o
+tamanho da pelve da mulher (pelvimetria) e avaliar a cérvice uterina assim como detectar
+sinais de incompetência cervical (associada como abortos recorrentes no segundo
+trimestre) (NICE, 2010). Exame cervical no termo é útil para diagnosticar apresentação
+anormal e para identificar dilatação cervical. Exame pélvico de rotina (em todas as
+consultas) não prevê com exatidão a idade gestacional, nem prediz trabalho de parto
+prematuro ou desproporção cefalopélvica, portanto, não é recomendado [B] (NICE, 2010).
+
+
+
+Descolamento de Membranas Amnióticas
+
+       O descolamento de membranas amnióticas, embora não seja um
+procedimento referido pelo MS em sua última publicação, é citado em dois consensos
+internacionais (NICE, 2010; ICSI, 2009), portanto, optou-se por comentá-lo nesta
+revisão.
+       O método recomendado é a inserção digital de 2-3 cm além do orifício
+cervical interno e “deslizamento” circunferencial duas vezes. Descolamento de
+membranas diário após 41 semanas tem-se mostrado mais efetivo que o uso de
+prostaglandinas em reduzir pós-datismo. (ALLOTT, 1993 [A]; MAGNANN, 1999 [A]
+apud ICSI, 2009). Antes da indução do trabalho de parto formal, deve-se oferecer a
+gestante com 41 semanas o exame pélvico para descolamento de membranas [A]
+(NICE, 2010). Accett, Jimenez e Wender (2011), descrevem o descolamento de
+membranas como uma alternativa, mas afirma que o benefício é pequeno (para
+reduzir 1 indução, são necessários 7 descolamentos) e está associado com
+desconforto materno.
+
+
+
+
+       20
+Exame Rotineiro das Mamas
+
+       O exame de mamas poderá identificar a presença de nódulos ou outras alterações,
+mas não tem o intuito de identificar dificuldades para a amamentação [A] (NICE, 2010;
+ESPANHA, 2009). Os tratamentos propostos para mamilos planos ou invertidos
+mostraram-se ineficazes e contraproducentes. Antecipar estes problemas reduz a confiança
+materna em suas possibilidades de amamentar (ESPANHA, 2009). Gestantes com
+mamilos planos ou invertidos devem ser orientadas que, com a evolução da gestação e/ou
+pega adequada, a alteração pode ser naturalmente corrigida e a amamentação poderá
+acontecer normalmente (BRASIL, 2006).
+
+
+
+Propedêutica Fetal Ausculta dos Batimentos Cardíacos
+
+       Os batimentos cardíacos fetais podem ser identificados a partir de 10-12 semanas
+de gestação com sonar Doppler e a partir de 18-20 semanas com estetoscópio de Pinnard
+(ICSI, 2009). No último trimestre deve-se procurar medir na posição lateral, evitando
+compressão de grandes vasos abdominais e eventual diminuição dos BCF.
+       Ritmo regular e freqüências entre 120 e 160 bpm são normais e podem ser medidas
+por um minuto ou em frações de 15 segundos multiplicados por quatro. Freqüências
+abaixo de 120 ou acima de 160 necessitam avaliações complementares. Deve-se suspeitar
+de “estado fetal não tranqüilizador” e encaminhar para avaliação no Centro Obstétrico
+(BRASIL, 2006). Para definir-se como bradicardia ou taquicardia fetal, estas freqüências
+devem persistir por 10 min de observação.
+
+
+
+
+                                                                                     21
+                SOLICITAR E AVALIAR EXAMES
+                     COMPLEMENTARES
+                                                                      Lucia Naomi Takimi
+
+
+
+       Em relação aos exames complementares, a gestante deve ser informada sempre,
+e de forma compreensível, sobre a finalidade do exame, como ele será realizado, quais os
+possíveis riscos para si e para o feto, os tipos de resultados que podem surgir (i.e.
+probabilidade, risco), a chance de ocorrência de resultados falso-positivo ou falso-negativo
+e as opções que ela terá, mediante resultado obtido (NCCWCH apud KIRKHAM et al,
+2005). Uma proposta sistemática deve integrar a melhor evidência em um modelo de
+consentimento informado e compartilhado. Sugere-se que os profissionais registrem
+sempre todos os exames solicitados e também, se for o caso, a informação de que a
+gestante deixou de realizá-lo.
+
+
+
+Exames Sugeridos para Serem Solicitados ao Parceiro da
+Gestante
+
+        Anti-HIV, DRL,HBsAg.
+        São doenças de contaminação vertical, ou seja, de transmissão da mãe para o
+bebê, mas também são sexualmente transmissíveis, além de serem frequentes em nosso
+meio, muitas vezes cursando com sintomas discretos. O pré-natal é também uma
+oportunidade do pai conhecer a sua situação sorológica, sendo assim devemos oferecer a
+todos, independente de critérios de risco.
+
+       Tipagem sanguínea e fator Rh
+       Este exame deve sempre ser solicitado, caso a gestante seja RhD negativo.
+
+
+
+Exames Complementares a Serem Solicitados para a Gestante
+em Pré-Natal
+
+        Os exames complementares mínimos a serem solicitados no acompanhamento
+buscam      avaliar fundamentalmente as            condições    hematológicas, possível
+incompatibilidade Rh e ABO, doenças infecciosas e afecções que possam interferir
+diretamente na saúde da gestante e de seu filho, tais como: malformações fetais, diabetes e
+transtornos hipertensivos. Considera-se também como mais um momento para a
+prevenção de câncer ginecológico.
+        A seguir, serão descritos exames realizados durante o acompanhamento pré-natal e
+no item .2, a análise de seus resultados e recomendações.
+
+
+       22
+Hemograma
+
+       Recomenda-se dosagem de hemoglobina para todas as gestantes na sua primeira
+consulta de pré-natal e em torno da 28a semana de gestação, quando outros exames
+sanguíneos serão realizados [B] (NICE, 2010; ICSI, 2010; BRASIL, 2006; OMS, 2005;
+USPSTF, 2006; BUCHABQUI, 2011).
+
+
+
+Tipagem Sanguínea e fator D (Rh)
+
+       Deve-se oferecer testagem para tipagem sanguínea e fator D (ou Rh) precocemente
+na gestação [B] (NICE, 2010; BUCHABQUI, 2011). Recomenda-se que a profilaxia
+anti-D logo após o parto seja oferecida para todas as gestantes não sensibilizadas que
+são D-negativas, cujos bebes sejam D- positivos (NICE, 2010). Evidências atuais
+permitem recomendar imunoglobulina anti-D em mulheres com fator Rh negativo nas
+seguintes situações (MAGALHÃES; DIAS, 2010):
+
+                -     rotineiramente, no período pós-parto imediato se o Rh do recém-
+         nascido for positivo
+                -     após procedimentos invasivos (amniocentese e biópsia de vilos
+         coriônicos)
+                -     sangramento de 1º, 2º e 3º trimestres
+                -     abortamento e morte fetal intrauterina
+                -     após trauma abdominal
+                -     gestação ectópica
+                -     mola hidatiforme
+                -     versão externa
+
+
+
+
+Sumário de Urina e Urocultura
+
+       Solicitar na primeira consulta, por volta da 28a semana de gestação e entre as 33 e
+35 semanas.Recomenda-se a solicitação do Sumário de urina para a detecção de
+proteínas, bactérias e glicose na urina. É possível detectar glicose na urina em uma
+gestação normal, no entanto, níveis iguais ou superiores a 300 mg/dl podem relacionar-se
+com diabetes gestacional . A presença de proteinúria pode estar relacionada também à
+infecção urinária e a transtornos hipertensivos na gestação. As análises de urina com fita
+reagente e leitura visual (Comburtest, Urotest) podem ser utilizadas, no entanto, alguns
+estudos sugerem baixa sensibilidade para identificar proteínas e infecção e muitos autores
+recomendam abandoná-las (FESCINA, 2007).
+       A pesquisa de bacteriúria assintomática por urocultura de jato médio é
+recomendada para todas as gestantes na primeira consulta de pré-natal. Uma urocultura
+
+
+                                                                                       23
+obtida entre 12-16 semanas de gestação identifica 80% das mulheres que desenvolveram
+bacteriúria assintomática, com um adicional 1-2% de identificação pela repetição mensal
+do exame (BACHMAN, 1993 [C] apud ICSCI, 2010). Os dados são insuficientes para
+determinar a freqüência ótima de repetição deste exame durante a gestação (ICSI,2010;
+FESCINA, 2007) no entanto, optamos por manter a recomendação de nova solicitação
+em torno da 28a semana de gestação (FESCINA, 2007).
+
+
+
+Hepatite B
+
+        O rastreamento universal da hepatite B com o antígeno de superfície (HBsAg) deve
+ser realizado na primeira consulta de pré-natal para que intervenções pós-natais possam
+ser oferecidas ao recém- nascido objetivando redução da transmissão vertical [A] (NICE
+2010, AMB, 2006
+         A transmissão vertical da hepatite B é prevenível em 95% aproximadamente,
+através da administração da vacina e imunoglobulina (HBIg) no bebê, ao nascimento [A].
+(NICE 2010; ICSI 2010).
+        Indica-se também imunoglobulina hiperimune em gestantes soronegativas que
+relatem história de acidente com material contaminado, relações sexuais com parceiro
+em fase aguda ou vítimas de violência sexual (0,06 ml/Kg por via intramuscular)
+(MARTINS-COSTA, 2011).
+
+
+
+Hepatite C
+
+        A pesquisa de rotina do vírus da hepatite C não deve ser oferecida
+universalmente, porque há evidência insuficiente de sua efetividade e custo-
+efetividade [C] (NICE, 2010).
+
+
+
+Pesquisa da Sífilis
+
+       O rastreamento universal da sífilis é recomendado na primeira consulta de
+pré-natal para toda gestante, porque o tratamento é benéfico para a mãe e o feto
+[A] (NICE, 2010; OMS, 2008; AMB, 2006; BRASIL, 2006; KIRKHAM et al, 2005)
+       No Brasil, a recomendação do Ministério da Saúde é a repetição do exame
+                  a
+em torno da 32 semana de gestação, no momento do parto ou em caso de
+abortamento [D. As mulheres grávidas infectadas pela sífilis podem transmitir a
+infecção ao feto, causando sífilis congênita, com consequências graves na gestação
+em 80% dos casos. Cerca de 25% destes casos resultam em natimortos ou abortos
+espontâneos, e outros 25% de recém-nascidos têm baixo peso ao nascimento ou
+infecção grave, estando os dois casos associados a um maior risco de morte
+perinatal. Contudo, o fardo da sífilis congênita ainda é geralmente subestimado (OMS,
+2008) O coeficiente de mortalidade por sífilis congênita, no Brasil, em menores de
+1ano, manteve-se estável em cerca de 4 óbitos por 100.000, entre 1991 a 1999,
+
+       24
+quando apresentou tendência decrescente, chegando, em 2003, a 2,2 óbitos por
+100.000 menores de 1 ano. Em 2007, o coeficiente de mortalidade por sífilis
+congênita no Brasil passou para 2,4 por 100.000 habitantes. Em menores de 27
+dias de vida ocorreram 76% dos óbitos, entre 1996 e 2003. (BRASIL, 2005).
+       Entre os principais motivos de tratamento materno inadequado no HNSC
+encontram-se: parceiro não tratado (43,6%) e gestante com tratamento incompleto
+(23,1%) (VARELLA et al, 2009).
+       A meta do MS é de até 1 caso para cada 1.000 recém-nascidos vivos.
+
+
+        O Teste Rápido para Sífilis deve estar disponível para uso nas UBS.
+
+
+
+
+Pesquisa de Anti-HIV
+
+       O Ministério da Saúde do Brasil recomenda a realização de teste anti-HIV com
+aconselhamento e com consentimento para todas as gestantes na primeira consulta
+pré-natal. Em casos negativos, repetir próximo à 30ª semana de gestação. Solicitar o
+consentimento para todas as gestantes na primeira consulta pré-natal (AMB, 2006). Em
+casos positivos, encaminhar para unidade de referência no mesmo momento, não
+necessitando confirmação (BRASIL, 2006). As intervenções adequadas podem reduzir a
+transmissão da infecção do HIV da mãe para o concepto [A] (NICE, 2010). Na
+eventualidade de recusa do teste, recomenda-se registrar a informação em prontuário e
+na carteira de pré-natal (NICE,2010).
+
+              O Teste Rápido para HIV deve estar disponível para uso nas UBS.
+
+
+
+
+Pesquisa de Diabete Melito na Gestação
+
+        O Ministério da Saúde recomenda a dosagem da glicemia de jejum como
+primeiro teste para avaliação do estado glicêmico da gestante. O exame deve ser
+solicitado a TODAS as gestantes, na primeira consulta do pré-natal, como teste de
+rastreamento para alterações prévias da tolerância à glicose. Recomenda, para o
+diagnóstico do DMG, o teste de tolerância com 75g de glicose, adotando os critérios de
+intolerância a glicose, para adultos [D] (BRASIL, 2006).
+
+
+
+
+                                                                                   25
+      O quadro abaixo apresenta os exames a serem solicitados de acordo com
+a idade gestacional da gestante (baseado na recomendação de 6 consultas
+mínimas de pré-natal, do Ministério da Saúde).
+
+
+
+
+    26
+        Exames complementares a serem solicitados conforme idade gestacional
+                     Período gestacional                                          Exames
+                                                                           complementares
+                                                       Hemograma [B]
+                                                       Grupo sangüíneo e fator D (Rh) [B]
+           Primeira consulta ou antes da               Sorologia para sífilis (VDRL) [A]
+20ª sem.                                               Anti-HIV (sempre com aconselhamento pré e pós-teste) [A]
+          (sugere-se revisar com a gestante            Glicemia de jejum [A]
+se ela possui exames pré-concepcionais ou
+de gestação anterior)                                  E.Q.U e urocultura [A]
+                                                       Citopatológico para prevenção Ca colo do útero
+                                                        HbsAg*[A]
+                                                        TTG 75 mg glicose, entre 24-28 sem(se não foi previamente
+           Entre 24-28 sem.                   diagnosticada
+                                                        como
+                                                        E.Q.UDM   ou DMG)[D]
+                                                               e urocultura [A]entre 24-28 sem
+                                                        VDRL [A]
+                                                        Anti-HIV (sempre com aconselhamento pré e pós-teste) [A]
+           A partir da 32ª sem.
+                                                        Hemograma [B]
+                                                        E.Q.U e urocultura entre 33-35 sem[D]
+
+
+
+
+Avaliação dos Resultados dos Exames Solicitados
+
+        Condutas conforme resultados dos exames complementares
+
+                     Resultado                               Conduta
+                                              Normal. A evidencia é insuficiente para recomendar a favor ou contra
+                                           a suplementação de ferro em gestantes não-anêmicas. A OMS recomenda
+                                           suplementação universal, em gestantes de risco.
+        Hemoglobina >11g/dl                   Caso o profissional e a gestante optem pela suplementação de ferro, 60
+                                           mg/dia de Fe elementar (1 drágea de 300mg), a partir da 20ª semana, 1
+                                           hora antes das refeições, a partir da 20a semana
+
+                                               Anemia leve a moderada. Solicitar EPF e tratar parasitoses, se
+                                           presentes. Mebendazol e metronidazol podem ser utilizados a partir de 16-
+                                           20 sem (ver capitulo 9).
+                                               Prescrever sulfato ferroso (120 a 240 mg de Fe elementar/dia): 2 a 4
+                                           drágeas V.O./dia 1h antes das principais refeições.
+                                               Repetir em 30/60 dias: se níveis estiverem subindo, manter tratamento
+      Hemoglobina > 8-11 g/dl              até atingir 11g/dl e depois reduzir dose para suplementação até 6m após
+                                           nascimento do bebê. Se níveis inalterados ou diminuídos, verificar adesão
+                                           e referenciar ao PN Alto Risco.
+                                               Se no exame subseqüente, um mês depois, permanecer baixo, deve-se
+                                           dosar a FERRITINA. Se esta estiver abaixo de 12mcg/l, pode-se
+                                           diagnosticar anemia ferropriva. Se o tratamento estiver adequado,
+                                           considera-se reposição de cobre ou zinco.
+        Hemoglobina < 8 g/dl                   Anemia grave. Referenciar ao CO
+                                               Solicitar tipagem do parceiro. Parceiro Rh D-positivo ou desconhecido,
+                                           solicitar Coombs Indireto.
+                                               Se negativo, repetir mensalmente a partir da 28ª semana.
+                                               Se positivo ou positivar: referenciar ao pré-natal de alto risco (D).
+             Rh D negativa                 Todo filho de mãe Rh D- negativa deverá ter a sua tipagem conhecida. Se
+                                           criança Rh D-positivo ou gestação resultou em aborto, mãe deverá fazer
+                                           Rhogan até 72h após o parto ou aborto (A)
+
+
+
+
+                                                                                                                  27
+                                  Piúria (>5 leucócitos/campo) ou bacteriúria – solicitar urocultura com
+                              teste (caso não tenha sido realizada). A bacteriúria assintomática (2-10%
+                              das gestantes) deve ser tratada [A], conforme fluxograma no item
+                              Urocultura .
+                                  Hematúria - excluir sangramento vaginal. Hematúria com piúria,
+                              solicitar urocultura. Hematúria sem piúria ou no caso de cilindrúria –
+                              referenciar ao PN de alto-risco.
+                                  Proteinúria é definida como uma excreção urinária de proteína de mais
+     Sumário de urina
+                              de 150mg/dia (10- 20mg/dl). Testes com fitas reagentes podem
+                              apresentar-se positivos, com traços, em concentrações de 5-10mg/dl.
+                              Resultados de 1+ correspondem a aproximadamente 30mg proteínas/dl e
+                              são considerados positivos; 2+ correspondem a 100 mg/dl; 3+ a
+                              300mg/dl; e 4+ a 1000mg/dl. Testes com fitas reagentes podem predizer
+                              albuminúria     com    sensibilidade     e   especificidades maiores   que
+                              99%(SIMERVILLE, 2005).
+                                  Proteinúria traços (+) e sem sinais clínicos de pré-eclâmpsia, repetir
+                              em 15   dias. Se
+                                  Tratar       maciça
+                                         conforme      (++ou da
+                                                   resultado  +++),   referenciar
+                                                                 cultura com      ao  AR.
+                                                                              antibiograma
+    Urocultura positiva
+                                  IgM não reagente; IgG reagente: paciente imunizada, não necessita
+                              nova dosagem.
+                                  IgM e IgG não reagentes: Segundo Protocolo do GHC (2007), repetir
+                              no 2º e 3º trimestre e orientar medidas preventivas[C] (lavar as mãos
+                              antes de manipular alimentos; lavar frutas e vegetais, antes de comê-los;
+       Toxoplasmose           cozinhar bem a carne e refeições congeladas prontas; usar luvas e lavar
+Não é rotina para o estado    mãos após mexer na terra; evitar manipular fezes de gatos).
+          de SC.                  IgM reagente; IgG reagente: Sugere infecção recente. Solicitar teste
+                              de avidez de IgG para toxoplasmose (caso não tenha sido feito
+                              automaticamente para gestantes com IgM reagente).
+                                  Se alta avidez, exclui contato nos últimos 3-4 meses. Se baixa
+                              avidez, confirma infecção recente. Encaminhar para o pré-natal de Alto
+                              Risco.
+                                 Negativo: vacinar a gestante que não teve a oportunidade de receber
+                              a vacina na rotina dos serviços (esquema básico: 3 doses, com intervalo
+                              dMme 1m entre 1a e 2a e de 6m entre 1a e 3a). A administração da
+                              vacina esta indicada após o primeiro trimestre de gestação. Essa
+                              estratégia contribuirá para a redução do potencial de transmissão vertical
+          HBs Ag              da doença e da tendência de cronificação (70-90%) quando ocorre a
+                              contaminação em idade precoce (Brasil, 2009). Ver capitulo 4, sobre
+                              imunizações.
+                                  Positivo: o RN receberá imunoglobulina (HBIg) até 72h após o parto e
+                              1º dose da vacina nas primeiras 12 horas de vida e deverá ser confirmada
+                              imunidade pós-vacinal solicitando anti- HBsAg até 1 ano de idade.
+
+                                Negativo: registrar exame, data e resultado na carteirinha
+Rastreamento GBS (group B
+                                Positivo: registrar exame, data e resultado na carteirinha (destacado),
+       Streptococcal)
+                              uma vez que a gestante poderá reeber terapia antimicrobiana intraparto.
+Não é rotina para o estado
+           de SC.
+                                  1º Já tratar gestante e parceiro (ver capitulo 10) e solicitar teste
+                              treponêmico [FTA-Abs (Fluorescent Treponemal Antibody - Absorption);
+                              TPHA (Treponema pallidum Hemaglutination) ou ELISA (Enzyme-Linked
+                              Immunosorbent Assay)] apenas para confirmação diagnóstica.
+                                  2º Notificar e registrar na carteira o tratamento do CASAL (doses e
+ VDRL reagente (a partir de   datas) assim como as titulações mensais que devem ser solicitadas até o
+  títulos de 1:1 o teste é    parto.
+   considerado reagente)          3º Deve ser oferecido acompanhamento do casal e de toda a criança
+                              com mãe VDRL reagente no pré-natal, conforme ficha de acompanhamento
+                              (anexo 8) que será enviada pelo Monitoramento e Avaliação ao profissional
+                              que realiza o pré-natal, a partir da notificação.
+
+
+
+
+    28
+        Resultado                               Conduta
+                                 Positivo: aconselhamento pós-teste, encaminhar para a UPTV (Unidade
+                        de Prevenção daTransmissão Vertical) do HNSC (ver capítulo 15). Orientar para: a
+                        importância da prevenção da transmissão vertical; aconselhamento sobre
+                        suspensão do aleitamento materno; sobre sexo seguro, reforçando o uso de
+         Anti-HIV       camisinha.
+                                 Negativo: repetir próximo à 30ª semana de gestação, sempre que
+                        possível. Se o parceiro foranti-HIV reagente, da mesma forma a gestante deve ser
+                        encaminhada a UPTV (casal sorodiscordante).
+                             < 85mg/dl, avaliar presença de fatores de risco. Se presentes,
+                     testar com nova glicemia dejejum após 20 sem.
+   Glicemia de Jejum
+                             > 85mg/dl . Testar com TTG 75g entre 24-28 sem para
+                     pesquisar DMG.
+                             110-125mg/dl na primeira consulta pré-natal, diagnostica
+                     DMG.
+                             > 126mg/dl, diagnostica DM prévio a gestação.
+Ecografia Fetal
+
+        O Ministério da Saúde (BRASIL, 2006) assim se posiciona sobre a ecografia: “a
+não realização de ultra-sonografia durante a gestação não constitui omissão, nem diminui a
+qualidade do pré-natal“.
+        A realização da ultrassonografia na segunda metade da gravidez em gestações de
+baixo risco, ou como rastreamento universal, não confere benefício à mãe ou ao recém-
+nascido. Não reduz a taxa de indução do parto (OR-1,0: IC a 95%: 0,9-1,1) ou de cesariana
+(OR-1,1: IC a 95%: 1,0-1,1). Não reduz a prematuridade (OR-1,0: IC a 95%: 0,8-1,1), a
+mortalidade perinatal (OR-1,0: IC a 95%: 0,8-1,4) ou a natimortalidade (OR-1,2: IC a
+95%: 0,7-1,8). Não existem dados com relação aos potenciais efeitos psicológicos do
+exame rotineiro nessa fase da gravidez, nem nos resultados neonatais a curto e longo
+prazos [A] (AMB, 2006).
+        Ao revisar-se os consensos internacionais, o que se percebe é uma discussão sobre
+a racionalização da indicação de ecografia em gestações de baixo risco e recomenda-se
+uma ecografia morfológica entre 18-22 semanas, onde ainda tem-se uma datação confiável
+e já e possível analisar as estruturas fetais (inclusive o sexo, se assim desejar o casal).
+        Outra situação completamente distinta é a indicação do exame ultrassonográfico
+mais tardiamente na gestação, por alguma indicação específica orientada por suspeita
+clínica. Abaixo listamos situaçõescuja vigilância fetal antenatal através de ecografia pode
+ser benéfica em reduzir morbimortalidade (LISTON; SAWCHUCK; YOUNG, 2007).
+
+
+
+
+                                                                                                 29
+      Historia obstétrica previa, gestação atual e condições associadas com aumento de
+morbimortalidade perinatal (LISTON; SAWCHUCK; YOUNG, 2007)
+                                      Historia obstétrica previa
+                                           Distúrbios hipertensivos da gestação
+   Materna ou                                    Descolamento de placenta
+      fetal                                Restrição de crescimento intrauterino
+                                                        Morte fetal
+                                            Gestação atual
+                                                Pós-datismo (> 42 semanas)
+                                            Distúrbios hipertensivos da gestação
+                                                    Diabete Mélito prévio
+                   Diabete gestacional que necessite de insulinoterapia Ruptura prematura de membranas
+                           amnióticas Descolamento de placenta crônico (estável) Isoimunização
+                  Pesquisa sérica alterada de aneuploidias (hCG ou AFP) na ausência de anormalidade fetal
+     Materna                                             confirmada
+                                          Acidentes de transito durante a gestação
+                                                    Sangramento vaginal
+                                                     Obesidade mórbida
+                                                  Idade maternal avançada
+                                                Devida a reprodução assistida
+
+
+
+
+       30
+DIAGNÓSTICO E MANEJO DE INTERCORRÊNCIAS
+       CLÍNICAS MAIS FREQUENTES
+                                                                 Lêda Dias Chaves Curra
+
+
+
+
+Náuseas, Vômitos e Hiperêmese
+
+        As náuseas e os vômitos são queixas frequentes no início da gestação,
+especialmente comuns até cerca de 16 semanas e podem ser amenizadas com medidas
+relativamente simples, tais como:
+        -      orientar a mulher para alimentação fracionada (seis refeições leves ao dia);
+        -      evitar frituras, gorduras e alimentos com cheiros fortes ou desagradáveis;
+        -      evitar líquidos durante as refeições, dando preferência à ingestão nos
+intervalos;
+        -      ingerir alimentos sólidos antes de levantar-se pela manhã;
+        Quando a náusea e o vômito não respondem a simples modificação dietética e
+antieméticos, a condição é denominada hiperêmese gravídica que caracteriza-se por
+vômitos persistentes e severos que impedem a alimentação (LEVENO, 2010). Aspectos
+emocionais e adaptações hormonais são apontados como causadores. Pode também estar
+associado a gestações múltiplas, mola hidatiforme, pré- eclâmpsia, diabetes, iso-
+imunização Rh e disfunções da tireóide.
+        Dentre os tratamentos mais recentes, a piridoxina (vitamina B6) parece ser a opção
+mais efetiva na redução da intensidade das náuseas do início da gravidez (10 a 25 mg
+3x/dia – cada comprimido de Dramin B6R contém 10 mg de cloridrato de piridoxina). A
+administração de gengibre em cápsulas (250mg 4x/dia) também tem sido eficiente para
+reduzir náuseas e vômitos. Apoio psicológico, ações educativas, reorientação alimentar
+são maneiras de evitar casos mais complicados.
+        Nas situações de êmese persistente, o MS recomenda a hidratação da paciente e a
+prescrição de drogas antieméticas, por via oral (metoclopramida - 10 mg de 4/4h, ou
+dimenidrato – 50 mg de 6/6h), pode-se ainda optar por prometazina 25mg a cada 6 horas,
+via oral (WILLIAMS, 2010). Por via intravenosa, metoclopramida (a ampola injetável de
+2 ml contém 10 mg que pode ser feita de 4/4h) ou dimenidrato (a ampola injetável de
+50 mg que pode ser feita de 6/6 h). O medicamento Dramin B6R contém 50 mg de
+dimenidrato e 50mg de cloridrato de piridoxina (ampola de 1ml) e também é uma
+opção terapeutica. O encaminhamento para manejo hospitalar deve ser realizado em caso
+de não resposta a terapêutica instituída no nível ambulatorial ou quando há perda de 5% do
+peso associado a cetose.
+
+
+
+
+                                                                                        31
+Constipação e Hemorróidas
+
+       A constipação ocorre por redução da motilidade instestinal por ação hormonal e
+compressão exercida pelo útero sobre as porções terminais do intestino. O manejo básico
+é o aumento da ingesta hídrica e fibras alimentares.
+       Hemorróidas ocorrem por compressão do útero sobre o plexo hemorroidário e
+tornam-se mais sintomáticas na presença de constipação. O manejo da situação é a
+normalização do hábito intestinal com fibras e hidratação adequada. Uso de banhos de
+assento e analgésicos locais também são indicados. Normalmente regridem após o parto
+(BUCHABQUI, 2011).
+
+
+
+Azia
+
+        Ocorre freqüentemente por compressão gástrica pelo útero, aumentando o refluxo
+gastroesofágico. O manejo da azia pode ser realizado com o fracionamento de
+refeições e o uso de cabeceira elevada. A gestante deve evitar posição supina após
+refeições e a ingestão de alimentos agravantes. O uso de substâncias antiácidas pode ser
+realizado nos casos refratários (BUCHABQUI, 2011).
+
+
+
+Síndrome do Corrimento Vaginal
+
+       As causas mais comuns são candidíase, tricomoníase e vaginose bacteriana. O
+tratamento da candidíase é tópico e preferencialmente com miconazol, isoconazol,
+tioconazol ou clotrimazol (7 dias de aplicação). O tratamento da vaginose e/ou
+tricomoníase pode ser realizado após o primeiro trimestre com metronidazol 2g VO
+dose única, ou 250mg 3x/dia por 7 dias ou 400 mg 12/12h por 7 dias. No caso de
+tricomoníase, o parceiro deve ser tratado.
+
+
+
+Condiloma
+
+       O tratamento é a remoção. Nunca se deve usar podofilina, podofilotoxina ou
+imiquimod, durante qualquer fase da gestação. O ácido tricloroacético ou dicloroacético,
+80 a 90 %, aplicado na forma tópica 1 vez por semana, é um regime efetivo para
+verrugas sintomáticas externas. As verrugas internas (aquelas envolvendo a vagina ou a
+cérvice) em geral não são tratadas (LEVENO, 2010).
+
+
+
+
+       32
+Sífilis
+
+        O diagnóstico sorológico é realizado pelo VDRL (rastreamento e seguimento) e o
+FTA-abs (teste apenas confirmatório, não utilizado para seguimento). Quando o VDRL
+for reagente, sempre que possível, deve-se solicitar o FTA-abs para descartar falsos
+positivos que podem ocorrer na vigência de doenças auto-imunes (colagenoses), na fase
+aguda de viroses, cirrose hepática, leptospirose, mononucleose, na própria gestação, em
+outras infecções treponêmicas, em pacientes com hanseníase, na malária, etc. (NAUD et
+al, 2011). Se a história de sífilis tratada anteriormente for ignorada, a gestante e o parceiro
+devem ser imediatamente tratados (BRASIL, 2006). Nos casos de títulos baixos em que a
+história for conhecida e o tratamento do casal tenha sido adequado e documentado
+(registrar na carteira da gestante), considerar como cicatriz sorológica e acompanhar
+mensalmente solicitando VDRL. É considerado cura sorológica a queda dos títulos no
+VDRL (2 diluições ou diminuição de 4 vezes os títulos: por exemplo, de 1/8 para 1/2;
+ou 1/128 para 1/32). Nas gestantes, o VDRL de seguimento deve ser realizado
+mensalmente e a duração da gestação pode não ser suficiente para a negativação
+(BRASIL, 2006).
+        O tratamento recomendado para mulheres grávidas com sífilis permanece sendo a
+penicilina. Na fase inicial sífilis primária, secundária e latente com menos de 1 ano de
+duração) deve ser feito com Penicilina G benzatina, 2,4 milhões de unidades, IM, dose
+única (1,2 milhões de unidades em cada glúteo) (LEVENO, 2010). O ministério da saúde
+recomenda uma segunda dose após uma semana na sífilis secundária e latente recente
+(BRASIL, 2006; NAUD et al, 2011). Em caso de alergia a penicilina, o tratamento com
+outros antibióticos cura a sífilis materna, mas não protege o feto. Por este motivo
+recomenda-se encaminhar a um nível de maior complexidade para que seja
+realizada a dessensibilização a penicilina e esta possa ser utilizada (FESCINA et al, 2007).
+
+        Para a sífilis com duração de mais de 1 ano ou duração
+  desconhecida recomenda-se o tratamento com penicilina G benzatina, 2,4
+  milhões de unidades, IM, semanalmente, totalizando 3 doses (LEVENO,
+  2010; BRASIL, 2006; NAUD et al, 2011).
+
+          As gestantes tratadas requerem seguimento sorológico quantitativo mensal
+  durante a gestação, devendo ser novamente tratadas, mesmo na ausência de
+  sintomas, se não houver resposta ou se houver aumento de, pelo menos, duas
+  diluições em relação ao último título de VDRL (ex: de ½ para 1/8). (BRASIL, 2006).
+
+         A PORTARIA Nº 3.161, DE 27 DE DEZEMBRO DE 2011 do Ministério
+     da Saúde dispõe sobre a administração da penicilina nas unidades de
+  Atenção Básica à Saúde e determina que a penicilina seja administrada em
+   todas as unidades de Atenção Básica à Saúde, nas situações em que seu
+                               uso é indicado.
+
+
+
+
+                                                                                            33
+Gonorréia e Clamídia
+
+       A infecção gonocócica é também um marcador para infecção concomitante por
+clamídia em cerca de 40% das gestantes infectadas (LEVENO, 2010).
+
+       O tratamento deve ser feito com (BRASIL, 2006):
+
+        -       Amoxicilina: 500 mg, VO, de 8/8h, por sete dias; ou Eritromicina
+(estearato): 500 mg, VO, de 6/6h, por sete dias; ou Azitromicina: 1 g, VO, dose única.
+
+       Associado a:
+
+        -     Cefixima: 400 mg, VO, dose única; ou Ceftriaxona: 250 mg, IM, dose
+única; ou Espectinomicina: 2 g, IM, dose única.
+
+
+
+Síndromes Hemorrágicas
+
+       Na primeira metade da gestação:
+
+         1. Ameaça de abortamento – cólica discreta ou ausente, sangramento escasso
+      proveniente do canal cervical, colo uterino sem modificação. Solicitar ecografia,
+      prescrever repouso físico e psíquico e hioscina 1 cp de 8/8h até o
+      desaparecimento da sintomatologia. Abstinência sexual é recomendada até nova
+      avaliação médica. Pode evoluir para gestação normal ou aborto..
+         2. Abortamento (morte ou expulsão ovular até 22 semanas ou peso < 500g) -
+      mesma sintomatologia da ameaça de abortamento com colo uterino permeável.
+      Solicitar ecografia para diagnóstico diferencial entre ameaça de abortamento
+      (saco embrionário íntegro e/ou concepto vivo), aborto incompleto (restos
+      ovulares) ou aborto retido (concepto morto ou ausência de saco embrionário). A
+      conduta variará em função de existir ou não repercussão hemodinâmica e
+      infecção. A paciente deve ser encaminhada para atendimento hospitalar
+      mediante o acolhimento das queixas. Após abortamento, a gestante deve
+      realizar VDRL, anti-HIV e tipagem sanguinea, deve ter a atualização das vacinas
+      contra o tétano, rubéola e hepatite B, receber orientação sobre o planejamento
+      familiar, e, é recomendada a profilaxia com imunoglobulina anti-D depois de um
+      abortamento, até 72 horas após - em caso de ser uma mulher Rh negativa não
+      imunizada, pois 5% ficam sensibilizadas nesta situação (LEVENO, 2010;
+      FESCINA et al, 2007).
+         3. Descolamento cório-amniótico – sangramento de pequena intensidade,
+      diagnosticado por ecografia, evolução em geral boa, não representando risco
+      materno e/ou ovular. A conduta é de esclarecimento à gestante.
+         4. Gravidez ectópica - sangramento acompanhado de dor em baixo ventre.
+
+
+       34
+       No exame físico avaliam-se condições gerais e irritação peritoneal. Ao toque,
+       pode-se perceber amolecimento do colo e presença ou não de aumento uterino e
+       também se pode perceber tumoração na região dos anexos. A gestante deve ser
+       encaminhada para o hospital.
+          5. Neoplasia trofoblástica gestacional benigna (mola) – sangramento
+       intermitente, pequena quantidade, indolor, acompanhado de vesículas. Hiperêmese
+       e AU (Altura Uterina) maior que a esperada para a IG também é comum nessa
+       situação. Atentar para medida de PA (única condição de pré-eclâmpsia anterior a
+       20ª semana de IG). Encaminhar para o hospital. Diagnóstico através de ecografia.
+
+       Na segunda metade da gestação:
+
+          1. Placenta prévia (PP)- multíparas e com antecedentes de cirurgias uterinas
+       (cesáreas, miomatose) são consideradas de maior risco. Manifesta-se com
+       sangramento súbito, vermelho vivo, sem dor. Na suspeita, evitar realização de
+       toque. Solicitar ecografia e encaminhamento para pré-natal de alto –risco após
+       diagnóstico.
+          2. Descolamento prematuro de placenta (DPP) – ocorre em cerca de 0,5-1%
+       das gestações. Associado a hipertensão arterial e uso de drogas ilícitas como crack e
+       cocaína, apresenta alto índice de mortalidade perinatal e materna. Dor abdominal
+       súbita, acompanhada de sangramento (ou não) vermelho escuro, às vezes escasso
+       que leva a hipotensão materna e choque. Na suspeita de DPP ligar para a SAMU e
+       encaminhar a emergência obstétrica.
+
+
+
+Distúrbios Hipertensivas que Complicam a Gestação
+
+        O diagnóstico dos distúrbios hipertensivos da gestação considera hipertensão a
+pressão sanguínea igual ou maior que 140/90 mmHg. O edema foi abandonado como
+critério diagnóstico discriminatório, porque ocorre em muitas mulheres com gestação
+normal. No passado, era utilizado o aumento de 30 mmHg na pressão sistólica ou de 15
+mmHg na pressão diastólica como critério diagnóstico, mesmo quando valores absolutos
+estavam abaixo de 140/90 mmHg. Este critério não é mais recomendado, porque
+existem evidências mostrando que mulheres neste grupo não apresentam aumento nos
+desfechos adversos gestacionais. Mulheres com aumento de 30 mmHg na pressão
+sistólica ou de 15 mmHg na pressão diastólica necessitam de observação cuidadosa
+(LEVENO, 2010; FESCINA et al, 2007).
+
+     Existem 5 categorias de doença hipertensiva que complicam a gestação
+(LEVENO, 2010; FESCINA et al, 2007):
+
+       1. hipertensão gestacional (anteriormente denominada “hipertensão induzida pela
+gestação” ou“hipertensão transitória”) - o diagnóstico é feito em mulheres cuja pressão
+sanguínea chega a140/90 mmHg ou mais pela primeira vez durante a gestação, mas que
+
+
+                                                                                         35
+não apresentam proteinúria. A hipertensão gestacional é denominada transitória se a pré-
+eclâmpsia não se desenvolve e a pressão sanguínea retorna ao normal até 12 semanas pós-
+parto,
+       2. pré-eclâmpsia – é uma síndrome específica da gestação. O conhecimento atual
+da fisiopatologia da pré-eclampsia a identificou como uma desordem complexa com
+amplo dano endotelial que pode envolver todos os orgãos do corpo. Portanto os sinais e
+sintomas poderão ser mais variados que aumento de pressão arterial e proteinúria (NICE,
+2010). A proteinúria é definida como 300 mg ou mais de proteína na urina de 24 horas
+ou 30 mg/dL em amostras aleatórias OU dois testes em fita reagente (uroteste) com 2 +
+de proteinúria, com intervalo de 4 horas entre as amostras (NICE, 2010).
+       3. eclâmpsia – trata-se de ocorrência de convulsões em uma mulher com pré-
+eclâmpsia, as quais não podem ser atribuídas outras causas. Pode ocorrer até 10 dias após o
+parto,
+       4. pré-eclâmpsia sobreposta à hipertensão crônica e
+       5. hipertensão crônica. (anterior a gestação)
+
+         Complicações perinatais da alteração da pressão arterial na gestação (FESCINA,
+2007).
+      Complicacoes               Materna                    Fetal-ovular              Neonatal
+       Hipertensao       Alteracoes do sistema de              Aborto.          Pequeno para a idade
+ Diastólica > 90 mm       coagulacao. Hemólise.          Descolamente             gestacional (PIG).
+ Hg. Sistólica > 140       Hemorragia cerebral.       normoplacentario.               Prematuro
+       mm Hg.             Insuficiencia hepática.         Restricao do         Síndrome de dificultade
+                            Insuficiencia renal.          crescimento           Respiratória (SRRN).
+                          Mortalidade aumentada       intrauterino (RCI).        Depressao neonatal.
+                                                    Sofrimento fetal agudo     Mortalidade aumentada
+                                                           intraparto.
+                                                         Oligodramnio
+                                                     Mortalidade aumentada
+
+        Hipotensao        Lipotimias e desmaios.    Restricao do crescimento    Pequeno para a idade
+ Diastólica < 55 mm                                   intrauterino (RCIU).        gestacional (PIG)
+Hg. Sistólica < 95 mm                               Mortalidade aumentada.     Mortalidade aumentada.
+          Hg.
+
+
+
+        A pré-eclâmpsia/eclâmpsia é a primeira causa de morte materna e perinatal no
+Brasil, além do número significativo de neonatos com seqüelas por hipóxia cerebral.
+Fatores de risco são nulíparas ou multíparas, gestação gemelar, gestante com 40 anos ou
+mais, intervalo de gestação maior que 10 anos, hipertensão arterial prévia, história
+familiar de pré-eclâmpsia, diabetes, colagenoses, raça negra, obesidade ou doença renal
+(DI MARIO S. et al, 2005; NICE, 2010). Complicações hipertensivas ocorrem em cerca
+de 10% das gestações e as pacientes devem ser acompanhadas no pré-natal de alto risco.
+        Os exames que fazem parte da avaliação inicial são: hemograma com plaquetas,
+ácido úrico sérico, LDH (desidrogenase láctica), proteinúria de 24h.
+        Sendo a aferição da pressão arterial (PA) recomendada em todas as consultas de
+pré-natal, os transtornos hipertensivos foram abordados também no capítulo 7, que
+descreve a avaliação e conduta mais adequada de acordo com a PA aferida.
+
+
+
+
+         36
+       Relembramos aqui a situação de urgência ou emergência:
+
+      - PA diastólica > ou = 110 mmHg com a presença de sintomatologia clínica
+(emergência) ou sem (urgência) – Chamar SAMU e encaminhá-la ao hospital com
+acompanhamento médico.
+
+       Conduta - drogas de escolha:
+
+        Hidralazina –Diluir 1 ampola (20 mg) em 9ml de AD. Dose inicial 5mg ou 2,5
+ml da solução IV. Observar por 20 minutos. Se não atingiu 90-100 mmHg de
+diastólica, repetir dose de 20/20 minutos até uma dose máxima de 20mg. Efeitos
+colaterais produzidos – rubor, cefaléia e taquicardia.
+        Nifedina – 10 mg V.O. de 30/30 min (até dose máxima de 30mg) Obs: não deve-
+se usar na forma sub lingual (risco de hipotensão severa).
+        Lembra-se que a furosemida somente deverá ser usada na presença de edema
+agudo de pulmão e/ou insuficiência renal aguda comprovada. A alfametildopa e
+betabloqueadores orais não apresentam indicação nas crises hipertensivas (demoram de 4-
+6 horas para fazer efeito) e inibidores da ECA (captopril e enalapril) NÃO PODEM ser
+prescritos na gestação pelo risco de morte e malformações fetais.
+
+
+
+Infecção do Tracto Urinário (ITU)
+
+       Infecção bacteriana mais freqüente na gestação. Casos não tratados podem evoluir
+para pielonefrite em 40% dos casos, em que o risco de trabalho de parto prematuro é de
+20%.
+
+
+
+Bacteriúria Assintomática
+
+       Tratar seguindo, preferencialmente, o antibiograma e a inocuidade do antibiótico
+para o feto já que não existe um antibiótico ideal, e, realizar o controle com nova
+urocultura 7 dias após término do tratamento.
+
+
+
+Cistite
+
+        Iniciar tratamento mesmo antes do resultado da urocultura e realizar controle com
+nova urocultura após 3 a 7 após término do tratamento. Na presença de duas ITU, a
+gestante deve manter profilaxia com nitrofurantoína 100 mg/dia, ou amoxicilina 250
+mg/dia até o final da gestação. O controle será com uroculturas a cada 6 semanas até o
+parto (LEVENO, 2010).
+        A antibioticoterapia também se associa à redução na incidência de parto prematuro
+
+                                                                                      37
+ou baixo peso ao nascer (OR-0,6; IC a 95%: 0,5-0,8) [A]. (FEBRASGO, 2006)
+        O tratamento pode ser feito por via oral e deve se estender por sete dias,
+visto tratar-se de infecção em gestante (LE apud DUARTE et al, 2008). O tratamento
+com dose única ou por curto período de tempo (três dias) mostrou altos índices de
+falha e não é indicado para gestantes (SMAILL apud DUARTE et al, 2008).
+
+
+       A escolha do antimicrobianos deve-se dar de acordo com a
+ sensibilidade da cultura. Nos casos de escolha empírica o antimicrobiano
+ de escolha é nitrofurantoína 100 mg a cada seis horas ( CFT Florianópolis,
+ 2013).
+
+
+
+
+Pielonefrite Aguda
+
+        Febre, calafrios, dor na região lombar, referência pregressa de sintomas de
+cistite. Presença de náuseas, vômitos, taquicardia, dispnéia e hipotensão, podem
+sugerir evolução para quadro séptico. O tratamento inicial deve ser SEMPRE
+hospitalar.
+
+
+
+Trabalho de Parto Prematuro (TPP)
+
+        O parto pré-termo (entre 22ª e 37ª semana) é responsável por 75% da
+mortalidade neonatal e 50% das lesões neurológicas em crianças. O fator de risco
+mais claramente definido é o antecedente de parto prematuro em uma gestação
+prévia (FESCINA et al, 2007).
+        Com o avanço e a melhoria nos cuidados com o recém-nascido pré-termo,
+novas definições foram desenvolvidas. Por exemplo, a grande preponderância de
+mortalidade e morbidade grave ocorre no
+        parto pré-termo antes de 34 semanas, e alguns clínicos consideram 34
+semanas o limite para a prematuridade significativa. O “peso muito baixo ao nascer”
+(crianças pesando 1500 g ou menos) e o “peso extremamente baixo ao nascer”
+(aquelas que pesam 1000g ou menos) são também expressões muito utilizadas para
+descrever as crianças prematuras (LEVENO, 2010).
+        Os profissionais da atenção primária devem estar atentos para os fatores de
+risco (estresse familiar, tabagismo, uso de álcool e drogas, DST, gestante de baixo
+peso), orientar as gestantes sobre os sinais e sintomas e realizar diagnóstico precoce.
+
+
+
+
+Gestação Prolongada
+
+        A gestante que apresenta IG > 42 semanas considera-se gestação pós-termo
+                                                  a
+e quando atinge 41 semanas, pós-data. Na 41 semana a gestante deverá ser
+encaminhada para referência hospitalar (CO), onde será avaliada com provas de
+vitalidade fetal e tomada conduta de promoção do nascimento. O início precoce do
+pré-natal com a determinação da IG diminui o risco de pós-datismo.
+
+
+
+       38
+Ruptura Prematura de Membranas
+
+        A ruptura prematura de membranas é a que ocorre antes do início do
+trabalho de parto, independente da idade gestacional. É a principal causa de TPP e
+ocorre em torno de 10% de todas as gestações, na maioria das vezes em torno da
+37ª semana. Os fatores predisponentes são: incontinência istmocervical, inserção
+baixa de placenta, macrossomia, poliidrâmnios, trabalho de parto pré-termo e
+infecções. O diagnóstico é realizado pela história de perda de líquido e pelo exame
+físico. A rotina do exame físico deve ser seguida:
+        -       paciente em posição ginecológica
+        -       inspeção da genitália externa
+        -       lavagem dos genitais externos com iodofor aquoso
+        -       usar espéculo esterelizado para visualização do orifício cervical externo.
+
+       Deve-se também estabelecer a idade gestacional, avaliar se a paciente
+encontra-se em trabalho de parto, auscultar BCFs, identificar sinais clínicos de
+infecção. O profissional da atenção primária deve fazer o diagnóstico e, mesmo em
+caso de dúvida, deve encaminhar para o centro obstétrico.
+       Obs importante: não realizar toque vaginal, a menos que a paciente encontra-
+se em franco trabalho de parto.
+
+
+
+
+Asma
+
+        Manejo da asma ambulatorial depende da gravidade da doença. Para asma leve, β-
+agonistas inalatórios conforme a necessidade são, em geral, suficientes. Os corticóides
+inaláveis são o tratamento preferido para a asma persistente. O tratamento da asma aguda
+é semelhante àquele para a mulher não grávida com asma. Uma exceção é o limiar
+significativamente mais baixo para a hospitalização da mulher grávida. A maioria se
+beneficiará com a hidratação intravenosa para auxiliar a retirada das secreções
+pulmonares (LEVENO, 2010).
+
+
+
+Anemia
+
+        É considerado anemia quando os valores de hemoglobina encontram-se
+menores de 11 g/dL no primeiro e terceiro trimestres, e menos de 10,5 g/dL no
+segundo trimestre. Se a hemoglobina se situa entre 7,0 e 9,0 g/dL se considera
+que a anemia é moderada e quando é menor que 7,0 g/dL que a anemia é severa.
+As causas mais comuns de anemia durante a gestação e o puerpério são a deficiência
+de ferro e a perda de sangue aguda, mas é necessário ter em mente que a anemia
+pode ter mais que uma causa, tal como se vê na deficiência de vitamina A, B12,
+piridoxina, processos inflamatórios crônicos (HIV, malária e infestações parasitarias)
+(BRASIL, 2006).
+        Na anemia ferropênica, além do déficit de hemoglobina, encontramos glóbulos
+vermelhos hipocrômicos e microcíticos. A segunda causa de anemia nutricional na
+
+
+
+                                                                                       39
+gestação é a deficiência de folato, que aparece em função da ingesta, em geral,
+pobre e da demanda aumentada; aí os glóbulos vermelhos se apresentam
+megaloblásticos e macrocíticos. Essas características dos glóbulos vermelhos estão
+presentes nas anemias por deficiência de vitamina B12, que é a terceira forma mais
+comum de anemia nutricional.
+       Estratégias de prevenção:
+
+       - Modificar a dieta dando preferência aos alimentos ricos em ferro e ácido
+       - Fortificar os alimentos de consumo habitual com ferro e ácido fólico.
+
+       Suplementar com medicamentos que contenham ferro e ácido fólico. Oferecer
+60 mg de ferro elementar por dia desde o início da gestação até 3 meses depois
+do parto. O ácido fólico deve ser oferecido 3 meses antes da gestação e todo o 1º
+trimestre para a prevenção de defeitos congênitos.
+       Manejo da anemia:
+
+       Tratar as infecções/infestações. Tratar a causa que provoca a condição e
+simultaneamente está indicado iniciar com 120 mg de ferro elementar por dia e 0,4
+mg de ácido fólico. Recomenda-se a realização de exame parasitológico de fezes
+em gestantes de risco e com condição socioeconômica desfavorecida; o tratamento
+das parasitoses deve ser realizado ainda na gestação, logo após as 16-20 semanas
+para evitar os potenciais teratogênicos das drogas e a soma de seu efeito à emese da
+gravidez (BRASIL, 2006).
+
+                            Orientar sinais de Trabalho de parto
+               Contrações
+               Perda de tampão
+
+                                   Orientar sinais de alerta
+              Qualquer membro da equipe deve estar apto a orientar a gestante para
+       avaliação na unidade de saúde no caso de: febre, calafrios, corrimento com
+       mau cheiro, perda de sangue, palidez, contrações uterinas frequentes,
+       ausência de movimentos fetais, mamas endurecidas, vermelhas e quentes e
+       dor ao urinar.
+
+
+                Orientar e identificar os sinais de alerta que exigem avaliação
+                                   no centro obstétrico
+   •   Síndromes hemorrágicas;
+   •   Suspeita de pré-eclâmpsia (PA> 140/90 + proteinúria);
+   •   Sinais premonitórios de eclâmpsia em gestantes hipertensas: escotomas
+       cintilantes, cefaleia típica occipital, epigastralgia ou dor intensa no hipocôndrio
+       direito;
+   •   Crise hipertensiva (PA > 160/110);
+   •   Amniorrexe prematura: perda de líquido vaginal
+
+
+
+
+       40
+Atenção ao Puerpério
+
+        No âmbito da Rede Cegonha, preconiza-se a realização da “Primeira Semana
+ de Saúde Integral” (PSSI). Recomenda-se uma visita domiciliar na primeira semana
+ após a alta do bebê. Caso o RN tenha sido classificado como de risco, a visita
+ deverá acontecer nos primeiros 3 dias após a alta. O retorno da mulher e do
+ recém-nascido ao serviço de saúde e uma visita domiciliar, entre 7 a 10 dias após o
+ parto, devem ser incentivados desde o pré-natal, na maternidade e pelos agentes
+ comunitários de saúde na visita domiciliar.
+        Objetivos: Avaliar o estado de saúde da mulher e do recém-nascido;
+       Orientar e apoiar a família para a amamentação; Orientar os cuidados básicos
+ com o recém-nascido; Avaliar a interação da mãe com o recém-nascido; Identificar
+ situações de risco ou intercorrências e conduzi-las; Orientar o planejamento
+ familiar.
+
+
+
+
+                                                                                  41
+Orientações a Serem dadas a Puérpera
+
+        -     higiene, alimentação, atividades físicas (vide capítulo 6);
+        -     atividade sexual, informando sobre prevenção de DST/Aids;
+        -     cuidado com as mamas, reforçando a orientação sobre o aleitamento
+        -     considerar a situação das mulheres que não puderam amamentar;
+estando recomendado enfaixar as mamas, evitar o esvaziamento, analgesia,
+compressas frias e restrição hídrica (FREITAS et al, 2011). Uso de medicamentos
+como estrogênios e inibidores da prolactina, como bromocriptina podem ser
+utilizados, mas podem ter efeitos colaterais graves (GALÃO, A.O; HENTSCHEL, 2011).
+        -     cuidados com o recém-nascido;
+        -     direitos da mulher: reprodutivos, sociais e trabalhistas (ver capítulo 12).
+        -     orientar sobre planejamento familiar e métodos contraceptivos (ver
+item 19.5)
+        -     aplicar vacinas, dupla tipo adulto (para completar esquema vacinal
+iniciado na gestação, se necessário) e tríplice viral, se necessário (ver Capítulo 4
+sobre imunizações);
+        -     oferecer teste anti-HIV e VDRL, com aconselhamento pré e pós-teste,
+para as puérperas não aconselhadas e testadas durante a gravidez e o parto;
+        -     prescrever suplementação de ferro: 60mg/dia de ferro elementar,
+até três meses após o parto, para gestantes sem anemia diagnosticada (BRASIL,
+2006);
+        -     registrar informações em prontuário e dar alta do programa SIS PRE-
+NATAL WEB, informando a data do parto e o tipo de parto.
+
+
+
+       Sinais e sintomas comuns no puerpério e manejo. Adaptado do CLAP 2007.
+              Sinais e Sintomas                                              Manejo
+                                                Descartar infecção ou cicatrização defeituosa da episiotomia.
+     Dor perineal, lóquios fétidos, dor nas
+                                               Recomendar frio local, analgésicos e se, não efetivos, considerar
+              relações sexuais.
+                                                    anti-inflamatórios não esteróides locais ou via oral
+                                               Avaliar a episiotomia. Aconselhar lubrificantes de base aquosa nas
+            Dor nas relações sexuais
+                                                                            relações
+   Dor de cabeça pós anestesia epidural ou
+                                                             Analgésicos e repouso sem travesseiro
+                  Raquídea
+                                                Investigar a presença de outros sintomas e em especial anemia.
+               Fadiga persistente              Averiguar a necessidade de incremento da alimentação, aporte de
+                                                                    ferro e exercícios físicos.
+                                                   Analgesia e banhos de assento. Se severas, edemaciadas e
+                 Hemorróidas
+                                                                          prolapsadas,
+                                               Recomendar dieta rica   em ao
+                                                                    referir fibras e líquidos. Pode se usar laxante
+                                                                                proctologista.
+                  Constipação
+                                                                     suave (óleo mineral).
+                                              Avaliar severidade, duração, frequencia. Se persistir mais de 1 mês:
+              Incontinência fecal
+                                                                               referir
+             Incontinência urinária                Ensinar exercícios do assoalho pélvico. Se persistir: referir
+
+
+
+
+       42
+Uso de Método Anticoncepcional Durante o Aleitamento
+
+        A escolha do método deve ser sempre personalizada. Para orientar o uso de
+métodos anticoncepcionais no pós-parto, deve-se considerar: - o tempo pós-parto, o
+padrão da amamentação, o retorno ou não da menstruação, os possíveis efeitos dos
+anticoncepcionais hormonais sobre a lactação e o lactante (BRASIL, 2006). Quanto ao
+retorno a atividade sexual, não há período ideal definido, no entanto há de se orientar o
+casal para as particularidades deste período (mudança dos papéis sociais, diminuição da
+libido), bem como das mudanças na fisiologia e, neste aspecto, é importante a prescrição
+de lubrificantes vaginais (FREITAS et al, 2011).
+        Métodos anticoncepcionais:
+        - O DIU pode ser opção para a mulher na fase de amamentação e pode ser inserido
+imediatamente ou a partir de quatro semanas após o parto. O DIU está contra-indicado
+para os casos que cursaram com infecção puerperal, até três meses após a cura;
+        - Anticoncepcional injetável trimestral (com progestogênio isolado) –
+acetato de medroxiprogesterona 150mg: deve-se indicar o início do uso desse método,
+nas lactantes, a partir de seis semanas após o parto. Seu uso tem sido preferencial nas
+situações de doenças maternas como diabetes, hipertensão e outras;
+        - O anticoncepcional hormonal oral combinado não deve ser utilizado em
+lactantes, pois interfere na qualidade e quantidade do leite materno, e pode afetar
+adversamente a saúde do bebê
+        - A laqueadura tubária, por ser método definitivo, deve respeitar os preceitos
+legais e, se indicada, a sua realização deverá ser postergada para após o período de
+aleitamento e, nessa situação, introduzido o método contraceptivo transitório;
+
+
+
+Intercorrências que se Caracterizam como Sinais de Alerta no
+Puerpério
+
+        Quadro 2. Sinais e sintomas, condição de alerta e manejo inicial.
+                     Sinais           e                  C                                     M
+           sintomas
+   Perda súbita ou continua de sangue           ondição                             anejo
+                                                                       Avaliar, estabilizar clinicamente e
+    Fraqueza, tontura ou palpitações/       Hemorragia pós-parto
+                                                                             encaminhar para CO.
+               Taquicardia
+                                                                          Procurar realizar diagnóstico
+   Febre, calafrios, dor abdominal e/ou
+                                                  Infecção                         diferencial
+              lóquios fétidos
+                                                                      e tratar conforme diagnóstico
+    Cefaléia acompanhada por um ou                                       e/ou encaminhar ao CO
+   mais sintomas após até 72 horas do
+                                                                     Avaliar, estabilizar (ver capítulo 10) e
+                  parto:                   Pré-eclâmpsia/eclâmpsia
+                                                                               encaminhar ao CO
+           • distúrbios visuais
+           • náuseas, vômitos
+
+  Dor unilateral na panturrilha, eritema
+                ou edema                     Tromboembolismo                  Encaminhar para CO
+    Respiração curta ou dor torácica
+        Fonte: adaptado do NICE, 2006
+
+      A seguir, serão descritas algumas patologias encontradas no período puerperal e o
+seu manejo. Se necessário tratamento medicamentoso, consulte o capítulo 9.
+
+                                                                                                  43
+Endometrite
+
+        Uma endometrite pós-parto leve, ou seja, sem repercussão no estado geral da
+paciente, pode ser tratada de ambulatório com antibiótico via oral. São usadas drogas de
+amplo espectro como a ampicilina. A melhora deverá ocorrer em 48 a 72 horas e, se
+houver persistência de febre após este intervalo, referir a paciente ao hospital, pela
+possibilidade de restos placentários. Na endometrite pós- parto com peritonite (íleo,
+distensão abdominal e irritação peritoneal) bem como na endometrite pós- cesareana, a
+paciente deverá ser referida a hospitalização para tratamento intravenoso até a paciente
+estar afebril por 48 horas (FREITAS et al, 2011).
+
+
+
+Infecção da ferida Operatória (cesárea) ou da Episiotomia (parto
+vaginal)
+
+        A ferida operatória deve ser explorada e se a infecção for superficial, não
+envolvendo fáscia, são orientados curativos 2 a 3 vezes ao dia com soro fisiológico. Se a
+infecção comprometer a aponeurose e houver deiscência há necessidade de desbridamento
+cirúrgico e correção da área de deiscência, por isto a paciente deverá ser referida ao
+hospital. O uso de antibióticos, cefalosporina de primeira geração (cefalexina por 7 dias),
+está indicado, sem necessidade de internação, somente quando se tratar de infecção que
+se estender além dos limites cirúrgicos (tendo como sinal a celulite), e observando a
+cicatrização por segunda intenção. Infecções mais extensas, além de maior cobertura de
+antibióticos, necessitam eventualmente de desbridamento, sendo necessário internar
+(FREITAS et al, 2011).
+        A infecção de episiotomia deve ser explorada e os fios de sutura removidos,
+orientando banhos de assento com água morna e soluções antissépticas. Lembrar de
+examinar a região anal, para avaliar a integridade do esfíncter anal e da mucosa anal.
+Quando não ocorrer a cicatrização normal, considerar possível perineorrafia quando se
+tiver formado tecido de granulação saudável (FREITAS et al, 2011). Não havendo
+melhora, presença de hematoma ou sintomas sistêmicos de infecção (febre, calafrios), a
+paciente deve ser referida ao CO.
+
+
+
+Mastite e Fissura Mamilar
+
+        Usar analgésico/antitérmico e antibióticos penicilinase resistentes, ou as
+cefalosporinas (SALES et al, 2000). Também pode ser usada dicloxacilina, sendo que o
+uso de cefalexina por sete dias e orientação para não suspender a amamentação são
+suficientes (FREITAS et al, 2011). No caso de já ter formado um abcesso mamário, a
+puérpera deve ser encaminhada para drenagem e poderá ser necessário suspender a
+amamentação (FREITAS et al, 2011).
+        As fissuras de mamilo devem ser manejadas com orientação para: manter a região
+
+       44
+seca e areada; expor os mamilos ao sol; fazer expressão do leite no final da mamada
+passando pela região mamilo-areolar e deixar secar naturalmente e, não usar
+medicamentos tópicos (BRASIL, 2009). Deve-se estar atento para possível pega incorreta
+do bebê, o que é causa comum de fissura mamilar.
+
+
+
+Depressão Puerperal
+
+        A depressão puerperal tem uma prevalência de 10 a 15%. Devem ser adotadas
+medidas de apoio com médico e/ou enfermeira ou técnico em saúde mental, que devem
+tratar a depressão, de maneira eficaz, em 70% dos casos. A equipe como um todo deve
+estar atenta à saúde mental da mãe. O NICE (2010) descreve uma forma simplificada de
+rastreamento de transtorno metal que podem ser aplicado por qualquer profissional da
+equipe de APS. As visitas domiciliares podem ser ainda mais úteis quando se suspeita de
+depressão puerperal, principalmente pelo risco de negligência e/ou maus tratos ao bebê. É
+possível utilizar drogas antidepressivas seguras para o período da lactação, se necessário
+(FRIEDMAN; RESNICK, 2009). Caso a paciente não consiga seguir o acompanhamento
+proposto ou não houver melhora do quadro, deverá ser referenciada para profissional da
+saúde mental (interconsulta ou referência secundária. (PORTO ALEGRE. Secretaria
+Municipal da Saúde, 2006; FREITAS et al, 2011).
+        Alguns fatores de risco para depressão puerperal são: primiparidade, gestação não
+planejada, mãe jovem ou mãe solteira, prematuridade, baixo peso ao nascer (PORTO
+ALEGRE. Secretaria Municipal da Saúde, 2006) e a ocorrência de depressão puerperal em
+gestação anterior (NICE, 2010).
+
+
+            Este material é uma Reprodução Parcial do Manual do GHC – Atenção à Saúde da Gestante em
+     APS/ Organização de Maria Lucia Medeiros Lenz, Rui Flores. – Porto Alegre: Hospital Nossa Senhora da
+         Conceição, 2011. O livro poderá ser acessado na integra na página do Grupo Hospitalar Conceição
+                                http://www2.ghc.com.br/GepNet/publicacoes/atencaosaudedagestante.pdf
+
+
+         Graus de Recomendação (resumo com enfoque de terapia/prevenção e etiologia/risco)
+
+          A: ensaios clínicos randomizados e revisão sistemática de ensaios clínicos randomizados
+ consistentes.
+          B: estudos de coorte, caso-controle e ecológicos e revisão sistemática de estudos de coorte
+ ou caso- controle consistentes ou ensaios clínicos randomizados de menor qualidade.
+          C: séries de casos, estudos de coorte e caso-controle de baixa qualidade.
+          D: opiniões de especialistas sem maior evidência explícita ou baseadas em fisiologia.
+          Fonte: Centre for Evidence-Based Medicine CENTRE FOR EVIDENCE-BASED MEDICINE. Levels of
+ evidence. Disponível em:
+          <http://www.cebm.net/index.aspx?o=1025>. Acesso em: 24/01/12011
+
+
+
+
+                                                                                                      45
+                PLANEJANDO UM PARTO SEGURO
+                  SÓ ir para maternidade quando em Trabalho de Parto ATIVO
+
+                          DURANTE O TRABALHO DE PARTO
+
+      1) Escolha de Local de Parto
+      2) Direito a Acompanhante e Doula
+      3) Procedimentos questionáveis na maternidade:
+               - Lavagem intestinal
+               - Tricotomia (raspagem pêlos pubianos)
+               - Acesso venoso e ocitocina rotineira
+               - Manuntencão de Jejum
+               - Rompimento da bolsa somente informado e justificado
+      4) Liberdade de movimentos
+      5) Acesso a meios não farmacológicos para alivio da dor (banho, massagem,
+acupuntura)
+      6) Consentimento informado para Analgesia de parto
+
+                                     DURANTE O PARTO
+
+          (Conhecer indicações de cesareana e funcionamento do partograma)
+
+          1) Liberdade para escolher posição de parto e evitar posição deitada
+          2) Não aceitar pernas presas em perneiras ou estribos
+          3) Episiotomia apenas se for necessário – orientar preparo do períneo com óleo
+vegetal
+          5) Clampeamento do cordão apenas depois que parar de pulsar.
+          6) O pai ou acompanhante corta o cordão umbilical.
+          7) Contato precoce pele-a-pele por no mínimo 1hora antes do primeiro banho
+          8) Bebê amamentado assim que possível
+
+                                          PÓS-PARTO
+
+         1) Alojamento conjunto 24 horas
+         2) Livre demanda ao Aleitamento Materno. Questionar complementação com leite
+artificial
+
+
+
+
+          46
+47
+                                                    REDE CEGONHA – SANTA CATARINA
+                                       Critérios para Encaminhamento de Serviços
+                                          Ambulatoriais de Gestação Alto Risco
+
+                                                           CLASSIFICAÇÃO DE RISCO GESTACIONAL
+                                                           RISCO.................10 ou + Pontos ALTO
+                                                           RISCO................ 5 a 9 Pontos   MÉDIO
+                                                           RISCO................ até 4 Pontos  BAIXO
+
+
+
+
+1 – IDADE:                                                       5. AVALIAÇÃO NUTRICIONAL:                                   7 - PATOLOGIAS DE RISCO ATUAL: OBST.
+
+(-) de 15 anos....................................1             Baixo Peso(IMC<18, 5kg/m2) e/ou                              + GINEC.
+
+De 15 a 34 anos................................0                 ganho de peso inadequado e/ou
+                                                            anemia................................................1          Ameaça de Aborto ..........................5
+(+) de 35 anos...................................1                                                                           Anom. do trato Genitourinario .........5
+                                                            Peso Adequado (IMC 18, 5-24, 9kg/m2)
+                                                                                                                             Placenta Prévia ...............................10
+2 – SITUAÇÃO FAMILIAR                                       ............................................................0
+                                                                                                                             Câncer Materno ..............................10
+Situação Famíliar Instável                                  Sobrepeso(25-29, 9kg/m2).................1                       Doença Hemolítica ..........................10
+ Não..................................................0     Obesidade (IMC>30kg/m2).................5                        Esterelidade Tratada .......................5
+ Sim...................................................1     6 – ANTECEDENTES OBSTÉTRICOS:                                   Isoimunização .................................10
+                                                                                                                             Neoplasias Ginecológicas ...............10
+Aceitação de GRAVIDEZ:                                       Abortos até 2 ............................................5
+                                                                                                                             Mal Formações Congénitas.............10
+ Aceita...............................................0     Abortos espontâneos + 2..........................10
+                                                                                                                             Crescimento Uterino Retardado ......10
+ Não Aceita........................................1        Natimorto...................................................5
+                                                                                                                             Polihidramnio/Oligoidramnio............10
+                                                            Prematuro...................................................5
+                                                                                                                             Citologia Cervical Anormal(Nicl-ll-lll) 10
+3 – ESCOLARIDADE:                                           Óbito Fetal..................................................5
+                                                                                                                             Doença Hipertensiva da Gestação ..10
+Sabe Ler e Escrever:                                        Eclampsia..................................................10
+                                                                                                                             Diabetes Gestacional ......................10
+                                                            Placenta Prévia...........................................5
+  Sim.................................................0     Descol. Prem. de Placen.............................5
+                                                                                                                             Gemelar ..........................................10
+  Não................................................1                                                                       Incomp. Istmo Cervical ....................10
+                                                            Incompetência Istmo Cervical ..................10
+                                                            Restrição de Cresc. Intrauterino.................5
+4 – HÁBITOS:                                                Malformação Fetal .....................................5
+                                                                                                                             MÉDICAS + CIRURG
+Tabagista:                                                  Último Parto (-) de 12 meses......................2
+  Sim.................................................2                                                                      Cardiopatias ....................................10
+                                                            + 1 Filho Prematuro ................................ 10
+                                                             Pre eclampsia.......................................... 5       Varizes acentuadas .........................5
+  Não................................................0                                                                       Pneumopatia Grave ........................10
+                                                                                                                             Diabetes Mellitus .............................10
+                                                                                                                             Doenças Auto-imunes(Colagenose) 10
+        *Fatores sócio econômicos não são critérios isoladamente para                                                        Doença Psiquiátrica ........................5
+encaminhamento ao Pré Natal de Alto Risco (PNAR). Merecem                                                                    Doença Renal Grave .......................10
+atendimento diferenciado na Atenção Básica.                                                                                  Epilepsia e Doença Neurológica......10
+                                                                                                                             Hemopatias .....................................10
+        PNAR: Deve conter obrigatoriamente itens dos quadros 5 e\ou
+                                                                                                                             Hipertensão Arterial ........................10
+6 e\ou 7 da classificação acima (somando 10 ou mais pontos).                                                                 Infecção Urinária de repetição
+         Médio Risco: Somatório de 5 a 9 pontos deve receber                                                                 (pielonefrite ou infecções 3x ou +) ..10
+atendimento de Pré Natal na Atenção Básica pelo médico intercalado                                                           Infecções Grave ..............................10
+                                                                                                                             AIDS/HIV ........................................10
+com o enfermeiro.
+                                                                                                                             Sífilis ...............................................10
+         Baixo Risco: Somatório de até 4 pontos deve receber                                                                 Tuberculose ....................................10
+atendimento intercalado de Pré Natal na Atenção Básica pelo                                                                  Toxoplasmose .................................10
+enfermeiro e pelo médico.                                                                                                    Dep. de Drogas ...............................10
+                                                                                                                             Alcoolismo.......................................10
+                        Seguir fluxograma de pré natal.
+                                                                                                                             Trombofilia ......................................10
+                                                                                                                             Endocrinopatias ..............................10
+                                                                                                                             Alterações da .................................10
+
+
+                             Baseado nas publicações do MS: Manual Técnico Gestação de Alto Risco e
+                      Caderno de Atenção Básica Nº 32- Atenção ao Pré Natal de Baixo Risco e Material
+                      Fundação SESP.
+
+
+                         48
+

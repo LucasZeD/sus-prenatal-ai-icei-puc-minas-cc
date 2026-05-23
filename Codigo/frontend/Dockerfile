@@ -5,6 +5,10 @@ WORKDIR /app
 ARG VITE_API_BASE_URL=/
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
+# Vazio por omissão: sem URL o build omite o botão na landing (ver LandingPage.tsx).
+ARG VITE_LANDING_FEEDBACK_FORM_URL
+ENV VITE_LANDING_FEEDBACK_FORM_URL=$VITE_LANDING_FEEDBACK_FORM_URL
+
 COPY package.json package-lock.json ./
 RUN npm ci
 
