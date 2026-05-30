@@ -390,15 +390,79 @@ Todo o código-fonte do ecossistema e suas respectivas configurações de \texti
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Testes}
+% Testes Executados + Resultados
 
-% O plano de testes inicial foca na integridade do fluxo de dados e na precisão das orientações geradas. Foram estipulados os seguintes cenários:
+\section{Avaliacao e Analise de Desempenho Do Pipelone RAG}
+
+% Introducao da secao explicando que o RAG é avalido em duas etapas: Recuperacao e Geracao
+Para garantir o rigor na avaliação do sistema proposto, o pipeline RAG foi submetido a uma bateria de testes utilizando um dataset de validação (Ground Truth).
+Este conjunto contém perguntas reais de obstetrícia, formuladas sob a ótica de médicos e enfermeiros durante consultas de pré-natal, associadas às respostas exatas extraídas dos manuais do Ministério da Saúde.
+
+\subsection{Avaliacao do moduilo de recuperacao de trechos semanticos (Retriever)}
+% Consolidar as ideias sobre inferencia semantica e chunks
+% Referencia: https://arxiv.org/abs/2309.15217
+Nesta etapa, comprova-se a capacidade do banco de dados vetorial de retornar os trechos semânticos mais relevantes para a consulta da gestante.
+
+\begin{itemize}
+  \item \textbf{Accuracy/Hit@k}: Avalia a proporção de consultas em que pelo menos um documento relevante foi recuperado nos $k$ primeiros resultados.
+  \begin{equation}
+    Accuracy/Hit@k = \frac{TP + TN}{TP + TN + FP + FN}
+  \end{equation}
+  
+  \item \textbf{Recall@k}: Mede a média harmônica entre a Precisão e o Recall, oferecendo uma métrica balanceada que penaliza tanto o excesso de falsos positivos (ruído no contexto) quanto falsos negativos (omissão de protocolo).
+  \begin{equation}
+    Recall@k = \frac{TP}{TP + FN}
+  \end{equation}
+
+  \item \textbf{F1-Score@k}: Combina precisão e recall, penalizando respostas excessivamente longas ou evasivas.
+  \begin{equation}
+    F1-Score@k = 2 * \frac{Precision@k * Recall@k}{Precision@k + Recall@k}
+  \end{equation}
+\end{itemize}
+
+\subsection{Avaliacao do modulo de geracao de resposta (Generator)}
+Com a disponibilidade dos trechos recuperados, avalia-se a capacidade do LLM de sintetizar a resposta clínica sem introduzir alucinações.
+
+\begin{itemize}
+  \item \textbf{Faithfulness}: Avalia se a resposta gerada pelo LLM foi baseada estritamente no contexto recuperado, penalizando severamente qualquer alucinação devido à criticidade dos protocolos de saúde.
+  Em frameworks de avaliação modernos, pode ser calculada como a razão de sentenças factualmente suportadas pelo contexto:
+  \begin{equation}
+    Faithfulness = \frac{|V_{support}|}{|V_{total}|}
+  \end{equation}
+  Onde $V_{support}$ é o número de afirmações suportadas pelo contexto e $V_{total}$ é o total de afirmações na resposta.
+
+  \item \textbf{Relevance}: Mede o quão direta e útil é a resposta para a pergunta clínica, penalizando saídas prolixas, evasivas ou incompletas.
+  \begin{equation}
+  \end{equation}
+\end{itemize}
+
+\section{Estudo Comparativo de Arquitetura: Modelos Locais vs. Nuvem}
+% Aqui entra a sua ideia de provar que o modelo pequeno supera o grande usando RAG.
+% Referencia: https://arxiv.org/abs/2309.15217
+Para justificar as decisões de design arquitetural, especificamente a adoção de inferência local para preservação do sigilo médico, foi realizado um teste de benchmark comparativo.
+O objetivo é comprovar empíricamente que um modelo local de menor escala, como o Qwen3.5 (9B), quando alimentado com os chunks semânticos corretos via RAG, obtém desempenho superior ou equivalente a modelos proprietários de larga escala operando em zero-shot sem contexto adicional (zero-shot).
+
+\section{Efetividade Computacional e Latência}
+Um sistema de suporte à decisão clínica não pode introduzir gargalos operacionais. O desempenho de infraestrutura foi monitorado através de:
+\begin{itemize}
+\item \textbf{Time To First Token (TTFT):} O tempo decorrido até a IA começar a gerar a resposta. Na prática clínica de médicos e enfermeiros, um TTFT superior a 2-3 segundos quebra o fluxo da consulta e inviabiliza a adoção.
+\item \textbf{Latência de Recuperação (Retrieval Latency):} O tempo despendido exclusivamente na busca de similaridade no banco de dados vetorial, isolando a performance de I/O do tempo de inferência do LLM.
+\end{itemize}
+
+% \section{Avaliação Clínica e de Segurança (Expert Evaluation)}
+% Além das métricas automatizadas, o agente IA foi submetido a casos clínicos simulados, avaliados sob o crivo de especialistas (médicos e enfermeiros).
 % \begin{itemize}
-%   \item \textbf{Testes Funcionais:} Validação dos esquemas de dados (Zod) para garantir que aferições clínicas (ex: PA, Peso) não aceitem valores fora dos limites biológicos.
-%   \item \textbf{Testes de Segurança:} Verificação do isolamento de rotas e mascaramento de dados em logs.
-%   \item \textbf{Testes de Prompt (RAG):} Avaliação qualitativa comparando as sugestões da IA com os protocolos físicos do Ministério da Saúde para identificar possíveis divergências ou alucinações.
+% \item \textbf{Validação por Pares:} Um comitê de 3 a 5 profissionais de saúde avaliou uma amostra de 30 respostas do sistema utilizando uma escala Likert (1 a 5) nos critérios de \textit{Acurácia Científica} e \textit{Risco de Dano à Paciente}.
+% \item \textbf{Taxa de Recusa Apropriada (Refusal Rate):} A porcentagem de vezes que o sistema, atuando sob as diretrizes de IA Responsável, recusou-se corretamente a responder perguntas que extrapolam o escopo dos manuais de pré-natal do Ministério da Saúde.
 % \end{itemize}
-% aumentar modelo x quantizar grafico
+
+% \section{Análise de Impacto na Carga Cognitiva}
+% A premissa central da solução é mitigar a carga mental do profissional. O experimento foi conduzido dividindo profissionais em dois grupos de controle (ou cenários de teste cruzado):
+% \begin{itemize}
+% \item \textbf{Cenário A (Controle):} Profissionais estratificando o risco gestacional usando apenas a interface padrão do CRM e a consulta manual aos PDFs do Ministério da Saúde.
+% \item \textbf{Cenário B (Proposto):} Profissionais realizando a mesma tarefa utilizando o CRM integrado ao agente IA.
+% \end{itemize}
+% A carga cognitiva foi medida comparativamente através do \textit{NASA Task Load Index (NASA-TLX)}, aliado ao tempo total de resolução do caso clínico.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
