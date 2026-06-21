@@ -1,16 +1,9 @@
 from __future__ import annotations
 
-import re
-
 from . import prompt_sanitize
-
-# CPF-like (11 digits), CNS (15 digits), email, phone patterns (BR)
-_CPF = re.compile(r"\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b|\b\d{11}\b")
-_CNS = re.compile(r"\b\d{15}\b")
-_EMAIL = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
-_PHONE = re.compile(r"\b(?:\+?55\s?)?(?:\(?\d{2}\)?\s?)?\d{4,5}-?\d{4}\b")
-# Rough RG / generic long digit runs (avoid over-masking short clinical numbers)
-_LONG_DIGITS = re.compile(r"\b\d{8,14}\b")
+from .pii_br import detect_regex_spans
+from .pii_merge import apply_masks, merge_spans
+from .pii_ner_client import detect_ner_name_spans
 
 
 def sanitize_for_model(text: str, *, max_fragment_chars: int | None = None) -> str:
@@ -20,12 +13,10 @@ def sanitize_for_model(text: str, *, max_fragment_chars: int | None = None) -> s
     t = prompt_sanitize.strip_untrusted_llm_text(text, max_chars=cap)
     if not t.strip():
         return ""
-    t = _EMAIL.sub("[EMAIL]", t)
-    t = _CPF.sub("[CPF]", t)
-    t = _CNS.sub("[CNS]", t)
-    t = _PHONE.sub("[TELEFONE]", t)
-    t = _LONG_DIGITS.sub("[NUM]", t)
-    return t.strip()
+    regex_spans = detect_regex_spans(t)
+    ner_spans = detect_ner_name_spans(t, max_chars=cap)
+    merged = merge_spans(t, [*regex_spans, *ner_spans])
+    return apply_masks(t, merged).strip()
 
 
 def sanitize_optional_block(raw: str | dict | None) -> str | None:

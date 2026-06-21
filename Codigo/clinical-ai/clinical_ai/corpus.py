@@ -2,10 +2,138 @@ from __future__ import annotations
 
 import json
 import logging
+import re
+import unicodedata
+from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
 log = logging.getLogger(__name__)
+
+_SUPPORTED_PATTERNS: tuple[str, ...] = ("**/*.jsonl", "**/*.md", "**/*.txt", "**/*.pdf", "**/*.docx")
+_DEMO_MARKERS: tuple[str, ...] = ("_exemplo", "exemplo.", "sample", "fixture", "benchmark")
+# Subpastas com fichas/registros clinicos — fora do corpus de protocolo do RAG.
+_RAG_SKIP_DIR_NAMES: frozenset[str] = frozenset({"cadernetagestante"})
+_YEAR_RE = re.compile(r"(19|20)\d{2}")
+_EDITION_RE = re.compile(r"\d{1,2}ed")
+
+
+def _normalized_stem(path: Path) -> str:
+    raw = unicodedata.normalize("NFKD", path.stem).encode("ascii", "ignore").decode("ascii")
+    return re.sub(r"[^a-z0-9]+", "", raw.lower())
+
+
+def _extract_year(path: Path) -> int:
+    years = [int(m.group(0)) for m in _YEAR_RE.finditer(path.stem)]
+    return max(years) if years else 0
+
+
+def _family_key(path: Path) -> str:
+    stem = _normalized_stem(path)
+    if "cadernetagestante" in stem:
+        return "caderneta_gestante"
+    if "manualgestacaoaltorisco" in stem or "gestacaoaltorisco" in stem:
+        return "gestacao_alto_risco"
+    if "guiaprenataldoparceiro" in stem:
+        return "guia_prenatal_parceiro"
+
+    tmp = _YEAR_RE.sub("", stem)
+    tmp = _EDITION_RE.sub("", tmp)
+    for token in ("rev", "revisao", "atualizada"):
+        tmp = tmp.replace(token, "")
+    return tmp or stem
+
+
+def _path_is_denylisted(path: Path, *, corpus_dir: Path) -> bool:
+    if path.name.lower() == "readme.md":
+        return True
+
+    rel_parts = [part.lower() for part in path.relative_to(corpus_dir).parts]
+    if any(part.startswith("notas_locais") for part in rel_parts):
+        return True
+    if any(part in _RAG_SKIP_DIR_NAMES for part in rel_parts):
+        return True
+
+    # Demo notes and local fixtures should never be indexed as clinical corpus.
+    if path.suffix.lower() in {".md", ".txt"}:
+        low_name = path.name.lower()
+        if any(marker in low_name for marker in _DEMO_MARKERS):
+            return True
+
+    return False
+
+
+def find_corpus_file(corpus_dir: Path, filename: str) -> Path | None:
+    """First file match by basename under corpus_dir (any depth)."""
+    if not corpus_dir.is_dir():
+        return None
+    name = filename.strip()
+    if not name:
+        return None
+    for path in corpus_dir.rglob(name):
+        if path.is_file():
+            return path
+    return None
+
+
+def document_rag_indexed(corpus_dir: Path, filename: str) -> bool:
+    """True if filename is selected for RAG (after denylist and edition dedup)."""
+    path = find_corpus_file(corpus_dir, filename)
+    if path is None:
+        return False
+    selected = {p.resolve() for p in iter_corpus_source_files(corpus_dir)}
+    return path.resolve() in selected
+
+
+def iter_corpus_source_files(corpus_dir: Path) -> list[Path]:
+    if not corpus_dir.is_dir():
+        return []
+
+    candidates: list[Path] = []
+    for pattern in _SUPPORTED_PATTERNS:
+        for path in sorted(corpus_dir.glob(pattern)):
+            if not path.is_file():
+                continue
+            if _path_is_denylisted(path, corpus_dir=corpus_dir):
+                log.info("RAG corpus skip (denylist): %s", path.relative_to(corpus_dir).as_posix())
+                continue
+            candidates.append(path)
+
+    by_family: dict[str, list[Path]] = defaultdict(list)
+    for path in candidates:
+        by_family[_family_key(path)].append(path)
+
+    kept: list[Path] = []
+    for _, group_paths in by_family.items():
+        if len(group_paths) == 1:
+            kept.append(group_paths[0])
+            continue
+
+        years = [_extract_year(p) for p in group_paths]
+        if max(years) <= 0:
+            kept.extend(group_paths)
+            continue
+
+        winner = max(
+            group_paths,
+            key=lambda p: (
+                _extract_year(p),
+                1 if "rev" in p.stem.lower() else 0,
+                1 if "manual" in p.stem.lower() else 0,
+                p.stat().st_mtime_ns,
+            ),
+        )
+        kept.append(winner)
+        for path in group_paths:
+            if path == winner:
+                continue
+            log.info(
+                "RAG corpus skip (superseded): %s kept=%s",
+                path.relative_to(corpus_dir).as_posix(),
+                winner.relative_to(corpus_dir).as_posix(),
+            )
+
+    return sorted(kept)
 
 
 def _read_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -113,26 +241,21 @@ def gather_documents(corpus_dir: Path) -> list[dict[str, Any]]:
         return []
 
     out: list[dict[str, Any]] = []
-    for pattern in ("**/*.jsonl", "**/*.md", "**/*.txt", "**/*.pdf", "**/*.docx"):
-        for path in sorted(corpus_dir.glob(pattern)):
-            if not path.is_file():
-                continue
-            if path.name.lower() == "readme.md":
-                continue
-            suf = path.suffix.lower()
-            try:
-                if suf == ".jsonl":
-                    out.extend(_read_jsonl(path))
-                elif suf in (".md", ".txt"):
-                    out.append(_read_plain(path))
-                elif suf == ".pdf":
-                    doc = _read_pdf(path)
-                    if doc:
-                        out.append(doc)
-                elif suf == ".docx":
-                    doc = _read_docx(path)
-                    if doc:
-                        out.append(doc)
-            except OSError as e:
-                log.warning("Skip %s: %s", path, e)
+    for path in iter_corpus_source_files(corpus_dir):
+        suf = path.suffix.lower()
+        try:
+            if suf == ".jsonl":
+                out.extend(_read_jsonl(path))
+            elif suf in (".md", ".txt"):
+                out.append(_read_plain(path))
+            elif suf == ".pdf":
+                doc = _read_pdf(path)
+                if doc:
+                    out.append(doc)
+            elif suf == ".docx":
+                doc = _read_docx(path)
+                if doc:
+                    out.append(doc)
+        except OSError as e:
+            log.warning("Skip %s: %s", path, e)
     return out

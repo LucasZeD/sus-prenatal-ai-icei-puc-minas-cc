@@ -2,6 +2,8 @@
 
 Coloque aqui **`.pdf`**, **`.docx`**, **`.md`**, **`.txt`** ou **`.jsonl`** (subpastas permitidas). Ficheiros `README.md` sao ignorados na indexacao.
 
+A subpasta **`CadernetaGestante/`** (caderneta, ficha perinatal, cartilha informativa) **nao entra no indice RAG** — sao registos/fichas, nao manuais de protocolo. Mantenha manuais e cartilhas tecnicas nas outras pastas (`PreNatal_*`, `Puerperio`, etc.).
+
 ## Pipeline
 
 1. **Ingestão** (`build_index` ao subir a API ou `POST /rag/test/rebuild`): `gather_documents` le os ficheiros, `chunk_text` corta troços (por defeito ~1650 caracteres com overlap ~120 — `RAG_CHUNK_MAX_CHARS` / `RAG_CHUNK_OVERLAP`), **Ollama** gera embeddings em lote quando `nomic-embed-text` (ou `RAG_EMBEDDING_MODEL`) está disponível. **Ao alterar o tamanho do chunk**, é obrigatório **rebuild com `force=true`** para voltar a incorporar o corpus.

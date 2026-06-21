@@ -22,6 +22,7 @@ export class OllamaStreamClient {
           model,
           prompt,
           stream: true,
+          
         }),
       });
 

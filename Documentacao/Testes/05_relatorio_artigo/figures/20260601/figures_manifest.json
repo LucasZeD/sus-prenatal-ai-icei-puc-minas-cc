@@ -1,0 +1,37 @@
+{
+  "date": "20260601",
+  "figures": {
+    "fig01_composicao_conjunto": {
+      "png": "figures/20260601/fig01_composicao_conjunto.png",
+      "pdf": "figures/20260601/fig01_composicao_conjunto.pdf"
+    },
+    "fig02_instrumento_dificuldade": {
+      "png": "figures/20260601/fig02_instrumento_dificuldade.png",
+      "pdf": "figures/20260601/fig02_instrumento_dificuldade.pdf"
+    },
+    "fig03_hit6_global_difficulty": {
+      "png": "figures/20260601/fig03_hit6_global_difficulty.png",
+      "pdf": "figures/20260601/fig03_hit6_global_difficulty.pdf"
+    },
+    "fig04_apr_ollama_difficulty": {
+      "png": "figures/20260601/fig04_apr_ollama_difficulty.png",
+      "pdf": "figures/20260601/fig04_apr_ollama_difficulty.pdf"
+    },
+    "fig05_tfr_traps": {
+      "png": "figures/20260601/fig05_tfr_traps.png",
+      "pdf": "figures/20260601/fig05_tfr_traps.pdf"
+    },
+    "fig06_pii_leak_by_type": {
+      "png": "figures/20260601/fig06_pii_leak_by_type.png",
+      "pdf": "figures/20260601/fig06_pii_leak_by_type.pdf"
+    },
+    "fig07_latency_breakdown": {
+      "png": "figures/20260601/fig07_latency_breakdown.png",
+      "pdf": "figures/20260601/fig07_latency_breakdown.pdf"
+    },
+    "fig08_providers_apr_global": {
+      "png": "figures/20260601/fig08_providers_apr_global.png",
+      "pdf": "figures/20260601/fig08_providers_apr_global.pdf"
+    }
+  }
+}

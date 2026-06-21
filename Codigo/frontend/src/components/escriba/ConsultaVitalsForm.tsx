@@ -1,3 +1,5 @@
+import { AssistantMarkdown } from '../AssistantMarkdown.js'
+
 export type ConsultaVitalsFormValues = {
   queixa: string
   conduta: string
@@ -82,8 +84,12 @@ export function ConsultaVitalsForm({ values, sugestaoIa, disabled, onChange, onS
             <p className="text-[10px] text-slate-500 mb-1">
               Nao entra no prontuario oficial ate voce salvar a conduta manualmente.
             </p>
-            <div className="min-h-[8rem] rounded-2xl border border-brand-pink/25 bg-brand-pink/5 p-4 text-sm text-brand-navy whitespace-pre-wrap">
-              {sugestaoIa?.trim() || 'Sem sugestao ainda.'}
+            <div className="min-h-[8rem] rounded-2xl border border-brand-pink/25 bg-brand-pink/5 p-4 text-sm text-brand-navy">
+              {sugestaoIa?.trim() ? (
+                <AssistantMarkdown markdown={sugestaoIa} />
+              ) : (
+                <span className="text-slate-500">Sem sugestao ainda.</span>
+              )}
             </div>
           </div>
         </div>

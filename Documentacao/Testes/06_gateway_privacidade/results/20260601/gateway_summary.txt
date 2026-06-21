@@ -1,0 +1,14 @@
+=== Gateway PII benchmark (50 frases) ===
+
+Entidades avaliadas: 76
+PII Leak Rate (global): 0.0% (0/76)
+
+Leak por tipo:
+  CNS: 0.0% (0/11)
+  CPF: 0.0% (0/12)
+  EMAIL: 0.0% (0/12)
+  FULL_NAME: 0.0% (0/21)
+  LONG_NUMERIC_CHAIN: 0.0% (0/8)
+  PHONE: 0.0% (0/12)
+
+Nota: marcador esperado para FULL_NAME: [NOME].

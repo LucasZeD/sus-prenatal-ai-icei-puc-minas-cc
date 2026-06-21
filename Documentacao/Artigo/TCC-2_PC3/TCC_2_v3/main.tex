@@ -14,18 +14,20 @@
 \usepackage{booktabs}
 \usepackage{caption}
 \usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{threeparttable}
 
 \usepackage[hidelinks]{hyperref}
      
 \sloppy
 
-\title{Digitalização da Caderneta da Gestante: Um Ecossistema de IA Responsável para Apoio à Decisão Clínica no Pré-Natal}
+\title{Digitalização da Caderneta da Gestante: Uma Arquitetura de IA Responsável para Apoio à Decisão Clínica no Pré-Natal}
 
 \author{Lucas Zegrine Duarte\inst{1}, Humberto Torres Marques Neto\inst{1}}
 
 \address{Instituto de Ciências Exatas e Informática\\
   Pontifícia Universidade Católica de Minas Gerais (PUC Minas)\\
-  Caixa Postal 1.686 – 30.535-901 – Belo Horizonte – MG – Brazil
+  Caixa Postal 1.686, 30.535-901, Belo Horizonte, MG, Brazil
   \email{\{humberto.neto, lucas.duarte\}@sga.pucminas.br}
 }
 
@@ -43,9 +45,9 @@
 \end{abstract}
 
 \begin{resumo}
-  A documentação de pré-natal no Brasil é fragmentação entre registros físicos e digitais e o uso de \textit{Modelos de Linguagem de Grande Escala} no setor público levanta riscos de privacidade e alucinação.
-  Este trabalho propõe uma arquitetura \textit{on-premise} que integra transcrição de voz local (\textit{Faster-Whisper}), \textit{Geração Aumentada por Recuperação} sobre manuais do Ministério da Saúde com orquestração via \textit{Ollama} e um gateway de privacidade dedicado para mascarar PII antes da inferência do modelo.
-  Para garantir a segurança clínica, aplica-se uma restrição de validação humana obrigatória. A contribuição principal é a materialização de um protótipo de alta fidelidade replicável e seguro.
+  A documentação de pré-natal no Brasil é fragmentada entre registros físicos e digitais, e o uso de Modelos de Linguagem de Grande Escala no setor público levanta riscos de privacidade e alucinação.
+  Este trabalho propõe uma arquitetura \textit{on-premise} que integra transcrição de voz local (\textit{Faster-Whisper}), Geração Aumentada por Recuperação sobre manuais do Ministério da Saúde com orquestração via \textit{Ollama} e um gateway de privacidade dedicado para mascarar PII antes da inferência do modelo.
+  Para garantir a segurança clínica, exige-se revisão médica antes de salvar qualquer registro (\textit{human-in-the-loop}). A contribuição principal é a implementação de um protótipo de alta fidelidade replicável e seguro.
   A principal limitação é a dependência de hardware local com alta capacidade de \textit{VRAM} para suportar inferências com baixa latência.
 \end{resumo}
 
@@ -60,10 +62,10 @@ No contexto do atendimento pré-natal, aplicações preditivas baseadas em apren
 Contudo, a mortalidade e morbidade materna no Brasil permanecem como desafios de saúde pública persistentes, frequentemente agravados por gargalos no acesso e registro adequado de dados durante a assistência \cite{AcessoPreNatal2018, Laurenti2010}.
 
 A documentação clínica no \textit{Sistema Único de Saúde} (SUS) enfrenta um cenário de fragmentação, exigindo que o profissional de saúde registre informações simultaneamente em plataformas digitais pelo e-SUS e em ferramentas físicas, como a Caderneta da Gestante.
-Essa dualidade impõe maior carga cognitiva durante as consultas, comprometendo o tempo de contato direto e humanizado com a paciente \cite{ThemeFilha2014, Rajpurkar2022}.
+Essa dualidade impõe maior carga cognitiva durante as consultas, podendo comprometer o tempo de contato direto e humanizado com a paciente \cite{ThemeFilha2014, Rajpurkar2022}.
 
-Para atenuar essa sobrecarga, o presente trabalho propõe a especificação de uma plataforma digital \textit{on-premise} que integra transcrição de voz para texto (\textit{Speech-to-Text}) com agentes de Inteligência Artificial baseados em \textit{Geração Aumentada por Recuperação} (RAG) facilitadores de conhecimento de bases de protocolos de cuidado pré-natal.
-A ideia principal é automatizar o preenchimento de formulários clínicos durante a consulta, e auxiliar o profissional no cuidado com a paciente utilizando como referências os protocolos oficiais do Ministério da Saúde disponíveis nas cartilhas de estratificação de risco.
+Para atenuar essa sobrecarga, o presente trabalho propõe a especificação de uma plataforma digital \textit{on-premise} que integra transcrição de voz para texto (\textit{Speech-to-Text}) e agentes de IA baseados em \textit{Geração Aumentada por Recuperação} (RAG).
+A plataforma busca automatizar o preenchimento de formulários clínicos durante a consulta e apoiar o profissional, com base em protocolos oficiais do Ministério da Saúde, no cuidado com a paciente.
 
 %\subsection{Justificativa}
 % Justificativa
@@ -81,42 +83,43 @@ No entanto, a implantação irrestrita de Modelos de Linguagem de Grande Escala 
 Portanto, a justificativa técnica deste projeto fundamenta-se na necessidade de estruturar uma arquitetura que:
 (i) assegure a governança absoluta dos dados por meio de processamento local e isolado;
 (ii) minimize o impacto das alucinações utilizando (\textit{RAG}) para ancorar o agente estritamente em protocolos de referência das cartilhas governamentais;
-(iii) adote um \textit{gateway} de privacidade dedicado aliado a estratégias de \textit{human-in-the-loop} para assegurar constante supervisão médica \cite{FrameworkGovBR2025};
-e (iv) incorpore mecanismos de anonimização e pseudonimização de \textit{PII} antes de submeter informações sensíveis aos modelos generativos.
+(iii) adote um \textit{gateway} de privacidade dedicado e um fluxo \textit{human-in-the-loop} para assegurar supervisão médica \cite{FrameworkGovBR2025};
+e (iv) incorpore mecanismos de detecção e mascaramento de \textit{PII} antes de submeter informações sensíveis aos modelos generativos.
 
 % Problema de Pesquisa
 
-A pesquisa baseia-se na seguinte pergunta norteadora: \textit{Como especificar e arquitetar um sistema de apoio ao pré-natal que reduza a carga cognitiva do profissional de saúde, garantindo privacidade local de dados (LGPD) e mitigando alucinações sem eximir a validação médica da tomada de decisão?}
+A pesquisa baseia-se na seguinte pergunta norteadora: \textit{Como especificar, implementar e avaliar um protótipo 'on-premise' para apoio documental ao pré-natal a partir de protocolos públicos, sem atribuir autonomia decisória ao modelo generativo?}
 
-Para responder a este problema geral, três subquestões operacionais são investigadas:
+Para responder a este problema geral, as seguintes subquestões operacionais são investigadas:
 \begin{itemize}
-  \item Como construir uma topologia de rede isolada em contêineres que impossibilite o vazamento de áudio ou dados textuais sensíveis para a internet pública?
-  \item Como mitigar situações em que o profissional confia excessivamente nas sugestões algorítmicas devido à fadiga por meio de um fluxo \textit{human-in-the-loop}?
-  \item Como avaliar a qualidade do modelo e da recuperação de informações na ausência de validação inicial em campo por um Comitê de Ética em Pesquisa?
+  	\item Como estruturar uma arquitetura local em contêineres que reduza o risco de exposição de áudio ou dados textuais sensíveis a serviços externos de geração e transcrição?
+  	\item Qual é o desempenho do módulo RAG na recuperação de documentos e trechos relevantes dos manuais oficiais de pré-natal?
+	\item Qual é a aderência das respostas geradas por um LLM local aos critérios de protocolo de atendimento pré-natal no SUS?
+	\item Em que medida um anonimizador de dados pessoais sensíveis mascara entidades antes da inferência pelo modelo generativo?
+	\item Quais são os custos de latência associados à execução local do protótipo em comparação com uma linha de base externa?
 \end{itemize}
 
 % Objetivo Geral
 
-Este projeto possui como objetivo geral especificar e arquitetar uma plataforma digital \textit{on-premise} para apoio ao pré-natal, integrando \textit{LLMs} fundamentada via \textit{RAG} para reduzir a carga cognitiva do atendimento, com foco em explicabilidade, privacidade e alinhamento às diretrizes da LGPD.
+Este projeto possui como objetivo geral especificar, implementar e avaliar uma plataforma digital \textit{on-premise} para apoio documental ao pré-natal, integrando \textit{LLMs} fundamentadas via \textit{RAG}, mascaramento de PII para apoiar o registro e a tomada de decisão clínica, com ênfase em explicabilidade, privacidade por desenho, auditabilidade e alinhamento às diretrizes públicas de saúde.
 
 % Objetivos Específicos
 
 Para atingir o objetivo geral, delineiam-se os seguintes objetivos específicos:
 
 \begin{enumerate}
-  \item Revisar a literatura sobre IA Responsável em saúde pública, focando em explicabilidade, privacidade e governança de dados no contexto do SUS;
-  \item Formalizar os requisitos técnicos e as histórias de usuário, mapeando a interação entre profissionais de saúde e o sistema para o suporte ao cuidado gestacional;
-  \item Projetar uma topologia de implantação on-premise replicável via contêineres (\textit{Docker}), garantindo a soberania dos dados.
-  \item Projetar e descrever o fluxo de dados integrando transcrição (\textit{STT}), um \textit{gateway} de privacidade dedicado para mascaramento de PII e recuperação de conhecimento (\textit{RAG}).
-  \item Definir mecanismos de mitigação contra alucinações e ameaças de \textit{prompt injection}, estabelecendo protocolos de anonimização e revisão humana obrigatória.
+  \item Revisar a literatura sobre IA Responsável em saúde pública para fundamentar as decisões arquiteturais e delimitar a lacuna tecnológica no contexto do SUS;
+  \item Dimensionar os requisitos de hardware e projetar uma topologia de rede \textit{on-premise} isolada em contêineres \textit{Docker};
+  \item Desenvolver um protótipo funcional voltado à consulta assistida de informações de pré-natal, mantendo revisão humana obrigatória antes de qualquer uso da resposta gerada;
+  \item Implementar um modulo de anonimização dedicado ao mascaramento e sanitização de PII brasileiras;
+  \item Estruturar a recuperação de conhecimento via (\textit{RAG}) com base em documentos públicos oficiais;
+  \item Avaliar o desempenho do protótipo por meio de métricas de recuperação, aderência automática de respostas, testes sintéticos de PII, verificação de escopo e análise de latência.
+  \item Analisar os ganhos e perdas entre privacidade local, custo computacional, latência e viabilidade de implantação em ambientes de produção.
 \end{enumerate}
 
-Para viabilizar este escopo, a pesquisa baseia-se na engenharia de software e no desenvolvimento ágil, validando os requisitos por meio de casos clínicos sintéticos.
-Os resultados obtidos demonstram a efetividade da arquitetura através de um protótipo funcional de alta fidelidade capaz de processar transcrições locais, anonimizar informações e recuperar diretrizes via \textit{RAG} de maneira segura.
-O restante deste artigo está estruturado da seguinte forma: apresentação do referencial teórico, seguida pelos materiais, metodologia, solução arquitetural proposta, enquanto as Seções subsequentes reúnem a implementação técnica, a análise dos resultados, a discussão dos achados e, por fim, as conclusões.
+O restante deste artigo está estruturado da seguinte forma: o referencial teórico embasa as decisões de design; os materiais e a metodologia detalham o ambiente e o fluxo de desenvolvimento; a solução proposta apresenta a arquitetura e interfaces criadas; e as seções finais discutem o desempenho e as limitações do ecossistema.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 \section{Referencial Teórico}
 % 5. Fundamentacao Teorica
@@ -127,19 +130,22 @@ O restante deste artigo está estruturado da seguinte forma: apresentação do r
 %    5.4 Human-in-the-loop e responsabilidade clinica
 %    5.5 MCP e Tooling para governanca de contexto
 %    5.6 Security by design no desenvolvimento de agentes de IA (OWASP top 10 for llm applications)
-%    5.7 Caso de Uso dda Micorosoft com o Presidio como referencia comparativa (mitigação de Sensitive Data Exposure e Indirect Prompt Injection através do uso do Microsoft Presidio) (NER customizado para PII)
-%    5.8 Trabalhos correlatos (comparar com 2 projetos similares) (validar lacuna de projetos no contexto atual) (tabela comparativa com 2 projetos similares)
-% deve apresentar o que sao as tenicas propostas a serem utilizadas e como elas serão aplicadas a partir de referencial terorico real
-%<Paragrafo de introducao>
+%    5.7 Caso de Uso da Micorosoft com o Presidio como referencia comparativa
+%    5.8 Trabalhos correlatos
 
-\subsection{IA Responsável e Governança em Saúde}
-A IA Responsável (RAI) transcende a ética teórica ao propor a operacionalização de princípios de transparência e justiça na engenharia de software \cite{Shneiderman2021, Dignum2022}. Na saúde, essa necessidade é suprida por frameworks como o \textit{FUTURE-AI}, que estabelece diretrizes para a implantação de sistemas confiáveis \cite{Lekadir2023}, e o \textit{FAIR-AI}, focado na revisão contínua de modelos clínicos \cite{Lekadir2022}.
+Esta seção define os conceitos centrais do trabalho e indica como cada um responde a riscos do uso de LLMs no pré-natal do SUS.
 
-No cenário brasileiro, a governança deve alinhar-se à Lei Geral de Proteção de Dados (LGPD) e a frameworks institucionais que buscam mitigar riscos regulatórios e fragmentações normativas no setor público \cite{Atheniense2024, FrameworkGovBR2025}.
+\subsection{IA Responsável e Governança Clínica}
+Apoiado em Shneiderman (2021) e Cabitza et al. (2022), este trabalho adota o design centrado no humano para traduzir princípios de transparência e responsabilização em práticas verificáveis, mitigando a complacência e o viés de automação em diagnósticos médicos. Para materializar esses conceitos e, simultaneamente, contornar as limitações de APIs em nuvem para aderir à governança de dados no Sistema Único de Saúde (SUS), implementou-se uma arquitetura local (\textit{on-premise}) focada em interfaces de revisão rigorosa das saídas do modelo.
 
-\subsection{LLMs e RAG na Saúde Pública}
-Modelos de Linguagem de Grande Escala (LLMs) oferecem novas possibilidades para a análise de prontuários. Contudo, devido ao risco de alucinações em contextos clínicos, a técnica de \textit{Retrieval-Augmented Generation} (RAG) é empregada para restringir a base de conhecimento do modelo aos Manuais Técnicos de Pré-Natal do Ministério da Saúde.
+\subsection{Retrieval-Augmented Generation (RAG)}
+Segundo Lewis (2020) e Sharma (2025), o conhecimento exclusivamente paramétrico dos Modelos de Linguagem de Grande Escala (LLMs) propicia alucinações, fenômeno que se torna crítico no contexto obstétrico. Desse modo, a técnica de \textit{Retrieval-Augmented Generation} (RAG) é utilizada para restringir a geração textual a evidências factuais recuperadas em tempo de inferência, garantindo fidelidade ao contexto. Aplicando essa premissa à arquitetura, o modelo foi ancorado exclusivamente em cartilhas e manuais oficiais do Ministério da Saúde, empregando particionamento (\textit{chunking}) semântico e hiperparâmetros conservadores para priorizar a precisão clínica em detrimento da fluidez generativa.
 
+\subsection{Restrição Human-in-the-Loop}
+No tocante à supervisão, Shneiderman (2021) defende que a automação não deve substituir a agência humana em sistemas críticos, adotando a premissa de ``humanos no grupo; computadores no laço'' para assegurar que os profissionais não se eximam da responsabilidade decisória. Em consonância com essa diretriz, a plataforma adota estritamente a restrição \textit{human-in-the-loop}, na qual nenhuma predição ou extração da Inteligência Artificial é salva de forma autônoma. O sistema atua puramente como assistente, exigindo que o médico ou enfermeiro valide ou edite os dados obrigatoriamente antes de sua persistência no prontuário eletrônico.
+
+\subsection{Segurança em LLMs e Mascaramento de Dados}
+Por fim, a integração de LLMs em fluxos clínicos expande significativamente a superfície de ataques, demandando proteções rigorosas contra Injeção de \textit{Prompt} (LLM01) e Exposição de Dados Sensíveis (LLM02), conforme mapeado pelo \textit{OWASP Top 10 for LLM Applications} (2025). Para endereçar essas vulnerabilidades regulatórias e técnicas, o ecossistema proposto incorpora um \textit{gateway} de privacidade customizado, munido de Expressões Regulares (RegEx) e Reconhecimento de Entidades Nomeadas (NER) operando localmente. Esse mecanismo atua higienizando identificadores de saúde brasileiros (como CPF e CNS) antes do trânsito de dados para o modelo, blindando a inferência contra o vazamento de informações pessoalmente identificáveis (PII).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Materiais}
@@ -147,109 +153,123 @@ Modelos de Linguagem de Grande Escala (LLMs) oferecem novas possibilidades para 
 Nesta seção, são detalhados os componentes que estruturam o sistema, incluindo os requisitos de \textit{hardware} para execução local, os \textit{frameworks} de desenvolvimento, as bases de dados utilizadas e as ferramentas de Inteligência Artificial implementadas.
 
 \subsection{Hardware}
-Para viabilizar a arquitetura \textit{on-premise}, o hardware foi dimensionado para atender aos requisitos de inferência do \textit{LLM} clínico.
+A escolha do modelo obedeceu ao critério de viabilidade operacional local, sendo executado executado em ambiente local com CPU Intel i7-14700K, 32GB de RAM e GPU Nvidia RTX 5060 Ti com 16GB de VRAM.
+A escolha do Qwen3.5 9B quantizado em Q4 decorreu da compatibilidade com a VRAM disponível, onde modelos acima de $\sim$14\,GB de VRAM após quantização Q4 exigiriam \textit{offloading} para RAM/CPU, elevando a latência (TTFT) acima do tolerável em consulta.
 
-\begin{table}[H]
-  \centering
-  \caption{Especificações do hardware utilizado.}
-  \label{tab:hardware_specs}
-  \small
-  \begin{tabularx}{\textwidth}{l X}
-    \toprule
-    \textbf{Componente} & \textbf{Especificação}           \\
-    \midrule
-    CPU                 & Intel Core i7-14700K             \\
-    GPU                 & Nvidia RTX 5060 Ti 16GB          \\
-    RAM                 & Vengeance 2x 16GB DDR5 6000MHz   \\
-    PSU                 & 750W Gold Corsair                \\
-    Motherboard         & Asus ROG Strix Z790 Maximus Hero \\
-    \bottomrule
-  \end{tabularx}
-\end{table}
-
-O poder computacional mínimo depende primariamente da quantidade de VRAM dedicada para alocar simultaneamente o motor RAG e os modelos de agente \textit{LLM} clínico.
+% \begin{table}[H]
+%   \centering
+%   \caption{Especificações do hardware utilizado.}
+%   \label{tab:hardware_specs}
+%   \footnotesize
+%   \begin{tabular}{l l}
+%     \toprule
+%     \textbf{Componente} & \textbf{Especificação}           \\
+%     \midrule
+%     CPU                 & Intel Core i7-14700K             \\
+%     GPU                 & Nvidia RTX 5060 Ti 16GB VRAM     \\
+%     RAM                 & Vengeance 2x 16GB DDR5 6000MHz   \\
+%     PSU                 & 750W Gold Corsair                \\
+%     Motherboard         & Asus ROG Strix Z790 Maximus Hero \\
+%     \bottomrule
+%   \end{tabular}
+% \end{table}
 
 \subsection{Software e Frameworks}
 
 O ambiente adota \textit{TypeScript} como linguagem principal.
-O \textit{backend} foi desenvolvido em \textit{Node.js} utilizando o micro-\textit{framework} Hono para orquestração assíncrona da API.
-O \textit{frontend} foi estruturado em React, empregando Vite e TailwindCSS.
-A virtualização e o isolamento dos serviços (\textit{sandboxing}) são garantidos pelo uso de contêineres \textit{Docker} de modo a vetar execução de código arbitrário provenientes da orquestração de \textit{LLMs}.
+O \textit{backend} foi desenvolvido em \textit{Node.js} utilizando o micro-\textit{framework} Hono e o \textit{frontend} foi estruturado em React, empregando Vite e TailwindCSS.
+A execução ocorre em contêineres \textit{Docker}, assegurando \textit{sandboxing} e isolamento de rede entre \textit{frontend}, \textit{backend} e dados, reduzindo a exposição de PII em caso de comprometimento.
+
+Para transcrição, integra-se o \textit{Faster-Whisper} com processamento local e descarte imediato do stream de áudio, evitando o envio a terceiros (LGPD, art. 33) e reduzindo a superfície de vazamento.
+
+A orquestração do LLM clínico ocorre via \textit{Ollama}; para apoio à decisão, empregam-se hiperparâmetros conservadores (Tabela~\ref{tab:hyperparams}) para reduzir a variabilidade, favorecendo a aderência ao contexto recuperado.
 
 \subsection{Base de Dados}
 
-Para a sustentação transacional de cadastros e triagens, adotou-se o banco relacional PostgreSQL, gerenciado por meio do Prisma ORM.
-Como corpo de conhecimento documental, as Cartilhas de Atenção Pré-Natal do Ministério da Saúde foram vetorizadas e processadas como fonte de verdade (\textit{ground truth}) para os agentes, com os documentos listados na Tabela~\ref{tab:cartilhas_sus}.
-
-% \begin{table}[H]
-%     \centering
-%     \caption{Manuais e cartilhas governamentais utilizadas como base de conhecimento.}
-%     \label{tab:cartilhas_sus}
-%     \small
-%     \begin{tabularx}{\textwidth}{X c c}
-%         \toprule
-%         \textbf{Título do Documento} & \textbf{Ano} & \textbf{Referência} \\ 
-%         \midrule
-%         Caderneta da Gestante & 2024 & \cite{CadernetaGestante2024} \\
-%         Ficha Pré-natal: Acolhimento e Identificação & 2018 & \cite{FichaPreNatal2018} \\
-%         Guia do Pré-natal do Parceiro para Profissionais de Saúde & 2025 & \cite{GuiaPreNatalParceiro2025} \\
-%         Cadernos de Atenção Básica: Atenção ao Pré-natal de Baixo Risco & 2012 & \cite{CadernosAtencaoBasica32} \\
-%         Atualização em Pré-natal para Profissionais da Atenção Básica & 2014 & \cite{AtualizacaoPreNatalSC2014} \\
-%         Guia de Atenção à Saúde: Estratificação de Risco & 2024 & \cite{GuiaAtencaoGestanteMG2024} \\
-%         Manual de Gestação de Alto Risco & 2022 & \cite{ManualAltoRisco2022} \\
-%         Manual Técnico Gestação de Alto Risco (5ª Ed.) & 2012 & \cite{ManualAltoRisco2012} \\
-%         Gestação de Alto Risco: Manual Técnico (5ª Ed.) & 2010 & \cite{ManualAltoRisco2010} \\
-%         \bottomrule
-%     \end{tabularx}
-% \end{table}
+A camada transacional (cadastros e triagens) utiliza \textit{PostgreSQL}, gerenciado via \textit{Prisma ORM}.
+Como base documental, as Cartilhas de Atenção Pré-Natal do Ministério da Saúde foram vetorizadas como fonte de verdade (\textit{ground truth}) (Tabela~\ref{tab:cartilhas_sus}).
+O acervo inclui edições de 2010--2025; para mitigar conflitos no RAG, adotou-se re-ranqueamento por \textit{Maximal Marginal Relevance} (MMR), priorizando relevância e diversidade de \textit{chunks} sem redundância.
 
 \begin{table}[H]
   \centering
   \caption{Base de conhecimento documental: Manuais e cartilhas.}
   \label{tab:cartilhas_sus}
-  \small
-  % \begin{tabularx}{\textwidth}{X c l}
-  \begin{tabularx}{\textwidth}{>{\hsize=1.5\hsize}X c >{\hsize=0.5\hsize}X}
+  \footnotesize
+  \begin{tabular}{l c l}
     \toprule
         \textbf{Título do Documento} & \textbf{Ano} & \textbf{Referência} \\ 
     \midrule
-        Caderneta da Gestante                                          & 2024 & \cite{CadernetaGestante2024} \\
-        Ficha Pré-natal: Acolhimento e Identificação                   & 2018 & \cite{FichaPreNatal2018} \\
-        Guia do Pré-natal do Parceiro para Profissionais de Saúde      & 2025 & \cite{GuiaPreNatalParceiro2025} \\
-        Cadernos de Atenção Básica: Pré-natal de Baixo Risco           & 2012 & \cite{CadernosAtencaoBasica32} \\
-        Guia de Atenção à Saúde: Estratificação de Risco               & 2024 & \cite{GuiaAtencaoGestanteMG2024} \\
-        Atualização em Pré-natal para Profissionais da Atenção Básica  & 2014 & \cite{AtualizacaoPreNatalSC2014} \\
-        Manual de Gestação de Alto Risco                               & 2022 & \cite{ManualAltoRisco2022} \\
-        Manual Técnico Gestação de Alto Risco (5ª Ed.)                 & 2012 & \cite{ManualAltoRisco2012} \\
-        Gestação de Alto Risco: Manual Técnico (5ª Ed.)                & 2010 & \cite{ManualAltoRisco2010} \\
-    \bottomrule
-  \end{tabularx}
-\end{table}
-
-\subsection{Ferramentas de IA}
-
-O sistema integra o \textit{Faster-Whisper} para transcrição local e persistência de \textit{embeddings} e metadados de fragmentos de documentos em \textit{SQLite} (serviço \texttt{clinical-ai}), substituindo um armazenamento vetorial dedicado externo.
-O dimensionamento deste modelo, focado em 16.384 \textit{tokens} de contexto, demonstrou o melhor custo-benefício frente às limitações de VRAM (Tabela~\ref{tab:latency_compatibility}), cujas flutuações dependem diretamente da arquitetura de \textit{hardware} e de otimizações de \textit{drivers} locais \cite{VRAMCalculator}.
-
-\begin{table}[H]
-  \centering
-  \caption{Estimativa teórica de consumo de VRAM.}
-  \label{tab:latency_compatibility}
-  \small
-  \begin{tabular}{l c c r}
-    \toprule
-    \textbf{Modelo}       & \textbf{Contexto} & \textbf{Parâmetros} & \textbf{VRAM}        \\
-    \midrule
-    GPT-OSS (Q4)          & 16.384            & 20B                 & $\sim$17 GB          \\
-    Qwen3.6 (Q4)          & 16.384            & 35B                 & $\sim$24 GB          \\
-    Qwen3.5 (Q4)          & 16.384            & 27B                 & $\sim$27 GB          \\
-    \textbf{Qwen3.5 (Q4)} & \textbf{16.384}   & \textbf{9B}         & \textbf{$\sim$10 GB} \\
-    Qwen3 (Q4)            & 16.384            & 7B                  & $\sim$5 GB           \\
+        Guia do Pré-natal do Parceiro [...]     & 2025 & \cite{GuiaPreNatalParceiro2025} \\
+        Caderneta da Gestante                   & 2024 & \cite{CadernetaGestante2024} \\
+        Guia de Atenção à Saúde                 & 2024 & \cite{GuiaAtencaoGestanteMG2024} \\
+        Manual de Gestação de Alto Risco        & 2022 & \cite{ManualAltoRisco2022} \\
+        Ficha Pré-natal                         & 2018 & \cite{FichaPreNatal2018} \\
+        Atualização em Pré-natal [...]          & 2014 & \cite{AtualizacaoPreNatalSC2014} \\
+        Cadernos de Atenção Básica              & 2012 & \cite{CadernosAtencaoBasica32} \\
+        Manual Técnico Gestação de Alto Risco   & 2012 & \cite{ManualAltoRisco2012} \\
+        Gestação de Alto Risco                  & 2010 & \cite{ManualAltoRisco2010} \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-A inferência é orquestrada pelo \textit{Ollama} com o modelo Qwen3.5 (9B, quantização Q4), parametrizado para mitigar alucinações (Tabela~\ref{tab:hyperparams}) na arquitetura de hardware disponível.
+\subsection{Ferramentas de IA}
+
+A seleção do modelo obedeceu a um critério de viabilidade operacional on-premise, com 16GB de VRAM dedicados e janela de contexto de 16.384 \textit{tokens} para RAG.
+Excluindo modelos cujo consumo estimado de VRAM superasse ~12-14GB após quantizaćão Q4, de modo a evitar off-loading de memoria o que impactaria na latencia de inferência, levando em consideração que flutuações de espaço dependem diretamente da arquitetura de \textit{hardware} e de otimizações de \textit{drivers} locais \cite{VRAMCalculator}.
+
+\begin{table}[H]
+  \centering
+  \begin{threeparttable}
+  \caption{Estimativa teórica de consumo de VRAM.}
+  \label{tab:latency_compatibility}
+  \footnotesize
+  \begin{tabular}{l c c r}
+    \toprule
+    \textbf{Modelo}       & \textbf{Contexto} & \textbf{Parâmetros} & \textbf{VRAM}           \\
+    \midrule
+    Qwen3.6 (Q4)          & 16.384            & 35B                 & $\sim$24 GB             \\
+    Qwen3.5 (Q4)          & 16.384            & 27B                 & $\sim$27.4 GB           \\
+    GPT-OSS (Q4)          & 16.384            & 20B                 & $\sim$17.3 GB           \\
+    Qwen3 (Q4)            & 16.384            & 14B                 & $\sim$16.12 GB          \\
+    \textbf{Qwen3.5 (Q4)} & \textbf{16.384}   & \textbf{9B}         & \textbf{$\sim$10.51 GB} \\
+    Qwen3 (Q4)            & 16.384            & 8B                  & $\sim$10.41 GB          \\
+    \bottomrule
+  \end{tabular}
+  \begin{tablenotes}
+    \footnotesize
+    \item[*] Cálculo de VRAM estimado baseado em https://apxml.com/tools/vram-calculator.
+  \end{tablenotes}
+  \end{threeparttable}
+\end{table}
+
+Para a escolha entre os candidatos compatíveis com 16GB de VRAM, consultou-se o comparativo público LLMBase \cite{benchmarks_llm}, que agrega scores de benchmarks (GPQA, HLE, índices compostos, etc.) para avaliação dos modelos Qwen3 14B e Qwen3.5 9B.
+
+Embora esses resultados reflitam inferência em infraestrutura de larga escala de API e não reproduzam a arquitetura local escolhida, indicam que o Qwen3.5 9B supera o Qwen3 14B em GPQA ( 80,6\% vs 60,4\% ) e no índice composto de inteligência (32,4 vs 16,2), o que corrobora a preferência pelo menor modelo que surpreendeu apresentando melhor desempenho em racioncíno nos benchmarks agradados consultados.
+
+\begin{table}[H]
+  \centering
+  \begin{threeparttable}
+  \caption{Comparação de modelos Qwen3 14B e Qwen3.5 9B.}
+  \label{tab:comparison_models}
+  \footnotesize
+  \begin{tabular}{l c c r}
+    \toprule
+    \textbf{Métrica}    & \textbf{Qwen3 14B (Reasoning)}  & \textbf{Qwen3.5 9B (Reasoning)} \\
+    \midrule
+    Inteligência        & 16.2                            & 32.4  \\
+    GPQA                & 60.4\%                          & 80.6\% \\
+    HLE                 & 4.3\%                           & 13.3\% \\
+    Data de Lançamento  & Abr. 2025                       & Mar. 2026 \\
+    \bottomrule
+  \end{tabular}
+  \begin{tablenotes}
+    \footnotesize
+    \item[*] Dados de benchmark extraídos de https://llmbase.ai/compare/qwen3-14b-instruct-reasoning,qwen3-5-9b/.
+  \end{tablenotes}
+  \end{threeparttable}
+\end{table}
+
+A inferência é orquestrada pelo \textit{Ollama} com o modelo Qwen3.5 (9B, quantização Q4) da Alibaba, parametrizado para mitigar alucinações (Tabela~\ref{tab:hyperparams}) na arquitetura de hardware disponível.
 A estruturação da base de conhecimento inclui o particionamento semântico (\textit{chunking}) das diretrizes e sua vetorização única, com persistência no armazenamento vetorial.
 Para gerenciar possíveis sobreposições ou conflitos temporais entre manuais de anos distintos, incorporou-se a técnica de \textit{Maximal Marginal Relevance} (MMR) como mecanismo de re-ranqueamento (\textit{reranking}).
 O MMR foi utilizado para descartar redundâncias, filtrando os documentos para reter um subconjunto de contextos que maximiza tanto a relevância em relação à consulta quanto a diversidade informacional apresentada ao modelo.
@@ -259,123 +279,119 @@ O MMR foi utilizado para descartar redundâncias, filtrando os documentos para r
   \caption{Hiperparâmetros de inferência (Ollama) e RAG.}
   \label{tab:hyperparams}
   \small
-  \begin{tabularx}{\textwidth}{l r | l r}
+  \begin{tabular}{l r | l r}
     \toprule
-    \multicolumn{2}{c}{\textbf{LLM (Qwen3.5)}} & \multicolumn{2}{c}{\textbf{RAG \& Chunking}}                                                 \\
+    \multicolumn{2}{c}{\textbf{LLM (Qwen3.5)}} & \multicolumn{2}{c}{\textbf{RAG \& Chunking}} \\
     \midrule
-    \texttt{num\_ctx}                          & 16.384                                       & \texttt{embedding\_model}  & nomic-embed-text \\
-    \texttt{num\_batch}                        & 256                                          & \texttt{chunk\_max\_chars} & 900              \\
-    \texttt{temperature}                       & 0.1                                          & \texttt{max\_chunks}       & 6                \\
-    \texttt{top\_p}                            & 0.9                                          & \texttt{rerank\_enabled}   & True             \\
+    \texttt{num\_ctx}                          & 16.384 & \texttt{embedding\_model}  & nomic-embed-text \\
+    \texttt{num\_batch}                        & 256    & \texttt{chunk\_max\_chars} & 900              \\
+    \texttt{temperature}                       & 0.1    & \texttt{max\_chunks}       & 6                \\
+    \texttt{top\_p}                            & 0.9    & \texttt{rerank\_enabled}   & True             \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular}
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Metodologia}
 
-A pesquisa adota uma abordagem de Engenharia de Software baseada desenvolvimento ágil de software com desenvolvimento dividido em:
-(i) Modelagem de dados relacionais para prontuários;
-(ii) Desenvolvimento de um webapp para CRM das gestantes por parte do profissional de saúde;
-(iii) Implementação de agente "Escriba"  para transcrição de consultas e autopreenchimento do prontuário eletrônico da paciente;
-(iv) Desenvolvimento de motor RAG para consulta de protocolos;
-(v) Desenvolvimento de um agente de IA para suporte clínico em tempo real;
-% (vi) Automação de eventos para mensageria via WhatsApp.
+A pesquisa adota a Engenharia de Software com desenvolvimento ágil (Scrum) para construção do artefato, organizada em cinco frentes integradas:
+(i) modelagem relacional do prontuário;
+(ii) \textit{webapp} de gestão e consulta de pacientes;
+(iii) agente Escriba para transcrição e extração estruturada;
+(iv) motor RAG ancorado nas cartilhas do Ministério da Saúde;
+e (v) assistente clínico local de apoio à decisão.
 
-% Coleta, Preparação e Governança de Dados}
+A arquitetura reflete o isolamento dos módulos em três subredes \textit{Docker} (\texttt{frontend-nw}, \texttt{backend-nw} e \texttt{data-nw}), conforme a \textit{stack} detalhada na Seção 3 (Materiais). 
 
-Quanto a preparação dos dados, o banco de dados vetorial é alimentado através do \textit{Semantic Chunking} das cartilhas governamentais, garantindo que algoritmos de extração vetorial preservassem a semântica das tabelas de exames pré-natais.
-A governança foi configurada em modo \textit{zero-trust}, onde os áudios capturados não são armazenados, e a transcrição \textit{STT} cruza um \textit{gateway} de privacidade que aplica regras para mascaramento de \textit{PII} brasileiras (CPF, CNS, e-mail, telefone e cadeias longas de dígitos) antes de tocar o orquestrador \textit{RAG}.
+A sanitização de PII e a adoção do modo \textit{zero-trust} seguem o módulo de privacidade descrito anteriormente, fundamentando-se nos requisitos de minimização da LGPD apresentados na Seção 2.
+Todo o áudio capturado é processado localmente e descartado ao final da interação.
 
-%adicioanr imagem do fluxo de dados e anonimizacao dos mesmos
+A Figura~\ref{fig:fluxo_consulta} sintetiza o ciclo de vida da transação da consulta médica, estruturado nas seguintes etapas operacionais:
 
-% Arquitetura do sistema
-
-A pesquisa adota uma abordagem de Engenharia de Software baseada no desenvolvimento ágil de software com sprints no modelo scrum, contendo:
-
-\begin{itemize}
-  \item Revisão Literária e Modelagem de Dados
-  \item Desenvolvimento do \textit{Backend} e APIs
-  \item Desenvolvimento do \textit{Frontend} (WebApp)
-  \item Desenvolvimento do Agente STT via \textit{Whisper} com Diarização
-  \item Desenvolvimento do Motor de \textit{RAG} e do \textit{gateway} de privacidade (sidecar de sanitização HTTP)
-  \item Desenvolvimento do Agente de IA\@: Assistente Clínico Local
-  \item Desenvolvimento do Anonimizador, \textit{Sandboxing} e \textit{Guardrails}
-  \item Testes de Carga e Validação
-  \item Redação do Artigo Final
-\end{itemize}
-
-A arquitetura docker desenhada reflete o isolamento total dos módulos do sistema, sendo esta estratificada em três subredes \textit{Docker} (\texttt{frontend-nw}, \texttt{backend-nw} e \texttt{data-nw}) para cumprir com o objetivo específico de replicabilidade.
-Para cumprir com a restrição \textit{Human-in-the-Loop} todo preenchimento de documentos pela IA é impossibilitado e aguarda validação explícita do profissional de saúde.
-
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth, keepaspectratio]{assets/FluxoDeConsulta.pdf}
   \caption{Pipeline arquitetural e ciclo de vida da transação da consulta médica.}
   \label{fig:fluxo_consulta}
 \end{figure}
 
-A Figura~\ref{fig:der} ilustra o Diagrama de Entidade-Relacionamento (DER) do esquema de banco de dados normalizado.
-A modelagem das entidades, atributos e relacionamentos foi elaborada com base na 8ª edição revisada da \textit{Caderneta da Gestante} do Ministério da Saúde, utilizada como referência para determinar os campos clínicos, administrativos e de acompanhamento presentes no sistema \cite{CadernetaGestante2024}.
-Dessa forma, o banco de dados espelha os fluxos da caderneta física e preserva a lógica documental prevista para o acompanhamento pré-natal.
+\begin{itemize}
+  \item \textbf{Captura e transcrição local (STT):} o fluxo de áudio é transcrito em tempo de execução via \textit{Whisper} com diarização.
+  \item \textbf{Sanitização de entrada:} o \textit{gateway} remove ou mascara as \textit{PII} na transcrição antes de compor a consulta ao módulo RAG.
+  \item \textbf{Recuperação (Retriever):} a busca retorna os trechos relevantes e aplica re-ranqueamento por \textit{Maximal Marginal Relevance} (MMR) para mitigar redundâncias e conflitos temporais entre edições dos manuais.
+  \item \textbf{Geração (Generator):} o LLM sintetiza a resposta clínica com hiperparâmetros conservadores, privilegiando a aderência ao contexto recuperado.
+  \item \textbf{Apresentação e validação humana:} a interface exibe as sugestões de preenchimento, mantendo a edição manual integralmente disponível.
+\end{itemize}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth, keepaspectratio]{assets/DER_bw.pdf}
-  \caption{Diagrama de Entidade-Relacionamento (DER) do sistema.}
-  \label{fig:der}
-\end{figure}
+Para cumprir a restrição de segurança clínica, adota-se o \textit{Human-in-the-Loop}, onde nenhum dado sugerido pela IA é gravado no banco de dados sem a confirmação explícita do profissional (US04), garantindo o controle total sobre o registro.
+A principal ameaça à validade interna é a geração de conteúdo não suportado por protocolo (alucinação), mitigada por RAG restrito a diretrizes oficiais e \textit{Human-in-the-Loop}.
 
+A ameaça de exposição de \textit{PII} é mitigada por processamento local em um \textit{gateway} de mascaramento aplicado antes da recuperação e inferência.
+O anonimizador foi implementado em arquitetura híbrida, combinando regras determinísticas de Expressões Regulares (RegEx) para identificadores brasileiros e um módulo de Reconhecimento de Entidades Nomeadas (NER) especializado em português biomédico.
+Como modelo de NER, utilizou-se \texttt{OpenMed/OpenMed-PII-Portuguese-SnowflakeMed-Large-568M-v1}, disponibilizado no Hugging Face \cite{openmed-pii-2026}.
 
+A modelagem relacional foi derivada da 8ª edição revisada da Caderneta da Gestante, contemplando entidades para paciente, gestação, consultas, sinais vitais, exames, antecedentes, prontuário e registros de atendimento.
+O DER completo foi disponibilizado como material suplementar no repositório do projeto.
+
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[width=1.1\textwidth, keepaspectratio]{assets/DER_bw.pdf}
+%   \caption{Diagrama de Entidade-Relacionamento (DER) do sistema.}
+%   \label{fig:der}
+% \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Solução Proposta}
 
-A materialização do ecossistema foi guiada por requisitos funcionais (RF) e histórias de usuário (US) estritos, formalizados para mitigar os riscos inerentes à aplicação clínica de Inteligência Artificial. Dentre os requisitos notáveis que moldaram a proposição da arquitetura, destacam-se:
+A arquitetura derivou de requisitos funcionais (RF) e histórias de usuário (US) mapeados a riscos clínicos, operacionais e regulatórios.
+A Tabela~\ref{tab:rf_riscos} resume essa relação, demonstrando como as ferramentas teóricas abordadas foram convertidas em funcionalidades práticas no protótipo.
+Esses controles foram implementados em um protótipo de alta fidelidade (Figura~\ref{fig:interfaces_compostas}), cobrindo a agenda de atendimentos, o prontuário consolidado da paciente e a tela de consulta ativa com o agente Escriba e o assistente clínico.
 
-\begin{itemize}
-  \item \textbf{Agente Escriba e Transitoriedade (RF03/RF04):} Exigência de transcrição de voz local em tempo real para preenchimento estruturado de formulários, operando sob a premissa estrita de \textit{não persistir} o áudio bruto ou as transcrições literais nos bancos de dados transacionais.
-  \item \textbf{Apoio à Decisão via RAG (RF05):} Implementação de um assistente interativo ancorado de forma exclusiva nos Manuais Técnicos do Ministério da Saúde, bloqueando o fornecimento de condutas baseadas apenas no conhecimento paramétrico generalista do modelo.
-  \item \textbf{Validação Obrigatória (\textit{Human-in-the-Loop} - US04):} Restrição sistêmica que impede a consolidação autônoma de qualquer inferência da IA no prontuário definitivo, transferindo a responsabilidade da "aprovação" ou "rejeição" das sugestões obrigatoriamente para o profissional de saúde.
-  \item \textbf{Intervenção Manual Corretiva (US07):} Garantia estrutural de que todos os formulários pré-preenchidos pelos agentes generativos sejam plenamente editáveis durante a consulta, prevenindo a persistência de falsos positivos sistêmicos.
-  \item \textbf{Mascaramento de PII (US13):} Interceptação e anonimização de dados de identificação pessoal por meio de um \textit{gateway} de privacidade dedicado baseado em padrões brasileiros (CPF, CNS, e-mail, telefone), garantindo conformidade com a LGPD antes de submeter os contextos à inferência semântica.
-  \item \textbf{Alertas Sistêmicos de Alto Risco (US05):} Geração automática de sinalizações visuais críticas caso os parâmetros vitais ou laboratoriais extraídos pela IA ultrapassem os limiares de segurança definidos nas cartilhas governamentais.
-  \item \textbf{Portabilidade Documental (US06):} Capacidade de exportação dinâmica de todos os registros clínicos em um arquivo PDF espelhado visualmente à ficha oficial de acompanhamento do SUS, assegurando a continuidade do cuidado analógico.
-  \item \textbf{Integração Preventiva da Paciente (US10/US11):} Disparo assíncrono de resumos do plano de cuidado e alertas de agendamento via canais de mensageria, visando combater ativamente os índices de evasão nas consultas de acompanhamento.
-\end{itemize}
-
-A partir dessas restrições arquiteturais e histórias de usuário, os resultados práticos culminaram em um protótipo funcional de alta fidelidade.
-Este artefato traduz o fluxo operacional sob a ótica da usabilidade, visando minimizar a curva de aprendizado e a sobrecarga informacional dos profissionais no SUS.
-
-A Figura~\ref{fig:interfaces_compostas} ilustra o ecossistema proposto em três visões principais:
-o painel de gestão de agenda (Figura~\ref{fig:sub_dashboard}),
-o perfil consolidado para estratificação de risco da gestante (Figura~\ref{fig:sub_paciente}),
-e a interface de consulta em andamento (Figura~\ref{fig:sub_escriba}), ambiente em que o agente Escriba atua na transcrição em tempo real e o agente de \textit{IA} fornece o apoio à decisão clínica.
-
-\begin{figure}[H]
+\begin{table}[htbp]
   \centering
-  % --- Primeira Subfigura (Antiga Fig 3) ---
-  \begin{subfigure}[b]{0.48\textwidth}
+  \caption{Requisitos, riscos mitigados e mecanismos de controle.}\label{tab:rf_riscos}
+  \scriptsize
+  \makebox[\textwidth][c]{
+    \begin{tabularx}{1.10\textwidth}{l X X X}
+      \toprule
+      \textbf{RF/US} & \textbf{Risco} & \textbf{Decisão de design} & \textbf{Mitigação esperada} \\
+      \midrule
+      RF03/04 & Retenção indevida de áudio. & STT local; áudio não persistido & Reduz superfície de vazamento. \\
+      RF05 & Alucinação em conduta clínica. & RAG restrito a manuais & Respostas embasada em protocolo oficial \\
+      US04 & RPA indevido e não responsabilidade & Bloqueio de persistência sem aprovação & Decisão final do profissional \\
+      US13 & Exposição de PII ao modelo & \textit{Gateway} de anonimização & Dados de transição anonimizados \\
+      US05 & Atraso na identificação de alto risco & Alertas por limiares das cartilhas & Sinalização visual imediata na consulta \\
+      US06 & Descontinuidade do registro físico & Exportação PDF & Continuidade do cuidado manual \\
+      \bottomrule
+    \end{tabularx}
+  }
+\end{table}
+
+% \begin{figure}[H]
+\begin{figure}[htbp]
+  \centering
+  % --- Primeira Subfigura ---
+  \begin{subfigure}[b]{0.45\textwidth}
     \centering
     \includegraphics[width=\textwidth, trim={0 0 0 0}, clip]{assets/interfaces/alta_fidelidade/02_dashboard_editted_pb.png}
     \caption{Painel de gestão (Dashboard).}
     \label{fig:sub_dashboard}
   \end{subfigure}
   \hfill
-  % --- Segunda Subfigura (Antiga Fig 4) ---
-  \begin{subfigure}[b]{0.48\textwidth}
+  % --- Segunda Subfigura ---
+  \begin{subfigure}[b]{0.50\textwidth}
     \centering
     \includegraphics[width=\textwidth, trim={0 0 0 0}, clip]{assets/interfaces/alta_fidelidade/04_paciente_detalhe_pb.png}
     \caption{Visão consolidada do prontuário.}
     \label{fig:sub_paciente}
   \end{subfigure}
 
-  \vspace{10pt} % Espaço entre as linhas de imagens
+  \vspace{5pt}
 
-  % --- Terceira Subfigura (Antiga Fig 5) ---
-  \begin{subfigure}[b]{0.9\textwidth}
+  % --- Terceira Subfigura ---
+  \begin{subfigure}[b]{0.80\textwidth}
     \centering
     \includegraphics[width=\textwidth, trim={0 0 0 0}, clip]{assets/interfaces/alta_fidelidade/05_escriba_consulta_pb.png}
     \caption{Interface de atendimento em tempo real.}
@@ -386,171 +402,216 @@ e a interface de consulta em andamento (Figura~\ref{fig:sub_escriba}), ambiente 
   \label{fig:interfaces_compostas}
 \end{figure}
 
-Todo o código-fonte do ecossistema e suas respectivas configurações de \textit{deploy} foram disponibilizados em repositório público visando garantir a transparência e a reprodutibilidade do artefato construído \cite{Zegrine2026}.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Testes Executados + Resultados
+\section{Avaliação Experimental e Resultados}
 
-\section{Avaliacao e Analise de Desempenho Do Pipelone RAG}
+A avaliação experimental foi conduzida em três frentes complementares: recuperação documental, geração de respostas e segurança do fluxo clínico. 
+O objetivo foi verificar se a arquitetura proposta, baseada em RAG, LLM local e \textit{gateway} de privacidade, consegue recuperar evidências dos manuais oficiais, produzir respostas aderentes aos protocolos e impedir vazamento de informações sensíveis antes da inferência.
+O conjunto de testes utilizado contém 100 perguntas em português, das quais 90 avaliam aderência a protocolos e 10 são perguntas distratoras (\textit{trap}).
+A distribuição por dificuldade foi de 42 itens fáceis, 35 médios e 23 difíceis.
+Quatro itens classificados como \texttt{human\_judge} foram mantidos para revisão qualitativa e não compõem o denominador da métrica automática de APR.
+Este sistema de avaliação foi estruturado em conformidade com práticas da indústria para avaliação de agentes de IA, espelhando frameworks corporativos como o \textit{Microsoft Copilot Studio Evaluation Framework} \cite{MicrosoftCopilotEval2026}.
 
-% Introducao da secao explicando que o RAG é avalido em duas etapas: Recuperacao e Geracao
-Para garantir o rigor na avaliação do sistema proposto, o pipeline RAG foi submetido a uma bateria de testes utilizando um dataset de validação (Ground Truth).
-Este conjunto contém perguntas reais de obstetrícia, formuladas sob a ótica de médicos e enfermeiros durante consultas de pré-natal, associadas às respostas exatas extraídas dos manuais do Ministério da Saúde.
+%---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-\subsection{Avaliacao do moduilo de recuperacao de trechos semanticos (Retriever)}
-% Consolidar as ideias sobre inferencia semantica e chunks
-% Referencia: https://arxiv.org/abs/2309.15217
-Nesta etapa, comprova-se a capacidade do banco de dados vetorial de retornar os trechos semânticos mais relevantes para a consulta da gestante.
+\subsection{Recuperacao Semântica}
 
-\begin{itemize}
-  \item \textbf{Accuracy/Hit@k}: Avalia a proporção de consultas em que pelo menos um documento relevante foi recuperado nos $k$ primeiros resultados.
-  \begin{equation}
-    Accuracy/Hit@k = \frac{TP + TN}{TP + TN + FP + FN}
-  \end{equation}
+O módulo de recuperação foi avaliado isoladamente com \textit{top-k}=6 e expansão de consulta ativada.
+Foram utilizadas três métricas: \textit{Hit@6}, que verifica se o documento-fonte esperado aparece entre os seis primeiros \textit{chunks}; \textit{Mean Reciprocal Rank} (MRR), que pondera a posição do primeiro documento correto; e \textit{phrase\_recall}, que mede a presença das frases esperadas nos trechos recuperados.
+A Tabela~\ref{tab:metricas_rag} apresenta os resultados por dificuldade.
+
+\begin{table}[H]
+  \centering
+  \caption{Desempenho do módulo RAG por nível de dificuldade ($n=100$).}
+  \label{tab:metricas_rag}
+  \small
+  \begin{tabular}{lcccc}
+  	\toprule
+  	\textbf{Dificuldade} & \textbf{n}   & \textbf{Hit@6 (\%)}  & \textbf{MRR Médio} \\
+  	\midrule
+  	Easy                 & 42           & 76,2\%               & 0,4837             \\
+  	Medium               & 35           & 68,6\%               & 0,3633             \\
+  	Hard                 & 23           & 95,7\%               & 0,6536             \\
+  	\midrule
+  	\textbf{Global}      & \textbf{100} & \textbf{78,0\%}      & \textbf{0,4807}    \\
+  	\bottomrule
+  	\end{tabular}
+  \end{table}
   
-  \item \textbf{Recall@k}: Mede a média harmônica entre a Precisão e o Recall, oferecendo uma métrica balanceada que penaliza tanto o excesso de falsos positivos (ruído no contexto) quanto falsos negativos (omissão de protocolo).
-  \begin{equation}
-    Recall@k = \frac{TP}{TP + FN}
-  \end{equation}
+O \textit{phrase\_recall} médio global foi de 47,1\%.
+O melhor desempenho em itens difíceis não deve ser interpretado como maior facilidade clínica, mas como efeito provável da especificidade lexical de consultas sobre alto risco, que tendem a produzir assinaturas vetoriais mais discriminativas. Em contraste, perguntas de rotina pré-natal competem com trechos semanticamente próximos de diferentes manuais, reduzindo a precisão do ranqueamento.
 
-  \item \textbf{F1-Score@k}: Combina precisão e recall, penalizando respostas excessivamente longas ou evasivas.
-  \begin{equation}
-    F1-Score@k = 2 * \frac{Precision@k * Recall@k}{Precision@k + Recall@k}
-  \end{equation}
-\end{itemize}
+%---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-\subsection{Avaliacao do modulo de geracao de resposta (Generator)}
-Com a disponibilidade dos trechos recuperados, avalia-se a capacidade do LLM de sintetizar a resposta clínica sem introduzir alucinações.
+\subsection{Geração de Resposta}
 
-\begin{itemize}
-  \item \textbf{Faithfulness}: Avalia se a resposta gerada pelo LLM foi baseada estritamente no contexto recuperado, penalizando severamente qualquer alucinação devido à criticidade dos protocolos de saúde.
-  Em frameworks de avaliação modernos, pode ser calculada como a razão de sentenças factualmente suportadas pelo contexto:
-  \begin{equation}
-    Faithfulness = \frac{|V_{support}|}{|V_{total}|}
-  \end{equation}
-  Onde $V_{support}$ é o número de afirmações suportadas pelo contexto e $V_{total}$ é o total de afirmações na resposta.
+A geração foi avaliada por meio da Taxa de Aprovação de Respostas (APR), calculada sobre itens elegíveis à avaliação automática, e da Taxa de Falha em Perguntas Distratoras (TFR), calculada sobre os itens \textit{trap}. O modelo local Qwen3.5 9B foi executado com e sem RAG para medir o ganho incremental da recuperação.
+O Gemini-3.1-Flash-Lite foi utilizado apenas como linha de base externa de comparação, sem alterar a proposta \textit{on-premise} da arquitetura.
 
-  \item \textbf{Relevance}: Mede o quão direta e útil é a resposta para a pergunta clínica, penalizando saídas prolixas, evasivas ou incompletas.
-  \begin{equation}
-  \end{equation}
-\end{itemize}
+\begin{table}[H]
+  \centering
+  \caption{Desempenho dos modelos na geração de respostas.}
+  \label{tab:apr_tfr_providers}
+  \small
+  \begin{tabular}{lccc}
+  	\toprule
+  	\textbf{Provedor}           & \textbf{Modo RAG} & \textbf{APR (\%)} & \textbf{TEC (\%)} \\
+  	\midrule
+  	Qwen3.5 9B (Ollama)         & Off               & 53,1\% (51/96)    & 20,0\% (2/10)     \\
+	  Qwen3.5 9B (Ollama)         & On                & 57,3\% (55/96)    & 10,0\% (1/10)     \\
+  	Gemini-3.1-Flash-Lite       & On                & 61,5\% (59/96)    & 0,0\% (0/10)      \\
+  	\bottomrule
+  \end{tabular}
+  \end{table}
 
-\section{Estudo Comparativo de Arquitetura: Modelos Locais vs. Nuvem}
-% Aqui entra a sua ideia de provar que o modelo pequeno supera o grande usando RAG.
-% Referencia: https://arxiv.org/abs/2309.15217
-Para justificar as decisões de design arquitetural, especificamente a adoção de inferência local para preservação do sigilo médico, foi realizado um teste de benchmark comparativo.
-O objetivo é comprovar empíricamente que um modelo local de menor escala, como o Qwen3.5 (9B), quando alimentado com os chunks semânticos corretos via RAG, obtém desempenho superior ou equivalente a modelos proprietários de larga escala operando em zero-shot sem contexto adicional (zero-shot).
+A ativação do RAG no modelo local elevou a APR de 53,1\% para 57,3\% e reduziu a TFR de 20,0\% para 10,0\%.
+O ganho é limitado, indicando que a recuperação documental contribui para reduzir respostas inseguras, mas não garante aderência clínica estrita quando o modelo precisa negar condutas, reproduzir termos literais ou resolver conflitos entre documentos.
+No conjunto total de execuções, foram registradas 3 falhas em itens \textit{trap} e 120 reprovações de protocolo nas 258 avaliações automáticas de frases obrigatórias.
+Os cinco itens excluidos da avaliação demandam revisão qualitativa da equipe clínica e não entram no denominador da Tabela~\ref{tab:apr_tfr_providers}.
 
-\section{Efetividade Computacional e Latência}
-Um sistema de suporte à decisão clínica não pode introduzir gargalos operacionais. O desempenho de infraestrutura foi monitorado através de:
-\begin{itemize}
-\item \textbf{Time To First Token (TTFT):} O tempo decorrido até a IA começar a gerar a resposta. Na prática clínica de médicos e enfermeiros, um TTFT superior a 2-3 segundos quebra o fluxo da consulta e inviabiliza a adoção.
-\item \textbf{Latência de Recuperação (Retrieval Latency):} O tempo despendido exclusivamente na busca de similaridade no banco de dados vetorial, isolando a performance de I/O do tempo de inferência do LLM.
-\end{itemize}
+%---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-% \section{Avaliação Clínica e de Segurança (Expert Evaluation)}
-% Além das métricas automatizadas, o agente IA foi submetido a casos clínicos simulados, avaliados sob o crivo de especialistas (médicos e enfermeiros).
-% \begin{itemize}
-% \item \textbf{Validação por Pares:} Um comitê de 3 a 5 profissionais de saúde avaliou uma amostra de 30 respostas do sistema utilizando uma escala Likert (1 a 5) nos critérios de \textit{Acurácia Científica} e \textit{Risco de Dano à Paciente}.
-% \item \textbf{Taxa de Recusa Apropriada (Refusal Rate):} A porcentagem de vezes que o sistema, atuando sob as diretrizes de IA Responsável, recusou-se corretamente a responder perguntas que extrapolam o escopo dos manuais de pré-natal do Ministério da Saúde.
-% \end{itemize}
+\subsection{Privacidade, escopo e latência}
 
-% \section{Análise de Impacto na Carga Cognitiva}
-% A premissa central da solução é mitigar a carga mental do profissional. O experimento foi conduzido dividindo profissionais em dois grupos de controle (ou cenários de teste cruzado):
-% \begin{itemize}
-% \item \textbf{Cenário A (Controle):} Profissionais estratificando o risco gestacional usando apenas a interface padrão do CRM e a consulta manual aos PDFs do Ministério da Saúde.
-% \item \textbf{Cenário B (Proposto):} Profissionais realizando a mesma tarefa utilizando o CRM integrado ao agente IA.
-% \end{itemize}
-% A carga cognitiva foi medida comparativamente através do \textit{NASA Task Load Index (NASA-TLX)}, aliado ao tempo total de resolução do caso clínico.
+O modulo de anonimização foi submetido a 50 frases sintéticas, totalizando 76 entidades sensíveis avaliadas, incluindo CPF, Cartão Nacional de Saúde (CNS), e-mail, telefone, nomes completos e cadeias numéricas longas.
+Não houve vazamento detectado no conjunto testado, conforme a Tabela~\ref{tab:pii_leak}. Esse resultado valida a implementação inicial do mascaramento, mas não elimina a necessidade de testes com variações linguísticas, abreviações e ruído de transcrição.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[H]
+  \centering
+  \caption{Taxa de vazamento de PII por tipo de entidade.}
+  \label{tab:pii_leak}
+  \small
+  \begin{tabular}{lcc}
+  	\toprule
+	\textbf{Entidade} 	 	   & \textbf{n} 		  & \textbf{Leak Rate (\%)} \\
+	\midrule
+  	CNS     			   & 11                           & 0,0\%                   \\
+  	CPF                                & 12                           & 0,0\%                   \\
+  	E-mail                             & 12                           & 0,0\%                   \\
+  	Nome Completo			   & 21                           & 0,0\%                   \\
+  	Cadeias Numéricas Longas           & 8                            & 0,0\%                   \\
+  	Telefone                           & 12                           & 0,0\%                   \\
+	\midrule
+  	\textbf{Total Global}              & \textbf{76}                  & \textbf{0,0\%}          \\
+  	\bottomrule
+  \end{tabular}
+  \end{table}
+ 
+Além das métricas agregadas, aplicou-se o roteiro funcional (GT01-GT05), composto por cinco casos sintéticos para validar comportamentos essenciais do protótipo.
+Os casos GT01, GT02 e GT03 avaliam respostas clínicas com RAG e LLM em cenários de risco alto extraídos dos manuais protocolares.
+O GT04 avalia sanitização direta de PII.
+O GT05 avalia a capacidade de recusar uma requisição fora do escopo de pré-natal.
 
-\section{Resultados}
+O roteiro funcional obteve sucesso em quatro dos cinco casos avaliados.
+Os três casos clínicos com RAG e LLM foram aprovados, assim como o caso de sanitização direta de PII.
+A falha ocorreu no GT05, no qual a barreira de escopo não conteve adequadamente uma requisição fora do domínio pré-natal.
+Esse resultado indica que a segurança comportamental não deve depender apenas de \textit{system prompts} e o módulo de privacidade deve incorporar verificações determinísticas ou classificadores de escopo antes da síntese pelo modelo.
 
-% \subsection{Governança dos dados}
-% Coleta das cartilhas de gestantes e guias para profissional de saude
-% governanca e lgpd do banco de dados
-% seguranca e anonimizadacao de dados enviados a IA
-% human in the loop com aprovacoes da profissional da saude para os dados auto preenchidos pela IA
-% mcp com tecnicas de seguranca para evitar vazamento de dados sensiveis via promp injection e sensitive data exposure
+Quanto à eficiência computacional, as métricas foram segregadas por configuração para evitar que a linha de base em nuvem distorça a interpretação operacional do protótipo local. A Tabela~\ref{tab:latencia_config} apresenta os resultados médios.
 
-% \subsection{Auditoria de Equidade e Implementação de XAI}
-% %<forte confirmacao medica dos dados preenchidos pela IA>
-% O diferencial está na integração de técnicas de IA Explicável (XAI) e métricas de justiça (fairness) como requisitos de validação, e não somente como etapas pós-processamento.
-% Para garantir que o modelo não perpetue preconceitos sistêmicos, serão aplicadas as métricas de Equalized Odds e Demographic Parity, comparando o erro residual entre diferentes grupos sociorraciais \cite{FairnessAI2023, ViesAlgoritmico2024}.
+\begin{table}[H]
+  \centering
+  \caption{Latência média por configuração de execução.}
+  \label{tab:latencia_config}
+  \small
+  \begin{tabular}{lrrrr}
+    \toprule
+    \textbf{Configuração} 		& \textbf{Retrieve (ms)} 	& \textbf{Latência total (s)} 	& \textbf{TTFT (ms)} 	& \textbf{tokens/s} \\
+    \midrule
+    Qwen3.5 9B (Ollama)			& --    		 	& 11,71 			& 470,1  		& 32,5 \\
+    Qwen3.5 9B (Ollama)   + RAG on  	& 373,1 			& 15,59 			& 2789,7 		& 32,4 \\
+    Gemini-3.1-Flash-Lite + RAG on 	& 372,7 			& 4,55  			& 3501,9 		& 360,6 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
-% Apresentacao dos trechos de chuinking que groundaram as respostas geradas pela IA
-%   [GRÁFICO G1: Latência versus Nível de Quantização do Modelo Local]
-%   [GRÁFICO G2: F1-Score do RAG em relação a diferentes tamanhos de janela de contexto recuperado.]
-% Graficos de testes
-% comparatrivos
-% Espera-se um sistema replicavel com aumento significativo de interpretabilidade para profissionais de saúde, sem degradação estatisticamente relevante do desempenho em termos de Recall.
-% A auditoria de equidade deverá evidenciar
-% %<continuar>
-% Espera-se também que a integração de técnicas de explicabilidade (XAI) contribua para maior confiança clínica no uso do sistema como apoio à decisão, reforçando seu potencial de adoção em ambientes reais do SUS.
+Para o protótipo local, a recuperação vetorial acrescentou aproximadamente 373 ms ao fluxo, enquanto a latência total do Qwen3.5 9B com RAG foi de 15590,1 ms.
+Portanto, o gargalo operacional permanece na inferência local do LLM e no aumento de contexto provocado pelo RAG, não na busca vetorial.
+A linha de base externa apresentou maior vazão de geração, mas não representa a premissa de privacidade local da arquitetura proposta.
+Esse resultado reforça que a adoção em produção de baixo custo ainda é limitada pelos requisitos de hardware, especialmente VRAM, tempo de inferência e estabilidade sob carga.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Discussão}
-% Retomada das perguntas norteadoras
-% o resultado condiz com o que foi proposto? nao? porque?
-% os resultados são generalizáveis? por que?
-% quais os fatores limitantes encontrados?
-% aumentar modelo x quantizar modelo custos e beneficios de cada um
-%\subsection{Analise de custos e beneficios}
-%    7.2 Analise de custos e beneficos
-%     - Tradeoffs de privacidade vs usabilidade
-%     - Tradeoffs de escalabilidade vs custo
-%     - Testes realizados com o prototipo
-%       - Testes de tolerancia a falhas - STT, RAG, LLM, Hardware, etc.
-%       - Testes PII - nomes brasileiros complexos, girias regionasis, etc.
-%         - Metrica: % de falso negativo na anonimizacao (grafico) % de dados que passaram para o llm sem a mascara aplicada
-%     - Comparar latencia de um modelo de 7B rodando localmente vs a precisao para o contexto clinico (F1 score)
-%       - F1 Score - Ground Truth - Criar 10 a 20 casos clinicos ficticios baseados na caderneta para servir de ground truth
-% 8. Discussoes
-%    - Limitacoes
-%     - hardware e precos de implantacao real
-%    - Riscos residuais de LLM
-%    - Gestao de Riscos
-%     - Prompt injection via MCP (mitigacao com context manager, readonly para o db, prompt shelding e sandboxing)
-%     - STT latencia em hardware - faster whisper vs insanely fast whisper - diarizacao de audio vs transcricao de audio pura - sem diarizacao llm deve separar papeis em contexto
-%     - RAG com recuperacao de chunks de ruido - reraking local top k
-%     - STT nao robusto - fallback humano para validacao - stt so preenche dados
-%    - Calibracao de confianca - sistema apresentar fontes de rag de forma explicita (citacao exata da caderneta) para o humano validar em segundos
+Os resultados indicam viabilidade técnica parcial da arquitetura proposta.
+A combinação de execução local, RAG restrito a documentos oficiais e mascaramento de PII atende ao objetivo de reduzir dependência de nuvem pública e de oferecer um fluxo mais controlável do ponto de vista da LGPD.
+Os resultados mostram que o protótipo ainda não pode ser interpretado como sistema autônomo de apoio clínico, o protótipo foi concebido como ferramenta assistiva e documental.
+A APR do modelo local com RAG foi de 57,3\%, e a TFR permaneceu em 10,0\%; portanto, a recuperação documental melhora o comportamento do LLM, mas não elimina erros em respostas que exigem negação explícita, fidelidade literal ou distinção entre protocolos semanticamente próximos.
 
-% A implantação do sistema localmente apresenta fatores limitantes no que se refere aos recursos computacionais em postos de saúde, dada a necessidade de \textit{hardware} avançado (placas de vídeo com alta capacidade de memória VRAM ou Unidades de Processamento de Tensores) para viabilizar latências em tempo real tanto para a conversão áudio-texto quanto para as respostas do modelo generativo.
+O desempenho do RAG ajuda a explicar esse limite, onde o \textit{Hit@6} global de 78,0\% demonstre boa capacidade de recuperar ao menos um documento relevante entre os seis primeiros trechos, o \textit{phrase\_recall} médio de 47,1\% indica que a evidência recuperada nem sempre contém as frases necessárias para satisfazer o critério de resposta.
+Ou seja, o modelo tende a receber um documento correto, mas sem o trecho suficientemente específico para responder com segurança.
+Esse comportamento é compatível com a assimetria observada por dificuldade: itens difíceis, frequentemente associados a termos técnicos de alto risco, foram mais bem recuperados do que itens médios, nos quais há maior competição lexical entre manuais de pré-natal de rotina.
+%Estes fatores ampliam o ambiente de testes para uma nova configuração de hardware com espaço de VRAM a fim de comportar mais contexto e possibilitar melhor qualidade de recuperação.
 
+A comparação com o Gemini cria uma nova perspectiva quanto a falha da solução local.
+O modelo externo atingiu APR superior e TFR nula sob a mesma configuração de RAG, sugerindo que o recuperador atual pode sustentar respostas melhores quando acoplado a modelos mais capazes.
+O resultado aponta, portanto, para a necessidade de avaliar modelos locais maiores ou melhor adaptados a terminologia clínica, desde que acompanhados de hardware compatível e controles de privacidade equivalentes.
 
-% Observa-se que a quantidade de contexto injetado no prompt através do processo RAG impõe desafios conhecidos como \textit{Lost in the Middle}, impactando diretamente o \textit{F1-Score} quando volumes extensivos de texto técnico são transferidos para o modelo de borda.
+O resultado de 0,0\% de vazamento de PII no corpus sintético é positivo, mas sua validade externa é limitada. Nomes brasileiros compostos, abreviações, fala espontânea, erros de transcrição e regionalismos podem gerar padrões fora da distribuição testada. Como o módulo STT não foi avaliado sistematicamente, a transcrição é tratada como dado sensível em trânsito e como pré-preenchimento editável. Essa limitação reforça o papel do fluxo \textit{human-in-the-loop}: o profissional deve validar tanto a informação clínica quanto a integridade dos dados inseridos antes da persistência.
 
-% talvez no futuro seja um sistema tao pesado 
+As limitações do estudo decorrem do próprio escopo experimental. A avaliação realizada mede viabilidade arquitetural, privacidade, recuperação documental, aderência automática e comportamento funcional em casos sintéticos; ela não mede eficácia assistencial. Não houve avaliação com gestantes, profissionais de saúde ou dados clínicos reais, logo, os resultados não permitem inferir redução efetiva de carga cognitiva, usabilidade em consulta ou impacto sobre desfechos de cuidado. Essa limitação é compatível com a pergunta de pesquisa adotada, que prioriza viabilidade técnica e segurança arquitetural, mas impede conclusões sobre adoção clínica real.
 
-% Finalmente, testes intensivos no módulo de Extração de Entidades Nomeadas (NER) e do protocolo MCP sinalizam que peculiaridades linguísticas (abreviações atípicas e coloquialismos) ainda representam pequenos riscos residuais para identificadores de saúde. Contudo, essa constatação suporta integralmente a necessidade da etapa metodológica adotada de \textit{human-in-the-loop}, que mitiga não apenas potenciais alucinações de conduta, mas valida a confiabilidade final da triagem registrada no banco de dados.
+Como trabalhos futuros, recomenda-se refinar a indexação por metadados de versão dos manuais, implementar barreiras determinísticas de escopo antes da geração, avaliar o sistema em áudio clínico simulado, submeter o protótipo a estudos com profissionais de saúde mediante aprovação ética, aplicar revisão clínica independente aos itens ambíguos, comparar modelos locais maiores e mais recentes, e mensurar custo computacional, consumo de VRAM, latência e estabilidade sob carga. O cenário atual de hardware ainda limita a aplicação de LLMs locais em produção de baixo custo, especialmente quando há necessidade de baixa latência e modelos com maior número de parâmetros. Espera-se, contudo, que a evolução de modelos, técnicas de quantização, aceleração em hardware e métodos de RAG torne esse tipo de sistema progressivamente mais simples de implantar em ambientes assistenciais.
+
+Por fim, a principal contribuição do protótipo é explicitar uma arquitetura replicável na qual privacidade, auditabilidade e revisão humana são requisitos de projeto. O estudo também fornece um benchmark inicial para avaliar recuperação, geração, privacidade e escopo em pré-natal, criando uma base para comparações futuras com modelos e configurações mais robustas.
+
+% o profissional consegue valdiar a sugestao em segundos?
+% profissionais conseguem revisar antes de salvar?
+% como é reduzida a over-reliance na IA?
+% como é calculado o impaco na carga cognitiva?
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Conclusão}
-% retomada dos atributos
-% 9. Conclusão
-%    - retomada dos objetivos e resultados
-%    - Resumo dos Resultados
-%      - Alinhamento com a cartilha da gestante SUS
-%    - Contribuições
-%    - Afimar viabilidade do projeto em locais de baixa conectividade, hardware limitado e alta privacidade
-%    - Perspectivas (contribuicoes, viabilidade, proximos passos, trabalhos futuros)
 
-% trbalho futuros com modelos moe ou pequenos com finetuning pe;os dados do ministerio para melhorar desempenho em hardwares de vram reduzida
+Este trabalho especificou, implementou e avaliou um sistema protótipo \textit{on-premise} para apoio documental ao pré-natal no contexto do SUS, integrando transcrição local, RAG sobre manuais oficiais, LLM executado via Ollama com revisão humana obrigatória e um \textit{gateway} de anonimização de dados.
 
-% A arquitetura especificada no presente manuscrito consolida o design de um ecossistema digital \textit{on-premise} para o atendimento pré-natal no escopo do Sistema Único de Saúde, solucionando a premissa de que a LGPD restringe fluxos dependentes de processamento e extração remota em ambientes de nuvem pública. Por meio da combinação dos métodos \textit{Speech-to-Text} local, \textit{Retrieval-Augmented Generation} restrito às Cartilhas do Ministério da Saúde e do protocolo de anonimização estrito, atende-se ao objetivo de mitigar simultaneamente a elevada carga cognitiva e o risco de vazamento de dados.
+A pergunta norteadora foi respondida de forma parcial:
+a arquitetura mostrou-se tecnicamente viável como base assistiva, auditável e não autônoma, mas os resultados de geração, escopo e latência indicam que o sistema ainda não possui robustez suficiente para uso clínico sem supervisão profissional.
+A topologia em contêineres deve ser entendida como decisão de privacidade por desenho, não como comprovação de isolamento absoluto, pois não foram realizados testes específicos de segurança de rede.
 
-% A viabilidade técnica comprova-se forte do ponto de vista do ciclo *software* e das blindagens de rede.
+Na avaliação experimental, o módulo \textit{RAG} alcançou \textit{Hit@6} global de 78,0\% e MRR médio de 0,4807, mas o \textit{phrase_recall} médio de 47,1\%, indicando capacidade razoável de recuperar documentos relevantes, embora o \textit{phrase\_recall} mostre que a evidência recuperada nem sempre contém o trecho necessário para satisfazer integralmente o critério de resposta.
+O módulo de privacidade não apresentou vazamento no conjunto sintético de 76 entidades avaliadas, embora esse resultado não substitua testes com fala espontânea, abreviações, erros de transcrição e maior variação linguística.
+A latência média de 15,59 segundos no fluxo local com \textit{RAG} evidencia que a inferência local e os requisitos de hardware ainda limitam a adoção de baixo custo em produção.
+Por fim, a revisão humana obrigatória foi validada como restrição de projeto, pois os resultados reforçam que o sistema deve permanecer assistivo, auditável e não autônomo.
+A aprovação de quatro dos cinco casos funcionais do roteiro (GT01-GT05) indica coerência funcional inicial, enquanto a falha no GT05 evidencia a necessidade de barreiras de escopo antes da geração via \textit{LLM}.
+
+%Em relação aos objetivos,
+%o trabalho cumpriu a revisão conceitual sobre IA Responsável, privacidade e LLMs;
+%rojetou uma arquitetura local em contêineres;
+%implementou um protótipo funcional com RAG, LLM local, mascaramento de PII e revisão humana obrigatória;
+%estruturou um benchmark reprodutível de recuperação e geração;
+%e avaliou o sistema por métricas de recuperação, aderência automática, PII sintética, escopo e latência.
+%Entretanto, a avaliação não mediu impacto assistencial, usabilidade em consulta, redução de carga cognitiva ou desempenho com dados reais
+
+Como contribuição, o estudo entrega uma arquitetura replicável, um fluxo de privacidade coerente com os princípios da LGPD e um benchmark inicial reprodutível para avaliação técnica de recuperação, geração, mascaramento de PII, escopo e latência em documentos de pré-natal e evidências quantitativas sobre os trade-offs entre execução local e custo computacional.
+A continuidade do projeto deve priorizar curadoria do índice vetorial, avaliação sistemática do STT, testes com modelos maiores e mais recentes, análise de consumo de VRAM e validação futura com profissionais de saúde em termos de eficácia assistencial e usabilidade em consulta mediante aprovação ética.
+No cenário atual, os requisitos de hardware ainda limitam a adoção de baixo custo em produção; contudo, avanços em modelos, quantização, aceleração em hardware e técnicas de RAG podem tornar esse tipo de sistema progressivamente mais viável em ambientes reais.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% 10. Referências
-%     - Bibliografia
-%     - Links de interesse
+\section{Declarações Finais}
+
+Os materiais suplementares estão disponíveis no repositório público do projeto: \url{https://github.com/lucaszegrine/sus-prenatal-ai-icei-puc-minas-cc}. 
+
+O estudo não envolve participantes humanos, não utiliza dados clínicos reais identificáveis e não foi submetido ao Comitê de Ética em Pesquisa da PUC Minas. 
+
+Durante a preparação do texto, foi utilizado o modelo Gemini 3.1 Pro (Google, 04/2026) para revisão gramatical e refinamento de clareza, sem geração de resultados experimentais, análise de resultados ou compartilhamento de dados sensíveis onde todo o conteúdo obtido de forma automatizada foi revisado e editado conforme necessário sob total responsabilidade do autor.
+
+
+% \section{Comitê de Ética:}
+% O estudo não envolve participantes humanos e não foi submetido ao Comitê de Ética em Pesquisa da PUC Minas.
+
+% \section{Funding e suporte:}
+% Esse trabalho não recebeu nenhum tipo de financiamento ou suporte financeiro.
+
+% \section{Conflitos de interesse:}
+% Não há conflitos de interesse.
+
+% \section{Declaração de uso de Inteligência Artificial:}
+% Durante a preparação deste trabalho, o autor utilizou o modelo de linguagem de grande escala Gemini 3.1 Pro (Google, 04/2026) para revisão gramatical e refinamento de clareza textual onde todo o conteúdo obtido de forma automatizada foi revisado e editado conforme necessário sob total responsabilidade do autor.
+% A ferramenta não foi utilizada para geração de resultados experimentais ou análise de resultados assim como nenhum dado sensível ou identificável foi compartilhado com a ferramenta.
 
 \newpage
 

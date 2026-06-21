@@ -17,6 +17,7 @@ import {
 import { AudioLevelMeter } from './escriba/AudioLevelMeter.js'
 import { EscribaRecordingBar, type RecordingPhase } from './escriba/EscribaRecordingBar.js'
 import { EscribaStreamDiagnostics } from './escriba/EscribaStreamDiagnostics.js'
+import { AssistantMarkdown } from './AssistantMarkdown.js'
 
 const uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 const STT_CHUNK_MIN_MS = Number.parseInt(import.meta.env.VITE_STT_CHUNK_MIN_MS ?? '2500', 10)
@@ -346,11 +347,13 @@ export function ConsultaStreamPanel({
             sttRequestStarted.current = 0
           }
           break
+        case 'ia_reset':
+          setIaText('')
+          break
         case 'ia_token':
           setIaText((t) => t + msg.token)
           break
         case 'ia_done':
-          setIaText((t) => (t ? `${t}\n` : t))
           pushLog('ia_done')
           break
         case 'error':
@@ -1073,9 +1076,13 @@ export function ConsultaStreamPanel({
                       Rascunho automático — não salva no prontuário até você revisar e confirmar a consulta.
                     </p>
                     <div className="flex-1 overflow-y-auto max-h-64">
-                      <p className="text-sm text-brand-navy whitespace-pre-wrap leading-relaxed">
-                        {iaText || 'Insight após finalizar um trecho de fala.'}
-                      </p>
+                      {iaText.trim() ? (
+                        <AssistantMarkdown markdown={iaText} className="text-sm text-brand-navy" />
+                      ) : (
+                        <p className="text-sm text-brand-navy leading-relaxed">
+                          Insight após um trecho com conteúdo clínico (queixa, sinais, conduta).
+                        </p>
+                      )}
                     </div>
                   </section>
                 </div>
@@ -1253,7 +1260,13 @@ export function ConsultaStreamPanel({
             <h4 className="text-xs font-semibold uppercase text-slate-500">STT parcial (efêmero)</h4>
             <p className="mt-2 min-h-[3rem] whitespace-pre-wrap text-sm text-slate-900">{sttText || '—'}</p>
             <h4 className="mt-4 text-xs font-semibold uppercase text-slate-500">Insight IA (stream)</h4>
-            <p className="mt-2 max-h-40 overflow-auto whitespace-pre-wrap text-sm text-rose-950">{iaText || '—'}</p>
+            <div className="mt-2 max-h-40 overflow-auto">
+              {iaText.trim() ? (
+                <AssistantMarkdown markdown={iaText} className="text-sm text-rose-950" />
+              ) : (
+                <p className="text-sm text-rose-950">—</p>
+              )}
+            </div>
           </div>
         </div>
 

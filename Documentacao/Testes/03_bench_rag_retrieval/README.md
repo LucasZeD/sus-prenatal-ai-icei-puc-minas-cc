@@ -3,7 +3,7 @@
 Ver o **[README principal](../README.md)** (pipeline e gráficos).
 
 ```bash
-export BENCH_DATE=20260520
+export BENCH_DATE=20260601_143052   # ou omita e use o padrão YYYYMMDD_HHMMSS
 ../.venv/bin/python run_rag_benchmark.py --base-url http://127.0.0.1:4010 --out-dir ./results/$BENCH_DATE
 ```
 

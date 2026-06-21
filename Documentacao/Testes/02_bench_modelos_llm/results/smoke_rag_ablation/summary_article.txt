@@ -1,0 +1,15 @@
+=== Summary article metrics ===
+
+--- rag_mode=off ---
+[ollama|rag=off] APR=0.0% (0/2)
+[ollama|rag=off] TFR=0.0% (0/0)
+--- rag_mode=on ---
+[ollama|rag=on] APR=0.0% (0/2)
+[ollama|rag=on] TFR=0.0% (0/0)
+
+Falhas trap/protocolo: trap=0/0 | protocolo=4/4
+
+Latência média retrieve_ms: 665.5 ms
+Latência média ttft_ms: 2737.3 ms
+Geração média gen_tokens_per_sec: 30.761
+

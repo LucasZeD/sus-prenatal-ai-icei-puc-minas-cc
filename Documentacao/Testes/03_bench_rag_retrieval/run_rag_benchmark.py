@@ -8,7 +8,7 @@ import csv
 import sys
 import time
 from dataclasses import dataclass
-from datetime import date
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -234,10 +234,15 @@ def main() -> int:
     parser.add_argument("--question-ids", default="")
     parser.add_argument("--timeout", type=float, default=120.0)
     parser.add_argument("--resume", action="store_true")
-    parser.add_argument("--out-dir", type=Path, default=None, help="Output dir (default: results/YYYYMMDD)")
+    parser.add_argument(
+        "--out-dir",
+        type=Path,
+        default=None,
+        help="Output dir (default: results/YYYYMMDD_HHMMSS)",
+    )
     args = parser.parse_args()
 
-    stamp = date.today().strftime("%Y%m%d")
+    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     out_dir = args.out_dir or (BENCH_DIR / "results" / stamp)
     results_csv = out_dir / "rag_results.csv"
     summary_path = out_dir / "rag_summary.txt"

@@ -97,11 +97,43 @@ services:
     restart: unless-stopped
 
   # RAG + composição de contexto (PII) — FastAPI; Ollama no host (porta 11434) via host.docker.internal
+  pii_ner:
+    build:
+      context: ./pii-ner
+      dockerfile: Dockerfile
+    container_name: prenatal_pii_ner
+    environment:
+      PII_NER_MODEL: ${PII_NER_MODEL:-OpenMed/OpenMed-PII-Portuguese-SnowflakeMed-Large-568M-v1}
+      PII_NER_MIN_SCORE: ${PII_NER_MIN_SCORE:-0.75}
+      PII_NER_MAX_CHARS: ${PII_NER_MAX_CHARS:-12000}
+      PII_NER_DEVICE: ${PII_NER_DEVICE:-cpu}
+      PII_NER_ALLOW_FALLBACK: ${PII_NER_ALLOW_FALLBACK:-true}
+    ports:
+      - "127.0.0.1:${PII_NER_PUBLISH_PORT:-4020}:4020"
+    networks:
+      - backend-nw
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:4020/health', timeout=8)",
+        ]
+      interval: 10s
+      timeout: 12s
+      retries: 6
+      start_period: 120s
+    restart: unless-stopped
+
   clinical_ai:
     build:
       context: ./clinical-ai
       dockerfile: Dockerfile
     container_name: prenatal_clinical_ai
+    depends_on:
+      pii_ner:
+        condition: service_healthy
     environment:
       OLLAMA_BASE_URL: ${CLINICAL_AI_OLLAMA_BASE_URL:-http://host.docker.internal:11434}
       OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen3.5:9b-medical-rag}
@@ -110,8 +142,9 @@ services:
       RAG_CORPUS_DIR: ${RAG_CORPUS_DIR:-/app/corpus/CartilhasSUS}
       RAG_VECTOR_STORE_PATH: ${RAG_VECTOR_STORE_PATH:-/app/data/rag_store.sqlite}
       RAG_RECENCY_WEIGHT: ${RAG_RECENCY_WEIGHT:-0.35}
-      RAG_CHUNK_MAX_CHARS: ${RAG_CHUNK_MAX_CHARS:-1650}
+      RAG_CHUNK_MAX_CHARS: ${RAG_CHUNK_MAX_CHARS:-900}
       RAG_CHUNK_OVERLAP: ${RAG_CHUNK_OVERLAP:-120}
+      RAG_REQUIRE_EMBEDDING_INDEX: ${RAG_REQUIRE_EMBEDDING_INDEX:-false}
       RAG_QUERY_EXPAND_ENABLED: ${RAG_QUERY_EXPAND_ENABLED:-true}
       # Think=ON: thinking+content partilham num_predict; teto MCP_CHAT_THINK_MAX_PREDICT evita loops longos (ver clinical_ai/main.py).
       MCP_CHAT_MAX_TOKENS: ${MCP_CHAT_MAX_TOKENS:-4096}
@@ -122,6 +155,11 @@ services:
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.0-flash}
       GEMINI_TIMEOUT_S: ${GEMINI_TIMEOUT_S:-120}
+      PII_NER_URL: ${PII_NER_URL:-http://pii_ner:4020}
+      PII_NER_TIMEOUT_S: ${PII_NER_TIMEOUT_S:-4}
+      PII_NER_MIN_SCORE: ${PII_NER_MIN_SCORE:-0.75}
+      PII_NER_MAX_CHARS: ${PII_NER_MAX_CHARS:-12000}
+      PII_NER_REQUIRED: ${PII_NER_REQUIRED:-true}
     ports:
       - "127.0.0.1:${CLINICAL_AI_PUBLISH_PORT:-4010}:4010"
     volumes:
@@ -144,7 +182,7 @@ services:
       start_period: 300s
     restart: unless-stopped
 
-  # STT local (Whisper large-v3) — perfil ai; requer NVIDIA Container Toolkit
+  # STT (Whisper large-v3) — perfil `ai`; requer NVIDIA Container Toolkit
   stt:
     profiles: [ai]
     build:

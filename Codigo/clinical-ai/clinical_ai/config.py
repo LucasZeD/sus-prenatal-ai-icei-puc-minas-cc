@@ -23,7 +23,7 @@ class Settings(BaseSettings):
         validation_alias="RAG_EXPORT_CHUNKS_JSONL",
         description="Optional path: after build_index, write chunks as JSONL (debug / audit). Relative to clinical-ai package root if not absolute.",
     )
-    rag_chunk_max_chars: int = Field(default=1650, validation_alias="RAG_CHUNK_MAX_CHARS")
+    rag_chunk_max_chars: int = Field(default=900, validation_alias="RAG_CHUNK_MAX_CHARS")
     rag_chunk_overlap: int = Field(default=120, validation_alias="RAG_CHUNK_OVERLAP")
     rag_embed_max_chars: int = Field(default=8000, validation_alias="RAG_EMBED_MAX_CHARS")
     rag_query_max_chars: int = Field(default=2000, validation_alias="RAG_QUERY_MAX_CHARS")
@@ -36,6 +36,7 @@ class Settings(BaseSettings):
     rag_query_expand_enabled: bool = Field(default=False, validation_alias="RAG_QUERY_EXPAND_ENABLED")
     rag_query_expand_max_tokens: int = Field(default=220, validation_alias="RAG_QUERY_EXPAND_MAX_TOKENS")
     rag_query_expand_max_out_chars: int = Field(default=450, validation_alias="RAG_QUERY_EXPAND_MAX_OUT_CHARS")
+    rag_require_embedding_index: bool = Field(default=False, validation_alias="RAG_REQUIRE_EMBEDDING_INDEX")
 
     mcp_chat_max_tokens: int = Field(
         default=1024,
@@ -61,6 +62,11 @@ class Settings(BaseSettings):
     gemini_api_key: str = Field(default="", validation_alias="GEMINI_API_KEY")
     gemini_model: str = Field(default="gemini-2.0-flash", validation_alias="GEMINI_MODEL")
     gemini_timeout_s: float = Field(default=120.0, validation_alias="GEMINI_TIMEOUT_S")
+    pii_ner_url: str = Field(default="", validation_alias="PII_NER_URL")
+    pii_ner_timeout_s: float = Field(default=4.0, validation_alias="PII_NER_TIMEOUT_S")
+    pii_ner_min_score: float = Field(default=0.75, validation_alias="PII_NER_MIN_SCORE")
+    pii_ner_max_chars: int = Field(default=12_000, validation_alias="PII_NER_MAX_CHARS")
+    pii_ner_required: bool = Field(default=False, validation_alias="PII_NER_REQUIRED")
 
 
 @lru_cache

@@ -1,20 +1,26 @@
 import { ConsultaStreamEventoTipo } from "../lib/prismaBarrel.js";
 import { gpuDemoGate } from "../lib/gpuDemoGate.js";
 import { mcpGateway } from "../lib/privacyMcpGateway.js";
-import { OllamaStreamClient } from "../lib/llm/ollamaStreamClient.js";
 import { FasterWhisperClient } from "../lib/stt/fasterWhisperClient.js";
 import { SttChunkBuffer } from "../lib/stt/sttChunkBuffer.js";
 import { normalizeObstetricJargon } from "../lib/obstetricJargonNormalize.js";
 import { ConsultaRepository } from "../repository/consultaRepository.js";
+import { streamEscribaInsight } from "./escribaInsightService.js";
+import {
+  hasClinicalSignal,
+  isNoiseInsight,
+  transcriptFingerprint,
+} from "./escribaInsightFilters.js";
 
 const SENTENCE_END = /[.!?…]\s*$/;
-const DEBOUNCE_MS = Number.parseInt(process.env.STREAM_RAG_DEBOUNCE_MS ?? "900", 10);
-const MIN_FLUSH_CHARS = Number.parseInt(process.env.STREAM_RAG_MIN_CHARS ?? "14", 10);
+const DEBOUNCE_MS = Number.parseInt(process.env.STREAM_RAG_DEBOUNCE_MS ?? "1800", 10);
+const MIN_FLUSH_CHARS = Number.parseInt(process.env.STREAM_RAG_MIN_CHARS ?? "28", 10);
 
 export type StreamOutbound =
   | { type: "ready"; consultaId: string }
   | { type: "history"; eventos: { tipo: string; payload: string; createdAt: string }[] }
   | { type: "stt_partial"; text: string }
+  | { type: "ia_reset" }
   | { type: "ia_token"; token: string }
   | { type: "ia_done" }
   | { type: "error"; message: string };
@@ -33,6 +39,7 @@ export class ConsultationStreamSession {
   private sttLive = "";
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
   private ragRunning = false;
+  private lastInsightFingerprint = "";
   private readonly sttBuffer: SttChunkBuffer;
 
   constructor(
@@ -40,7 +47,6 @@ export class ConsultationStreamSession {
     private readonly send: (msg: StreamOutbound) => void,
     private readonly consultas: ConsultaRepository,
     private readonly stt: FasterWhisperClient,
-    private readonly llm: OllamaStreamClient,
   ) {
     this.sttBuffer = new SttChunkBuffer(stt.chunkMinMs);
   }
@@ -143,20 +149,39 @@ export class ConsultationStreamSession {
         return;
       }
 
+      const fp = transcriptFingerprint(sanitized);
+      if (fp === this.lastInsightFingerprint) {
+        return;
+      }
+      if (!hasClinicalSignal(sanitized)) {
+        return;
+      }
+
       await this.consultas.appendStreamEvento(this.consultaId, ConsultaStreamEventoTipo.TRANSCRICAO_SANITIZADA, sanitized);
 
+      this.send({ type: "ia_reset" });
       let insight = "";
-      for await (const token of this.llm.streamInsight(sanitized)) {
+      for await (const token of streamEscribaInsight(this.consultaId, sanitized)) {
         insight += token;
         this.send({ type: "ia_token", token });
       }
 
-      if (insight.trim()) {
-        await this.consultas.appendStreamEvento(this.consultaId, ConsultaStreamEventoTipo.IA_INSIGHT_COMPLETO, insight);
+      const trimmed = insight.trim();
+      if (!trimmed || isNoiseInsight(trimmed)) {
+        this.send({ type: "ia_reset" });
+        this.send({ type: "ia_done" });
+        return;
       }
+
+      this.lastInsightFingerprint = fp;
+      await this.consultas.appendStreamEvento(this.consultaId, ConsultaStreamEventoTipo.IA_INSIGHT_COMPLETO, trimmed);
       this.send({ type: "ia_done" });
     } catch (e) {
-      const message = e instanceof Error ? e.message : "Falha no pipeline de IA.";
+      const raw = e instanceof Error ? e.message : "Falha no pipeline de IA.";
+      const message =
+        raw === "clinical_ai_url_missing"
+          ? "clinical-ai indisponivel: defina CLINICAL_AI_URL no backend."
+          : raw;
       this.send({ type: "error", message });
     } finally {
       releaseGpu();
@@ -168,10 +193,9 @@ export class ConsultationStreamSession {
 export class ConsultationStreamService {
   private readonly consultas = new ConsultaRepository();
   private readonly stt = new FasterWhisperClient();
-  private readonly llm = new OllamaStreamClient();
 
   createSession(consultaId: string, send: (msg: StreamOutbound) => void): ConsultationStreamSession {
-    return new ConsultationStreamSession(consultaId, send, this.consultas, this.stt, this.llm);
+    return new ConsultationStreamSession(consultaId, send, this.consultas, this.stt);
   }
 
   get consultaRepository(): ConsultaRepository {

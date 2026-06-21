@@ -11,11 +11,11 @@ import time
 from pathlib import Path
 from typing import Any
 
+from clinical_ai.corpus import iter_corpus_source_files
+
 log = logging.getLogger(__name__)
 
 SCHEMA_VERSION = "2"
-
-_CORPUS_PATTERNS: tuple[str, ...] = ("*.jsonl", "*.md", "*.txt", "*.pdf", "*.docx")
 
 
 def corpus_fingerprint(corpus_dir: Path) -> str:
@@ -25,18 +25,7 @@ def corpus_fingerprint(corpus_dir: Path) -> str:
         return ""
 
     h = hashlib.sha256()
-    paths: set[Path] = set()
-    for pattern in _CORPUS_PATTERNS:
-        for path in base.rglob(pattern):
-            if not path.is_file():
-                continue
-            if ".git" in path.parts:
-                continue
-            if path.name.lower() == "readme.md":
-                continue
-            paths.add(path)
-
-    for path in sorted(paths, key=lambda p: p.relative_to(base).as_posix()):
+    for path in iter_corpus_source_files(base):
         try:
             st = path.stat()
         except OSError:

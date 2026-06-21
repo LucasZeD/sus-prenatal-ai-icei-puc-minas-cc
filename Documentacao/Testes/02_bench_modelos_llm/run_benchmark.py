@@ -17,7 +17,7 @@ import sys
 import time
 from collections import defaultdict
 from dataclasses import dataclass, field
-from datetime import date
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterator
 
@@ -25,6 +25,7 @@ import httpx
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "shared"))
 from bench_scoring import score_response  # noqa: E402
+from article_metrics import compute_apr, compute_tfr, is_trap  # noqa: E402
 
 TESTS_DIR = Path(__file__).resolve().parent.parent
 BENCH_DIR = Path(__file__).resolve().parent
@@ -48,10 +49,17 @@ RESULTS_HEADER = [
     "question_id",
     "difficulty",
     "llm_provider",
+    "rag_mode",
+    "is_trap",
+    "apr_eligible",
     "pass_auto",
     "matched_phrases",
     "missing_phrases",
     "forbidden_hit",
+    "retrieve_ms",
+    "latency_total_ms",
+    "ttft_ms",
+    "gen_tokens_per_sec",
     "response_preview_chars",
     "notes",
 ]
@@ -61,12 +69,17 @@ RESULTS_HEADER = [
 class StreamOutcome:
     response_text: str = ""
     latency_ms: float = 0.0
+    ttft_ms: float | None = None
     rag_ms: float | None = None
+    gen_tokens_per_sec: float | None = None
+    gen_tokens_estimated: bool = False
     chunks_retrieved: str = ""
     n_rag_chunks: int = 0
     rag_chunks: list[dict[str, Any]] = field(default_factory=list)
     error: str | None = None
     ollama_total_duration_ns: int | None = None
+    ollama_eval_count: int | None = None
+    ollama_eval_duration_ns: int | None = None
 
 
 @dataclass
@@ -74,10 +87,17 @@ class RunRow:
     question_id: str
     difficulty: str
     llm_provider: str
+    rag_mode: str
+    is_trap: str
+    apr_eligible: str
     pass_auto: str
     matched_phrases: str
     missing_phrases: str
     forbidden_hit: str
+    retrieve_ms: str
+    latency_total_ms: str
+    ttft_ms: str
+    gen_tokens_per_sec: str
     response_preview_chars: str
     notes: str
     question_pt: str = ""
@@ -142,6 +162,18 @@ def parse_ndjson_stream(lines: Iterator[str]) -> StreamOutcome:
                         out.ollama_total_duration_ns = int(td)
                     except (TypeError, ValueError):
                         pass
+                ec = metrics.get("eval_count")
+                if ec is not None:
+                    try:
+                        out.ollama_eval_count = int(ec)
+                    except (TypeError, ValueError):
+                        pass
+                ed = metrics.get("eval_duration")
+                if ed is not None:
+                    try:
+                        out.ollama_eval_duration_ns = int(ed)
+                    except (TypeError, ValueError):
+                        pass
         elif typ == "error":
             detail = row.get("detail") or row.get("message") or str(row)
             out.error = str(detail)
@@ -157,6 +189,8 @@ def stream_direct_question(
     question: str,
     provider: str,
     timeout: float,
+    *,
+    use_rag: bool = True,
 ) -> StreamOutcome:
     url = f"{base_url.rstrip('/')}/mcp/test/direct-question-stream"
     body = {
@@ -165,8 +199,10 @@ def stream_direct_question(
         "rag_expand_query": True,
         "think": False,
         "llm_provider": provider,
+        "use_rag": use_rag,
     }
     t0 = time.perf_counter()
+    first_token_ms: float | None = None
     buffer = ""
     parsed_lines: list[str] = []
     try:
@@ -183,6 +219,18 @@ def stream_direct_question(
                 while "\n" in buffer:
                     line, buffer = buffer.split("\n", 1)
                     parsed_lines.append(line)
+                    if first_token_ms is None:
+                        try:
+                            obj = json.loads(line)
+                        except json.JSONDecodeError:
+                            obj = None
+                        if (
+                            isinstance(obj, dict)
+                            and obj.get("type") == "ollama"
+                            and isinstance(obj.get("content"), str)
+                            and obj.get("content")
+                        ):
+                            first_token_ms = round((time.perf_counter() - t0) * 1000.0, 1)
             if buffer.strip():
                 parsed_lines.append(buffer)
     except httpx.HTTPError as exc:
@@ -193,6 +241,16 @@ def stream_direct_question(
 
     outcome = parse_ndjson_stream(parsed_lines)
     outcome.latency_ms = round((time.perf_counter() - t0) * 1000.0, 1)
+    outcome.ttft_ms = first_token_ms
+    if outcome.ollama_eval_count and outcome.ollama_eval_duration_ns:
+        dur_s = outcome.ollama_eval_duration_ns / 1_000_000_000
+        if dur_s > 0:
+            outcome.gen_tokens_per_sec = outcome.ollama_eval_count / dur_s
+    if outcome.gen_tokens_per_sec is None and outcome.response_text:
+        gen_ms = outcome.latency_ms - (outcome.rag_ms or 0.0)
+        if gen_ms > 0:
+            outcome.gen_tokens_per_sec = len(outcome.response_text) / (gen_ms / 1000.0)
+            outcome.gen_tokens_estimated = True
     return outcome
 
 
@@ -204,6 +262,8 @@ def build_notes(
     parts: dict[str, Any] = {
         "latency_ms": outcome.latency_ms,
     }
+    if outcome.ttft_ms is not None:
+        parts["ttft_ms"] = outcome.ttft_ms
     if outcome.rag_ms is not None:
         parts["rag_ms"] = outcome.rag_ms
     if outcome.chunks_retrieved:
@@ -213,6 +273,14 @@ def build_notes(
         parts["n_rag_chunks"] = outcome.n_rag_chunks
     if outcome.ollama_total_duration_ns is not None:
         parts["ollama_total_duration_ns"] = outcome.ollama_total_duration_ns
+    if outcome.ollama_eval_count is not None:
+        parts["ollama_eval_count"] = outcome.ollama_eval_count
+    if outcome.ollama_eval_duration_ns is not None:
+        parts["ollama_eval_duration_ns"] = outcome.ollama_eval_duration_ns
+    if outcome.gen_tokens_per_sec is not None:
+        parts["gen_tokens_per_sec"] = round(outcome.gen_tokens_per_sec, 3)
+    if outcome.gen_tokens_estimated:
+        parts["tok_s_estimated"] = True
     if outcome.error:
         parts["error"] = outcome.error
     if human_judge:
@@ -301,14 +369,20 @@ def validate_llm_env(
     return errors, warnings
 
 
-def load_existing_keys(path: Path) -> set[tuple[str, str]]:
+def load_existing_keys(path: Path) -> set[tuple[str, str, str]]:
     if not path.is_file():
         return set()
-    keys: set[tuple[str, str]] = set()
+    keys: set[tuple[str, str, str]] = set()
     with path.open(encoding="utf-8", newline="") as fh:
         reader = csv.DictReader(fh)
         for row in reader:
-            keys.add((row["question_id"], row["llm_provider"]))
+            keys.add(
+                (
+                    row["question_id"],
+                    row["llm_provider"],
+                    row.get("rag_mode") or "on",
+                )
+            )
     return keys
 
 
@@ -324,10 +398,17 @@ def append_result_csv(path: Path, row: RunRow, write_header: bool) -> None:
                 "question_id": row.question_id,
                 "difficulty": row.difficulty,
                 "llm_provider": row.llm_provider,
+                "rag_mode": row.rag_mode,
+                "is_trap": row.is_trap,
+                "apr_eligible": row.apr_eligible,
                 "pass_auto": row.pass_auto,
                 "matched_phrases": row.matched_phrases,
                 "missing_phrases": row.missing_phrases,
                 "forbidden_hit": "true" if row.forbidden_hit == "true" else "false",
+                "retrieve_ms": row.retrieve_ms,
+                "latency_total_ms": row.latency_total_ms,
+                "ttft_ms": row.ttft_ms,
+                "gen_tokens_per_sec": row.gen_tokens_per_sec,
                 "response_preview_chars": row.response_preview_chars,
                 "notes": row.notes,
             }
@@ -343,14 +424,17 @@ def append_jsonl(path: Path, record: dict[str, Any]) -> None:
 def execute_one(
     bench_row: dict[str, str],
     provider: str,
+    rag_mode: str,
     client: httpx.Client,
     base_url: str,
     timeout: float,
     preview_chars: int,
 ) -> RunRow:
     qid = bench_row["question_id"]
+    trap = "true" if is_trap(bench_row) else "false"
+    use_rag = rag_mode != "off"
     outcome = stream_direct_question(
-        client, base_url, bench_row["question_pt"], provider, timeout
+        client, base_url, bench_row["question_pt"], provider, timeout, use_rag=use_rag
     )
 
     if outcome.error and not outcome.response_text:
@@ -358,10 +442,17 @@ def execute_one(
             question_id=qid,
             difficulty=bench_row["difficulty"],
             llm_provider=provider,
+            rag_mode=rag_mode,
+            is_trap=trap,
+            apr_eligible="true",
             pass_auto="false",
             matched_phrases="",
             missing_phrases="",
             forbidden_hit="false",
+            retrieve_ms=f"{outcome.rag_ms:.1f}" if outcome.rag_ms is not None else "",
+            latency_total_ms=f"{outcome.latency_ms:.1f}",
+            ttft_ms=f"{outcome.ttft_ms:.1f}" if outcome.ttft_ms is not None else "",
+            gen_tokens_per_sec=f"{outcome.gen_tokens_per_sec:.3f}" if outcome.gen_tokens_per_sec is not None else "",
             response_preview_chars="",
             notes=build_notes(outcome),
             question_pt=bench_row["question_pt"],
@@ -384,16 +475,29 @@ def execute_one(
 
     preview = outcome.response_text[:preview_chars].replace("\n", " ")
 
+    notes = build_notes(outcome, human_judge=scored.human_judge_pending)
+    if notes.startswith("{"):
+        note_obj = json.loads(notes)
+        note_obj["rag_mode"] = rag_mode
+        notes = json.dumps(note_obj, ensure_ascii=False)
+
     return RunRow(
         question_id=qid,
         difficulty=bench_row["difficulty"],
         llm_provider=provider,
+        rag_mode=rag_mode,
+        is_trap=trap,
+        apr_eligible="true" if pass_auto in ("true", "false") else "false",
         pass_auto=pass_auto,
         matched_phrases=scored.matched_phrases,
         missing_phrases=scored.missing_phrases,
         forbidden_hit="true" if scored.forbidden_hit else "false",
+        retrieve_ms=f"{outcome.rag_ms:.1f}" if outcome.rag_ms is not None else "",
+        latency_total_ms=f"{outcome.latency_ms:.1f}",
+        ttft_ms=f"{outcome.ttft_ms:.1f}" if outcome.ttft_ms is not None else "",
+        gen_tokens_per_sec=f"{outcome.gen_tokens_per_sec:.3f}" if outcome.gen_tokens_per_sec is not None else "",
         response_preview_chars=preview,
-        notes=build_notes(outcome, human_judge=scored.human_judge_pending),
+        notes=notes,
         question_pt=bench_row["question_pt"],
         response_text=outcome.response_text,
         rag_chunks=outcome.rag_chunks,
@@ -463,11 +567,102 @@ def print_summary(all_rows: list[RunRow], summary_path: Path) -> None:
     print(text)
 
 
+def print_summary_article(
+    all_rows: list[RunRow],
+    trap_ids: set[str],
+    summary_article_path: Path,
+) -> None:
+    rows = [
+        {
+            "question_id": r.question_id,
+            "llm_provider": r.llm_provider,
+            "rag_mode": r.rag_mode,
+            "pass_auto": r.pass_auto,
+            "forbidden_hit": r.forbidden_hit,
+            "difficulty": r.difficulty,
+            "retrieve_ms": r.retrieve_ms,
+            "ttft_ms": r.ttft_ms,
+            "gen_tokens_per_sec": r.gen_tokens_per_sec,
+        }
+        for r in all_rows
+    ]
+    lines: list[str] = []
+    lines.append("=== Summary article metrics ===\n")
+
+    rag_modes_seen = sorted({r["rag_mode"] for r in rows})
+    providers_seen = sorted({r["llm_provider"] for r in rows})
+    for rag_mode in rag_modes_seen:
+        sub = [r for r in rows if r["rag_mode"] == rag_mode]
+        if len(rag_modes_seen) > 1:
+            lines.append(f"--- rag_mode={rag_mode} ---")
+        for prov in providers_seen:
+            prov_rows = [r for r in sub if r["llm_provider"] == prov]
+            if not prov_rows:
+                continue
+            apr = compute_apr(prov_rows, None)
+            tfr = compute_tfr(prov_rows, trap_ids, None)
+            lines.append(
+                f"[{prov}|rag={rag_mode}] APR={apr['rate_pct']:.1f}% "
+                f"({apr['approved']}/{apr['eligible']})"
+            )
+            lines.append(
+                f"[{prov}|rag={rag_mode}] TFR={tfr['rate_pct']:.1f}% "
+                f"({tfr['failed']}/{tfr['eligible']})"
+            )
+
+    auto = [r for r in rows if r["pass_auto"] in ("true", "false")]
+    trap_auto = [r for r in auto if r["question_id"] in trap_ids]
+    protocol_auto = [r for r in auto if r["question_id"] not in trap_ids]
+    trap_fail = sum(1 for r in trap_auto if r["pass_auto"] != "true" or r["forbidden_hit"] == "true")
+    protocol_fail = sum(1 for r in protocol_auto if r["pass_auto"] != "true" or r["forbidden_hit"] == "true")
+    lines.append("")
+    lines.append(
+        f"Falhas trap/protocolo: trap={trap_fail}/{len(trap_auto)} | "
+        f"protocolo={protocol_fail}/{len(protocol_auto)}"
+    )
+
+    def _avg_float(key: str) -> float:
+        vals: list[float] = []
+        for r in auto:
+            try:
+                if str(r.get(key, "")).strip():
+                    vals.append(float(str(r[key])))
+            except ValueError:
+                continue
+        return (sum(vals) / len(vals)) if vals else 0.0
+
+    lines.append("")
+    lines.append(f"Latência média retrieve_ms: {_avg_float('retrieve_ms'):.1f} ms")
+    lines.append(f"Latência média ttft_ms: {_avg_float('ttft_ms'):.1f} ms")
+    lines.append(f"Geração média gen_tokens_per_sec: {_avg_float('gen_tokens_per_sec'):.3f}")
+    lines.append("")
+    text = "\n".join(lines) + "\n"
+    summary_article_path.write_text(text, encoding="utf-8")
+    print(text)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run SUS prenatal benchmark against clinical-ai.")
     parser.add_argument("--benchmark", type=Path, default=DEFAULT_BENCHMARK)
     parser.add_argument("--base-url", default="http://127.0.0.1:4010")
     parser.add_argument("--providers", default="ollama,gemini")
+    parser.add_argument(
+        "--rag-modes",
+        default="on",
+        help="Comma-separated: on (RAG ativo), off (baseline sem trechos). Ex.: on,off",
+    )
+    parser.add_argument(
+        "--skip-gemini-rag-off",
+        action="store_true",
+        default=True,
+        help="Não roda gemini com rag=off (padrão: true). Use --no-skip-gemini-rag-off para matriz completa.",
+    )
+    parser.add_argument(
+        "--no-skip-gemini-rag-off",
+        action="store_false",
+        dest="skip_gemini_rag_off",
+        help="Inclui gemini+rag=off na matriz.",
+    )
     parser.add_argument("--limit", type=int, default=0, help="Max questions (0=all)")
     parser.add_argument("--question-ids", default="", help="Comma-separated Q001,Q002,...")
     parser.add_argument("--timeout", type=float, default=300.0)
@@ -476,7 +671,7 @@ def main() -> int:
         "--out-dir",
         type=Path,
         default=None,
-        help="Pasta de saída (default: results/YYYYMMDD neste diretório)",
+        help="Pasta de saída (default: results/YYYYMMDD_HHMMSS neste diretório)",
     )
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
@@ -505,6 +700,12 @@ def main() -> int:
             print(f"Invalid provider: {p}", file=sys.stderr)
             return 2
 
+    rag_modes = [m.strip().lower() for m in args.rag_modes.split(",") if m.strip()]
+    for m in rag_modes:
+        if m not in ("on", "off"):
+            print(f"Invalid rag_mode: {m} (use on or off)", file=sys.stderr)
+            return 2
+
     bench_rows = load_benchmark(args.benchmark)
     if args.question_ids.strip():
         wanted = {x.strip() for x in args.question_ids.split(",") if x.strip()}
@@ -512,11 +713,13 @@ def main() -> int:
     if args.limit > 0:
         bench_rows = bench_rows[: args.limit]
 
-    stamp = date.today().strftime("%Y%m%d")
+    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     out_dir = args.out_dir or (BENCH_DIR / "results" / stamp)
     results_csv = out_dir / "results.csv"
     jsonl_path = out_dir / "results_full.jsonl"
     summary_path = out_dir / "summary.txt"
+    summary_article_path = out_dir / "summary_article.txt"
+    trap_ids = {r["question_id"] for r in bench_rows if is_trap(r)}
 
     existing = load_existing_keys(results_csv) if args.resume else set()
     write_header = not results_csv.is_file() or not args.resume
@@ -524,9 +727,15 @@ def main() -> int:
     if args.dry_run:
         for row in bench_rows:
             for prov in providers:
-                key = (row["question_id"], prov)
-                skip = " [skip resume]" if key in existing else ""
-                print(f"{row['question_id']} {prov}{skip}: {row['question_pt'][:60]}?")
+                for rag_mode in rag_modes:
+                    if args.skip_gemini_rag_off and prov == "gemini" and rag_mode == "off":
+                        continue
+                    key = (row["question_id"], prov, rag_mode)
+                    skip = " [skip resume]" if key in existing else ""
+                    print(
+                        f"{row['question_id']} {prov} rag={rag_mode}{skip}: "
+                        f"{row['question_pt'][:60]}?"
+                    )
         return 0
 
     env = load_env_file(args.env_file)
@@ -578,48 +787,86 @@ def main() -> int:
                             question_id=r["question_id"],
                             difficulty=r["difficulty"],
                             llm_provider=r["llm_provider"],
+                            rag_mode=r.get("rag_mode") or "on",
+                            is_trap=r.get("is_trap", "false"),
+                            apr_eligible=r.get("apr_eligible", "true"),
                             pass_auto=r["pass_auto"],
                             matched_phrases=r["matched_phrases"],
                             missing_phrases=r["missing_phrases"],
                             forbidden_hit=r["forbidden_hit"],
+                            retrieve_ms=r.get("retrieve_ms", ""),
+                            latency_total_ms=r.get("latency_total_ms", ""),
+                            ttft_ms=r.get("ttft_ms", ""),
+                            gen_tokens_per_sec=r.get("gen_tokens_per_sec", ""),
                             response_preview_chars=r["response_preview_chars"],
                             notes=r["notes"],
                         )
                         for r in csv.DictReader(fh)
                     ]
 
-            total = len(bench_rows) * len(providers)
+            total = sum(
+                1
+                for _ in bench_rows
+                for prov in providers
+                for rag_mode in rag_modes
+                if not (args.skip_gemini_rag_off and prov == "gemini" and rag_mode == "off")
+            )
             done = 0
             for brow in bench_rows:
                 for prov in providers:
-                    key = (brow["question_id"], prov)
-                    if key in existing:
-                        continue
-                    done += 1
-                    print(f"[{done}/{total}] {brow['question_id']} ({prov}) ?", flush=True)
-                    run_row = execute_one(
-                        brow, prov, client, args.base_url, args.timeout, args.preview_chars
-                    )
-                    append_result_csv(results_csv, run_row, write_header)
-                    write_header = False
-                    existing.add(key)
-                    collected.append(run_row)
-                    append_jsonl(
-                        jsonl_path,
-                        {
-                            "question_id": run_row.question_id,
-                            "llm_provider": run_row.llm_provider,
-                            "difficulty": run_row.difficulty,
-                            "pass_auto": run_row.pass_auto,
-                            "response_text": run_row.response_text,
-                            "rag_chunks": run_row.rag_chunks,
-                            "notes": json.loads(run_row.notes) if run_row.notes.startswith("{") else run_row.notes,
-                        },
-                    )
-                    status = run_row.pass_auto
-                    print(f"  -> pass_auto={status} preview={run_row.response_preview_chars[:60]!r}?")
-                    if args.sleep_secs > 0:
-                        time.sleep(args.sleep_secs)
+                    for rag_mode in rag_modes:
+                        if args.skip_gemini_rag_off and prov == "gemini" and rag_mode == "off":
+                            continue
+                        key = (brow["question_id"], prov, rag_mode)
+                        if key in existing:
+                            continue
+                        done += 1
+                        print(
+                            f"[{done}/{total}] {brow['question_id']} ({prov}, rag={rag_mode}) ?",
+                            flush=True,
+                        )
+                        run_row = execute_one(
+                            brow,
+                            prov,
+                            rag_mode,
+                            client,
+                            args.base_url,
+                            args.timeout,
+                            args.preview_chars,
+                        )
+                        append_result_csv(results_csv, run_row, write_header)
+                        write_header = False
+                        existing.add(key)
+                        collected.append(run_row)
+                        append_jsonl(
+                            jsonl_path,
+                            {
+                                "question_id": run_row.question_id,
+                                "llm_provider": run_row.llm_provider,
+                                "rag_mode": run_row.rag_mode,
+                                "difficulty": run_row.difficulty,
+                                "is_trap": run_row.is_trap,
+                                "apr_eligible": run_row.apr_eligible,
+                                "pass_auto": run_row.pass_auto,
+                                "retrieve_ms": run_row.retrieve_ms,
+                                "latency_total_ms": run_row.latency_total_ms,
+                                "ttft_ms": run_row.ttft_ms,
+                                "gen_tokens_per_sec": run_row.gen_tokens_per_sec,
+                                "response_text": run_row.response_text,
+                                "rag_chunks": run_row.rag_chunks,
+                                "notes": (
+                                    json.loads(run_row.notes)
+                                    if run_row.notes.startswith("{")
+                                    else run_row.notes
+                                ),
+                            },
+                        )
+                        status = run_row.pass_auto
+                        print(
+                            f"  -> pass_auto={status} preview={run_row.response_preview_chars[:60]!r}?"
+                        )
+                        if args.sleep_secs > 0:
+                            time.sleep(args.sleep_secs)
 
     except httpx.HTTPError as exc:
         print(f"HTTP error: {exc}", file=sys.stderr)
@@ -627,6 +874,7 @@ def main() -> int:
 
     if collected:
         print_summary(collected, summary_path)
+        print_summary_article(collected, trap_ids, summary_article_path)
     print(f"\nWrote {results_csv}")
     if jsonl_path.is_file():
         print(f"Wrote {jsonl_path}")

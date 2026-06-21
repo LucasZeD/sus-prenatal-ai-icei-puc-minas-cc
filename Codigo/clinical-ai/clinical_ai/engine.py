@@ -41,6 +41,12 @@ class RagRetrieveOutcome:
     retrieval_expansion: str | None = None
 
 
+def _strict_embedding_error(reason: str) -> RuntimeError:
+    return RuntimeError(
+        f"RAG strict embedding mode enabled (RAG_REQUIRE_EMBEDDING_INDEX=true): {reason}"
+    )
+
+
 def _default_corpus_dir() -> Path:
     return _PACKAGE_ROOT / "corpus" / "CartilhasSUS"
 
@@ -205,6 +211,13 @@ async def build_index(force_rebuild: bool = False) -> dict[str, Any]:
             timings["sqlite_load_ms"] = round((time.perf_counter() - t0) * 1000.0, 3)
             if loaded is not None:
                 ch, vecs, mode, snap, ords = loaded
+                if s.rag_require_embedding_index and mode != "embedding":
+                    msg = (
+                        "cached index loaded in lexical mode; run POST /rag/test/rebuild?force=true "
+                        "after ensuring Ollama embeddings are available"
+                    )
+                    log.error("RAG strict mode violation: %s", msg)
+                    raise _strict_embedding_error(msg)
                 _chunks = ch
                 _vectors = vecs
                 _index_mode = mode
@@ -275,9 +288,13 @@ async def build_index(force_rebuild: bool = False) -> dict[str, Any]:
 
         vectors: list[list[float] | None] = []
         t0 = time.perf_counter()
+        embed_fail_count = 0
         for row in flat:
             tslice = row["text"][: s.rag_embed_max_chars]
-            vectors.append(await ollama_client.try_embed(tslice))
+            vec = await ollama_client.try_embed(tslice)
+            if vec is None:
+                embed_fail_count += 1
+            vectors.append(vec)
         timings["embed_all_ms"] = round((time.perf_counter() - t0) * 1000.0, 3)
 
         if vectors and all(v is not None for v in vectors):
@@ -287,11 +304,23 @@ async def build_index(force_rebuild: bool = False) -> dict[str, Any]:
         else:
             _index_mode = "lexical"
             _vectors = []
+            if embed_fail_count > 0:
+                log.error(
+                    "RAG embeddings unavailable for %d/%d chunks (model=%s base_url=%s)",
+                    embed_fail_count,
+                    len(flat),
+                    s.rag_embedding_model,
+                    s.ollama_base_url,
+                )
             log.warning(
                 "RAG: %d chunks, mode=lexical; run `ollama pull %s` for embeddings",
                 len(flat),
                 s.rag_embedding_model,
             )
+            if s.rag_require_embedding_index:
+                raise _strict_embedding_error(
+                    "build_index could not produce a full embedding index; lexical fallback blocked"
+                )
 
         _chunks = flat
         _chunk_ordinal_dates = ordinal_dates
@@ -438,6 +467,10 @@ async def retrieve(query: str, k: int | None = None, *, expand_query: bool | Non
         )
 
     s = get_settings()
+    if s.rag_require_embedding_index and _index_mode != "embedding":
+        raise _strict_embedding_error(
+            f"retrieve called with index_mode={_index_mode}; rebuild with embeddings before benchmarking"
+        )
     raw_q, eff_q, expansion, expand_ms = await _resolve_effective_retrieval_query(query, expand_query=expand_query)
     query_for_scores = eff_q
     k_eff = max(1, k if k is not None else s.rag_max_chunks)
@@ -453,6 +486,11 @@ async def retrieve(query: str, k: int | None = None, *, expand_query: bool | Non
                 base = ollama_client.cosine_sim(qv, vec)
                 indexed_scores.append((i, base * _recency_multiplier(i)))
         else:
+            if s.rag_require_embedding_index:
+                raise _strict_embedding_error(
+                    "query embedding failed during retrieve; lexical query fallback blocked"
+                )
+            log.warning("RAG retrieve falling back to lexical scoring because query embedding failed")
             for i, row in enumerate(_chunks):
                 indexed_scores.append((i, _lexical_score(query_for_scores, row["text"]) * _recency_multiplier(i)))
     else:
@@ -576,6 +614,7 @@ def index_stats() -> dict[str, Any]:
         "effective_corpus_dir": str(corpus),
         "vector_store_path": str(_resolve_vector_store_path()),
         "disable_vector_store": s.rag_disable_vector_store,
+        "require_embedding_index": s.rag_require_embedding_index,
         "last_build_timings_ms": _last_build_timings_ms,
         **_ingest_snapshot,
     }

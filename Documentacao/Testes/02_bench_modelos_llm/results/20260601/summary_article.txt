@@ -1,0 +1,13 @@
+=== Summary article metrics ===
+
+[ollama] APR=70.5% (67/95)
+[ollama] TFR=30.0% (3/10)
+[gemini] APR=68.4% (65/95)
+[gemini] TFR=10.0% (1/10)
+
+Falhas trap/protocolo: trap=4/20 | protocolo=54/170
+
+Latência média retrieve_ms: 263.9 ms
+Latência média ttft_ms: 3046.3 ms
+Geração média gen_tokens_per_sec: 187.762
+

@@ -69,10 +69,17 @@ async def embed_text(prompt: str) -> list[float]:
 
 
 async def try_embed(prompt: str) -> list[float] | None:
+    s = get_settings()
     try:
         return await embed_text(prompt)
     except Exception as exc:  # noqa: BLE001
-        log.debug("Embedding failed: %s", exc)
+        log.warning(
+            "Embedding failed (model=%s base_url=%s error=%s: %s)",
+            s.rag_embedding_model,
+            s.ollama_base_url,
+            type(exc).__name__,
+            exc,
+        )
         return None
 
 

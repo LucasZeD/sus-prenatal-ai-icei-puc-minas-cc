@@ -15,6 +15,7 @@ import { ProfissionalRepository } from "../../repository/profissionalRepository.
 import { isUuid } from "../../lib/validation/uuid.js";
 import { hashSenhaProfissional } from "../../services/authService.js";
 import { FasterWhisperClient } from "../../lib/stt/fasterWhisperClient.js";
+import { getHealthStatus } from "../../services/healthService.js";
 
 function clinicalAiBaseUrl(): string | null {
   const u = process.env.CLINICAL_AI_URL?.trim();
@@ -121,6 +122,58 @@ export function registerDevV1Routes(v1: Hono<{ Variables: AuthVariables }>): voi
       deleteEnabled: isSandboxDbDeleteAllowed(),
       callerIsAdmin: isEmailDevAdmin(p.email),
     });
+  });
+
+  v1.get("/dev/sandbox/health", async (c) => {
+    const backend = await getHealthStatus();
+    const base = clinicalAiBaseUrl();
+    if (!base) {
+      return c.json({
+        status: backend.body.status,
+        backend: backend.body,
+        clinicalAi: {
+          configured: false,
+          reachable: false,
+          health: null,
+        },
+      }, backend.httpStatus);
+    }
+
+    const root = normalizeHttpBase(base);
+    try {
+      const res = await fetch(`${root}/health`, {
+        method: "GET",
+        headers: { accept: "application/json" },
+        signal: AbortSignal.timeout(3500),
+      });
+      const text = await res.text();
+      let parsed: unknown = null;
+      try {
+        parsed = text ? JSON.parse(text) : null;
+      } catch {
+        parsed = { raw: text };
+      }
+      return c.json({
+        status: backend.body.status,
+        backend: backend.body,
+        clinicalAi: {
+          configured: true,
+          reachable: res.ok,
+          status: res.status,
+          health: parsed,
+        },
+      }, backend.httpStatus);
+    } catch (e: unknown) {
+      return c.json({
+        status: backend.body.status,
+        backend: backend.body,
+        clinicalAi: {
+          configured: true,
+          reachable: false,
+          error: e instanceof Error ? e.message : String(e),
+        },
+      }, backend.httpStatus);
+    }
   });
 
   v1.delete("/dev/pacientes/:id", async (c) => {

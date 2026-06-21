@@ -8,6 +8,7 @@ export type ConsultationServerMessage =
   | { type: 'ready'; consultaId: string }
   | { type: 'history'; eventos: StreamHistoryItem[] }
   | { type: 'stt_partial'; text: string }
+  | { type: 'ia_reset' }
   | { type: 'ia_token'; token: string }
   | { type: 'ia_done' }
   | { type: 'error'; message: string }
@@ -48,6 +49,8 @@ function parseMessage(raw: string): ConsultationServerMessage | null {
         return typeof (v as { text?: string }).text === 'string'
           ? { type: 'stt_partial', text: (v as { text: string }).text }
           : null
+      case 'ia_reset':
+        return { type: 'ia_reset' }
       case 'ia_token':
         return typeof (v as { token?: string }).token === 'string'
           ? { type: 'ia_token', token: (v as { token: string }).token }

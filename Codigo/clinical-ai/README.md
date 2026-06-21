@@ -75,7 +75,7 @@ flowchart LR
 
 - **`lifespan`** ([`main.py`](clinical_ai/main.py)): ao subir, tenta `engine.build_index()`; se falhar, o serviço continua no ar e o erro fica no log (útil sem corpus/Ollama ainda).
 - **RAG:** `engine` carrega documentos de [`corpus.py`](clinical_ai/corpus.py), faz chunking ([`chunking.py`](clinical_ai/chunking.py)), embeddings via Ollama, persistência opcional em SQLite ([`vector_store.py`](clinical_ai/vector_store.py)), retrieve + rerank ([`rerank.py`](clinical_ai/rerank.py)).
-- **PII:** [`pii.py`](clinical_ai/pii.py) combina [`prompt_sanitize.py`](clinical_ai/prompt_sanitize.py) com máscaras (CPF, CNS, email, telefone, sequências longas de dígitos).
+- **PII:** [`pii.py`](clinical_ai/pii.py) combina [`prompt_sanitize.py`](clinical_ai/prompt_sanitize.py), RegEx BR ([`pii_br.py`](clinical_ai/pii_br.py)) e NER sidecar OpenMed ([`pii_ner_client.py`](clinical_ai/pii_ner_client.py)) para emitir marcadores como `[CPF]`, `[CNS]`, `[TELEFONE]`, `[EMAIL]`, `[NUM]`, `[NOME]`.
 - **Resposta visível:** [`reply_sanitize.py`](clinical_ai/reply_sanitize.py) no stream Ollama.
 
 ---
@@ -160,6 +160,8 @@ Definidas em [`clinical_ai/config.py`](clinical_ai/config.py) (alias = nome da v
 | `RAG_QUERY_EXPAND_ENABLED`, `RAG_QUERY_EXPAND_MAX_*` | Expansão de query via LLM antes do retrieve. |
 | `MCP_CHAT_MAX_TOKENS`, `MCP_CHAT_THINK_*` | Orçamento `num_predict` Ollama (modo think). |
 | `GEMINI_API_KEY`, `GEMINI_MODEL`, `GEMINI_TIMEOUT_S` | Fallback / modo `gemini` / `auto`. |
+| `PII_NER_URL`, `PII_NER_TIMEOUT_S`, `PII_NER_REQUIRED` | Conexão e política fail-closed do sidecar NER (`/detect`). |
+| `PII_NER_MIN_SCORE`, `PII_NER_MAX_CHARS` | Threshold e limite de entrada para spans NER. |
 
 ---
 
@@ -171,7 +173,7 @@ pip install -r requirements.txt
 pytest tests/ -q
 ```
 
-Ficheiros em [`tests/`](tests/) (ex.: `test_prompt_sanitize.py`, `test_safe_errors.py`).
+Ficheiros em [`tests/`](tests/) (ex.: `test_prompt_sanitize.py`, `test_safe_errors.py`, `test_pii_hybrid.py`).
 
 **Lint (opcional):** `pip install ".[dev]"` e `ruff check clinical_ai` conforme [`pyproject.toml`](pyproject.toml).
 
