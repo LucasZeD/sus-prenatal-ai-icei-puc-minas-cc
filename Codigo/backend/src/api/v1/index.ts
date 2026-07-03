@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import type { AuthVariables } from "../../middleware/requireAuth.js";
 import { requireAuth } from "../../middleware/requireAuth.js";
+import { rateLimit } from "../../middleware/rateLimit.js";
 import { registerAuthV1Routes } from "./auth.js";
 import { registerClinicalV1Routes } from "./clinical.js";
 import { registerDevV1Routes } from "./dev.js";
@@ -19,6 +20,8 @@ function isPublicLogin(c: { req: { method: string; path: string } }): boolean {
  */
 export function registerApiV1Routes(app: Hono): void {
   const v1 = new Hono<{ Variables: AuthVariables }>();
+
+  v1.use("*", rateLimit);
 
   v1.use("*", async (c, next) => {
     if (isPublicLogin(c)) {

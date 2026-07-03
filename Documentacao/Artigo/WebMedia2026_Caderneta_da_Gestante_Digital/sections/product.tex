@@ -1,0 +1,25 @@
+
+A arquitetura derivou de requisitos funcionais (RF) e histórias de usuário (US) mapeados a riscos clínicos, operacionais e regulatórios.
+A Tabela~\ref{tab:rf_riscos} resume essa relação, demonstrando como as ferramentas teóricas abordadas foram convertidas em funcionalidades práticas no protótipo.
+
+\begin{table*}[htbp]
+  \centering
+  \caption{Requisitos, riscos mitigados e mecanismos de controle.}\label{tab:rf_riscos}
+  %\scriptsize
+  \makebox[\textwidth][c]{
+    \begin{tabularx}{\textwidth}{l X X X}
+      \toprule
+      \textbf{RF/US}	& \textbf{Risco} 			& \textbf{Decisão de design} 			& \textbf{Mitigação esperada} \\
+      \midrule
+      RF03/04 		& Retenção indevida de áudio.     	& STT local; áudio não persistido. 		& Reduz superfície de vazamento. \\
+      RF05  & Alucinação em conduta clínica. & RAG restrito a manuais; \textit{system prompts} com escopo limitado; \textit{guardrails} para recusa fora do contexto recuperado & Respostas embasadas em protocolo oficial. \\
+      US04 	& Automação indevida. & Bloqueio de persistência sem aprovação; \textit{guardrails} para exigir validação humana & Decisão final sob responsabilidade do profissional. \\
+      US13 		& Exposição de PII ao modelo. 		& \textit{Gateway} de anonimização. 		& Dados em trânsito anonimizados \\
+      US05 		& Atraso na identificação de alto risco. & Alertas determinísticos por limiares das cartilhas. 		& Sinalização visual imediata na consulta \\
+      US06 		& Descontinuidade do registro físico. 	& Exportação PDF. 				& Continuidade do cuidado manual \\
+      \bottomrule
+    \end{tabularx}
+    }
+  \end{table*}
+
+As interfaces do protótipo de alta fidelidade, incluindo agenda de atendimentos, prontuário consolidado e tela de consulta ativa com o agente Escriba, foram disponibilizadas como material suplementar no repositório do projeto.

@@ -1,4 +1,4 @@
-import type { ConsultaStreamEventoTipo, Prisma } from "../lib/prismaBarrel.js";
+import type { Prisma } from "../lib/prismaBarrel.js";
 import { StatusConsulta } from "../lib/prismaBarrel.js";
 import { getPrisma } from "./prisma.js";
 
@@ -78,19 +78,4 @@ export class ConsultaRepository {
     return prisma.consulta.update({ where: { id }, data: { validacao_medica } });
   }
 
-  async appendStreamEvento(consultaId: string, tipo: ConsultaStreamEventoTipo, payload: string) {
-    const prisma = getPrisma();
-    return prisma.consultaStreamEvento.create({
-      data: { consulta_id: consultaId, tipo, payload },
-    });
-  }
-
-  async listStreamEventos(consultaId: string, take = 200) {
-    const prisma = getPrisma();
-    return prisma.consultaStreamEvento.findMany({
-      where: { consulta_id: consultaId },
-      orderBy: { createdAt: "asc" },
-      take,
-    });
-  }
 }

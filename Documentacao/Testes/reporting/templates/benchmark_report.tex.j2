@@ -1,0 +1,200 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazilian]{babel}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{fancyvrb}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{BrandNavy}{HTML}{1E3A8A}
+\definecolor{BrandPink}{HTML}{FBA0A7}
+\definecolor{Slate600}{HTML}{475569}
+\definecolor{CardBorder}{HTML}{E2E8F0}
+
+\setlength{\headheight}{40pt}
+\addtolength{\topmargin}{-28pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+<% if figure_files.get('logo_transparente') %>
+\fancyhead[L]{\includegraphics[height=0.9cm]<< figure_files['logo_transparente'] >>}
+<% endif %>
+\fancyhead[C]{\textcolor{BrandNavy}{\textbf{Pr\'e-Natal Digital}}}
+\fancyhead[R]{\textcolor{Slate600}{\small << run_datetime >>}}
+\fancyfoot[C]{\textcolor{Slate600}{\small Lucas Zegrine Duarte \textbullet{} PUC Minas \textbullet{} ICEI}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{BrandPink}\leaders\hrule height \headrulewidth\hfill}}
+
+\titleformat{\section}{\Large\bfseries\color{BrandNavy}}{}{0em}{}[\textcolor{BrandPink}{\titlerule}]
+\titleformat{\subsection}{\large\bfseries\color{BrandNavy}}{}{0em}{}
+
+\newcommand{\metricbox}[1]{%
+  \fcolorbox{CardBorder}{white}{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{#1}%
+  }%
+}
+
+\newcommand{\notexecuted}{\textit{\textcolor{Slate600}{N\~ao executado neste run.}}}
+
+<% macro figure(key, caption) -%>
+<% if figure_files.get(key) %>
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.92\linewidth]<< figure_files[key] >>
+  \caption{\textcolor{Slate600}{ << caption >> }}
+\end{figure}
+<% else %>
+\textit{\textcolor{Slate600}{(Figura \texttt{<< key | latex >>} ausente.)}}
+<% endif %>
+<%- endmacro %>
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{1cm}
+  <% if figure_files.get('logo_illustration') %>
+  \includegraphics[width=0.35\textwidth]<< figure_files['logo_illustration'] >>
+  \vspace{0.8cm}
+  <% endif %>
+
+  \metricbox{%
+    \centering
+    \vspace{0.5cm}
+    <% if figure_files.get('logo_transparente') %>
+    \includegraphics[height=1.8cm]<< figure_files['logo_transparente'] >>\\[0.6cm]
+    <% endif %>
+    {\Huge\textcolor{BrandNavy}{\textbf{Pr\'e-Natal Digital}}}\\[0.3cm]
+    {\large\textcolor{BrandPink}{\textit{IA Respons\'avel para o Pr\'e-Natal no SUS}}}\\[0.8cm]
+    {\large\textcolor{Slate600}{PUC Minas \textbullet{} ICEI \textbullet{} Ci\^encia da Computa\c{c}\~ao}}
+    \vspace{0.5cm}
+  }
+
+  \vfill
+  {\LARGE\textcolor{BrandNavy}{\textbf{Relat\'orio de Avalia\c{c}\~ao}}}\\[0.2cm]
+  {\Large\textcolor{BrandPink}{\textbf{Protocolo de Benchmarks}}}\\[1cm]
+
+  {\large Stamp: \texttt{<< stamp_tex >> }}\\[0.3cm]
+  {\large << run_datetime >>}\\[1cm]
+
+  \begin{flushleft}
+  \small\textcolor{Slate600}{%
+    << run_config >>
+  }
+  \end{flushleft}
+
+  \vfill
+  {\small\textcolor{Slate600}{Consolidado pelo protocolo de benchmarks}}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Sum\'ario executivo}
+\metricbox{%
+  << executive_summary_table >>
+}
+
+\section{Conjunto de valida\c{c}\~ao}
+Conjunto consolidado com N=100 (90 protocolo + 10 trap), conforme o protocolo do artigo.
+
+<< figure('fig01_composicao_conjunto', 'Composi\c{c}\~ao do conjunto') >>
+<< figure('fig02_instrumento_dificuldade', 'Distribui\c{c}\~ao por dificuldade') >>
+
+\begin{small}
+\begin{Verbatim}[fontsize=\small]
+<< validation_text >>
+\end{Verbatim}
+\end{small}
+
+\section{Recupera\c{c}\~ao sem\^antica (RAG)}
+<< figure('fig03_hit6_global_difficulty', 'Hit@6 por dificuldade') >>
+
+<< hit6_table >>
+
+\vspace{0.5cm}
+<% if rag_text %>
+\begin{small}
+<< rag_text >>
+\end{small}
+<% endif %>
+
+\section{Gera\c{c}\~ao de resposta (APR/TFR)}
+<< figure('fig04_apr_ollama_difficulty', 'APR Ollama por dificuldade') >>
+<< figure('fig05_tfr_traps', 'TFR em perguntas trap') >>
+<< figure('fig08_providers_apr_global', 'APR global por provider') >>
+
+<< apr_tfr_table >>
+
+\vspace{0.5cm}
+\begin{small}
+\begin{Verbatim}[fontsize=\small]
+<< llm_text >>
+\end{Verbatim}
+\end{small}
+
+\section{Gateway de privacidade}
+<% if skip_gateway %>
+\notexecuted
+<% else %>
+<< figure('fig06_pii_leak_by_type', 'PII Leak Rate por tipo') >>
+\begin{small}
+\begin{Verbatim}[fontsize=\small]
+<< gateway_text >>
+\end{Verbatim}
+\end{small}
+<% endif %>
+
+\section{Lat\^encia e efetividade computacional}
+<< figure('fig07_latency_breakdown', 'Lat\^encia m\'edia e gera\c{c}\~ao') >>
+
+<< latency_table >>
+
+\section{Transcri\c{c}\~ao de voz (STT)}
+<% if skip_stt %>
+\notexecuted
+<% else %>
+<% if stt_summary.available %>
+M\'etricas agregadas: WER m\'edio << stt_summary.wer_mean_pct or 'n/a' >>\%, phrase recall << stt_summary.phrase_recall_mean_pct or 'n/a' >>\%, melhor preset \texttt{ << stt_summary.best_preset | default('n/a') >> }.
+<% endif %>
+
+<< figure('fig_stt01_wer_by_model', 'WER por modelo') >>
+<< figure('fig_stt02_latency_by_model', 'Lat\^encia por modelo') >>
+<< figure('fig_stt03_wer_by_difficulty', 'WER por dificuldade') >>
+<< figure('fig_stt04_hyperparam_large_v3', 'Abala\c{c}\~ao de hiperpar\^ametros (large-v3)') >>
+<< figure('fig_stt05_preprocess_ablation', 'Abala\c{c}\~ao de pr\'e-processamento') >>
+<< figure('fig_stt06_pareto_wer_latency', 'Pareto WER vs lat\^encia') >>
+<% endif %>
+
+\section{Roteiro ground truth (GT01--GT05)}
+<% if skip_roteiro %>
+\notexecuted
+<% else %>
+<% if roteiro_scores %>
+\begin{itemize}
+<% for score in roteiro_scores %>
+  \item << score >>
+<% endfor %>
+\end{itemize}
+<% endif %>
+
+<< figure('fig07_roteiro_pass_por_caso', 'Aprova\c{c}\~ao por caso') >>
+<< figure('fig08_roteiro_clinico_rag_llm', 'Casos cl\'inicos: RAG vs LLM') >>
+<< figure('fig09_roteiro_pii_mascaramento', 'GT04 PII mascaramento') >>
+<< figure('fig10_roteiro_guardrail_escopo', 'GT05 Guardrail de escopo') >>
+<% endif %>
+
+\section{Limita\c{c}\~oes}
+Os resultados s\~ao automatizados e \textbf{n\~ao substituem} valida\c{c}\~ao cl\'inica em campo. Itens marcados como \texttt{human\_judge} exigem revis\~ao manual por profissional de sa\'ude.
+
+\end{document}

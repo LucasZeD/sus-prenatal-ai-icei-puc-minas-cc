@@ -1,0 +1,15 @@
+.venv/
+.venv-bench/
+corpus_extracted/
+artifacts/
+_extracted/
+__pycache__/
+**/results/
+reporting/article_metrics.json
+reporting/stt_metrics.json
+data/stt/audio/
+data/stt/external/*
+!data/stt/external/.gitkeep
+!data/stt/external/README.md
+*.wav
+*.mp3

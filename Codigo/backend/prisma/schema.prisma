@@ -93,12 +93,6 @@ enum StatusConsulta {
   CONFIRMADA
 }
 
-/// Eventos persistidos do canal de streaming (transcrição commitada / insight IA).
-enum ConsultaStreamEventoTipo {
-  TRANSCRICAO_SANITIZADA
-  IA_INSIGHT_COMPLETO
-}
-
 /// Profissional autenticável (RF14). Contas criadas por administrador / seed — sem auto-cadastro na API.
 model Profissional {
   id            String   @id @default(uuid()) @db.Uuid
@@ -376,7 +370,6 @@ model Consulta {
   gestacao Gestacao @relation(fields: [gestacao_id], references: [id], onDelete: Cascade)
   unidade  Unidade  @relation(fields: [unidade_id], references: [id], onDelete: Restrict)
 
-  stream_eventos ConsultaStreamEvento[]
   ia            ConsultaIa?
   logs          LogEvento[]
 
@@ -452,15 +445,3 @@ model ConsultaPosParto {
   @@map("consulta_pos_parto")
 }
 
-model ConsultaStreamEvento {
-  id           String                   @id @default(uuid()) @db.Uuid
-  consulta_id  String                   @db.Uuid
-  tipo         ConsultaStreamEventoTipo
-  payload      String                   @db.Text
-  createdAt    DateTime                 @default(now()) @map("created_at")
-
-  consulta Consulta @relation(fields: [consulta_id], references: [id], onDelete: Cascade)
-
-  @@index([consulta_id])
-  @@map("consulta_stream_evento")
-}

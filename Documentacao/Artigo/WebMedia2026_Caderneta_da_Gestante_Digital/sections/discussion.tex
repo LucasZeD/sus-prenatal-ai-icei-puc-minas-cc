@@ -1,0 +1,25 @@
+Os resultados indicam viabilidade técnica parcial da arquitetura proposta.
+A combinação de execução local, RAG restrito a documentos oficiais e mascaramento de PII atende ao objetivo de reduzir dependência de nuvem pública e de oferecer um fluxo mais controlável do ponto de vista da LGPD.
+Os resultados mostram que o protótipo ainda não pode ser interpretado como sistema autônomo de apoio clínico, o protótipo foi concebido como ferramenta assistiva e documental.
+A APR do modelo local com RAG foi de 57,3\%, e a TFR permaneceu em 10,0\%; portanto, a recuperação documental melhora o comportamento do LLM, mas não elimina erros em respostas que exigem negação explícita, fidelidade literal ou distinção entre protocolos semanticamente próximos.
+
+% O desempenho do RAG ajuda a explicar esse limite, onde o \textit{Hit@6} global de 78,0\% demonstre boa capacidade de recuperar ao menos um documento relevante entre os seis primeiros trechos, o \textit{phrase\_recall} médio de 47,1\% indica que a evidência recuperada nem sempre contém as frases necessárias para satisfazer o critério de resposta.
+O desempenho do RAG com \textit{Hit@6} global de 78,0\% demonstre boa capacidade de recuperar ao menos um documento relevante entre os seis primeiros trechos, o \textit{phrase\_recall} médio de 47,1\% indica que a evidência recuperada nem sempre contém as frases necessárias para satisfazer o critério de resposta.
+Ou seja, o modelo tende a receber um documento correto, mas sem o trecho suficientemente específico para responder com segurança.
+Esse comportamento é compatível com a assimetria observada por dificuldade: itens difíceis, frequentemente associados a termos técnicos de alto risco, foram mais bem recuperados do que itens médios, nos quais há maior competição lexical entre manuais de pré-natal de rotina.
+Em especial, nos itens classificados como difíceis, o módulo RAG atingiu Hit@6 de 95,7\% e MRR de 0,6536, sugerindo maior efetividade em cenários com terminologia protocolar mais específica.
+
+A comparação com o Gemini cria uma nova perspectiva quanto a falha da solução local.
+O modelo externo atingiu APR superior e TFR nula sob a mesma configuração de RAG, sugerindo que o recuperador atual pode sustentar respostas melhores quando acoplado a modelos mais capazes.
+O resultado aponta, portanto, para a necessidade de avaliar modelos locais maiores ou melhor adaptados a terminologia clínica, desde que acompanhados de hardware compatível e controles de privacidade equivalentes.
+
+A ausência de vazamentos de PII no corpus sintético é um resultado positivo, mas sua validade externa é limitada. Nomes brasileiros compostos, abreviações, fala espontânea, erros de transcrição e regionalismos podem gerar padrões fora da distribuição testada.
+Como o módulo STT não foi avaliado sistematicamente, a transcrição é tratada como dado sensível em trânsito e como \linebreak pré-preenchimento editável.
+Essa limitação reforça o papel do fluxo \textit{human-in-the-loop}: o profissional deve validar tanto a informação clínica quanto a integridade dos dados inseridos antes da sua respectiva persistência.
+
+As limitações do estudo decorrem do próprio escopo experimental.
+A avaliação realizada mede viabilidade arquitetural, privacidade, recuperação documental, aderência automática e comportamento funcional em casos sintéticos; ela não mede eficácia assistencial. Não houve avaliação com gestantes, profissionais de saúde ou dados clínicos reais, logo, os resultados não permitem inferir redução efetiva de carga cognitiva, usabilidade em consulta ou impacto sobre desfechos de cuidado.
+Além disso, o agente escriba e o módulo STT foram validados apenas quanto à integração funcional ao protótipo, sem métricas formais de qualidade de transcrição, latência ou robustez em ambientes clínicos.
+
+Como trabalhos futuros, recomenda-se refinar a indexação por metadados de versão dos manuais, implementar barreiras determinísticas de escopo antes da geração, avaliar sistematicamente o módulo de transcrição em áudio clínico simulado, comparar modelos locais maiores ou ajustados ao domínio médico e validar o protótipo com profissionais de saúde mediante aprovação ética.
+Também devem ser mensurados consumo de VRAM, latência e estabilidade sob carga em diferentes configurações de hardware.

@@ -1,20 +1,65 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.js'
+
+function initialsFromNome(nome: string): string {
+  const parts = nome.trim().split(/\s+/).filter(Boolean)
+  if (parts.length === 0) return '?'
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase()
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+}
 
 const navCls = ({ isActive }: { isActive: boolean }) =>
   `block rounded-xl px-4 py-3 text-sm font-bold transition-all ${isActive ? 'bg-brand-pink text-white shadow-md' : 'text-slate-600 hover:bg-brand-pink/20 hover:text-brand-navy'
   }`
 
 export function MainLayout() {
-  const { logout } = useAuth()
+  const { logout, profissional, token, authFetch } = useAuth()
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
   const [desktopSidebarCollapsed, setDesktopSidebarCollapsed] = useState(false)
+  /** `null` = ainda carregando; só exibe Dev Sandbox no menu quando `true` (mesmo critério do backend: DEV_ADMIN_EMAILS / seed). */
+  const [devMenuForAdmin, setDevMenuForAdmin] = useState<boolean | null>(null)
+
+  const displayName = profissional?.nome?.trim() || 'Profissional'
+  const displaySub = profissional?.email?.trim() ?? ''
+  const avatarInitials = useMemo(
+    () => initialsFromNome(displayName === 'Profissional' && displaySub ? displaySub.split('@')[0] ?? displayName : displayName),
+    [displayName, displaySub],
+  )
 
   const isDesktop = useMemo(() => {
     if (typeof window === 'undefined') return true
     return window.matchMedia?.('(min-width: 1024px)')?.matches ?? true
   }, [])
+
+  useLayoutEffect(() => {
+    document.documentElement.style.setProperty(
+      '--app-nav-sidebar-width',
+      desktopSidebarCollapsed ? '0px' : '16rem',
+    )
+    return () => {
+      document.documentElement.style.removeProperty('--app-nav-sidebar-width')
+    }
+  }, [desktopSidebarCollapsed])
+
+  useEffect(() => {
+    if (!token) {
+      setDevMenuForAdmin(false)
+      return
+    }
+    const c = new AbortController()
+    void (async () => {
+      try {
+        const res = await authFetch('/api/v1/dev/profissionais/eligibility', { signal: c.signal })
+        const j = (await res.json()) as { callerIsAdmin?: boolean }
+        if (c.signal.aborted) return
+        setDevMenuForAdmin(j.callerIsAdmin === true)
+      } catch {
+        if (!c.signal.aborted) setDevMenuForAdmin(false)
+      }
+    })()
+    return () => c.abort()
+  }, [token, authFetch])
 
   return (
     <div className="flex min-h-screen flex-col bg-[#F9FAFB] text-brand-navy">
@@ -60,11 +105,18 @@ export function MainLayout() {
         <div className="flex items-center gap-4">
           <div className="hidden items-center gap-3 sm:flex">
             <div className="flex flex-col items-end leading-tight">
-              <span className="text-sm font-bold tracking-tight text-brand-navy">Psf. Rafael</span>
-              <span className="text-[11px] font-medium text-slate-500">UBS Central</span>
+              <span className="text-sm font-bold tracking-tight text-brand-navy">{displayName}</span>
+              {displaySub ? (
+                <span className="max-w-[14rem] truncate text-[11px] font-medium text-slate-500" title={displaySub}>
+                  {displaySub}
+                </span>
+              ) : null}
             </div>
-            <div className="h-9 w-9 flex-shrink-0 rounded-full bg-brand-pink/20 flex items-center justify-center text-brand-navy font-bold border border-brand-pink/50 shadow-sm cursor-pointer transition-all">
-              PR
+            <div
+              className="h-9 w-9 flex-shrink-0 rounded-full bg-brand-pink/20 flex items-center justify-center text-brand-navy font-bold border border-brand-pink/50 shadow-sm cursor-pointer transition-all text-xs"
+              title={displayName}
+            >
+              {avatarInitials}
             </div>
           </div>
           <button
@@ -88,6 +140,17 @@ export function MainLayout() {
             <NavLink to="/pacientes" className={navCls}>
               Gestantes
             </NavLink>
+            {devMenuForAdmin ? (
+              <>
+                <p className="mb-1 mt-6 px-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">Desenvolvimento</p>
+                <NavLink to="/dev/sandbox" className={navCls}>
+                  <span className="mr-2 inline-block" aria-hidden>
+                    🛠️
+                  </span>
+                  Dev Sandbox
+                </NavLink>
+              </>
+            ) : null}
           </nav>
         </aside>
       ) : null}
@@ -130,6 +193,17 @@ export function MainLayout() {
                 <NavLink to="/pacientes" className={navCls} onClick={() => setMobileSidebarOpen(false)}>
                   Gestantes
                 </NavLink>
+                {devMenuForAdmin ? (
+                  <>
+                    <p className="mb-1 mt-5 px-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">Desenvolvimento</p>
+                    <NavLink to="/dev/sandbox" className={navCls} onClick={() => setMobileSidebarOpen(false)}>
+                      <span className="mr-2 inline-block" aria-hidden>
+                        🛠️
+                      </span>
+                      Dev Sandbox
+                    </NavLink>
+                  </>
+                ) : null}
               </nav>
             </div>
           </aside>

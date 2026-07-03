@@ -36,11 +36,35 @@ export type PacienteAssepsisado = Pick<
 type PacienteCreateArgs = Parameters<PacienteDelegate["create"]>[0];
 type PacienteCreateInput = PacienteCreateArgs extends { data: infer D } ? D : never;
 
+type GestacaoAtivaResumo = {
+  id: string
+  tipo_risco: string
+  ig_inicial: number | null
+  idade_gestac_confirmada: number | null
+  /** ISO date-only YYYY-MM-DD (serializavel em JSON sem deslocamento de fuso). */
+  dum: string | null
+  dpp: string | null
+  dpp_eco: string | null
+}
+
+function gestacaoDateFieldToIsoYmd(v: Date | string | null | undefined): string | null {
+  if (v == null) return null;
+  if (typeof v === "string") {
+    const t = v.slice(0, 10);
+    return /^\d{4}-\d{2}-\d{2}$/.test(t) ? t : null;
+  }
+  if (v instanceof Date) {
+    if (Number.isNaN(v.getTime())) return null;
+    return v.toISOString().slice(0, 10);
+  }
+  return null;
+}
+
 export class PacienteRepository {
   async findManyAssepsisadoResumo(): Promise<
     Array<
       PacienteAssepsisado & {
-        gestacao_ativa: { id: string; tipo_risco: string; ig_inicial: number | null; idade_gestac_confirmada: number | null } | null;
+        gestacao_ativa: GestacaoAtivaResumo | null;
         ultima_visita_em: Date | null;
       }
     >
@@ -56,6 +80,9 @@ export class PacienteRepository {
             tipo_risco: true,
             ig_inicial: true,
             idade_gestac_confirmada: true,
+            dum: true,
+            dpp: true,
+            dpp_eco: true,
             consultas: { take: 1, orderBy: { data: "desc" }, select: { data: true } },
           },
         },
@@ -70,6 +97,9 @@ export class PacienteRepository {
         tipo_risco: unknown
         ig_inicial: number | null
         idade_gestac_confirmada: number | null
+        dum: Date | string | null
+        dpp: Date | string | null
+        dpp_eco: Date | string | null
         consultas?: Array<{ data: Date | string }>
       }
       const gestacoes = (p as unknown as { gestacoes: GestacaoResumo[] }).gestacoes ?? [];
@@ -87,6 +117,9 @@ export class PacienteRepository {
               tipo_risco: String(ativa.tipo_risco),
               ig_inicial: (ativa.ig_inicial ?? null) as number | null,
               idade_gestac_confirmada: (ativa.idade_gestac_confirmada ?? null) as number | null,
+              dum: gestacaoDateFieldToIsoYmd(ativa.dum),
+              dpp: gestacaoDateFieldToIsoYmd(ativa.dpp),
+              dpp_eco: gestacaoDateFieldToIsoYmd(ativa.dpp_eco),
             }
           : null,
         ultima_visita_em: ultima,
@@ -120,5 +153,10 @@ export class PacienteRepository {
     const prisma = getPrisma();
     const created = await prisma.paciente.create({ data, select: pacienteAssepsisadoSelect });
     return created as PacienteAssepsisado;
+  }
+
+  async deleteById(id: string): Promise<void> {
+    const prisma = getPrisma();
+    await prisma.paciente.delete({ where: { id } });
   }
 }

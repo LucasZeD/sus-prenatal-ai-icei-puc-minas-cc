@@ -1,5 +1,8 @@
 # Subir/rebuild a partir da pasta **Codigo/** (onde está este arquivo):
 #   docker compose up -d --build
+# Escriba (STT/GPU): o serviço `stt` usa perfil `ai` — inclua com uma das opções:
+#   COMPOSE_PROFILES=ai no Codigo/.env   (recomendado se WHISPER_HTTP_URL=http://stt:8000)
+#   docker compose --profile ai up -d --build
 # Depois de mudar o código do backend, use `--build` para o container `prenatal_backend` receber o `dist/` novo.
 
 name: prenatal-digital
@@ -36,6 +39,20 @@ services:
       PORT: ${BACKEND_PORT:-3000}
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-sus_prenatal}
       FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:5173}
+      OLLAMA_HTTP_URL: ${OLLAMA_HTTP_URL:-}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2}
+      WHISPER_HTTP_URL: ${WHISPER_HTTP_URL:-}
+      WHISPER_MODEL: ${WHISPER_MODEL:-large-v3}
+      STT_CHUNK_MIN_MS: ${STT_CHUNK_MIN_MS:-2500}
+      STT_USE_PREPROCESS: ${STT_USE_PREPROCESS:-true}
+      STT_CONCURRENCY_LIMIT: ${STT_CONCURRENCY_LIMIT:-1}
+      # Diarização (vazio = desligada; fluxo segue normal). Compose: http://diarization:8001
+      DIARIZATION_HTTP_URL: ${DIARIZATION_HTTP_URL:-}
+      DIARIZATION_CONCURRENCY_LIMIT: ${DIARIZATION_CONCURRENCY_LIMIT:-1}
+      DIARIZATION_FIRST_SPEAKER_ROLE: ${DIARIZATION_FIRST_SPEAKER_ROLE:-profissional}
+      DIARIZATION_GPU_GATE: ${DIARIZATION_GPU_GATE:-0}
+      GPU_DEMO_MODE: ${GPU_DEMO_MODE:-time_slice}
+      STREAM_RAG_DEBOUNCE_MS: ${STREAM_RAG_DEBOUNCE_MS:-1500}
       MCP_SERVER_URL: ${MCP_SERVER_URL:-}
       JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in Codigo/.env (RF14)}
       JWT_EXPIRES_SEC: ${JWT_EXPIRES_SEC:-28800}
@@ -44,42 +61,233 @@ services:
       SEED_PROFISSIONAL_EMAIL: ${SEED_PROFISSIONAL_EMAIL:-}
       SEED_PROFISSIONAL_PASSWORD: ${SEED_PROFISSIONAL_PASSWORD:-}
       SEED_PROFISSIONAL_NOME: ${SEED_PROFISSIONAL_NOME:-}
+      # Dev Sandbox: POST /api/v1/dev/profissionais (apenas se =1 e JWT for e-mail em DEV_ADMIN_EMAILS ou seed)
+      DEV_ALLOW_PROFISSIONAL_CREATE: ${DEV_ALLOW_PROFISSIONAL_CREATE:-0}
+      DEV_ADMIN_EMAILS: ${DEV_ADMIN_EMAILS:-}
+      # No Compose o backend deve usar o hostname do serviço (nao localhost). Omita no `.env` para este default.
+      CLINICAL_AI_URL: ${CLINICAL_AI_URL:-http://clinical_ai:4010}
     ports:
       - "${BACKEND_PUBLISH_PORT:-3000}:3000"
     networks:
       - backend-nw
       - data-nw
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       db:
         condition: service_healthy
+      clinical_ai:
+        condition: service_healthy
+      stt:
+        condition: service_healthy
+        required: false
     restart: unless-stopped
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      # "/" = mesma origem (nginx faz proxy de /api e /ws). Funciona no celular na LAN sem apontar para localhost.
       args:
-        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:3000}
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/}
+        VITE_LANDING_FEEDBACK_FORM_URL: ${VITE_LANDING_FEEDBACK_FORM_URL:-}
     container_name: prenatal_frontend
     ports:
       - "${FRONTEND_PUBLISH_PORT:-5173}:80"
     networks:
       - frontend-nw
+      - backend-nw
     depends_on:
       - backend
     restart: unless-stopped
 
-  # --- Placeholders IA (perfil opcional): ancorar na data-nw ---
-  # ollama:
+  # RAG + composição de contexto (PII) — FastAPI; Ollama no host (porta 11434) via host.docker.internal
+  pii_ner:
+    build:
+      context: ./pii-ner
+      dockerfile: Dockerfile
+    container_name: prenatal_pii_ner
+    environment:
+      PII_NER_MODEL: ${PII_NER_MODEL:-OpenMed/OpenMed-PII-Portuguese-SnowflakeMed-Large-568M-v1}
+      PII_NER_MIN_SCORE: ${PII_NER_MIN_SCORE:-0.75}
+      PII_NER_MAX_CHARS: ${PII_NER_MAX_CHARS:-12000}
+      PII_NER_DEVICE: ${PII_NER_DEVICE:-cpu}
+      PII_NER_ALLOW_FALLBACK: ${PII_NER_ALLOW_FALLBACK:-true}
+    ports:
+      - "127.0.0.1:${PII_NER_PUBLISH_PORT:-4020}:4020"
+    networks:
+      - backend-nw
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:4020/health', timeout=8)",
+        ]
+      interval: 10s
+      timeout: 12s
+      retries: 6
+      start_period: 120s
+    restart: unless-stopped
+
+  clinical_ai:
+    build:
+      context: ./clinical-ai
+      dockerfile: Dockerfile
+    container_name: prenatal_clinical_ai
+    depends_on:
+      pii_ner:
+        condition: service_healthy
+    environment:
+      OLLAMA_BASE_URL: ${CLINICAL_AI_OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen3.5:9b-medical-rag}
+      OLLAMA_THINK: ${OLLAMA_THINK:-false}
+      RAG_EMBEDDING_MODEL: ${RAG_EMBEDDING_MODEL:-nomic-embed-text}
+      RAG_CORPUS_DIR: ${RAG_CORPUS_DIR:-/app/corpus/CartilhasSUS}
+      RAG_VECTOR_STORE_PATH: ${RAG_VECTOR_STORE_PATH:-/app/data/rag_store.sqlite}
+      RAG_RECENCY_WEIGHT: ${RAG_RECENCY_WEIGHT:-0.35}
+      RAG_CHUNK_MAX_CHARS: ${RAG_CHUNK_MAX_CHARS:-900}
+      RAG_CHUNK_OVERLAP: ${RAG_CHUNK_OVERLAP:-120}
+      RAG_REQUIRE_EMBEDDING_INDEX: ${RAG_REQUIRE_EMBEDDING_INDEX:-false}
+      RAG_QUERY_EXPAND_ENABLED: ${RAG_QUERY_EXPAND_ENABLED:-true}
+      # Think=ON: thinking+content partilham num_predict; teto MCP_CHAT_THINK_MAX_PREDICT evita loops longos (ver clinical_ai/main.py).
+      MCP_CHAT_MAX_TOKENS: ${MCP_CHAT_MAX_TOKENS:-4096}
+      MCP_CHAT_THINK_EXTRA_TOKENS: ${MCP_CHAT_THINK_EXTRA_TOKENS:-2048}
+      MCP_CHAT_THINK_NUM_PREDICT_FLOOR: ${MCP_CHAT_THINK_NUM_PREDICT_FLOOR:-2048}
+      MCP_CHAT_THINK_MAX_PREDICT: ${MCP_CHAT_THINK_MAX_PREDICT:-8192}
+      # Opcional: resposta via Google Gemini quando llm_provider=gemini ou fallback em auto (chave nunca no frontend).
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.0-flash}
+      GEMINI_TIMEOUT_S: ${GEMINI_TIMEOUT_S:-120}
+      PII_NER_URL: ${PII_NER_URL:-http://pii_ner:4020}
+      PII_NER_TIMEOUT_S: ${PII_NER_TIMEOUT_S:-4}
+      PII_NER_MIN_SCORE: ${PII_NER_MIN_SCORE:-0.75}
+      PII_NER_MAX_CHARS: ${PII_NER_MAX_CHARS:-12000}
+      PII_NER_REQUIRED: ${PII_NER_REQUIRED:-true}
+    ports:
+      - "127.0.0.1:${CLINICAL_AI_PUBLISH_PORT:-4010}:4010"
+    volumes:
+      - clinical_rag_data:/app/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - backend-nw
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:4010/health', timeout=8)",
+        ]
+      interval: 10s
+      timeout: 12s
+      retries: 6
+      start_period: 300s
+    restart: unless-stopped
+
+  # STT (Whisper large-v3) — perfil `ai`; requer NVIDIA Container Toolkit
+  stt:
+    profiles: [ai]
+    build:
+      context: ./stt-service
+      dockerfile: Dockerfile
+    container_name: prenatal_stt
+    environment:
+      WHISPER_MODEL: ${WHISPER_MODEL:-large-v3}
+      WHISPER_COMPUTE_TYPE: ${WHISPER_COMPUTE_TYPE:-float16}
+      WHISPER_DEVICE: ${WHISPER_DEVICE:-cuda}
+      STT_PREPROCESS_ENABLED: ${STT_PREPROCESS_ENABLED:-true}
+      STT_NOISE_REDUCE: ${STT_NOISE_REDUCE:-false}
+      STT_LANGUAGE: ${STT_LANGUAGE:-pt}
+      STT_BEAM_SIZE: ${STT_BEAM_SIZE:-8}
+      STT_VAD_FILTER: ${STT_VAD_FILTER:-true}
+      STT_INITIAL_PROMPT: ${STT_INITIAL_PROMPT:-}
+      STT_CONDITION_ON_PREVIOUS_TEXT: ${STT_CONDITION_ON_PREVIOUS_TEXT:-false}
+      STT_MIN_RMS: ${STT_MIN_RMS:-0.004}
+      STT_NO_SPEECH_THRESHOLD: ${STT_NO_SPEECH_THRESHOLD:-0.6}
+      STT_LOG_PROB_THRESHOLD: ${STT_LOG_PROB_THRESHOLD:--1.0}
+      STT_COMPRESSION_RATIO_THRESHOLD: ${STT_COMPRESSION_RATIO_THRESHOLD:-2.4}
+    volumes:
+      - whisper_models:/root/.cache/huggingface
+    networks:
+      - backend-nw
+    ports:
+      - "127.0.0.1:${STT_PUBLISH_PORT:-8000}:8000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8000/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 8
+      start_period: 180s
+    restart: unless-stopped
+
+  # Diarização de locutores (pyannote.audio 3.1) — perfil `ai`; CPU por padrão.
+  # Modelos cacheados em BUILD TIME via secret `hf_token`.
+  # Runtime 100% offline (HF_HUB_OFFLINE=1). Sem token no build, sobe no backend `fallback`.
+  diarization:
+    profiles: [ai]
+    build:
+      context: ./diarization
+      dockerfile: Dockerfile
+      args:
+        DIARIZATION_MODEL: ${DIARIZATION_MODEL:-pyannote/speaker-diarization-3.1}
+      secrets:
+        - hf_token
+    container_name: prenatal_diarization
+    environment:
+      DIARIZATION_MODEL: ${DIARIZATION_MODEL:-pyannote/speaker-diarization-3.1}
+      DIARIZATION_DEVICE: ${DIARIZATION_DEVICE:-cpu}
+      DIARIZATION_BACKEND: ${DIARIZATION_BACKEND:-auto}
+      DIARIZATION_CONCURRENCY_LIMIT: ${DIARIZATION_CONCURRENCY_LIMIT:-1}
+      HF_HUB_OFFLINE: ${DIARIZATION_HF_OFFLINE:-1}
+      TRANSFORMERS_OFFLINE: ${DIARIZATION_HF_OFFLINE:-1}
+    volumes:
+      - diarization_models:/models/huggingface
+    networks:
+      - data-nw
+    # GPU opcional: descomente com DIARIZATION_DEVICE=cuda (divide VRAM com o Ollama).
+    # Numa maquina single-GPU, ligue tambem DIARIZATION_GPU_GATE=1 no backend para
+    # enfileirar a diarizacao no arbitro de GPU (gpuDemoGate) em vez de disputar VRAM.
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+    deploy:
+      resources:
+        limits:
+          memory: 6g
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8001/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 6
+      start_period: 180s
+    restart: unless-stopped
+
+  # ollama (opcional no Compose; demo usa Ollama no host):
   #   profiles: [ai]
   #   image: ollama/ollama:latest
   #   networks: [data-nw]
   #   volumes: [ollama_data:/root/.ollama]
-  #
-  # faster-whisper:
-  #   profiles: [ai]
-  #   image: fedirz/faster-whisper-server:latest
-  #   networks: [data-nw]
+
+# Secret usado apenas no build da imagem `diarization` (BuildKit). Não persiste na imagem.
+# Para build com pyannote, crie `diarization/hf_token.txt` com o token HF (gitignored).
+# Para build só-fallback (sem pyannote), basta um arquivo vazio: `touch diarization/hf_token.txt`.
+secrets:
+  hf_token:
+    file: ${HF_TOKEN_FILE:-./diarization/hf_token.txt}
 
 networks:
   frontend-nw:
@@ -91,4 +299,7 @@ networks:
 
 volumes:
   prenatal_pg_data:
+  clinical_rag_data:
+  whisper_models:
+  diarization_models:
   # ollama_data:

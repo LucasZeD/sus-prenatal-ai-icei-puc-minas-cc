@@ -9,7 +9,8 @@ export {
   Etnia,
   Escolaridade,
   EstadoCivil,
-  ConsultaStreamEventoTipo,
+  ExameTipo,
+  VacinaTipo,
 } from "@prisma/client";
 
 export type { Prisma } from "@prisma/client";

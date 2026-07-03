@@ -1,0 +1,100 @@
+%Esta seção define os conceitos centrais do trabalho e indica como cada um responde a riscos do uso de LLMs no pré-natal do SUS.
+%\subsection{IA Responsável e Governança Clínica}
+
+Sistemas de IA aplicados a contextos clínicos exigem mecanismos explícitos de supervisão, responsabilização e controle de uso. Em abordagens centradas no humano, a automação deve preservar a agência do profissional, tornar suas limitações visíveis e evitar que recomendações algorítmicas sejam incorporadas ao fluxo assistencial sem revisão adequada \cite{Shneiderman2021, Cabitza2022}. Esses princípios são particularmente relevantes para sistemas generativos, que podem ocultar incertezas, omissões ou inconsistências na resposta produzida.
+
+Modelos de Linguagem de Grande Escala baseados apenas em conhecimento paramétrico têm limitações para recuperar informações atualizadas, indicar a origem de uma afirmação e manter aderência a documentos normativos específicos~\cite{mallen2023not}. A técnica de \textit{Retrieval-Augmented Generation} (RAG) aborda parte desse problema ao recuperar evidências externas em tempo de inferência e condicionar a geração textual ao contexto documental recuperado \cite{Lewis2020RAG}. Em saúde e biomedicina, revisões recentes indicam que RAG pode melhorar a fundamentação factual das respostas, mas sua eficácia depende da qualidade da recuperação, da fidelidade ao contexto, da robustez frente a ruído documental, da latência e dos critérios utilizados para avaliar as saídas geradas \cite{amugongo2025retrieval, Sharma2025RAGSurvey}.
+
+O uso de RAG em bases normativas e diretrizes clínicas aproxima modelos generativos de fontes documentais controladas, o que é relevante em tarefas nas quais a resposta deve estar vinculada a protocolos específicos. Estudos aplicados a protocolos e diretrizes médicas sugerem que a recuperação de trechos normativos pode apoiar a consistência das respostas, desde que o corpus, a indexação e os critérios de avaliação sejam adequados ao domínio \cite{ke2025retrieval}. De forma relacionada, trabalhos recentes também têm avaliado RAG em cenários clínicos com modelos localmente implantáveis. Wada et al.~\cite{wada2025radiology}, por exemplo, avaliam um modelo Llama executado localmente com RAG em uma tarefa de consulta sobre contraste radiológico, comparando seu desempenho com modelos fechados acessados em nuvem. Outros trabalhos aproximam o RAG de tarefas clínicas complementares. Wo{\l}k~\cite{wolk2025evaluating} avalia variantes de RAG para apoio à decisão clínica em implantação on-premises, enquanto Lopez et al.~\cite{lopez2025clinical} propõem um pipeline de recuperação aumentada por entidades clínicas para extração de informações em notas clínicas.
+
+
+A contribuição deste trabalho, porém, não se limita a avaliar se um modelo local com RAG responde adequadamente a uma consulta clínica especializada. O foco está em integrar esse tipo de modelo a um fluxo documental de pré-natal no SUS, no qual a resposta gerada é apenas uma etapa intermediária entre a recuperação de evidências oficiais, o preenchimento provisório de campos clínicos e a validação profissional antes da persistência no prontuário. Essa diferença é relevante porque desloca a avaliação de um cenário de pergunta e resposta para uma arquitetura assistiva com controle de privacidade, rastreabilidade documental e separação explícita entre sugestão algorítmica, decisão profissional e registro final.
+
+Essa separação é necessária porque métricas automáticas isoladas não asseguram, por si só, a segurança, a utilidade e a adequação clínica das respostas geradas por LLMs em saúde \cite{tam2024framework}. Em sistemas de apoio documental, uma resposta formalmente plausível pode ainda estar incompleta, fora de contexto ou inadequada para incorporação ao registro clínico. Por isso, a revisão profissional obrigatória é tratada como requisito de segurança e de delimitação da autonomia do sistema, não apenas como etapa de interface.
+
+Além dos desafios de aderência clínica, a integração de LLMs a fluxos assistenciais amplia riscos de segurança e privacidade. O \textit{OWASP Top 10 for Large Language Model Applications} mapeia ameaças como injeção de \textit{prompt}, vazamento de dados sensíveis e manipulação de conteúdos recuperados por aplicações baseadas em LLMs \cite{OWASPLLM2025}. Revisões sobre privacidade em LLMs também destacam riscos de exposição, memorização ou reprodução de dados sensíveis, especialmente em domínios como saúde \cite{yao2024survey, chen2025survey}. Esses riscos tornam relevantes estratégias de minimização de dados antes da inferência, incluindo detecção e mascaramento de informações pessoalmente identificáveis.
+
+\begin{table*}[tttt]
+\centering
+\caption{Dimensões exploradas por estudos relacionados.}
+\label{tab:trabalhos_relacionados}
+\small
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.18}
+
+\begin{tabular}{p{1.8cm} p{3cm} p{3cm} c c c c c}
+\toprule
+\textbf{Referência}
+& \textbf{Escopo}
+& \textbf{Saída do modelo}
+& \textbf{RAG}
+& \begin{tabular}{@{}c@{}}\textbf{Execução}\\\textbf{local}\end{tabular}
+& \begin{tabular}{@{}c@{}}\textbf{Corpus}\\\textbf{normativo}\end{tabular}
+& \begin{tabular}{@{}c@{}}\textbf{Mascaramento}\\\textbf{de PII}\end{tabular}
+& \begin{tabular}{@{}c@{}}\textbf{Persistência}\\\textbf{validada no registro}\end{tabular} \\
+\midrule
+
+Ke et al.~\cite{ke2025retrieval}
+& Diretrizes clínicas pré-operatórias
+& Resposta a consulta baseada em diretrizes
+& \checkmark
+& Parcial
+& \checkmark
+& Não avaliado
+& Não avaliado \\
+
+Wada et al.~\cite{wada2025radiology}
+& Consulta sobre contraste radiológico
+& Resposta clínica especializada
+& \checkmark
+& \checkmark
+& Parcial
+& Não avaliado
+& Não avaliado \\
+
+Lopez et al.~\cite{lopez2025clinical}
+& Extração de informações em notas clínicas
+& Variáveis clínicas extraídas de registros textuais
+& \checkmark
+& Não avaliado
+& Não avaliado
+& Não avaliado
+& Não avaliado \\
+
+Wo{\l}k~\cite{wolk2025evaluating}
+& Apoio à decisão clínica com RAG on-premises
+& Resposta de apoio à decisão baseada em vinhetas clínicas
+& \checkmark
+& \checkmark
+& Parcial
+& Não avaliado
+& Não avaliado \\
+
+Este trabalho
+& Apoio documental ao pré-natal no SUS
+& Sugestão provisória vinculada ao registro
+& \checkmark
+& \checkmark
+& \checkmark
+& \checkmark
+& \checkmark \\
+
+\bottomrule
+\end{tabular}
+
+\vspace{0.1cm}
+\begin{minipage}{0.98\textwidth}
+\scriptsize
+\textit{Nota:} ``Não avaliado'' indica que a dimensão não aparece como eixo de avaliação ou contribuição principal no estudo citado e não implica ausência absoluta de discussão sobre o tema. No caso de privacidade, a tabela distingue discussões gerais sobre implantação local, dados desidentificados ou segurança operacional de mecanismos específicos de mascaramento de PII antes da inferência. ``Parcial'' indica que a dimensão aparece de forma relacionada, mas não como tema central ou com o mesmo escopo operacional adotado neste trabalho.
+\end{minipage}
+\end{table*}
+
+A Tabela~\ref{tab:trabalhos_relacionados} sintetiza esse posicionamento em relação aos estudos mais próximos. Em conjunto, esses trabalhos mostram avanços importantes em RAG clínico, execução local, diretrizes médicas, extração de informações clínicas e mitigação de alucinações. Contudo, não tratam esses elementos como partes de um mesmo fluxo documental assistivo. Este trabalho se insere nessa lacuna ao articular documentos oficiais brasileiros, modelos locais, mascaramento de PII e validação profissional obrigatória em uma arquitetura voltada ao apoio documental ao pré-natal no SUS.
+
+%Com base em princípios de IA responsável e design centrado no humano \cite{Shneiderman2021, Cabitza2022}, este trabalho adota mecanismos de transparência, responsabilização e supervisão humana como requisitos de projeto. No contexto proposto, esses princípios são operacionalizados por meio de uma arquitetura local (\textit{on-premise}), interfaces de revisão obrigatória das saídas do modelo e restrição explícita de autonomia decisória da IA.
+
+%Modelos de Linguagem de Grande Escala baseados apenas em conhecimento paramétrico apresentam limitações para acessar, atualizar e prover proveniência sobre informações factuais. A técnica de \textit{Retrieval-Augmented Generation} combina geração textual com recuperação de evidências externas em tempo de inferência, condicionando a resposta ao contexto documental recuperado \cite{Lewis2020RAG}. Revisões recentes também apontam que a qualidade da recuperação, a fidelidade ao contexto e a robustez contra ruído permanecem desafios centrais em sistemas RAG \cite{Sharma2025RAGSurvey}. Aplicando essa premissa à arquitetura, o modelo foi ancorado exclusivamente em cartilhas e manuais oficiais do Ministério da Saúde, empregando particionamento (\textit{chunking}) semântico e hiperparâmetros conservadores para priorizar aderência documental em detrimento da fluidez generativa.
+
+%No tocante à supervisão, a literatura de IA responsável centrada no humano defende que sistemas automatizados em domínios críticos devem preservar a agência humana e manter mecanismos claros de responsabilização \cite{Shneiderman2021}. Em consonância com essa diretriz, a plataforma adota estritamente a restrição \textit{human-in-the-loop}, na qual nenhuma predição, sugestão ou extração da Inteligência Artificial é salva de forma autônoma. O sistema atua como ferramenta assistiva e documental, exigindo que o médico ou enfermeiro valide ou edite os dados antes de sua persistência no prontuário eletrônico.
+
+%A integração de LLMs em fluxos clínicos expande a superfície de ataques, demandando proteções contra injeção de \textit{prompt} e exposição de dados sensíveis, conforme mapeado pelo \textit{OWASP Top 10 for Large Language Model Applications} \cite{OWASPLLM2025}. Para endereçar essas vulnerabilidades regulatórias e técnicas, o ecossistema proposto incorpora um \textit{gateway} de privacidade customizado, munido de Expressões Regulares (RegEx) e Reconhecimento de Entidades Nomeadas (NER) operando localmente. Esse mecanismo atua higienizando identificadores de saúde brasileiros, como CPF e CNS, antes do trânsito de dados para o modelo, reduzindo o risco de vazamento de informações pessoalmente identificáveis.

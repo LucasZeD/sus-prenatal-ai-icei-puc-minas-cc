@@ -1,12 +1,18 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ConsultaStreamPanel } from '../components/ConsultaStreamPanel.js'
+import { ConsultaVitalsForm, type ConsultaVitalsFormValues } from '../components/escriba/ConsultaVitalsForm.js'
 import { LiviaAssistantPanel } from '../components/LiviaAssistantPanel.js'
+import { LiviaDesktopFab } from '../components/LiviaDesktopFab.js'
+import { LiviaMobileFab } from '../components/LiviaMobileFab.js'
 import { useAuth } from '../context/AuthContext.js'
+import { useLiviaDesktopAsideOpen } from '../hooks/useLiviaDesktopAsideOpen.js'
+import type { ConsultaClinicalFieldsPatch } from '../lib/consultationSocket.js'
 import { isUuid } from '../lib/uuid.js'
 
 type ConsultaDetail = {
   id: string
+  gestacao_id: string | null
   status: string
   validacao_medica: boolean
   queixa: string | null
@@ -28,9 +34,9 @@ export function EscribaPage() {
   const { consultaId } = useParams()
   const id = consultaId ?? ''
   const { authFetch } = useAuth()
+  const [liviaAsideOpen, setLiviaAsideOpen] = useLiviaDesktopAsideOpen()
   const navigate = useNavigate()
-  const [tab, setTab] = useState<'transcricao' | 'prontuario'>('transcricao')
-  const [mirrorStt, setMirrorStt] = useState('')
+  const [, setMirrorStt] = useState('')
   const [mirrorIa, setMirrorIa] = useState('')
   const onStreamTexts = useCallback((stt: string, ia: string) => {
     setMirrorStt(stt)
@@ -38,19 +44,112 @@ export function EscribaPage() {
   }, [])
 
   const [row, setRow] = useState<ConsultaDetail | null>(null)
+  const [pacienteId, setPacienteId] = useState<string | null>(null)
+  const [chartHint, setChartHint] = useState(false)
   
-  // States clínicos parseados (mock local)
   const [queixa, setQueixa] = useState('')
   const [conduta, setConduta] = useState('')
   const [edema, setEdema] = useState(false)
   const [exantema, setExantema] = useState(false)
   const [movFetal, setMovFetal] = useState(true)
-  const [apresentacao, setApresentacao] = useState('Cefálica')
+  const [apresentacao, setApresentação] = useState('Cefálica')
   const [idadeG, setIdadeG] = useState('')
   const [peso, setPeso] = useState('')
   const [pa, setPa] = useState('')
   const [au, setAu] = useState('')
   const [bfc, setBfc] = useState('')
+
+  const [aiSuggestedFields, setAiSuggestedFields] = useState<Set<keyof ConsultaVitalsFormValues>>(() => new Set())
+  const [userEditedFields, setUserEditedFields] = useState<Set<keyof ConsultaVitalsFormValues>>(() => new Set())
+
+  const onFormPatch = useCallback((patch: Partial<ConsultaClinicalFieldsPatch>) => {
+    const markSuggested = (keys: (keyof ConsultaVitalsFormValues)[]) => {
+      setAiSuggestedFields((prev) => {
+        const next = new Set(prev)
+        for (const k of keys) next.add(k)
+        return next
+      })
+    }
+
+    if (patch.queixa != null && patch.queixa !== '') {
+      setQueixa((prev) => {
+        if (userEditedFields.has('queixa')) return prev
+        if (!prev.trim()) return patch.queixa ?? ''
+        if (prev.includes(patch.queixa ?? '')) return prev
+        return `${prev.trim()}; ${patch.queixa}`
+      })
+      if (!userEditedFields.has('queixa')) markSuggested(['queixa'])
+    }
+
+    if (patch.idade_gestacional != null && !userEditedFields.has('idadeG')) {
+      setIdadeG((prev) => (prev.trim() ? prev : String(patch.idade_gestacional)))
+      markSuggested(['idadeG'])
+    }
+
+    if (patch.peso != null && !userEditedFields.has('peso')) {
+      setPeso((prev) => (prev.trim() ? prev : String(patch.peso)))
+      markSuggested(['peso'])
+    }
+
+    if (patch.pa_sistolica != null && patch.pa_diastolica != null && !userEditedFields.has('pa')) {
+      const paFromPatch = `${patch.pa_sistolica}/${patch.pa_diastolica}`
+      setPa((prev) => (prev.trim() ? prev : paFromPatch))
+      markSuggested(['pa'])
+    }
+
+    if (patch.au != null && !userEditedFields.has('au')) {
+      setAu((prev) => (prev.trim() ? prev : String(patch.au)))
+      markSuggested(['au'])
+    }
+
+    if (patch.bfc != null && !userEditedFields.has('bfc')) {
+      setBfc((prev) => (prev.trim() ? prev : String(patch.bfc)))
+      markSuggested(['bfc'])
+    }
+
+    if (patch.apresentacao_fetal != null && patch.apresentacao_fetal !== '' && !userEditedFields.has('apresentacao')) {
+      setApresentação((prev) => (prev.trim() ? prev : patch.apresentacao_fetal!))
+      markSuggested(['apresentacao'])
+    }
+
+    if (patch.mov_fetal != null && !userEditedFields.has('movFetal')) {
+      setMovFetal(patch.mov_fetal === 'Preservado')
+      markSuggested(['movFetal'])
+    }
+
+    if (patch.is_edema !== undefined && !userEditedFields.has('edema')) {
+      setEdema(patch.is_edema)
+      markSuggested(['edema'])
+    }
+
+    if (patch.is_exantema !== undefined && !userEditedFields.has('exantema')) {
+      setExantema(patch.is_exantema)
+      markSuggested(['exantema'])
+    }
+  }, [userEditedFields])
+
+  const handleVitalsChange = useCallback((patch: Partial<ConsultaVitalsFormValues>) => {
+    const edited = new Set(userEditedFields)
+    const suggested = new Set(aiSuggestedFields)
+    for (const key of Object.keys(patch) as (keyof ConsultaVitalsFormValues)[]) {
+      edited.add(key)
+      suggested.delete(key)
+    }
+    setUserEditedFields(edited)
+    setAiSuggestedFields(suggested)
+
+    if (patch.queixa !== undefined) setQueixa(patch.queixa)
+    if (patch.conduta !== undefined) setConduta(patch.conduta)
+    if (patch.idadeG !== undefined) setIdadeG(patch.idadeG)
+    if (patch.peso !== undefined) setPeso(patch.peso)
+    if (patch.pa !== undefined) setPa(patch.pa)
+    if (patch.au !== undefined) setAu(patch.au)
+    if (patch.bfc !== undefined) setBfc(patch.bfc)
+    if (patch.edema !== undefined) setEdema(patch.edema)
+    if (patch.movFetal !== undefined) setMovFetal(patch.movFetal)
+    if (patch.exantema !== undefined) setExantema(patch.exantema)
+    if (patch.apresentacao !== undefined) setApresentação(patch.apresentacao)
+  }, [aiSuggestedFields, userEditedFields])
 
   const [vm, setVm] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -75,6 +174,7 @@ export function EscribaPage() {
       }
       const detail: ConsultaDetail = {
         id: String(body.id),
+        gestacao_id: typeof body.gestacao_id === 'string' ? body.gestacao_id : null,
         status: String(body.status),
         validacao_medica: Boolean(body.validacao_medica),
         queixa: typeof body.queixa === 'string' ? body.queixa : null,
@@ -111,7 +211,9 @@ export function EscribaPage() {
       setBfc(detail.bfc != null ? String(detail.bfc) : '')
       setEdema(detail.is_edema)
       setMovFetal((detail.mov_fetal ?? 'Preservado').toLowerCase() !== 'reduzido')
-      setApresentacao(detail.apresentacao_fetal ?? 'Cefálica')
+      setApresentação(detail.apresentacao_fetal ?? 'Cefálica')
+      setAiSuggestedFields(new Set())
+      setUserEditedFields(new Set())
       setExantema(detail.is_exantema)
     } catch {
       setMsg('Falha ao carregar consulta.')
@@ -121,6 +223,29 @@ export function EscribaPage() {
   useEffect(() => {
     void load()
   }, [load])
+
+  useEffect(() => {
+    const gid = row?.gestacao_id
+    if (!gid || !isUuid(gid)) {
+      setPacienteId(null)
+      return
+    }
+    let cancelled = false
+    void (async () => {
+      try {
+        const res = await authFetch(`/api/v1/gestacoes/${gid}`)
+        const body = (await res.json()) as Record<string, unknown>
+        if (!res.ok || cancelled) return
+        const pid = typeof body.paciente_id === 'string' ? body.paciente_id : null
+        if (!cancelled) setPacienteId(pid)
+      } catch {
+        if (!cancelled) setPacienteId(null)
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [authFetch, row?.gestacao_id])
 
   const patch = useCallback(
     async (payload: Record<string, unknown>) => {
@@ -138,6 +263,12 @@ export function EscribaPage() {
           return
         }
         await load()
+        const hasPesoIg =
+          typeof payload.peso === 'number' &&
+          Number.isFinite(payload.peso) &&
+          typeof payload.idade_gestacional === 'number' &&
+          Number.isFinite(payload.idade_gestacional)
+        if (hasPesoIg) setChartHint(true)
         setMsg('Registro atualizado.')
       } catch {
         setMsg('Erro de rede ao salvar.')
@@ -186,18 +317,6 @@ export function EscribaPage() {
     )
   }
 
-  const tabBtn = (k: 'transcricao' | 'prontuario', label: string) => (
-    <button
-      type="button"
-      onClick={() => setTab(k)}
-      className={`rounded-xl px-5 py-2.5 text-sm font-bold transition-all ${
-        tab === k ? 'bg-brand-pink text-white shadow-md border-none' : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
-      }`}
-    >
-      {label}
-    </button>
-  )
-
   const isFinalizada = row?.status === 'CONFIRMADA' || row?.status === 'FINALIZADA'
   const canRecreate = row?.status === 'CONFIRMADA' || row?.status === 'FINALIZADA'
   const dangerEnabled = dangerAck && dangerText.trim().toUpperCase() === 'RECRIAR'
@@ -229,307 +348,207 @@ export function EscribaPage() {
     } as const
   }, [apresentacao, au, bfc, conduta, edema, exantema, idadeG, movFetal, pa, peso, queixa])
 
+  const vitalsValues: ConsultaVitalsFormValues = {
+    queixa,
+    conduta,
+    idadeG,
+    peso,
+    pa,
+    au,
+    bfc,
+    edema,
+    movFetal,
+    exantema,
+    apresentacao,
+  }
+
+  const prontuarioDraft = useMemo(() => buildClinicalPatchFromForm(), [buildClinicalPatchFromForm])
+
   return (
     <div className="flex relative items-start">
       {/* Container Principal */}
-      <div className="flex-1 w-full lg:pr-[24rem]">
-        <div className="max-w-5xl mx-auto space-y-8 px-6 py-8">
-          {/* Cabeçalho */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-            <div className="flex items-start gap-5">
-               <div className="hidden sm:flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-pink/10 text-brand-pink text-2xl border border-brand-pink/20 shadow-sm">
-                 🎙️
-               </div>
-               <div>
-                 <div className="flex items-center gap-2">
-                   <h1 className="text-2xl font-black text-brand-navy tracking-tight">Escriba Digital</h1>
-                   <span className="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-bold text-slate-600 tracking-wider uppercase border border-slate-200">Em Atendimento</span>
-                 </div>
-                 <p className="mt-1 font-mono text-xs text-slate-400 max-w-xs truncate">{id}</p>
-                 {row && (
-                    <div className="mt-2 flex items-center gap-2">
-                       <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold ${row.status === 'CONFIRMADA' ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-700 border border-slate-200'}`}>
-                          <div className={`h-2 w-2 rounded-full ${row.status === 'CONFIRMADA' ? 'bg-emerald-500' : 'bg-slate-400'}`}></div>
-                          {row.status.replace('_', ' ')}
-                       </span>
-                    </div>
-                 )}
-               </div>
+      <div className="flex-1 w-full min-w-0 lg:pr-[calc(var(--livia-aside-width)+1.5rem)]">
+        <div
+          className={`max-w-5xl mx-auto space-y-5 px-6 py-6 lg:max-w-none lg:mx-0`}
+        >
+          {msg ? (
+            <div className="rounded-2xl bg-emerald-50 p-5 text-emerald-800 border border-emerald-100 font-bold text-sm flex items-center justify-between shadow-sm">
+              <span>{msg}</span>
+              <button type="button" onClick={() => setMsg(null)} className="text-emerald-500 hover:text-emerald-700">
+                ✕
+              </button>
             </div>
-            <Link to="/dashboard" className="flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-brand-navy border border-slate-200 shadow-sm hover:bg-slate-50 hover:border-brand-pink transition-colors">
-              &larr; Voltar
-            </Link>
-          </div>
+          ) : null}
 
-          {msg ? <div className="rounded-2xl bg-emerald-50 p-5 text-emerald-800 border border-emerald-100 font-bold text-sm flex items-center justify-between shadow-sm">
-               <span>{msg}</span>
-               <button onClick={() => setMsg(null)} className="text-emerald-500 hover:text-emerald-700">✕</button>
-          </div> : null}
+          {isFinalizada ? (
+            <section className="rounded-2xl border border-rose-200 bg-rose-50/70 p-6 shadow-sm">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                <div className="space-y-2">
+                  <h2 className="text-lg font-black text-rose-900">Consulta finalizada</h2>
+                  <p className="text-sm font-medium text-rose-800/90 max-w-2xl">
+                    Esta consulta já foi <span className="font-black">assinada/encerrada</span>. Por segurança e
+                    conformidade, o Escriba não pode iniciar uma nova gravação aqui.
+                  </p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-rose-700/80">
+                    Para regravar, você precisa recriar a consulta e apagar a gravação anterior.
+                  </p>
+                </div>
+                {canRecreate ? (
+                  <button
+                    type="button"
+                    onClick={() => setDangerOpen(true)}
+                    className="shrink-0 rounded-2xl bg-rose-600 px-5 py-3 text-sm font-black text-white shadow-sm hover:bg-rose-500 focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
+                  >
+                    Recriar para regravar
+                  </button>
+                ) : null}
+              </div>
+            </section>
+          ) : (
+            <ConsultaStreamPanel
+              variant="streamOnly"
+              initialConsultaId={id}
+              onStreamTexts={onStreamTexts}
+              onFormPatch={onFormPatch}
+              prontuarioDraft={prontuarioDraft}
+            />
+          )}
 
-          <div className="flex flex-wrap gap-3 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm w-fit">
-            {tabBtn('transcricao', 'Transcrição ao Vivo')}
-            {tabBtn('prontuario', 'Prontuário Estruturado (Revisão)')}
-          </div>
+          {pacienteId ? (
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-brand-pink/20 bg-brand-pink/5 px-5 py-4">
+              <div className="text-sm font-medium text-slate-600">
+                {chartHint ? (
+                  <span className="inline-flex items-center gap-2 rounded-lg bg-white px-3 py-1 font-bold text-brand-navy border border-brand-pink/30">
+                    Atualiza o gráfico da gestante
+                  </span>
+                ) : (
+                  <span>Peso e IG alimentam o gráfico de ganho no prontuário.</span>
+                )}
+              </div>
+              <Link
+                to={`/pacientes/${pacienteId}#acompanhamento-nutricional`}
+                className="text-sm font-bold text-brand-pink hover:underline"
+              >
+                Ver curva no prontuário
+              </Link>
+            </div>
+          ) : null}
 
-          {tab === 'transcricao' ? (
-            isFinalizada ? (
-              <section className="rounded-3xl border border-rose-200 bg-rose-50/70 p-6 shadow-sm">
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-                  <div className="space-y-2">
-                    <h2 className="text-lg font-black text-rose-900">Consulta finalizada</h2>
-                    <p className="text-sm font-medium text-rose-800/90 max-w-2xl">
-                      Esta consulta já foi <span className="font-black">assinada/encerrada</span>. Por segurança e conformidade, o Escriba não pode iniciar uma nova gravação aqui.
-                    </p>
-                    <p className="text-xs font-bold uppercase tracking-widest text-rose-700/80">
-                      Para regravar, você precisa recriar a consulta e apagar a gravação anterior.
-                    </p>
-                  </div>
-                  {canRecreate ? (
+          <section className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden p-6">
+            <h2 className="text-base font-black text-brand-navy mb-6">Prontuário da consulta</h2>
+            <ConsultaVitalsForm
+              values={vitalsValues}
+              sugestaoIa={row?.sugestao_conduta ?? mirrorIa}
+              aiSuggestedFields={aiSuggestedFields}
+              disabled={busy || row?.status === 'CONFIRMADA'}
+              onChange={handleVitalsChange}
+              onSave={() => void patch({ ...buildClinicalPatchFromForm() })}
+            />
+          </section>
+
+          <section className="rounded-2xl border border-emerald-100 bg-emerald-50/50 shadow-sm overflow-hidden">
+            <div className="border-b border-emerald-100 bg-emerald-50 px-6 py-5">
+              <h3 className="text-base font-black text-emerald-900 flex items-center gap-2">
+                <span className="text-xl">✅</span> Conclusão da Consulta
+              </h3>
+            </div>
+
+            <div className="p-6">
+              {row?.status !== 'AGUARDANDO_CONFIRMACAO' && row?.status !== 'CONFIRMADA' ? (
+                <div className="space-y-5">
+                  <p className="text-sm font-medium text-slate-600">
+                    Avance o status da consulta para permitir a revisão médica.
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    {row?.status === 'RASCUNHO' ? (
+                      <button
+                        type="button"
+                        disabled={busy}
+                        onClick={() => void patch({ status: 'EM_ANDAMENTO' })}
+                        className="rounded-xl bg-slate-800 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-slate-700 disabled:opacity-50 transition-colors"
+                      >
+                        Registrar em Andamento
+                      </button>
+                    ) : null}
                     <button
                       type="button"
-                      onClick={() => setDangerOpen(true)}
-                      className="shrink-0 rounded-2xl bg-rose-600 px-5 py-3 text-sm font-black text-white shadow-sm hover:bg-rose-500 focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
+                      disabled={busy}
+                      onClick={() => void patch({ ...buildClinicalPatchFromForm(), status: 'AGUARDANDO_CONFIRMACAO' })}
+                      className="rounded-xl bg-amber-500 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-amber-600 disabled:opacity-50 transition-colors"
                     >
-                      Recriar para regravar
+                      Enviar p/ Confirmação
                     </button>
-                  ) : null}
+                  </div>
                 </div>
-              </section>
-            ) : (
-              <ConsultaStreamPanel variant="streamOnly" initialConsultaId={id} onStreamTexts={onStreamTexts} />
-            )
-          ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              
-              {/* Lado Esquerdo - STT e IA */}
-              <div className="space-y-6">
-                 <section className="rounded-3xl border border-slate-200 bg-white shadow-sm overflow-hidden flex flex-col h-full">
-                   <div className="border-b border-slate-100 bg-slate-50 px-6 py-5">
-                     <h2 className="text-base font-black text-brand-navy flex items-center gap-2">
-                        <span className="text-xl">📝</span> Notas Brutas da Sessão
-                     </h2>
-                     <p className="mt-1 text-xs text-slate-500 font-medium">Última captura parcial pelo Escriba.</p>
-                   </div>
-                   
-                   <div className="p-6 flex-1 flex flex-col gap-6">
-                     <div className="flex-1 flex flex-col">
-                       <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">STT Bruto</h3>
-                       <div className="flex-1 rounded-2xl bg-slate-50 border border-slate-100 p-5 overflow-y-auto min-h-[150px] shadow-inner">
-                         <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap font-medium">{mirrorStt || 'Nenhum áudio capturado na sessão atual.'}</p>
-                       </div>
-                     </div>
-                     <div className="flex-1 flex flex-col">
-                       <h3 className="text-xs font-bold uppercase tracking-widest text-brand-pink mb-3">Insight Clínico (IA)</h3>
-                       <div className="flex-1 rounded-2xl bg-brand-pink/5 border border-brand-pink/20 p-5 overflow-y-auto min-h-[150px] shadow-inner">
-                         <p className="text-sm text-brand-navy leading-relaxed whitespace-pre-wrap font-bold">{mirrorIa || 'Aguardando processamento de insights clínicos...'}</p>
-                       </div>
-                     </div>
-                   </div>
-                 </section>
-              </div>
+              ) : null}
 
-              {/* Lado Direito - Prontuário e Transições */}
-              <div className="space-y-6">
-                 <section className="rounded-3xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-                    <div className="border-b border-slate-100 bg-slate-50 px-6 py-5">
-                       <h2 className="text-base font-black text-brand-navy flex items-center gap-2">
-                          <span className="text-xl">📋</span> Prontuário Clínico
-                       </h2>
-                    </div>
-                    
-                    <div className="p-6 space-y-6">
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                         <div>
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">IG (Semanas)</label>
-                           <input type="number" value={idadeG} onChange={e => setIdadeG(e.target.value)} placeholder="Ex: 24" className="block w-full rounded-xl border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-brand-pink focus:ring-brand-pink bg-slate-50 font-medium text-slate-700" />
-                         </div>
-                         <div>
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Peso (kg)</label>
-                           <input type="number" value={peso} onChange={e => setPeso(e.target.value)} placeholder="Ex: 68.5" className="block w-full rounded-xl border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-brand-pink focus:ring-brand-pink bg-slate-50 font-medium text-slate-700" />
-                         </div>
-                         <div>
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">PA (mmHg)</label>
-                           <input type="text" value={pa} onChange={e => setPa(e.target.value)} placeholder="Ex: 120/80" className="block w-full rounded-xl border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-brand-pink focus:ring-brand-pink bg-slate-50 font-medium text-slate-700" />
-                         </div>
-                         <div>
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">AU (cm)</label>
-                           <input type="number" value={au} onChange={e => setAu(e.target.value)} placeholder="Ex: 24" className="block w-full rounded-xl border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-brand-pink focus:ring-brand-pink bg-slate-50 font-medium text-slate-700" />
-                         </div>
+              {row?.status === 'AGUARDANDO_CONFIRMACAO' ? (
+                <div className="flex flex-col gap-6">
+                  <div className="rounded-2xl bg-amber-50 border border-amber-200 p-5 shadow-inner">
+                    <label className="flex items-start gap-4 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={vm}
+                        onChange={(e) => setVm(e.target.checked)}
+                        className="mt-1 h-5 w-5 rounded border-amber-300 text-emerald-600 focus:ring-emerald-600 cursor-pointer shadow-sm"
+                      />
+                      <div className="flex flex-col text-sm">
+                        <span className="font-black text-amber-900">Validação Humana (Human-in-the-loop)</span>
+                        <span className="text-amber-700 mt-1 font-medium leading-relaxed">
+                          Confirmo que revisei os dados extraídos pela IA e atesto sua veracidade clínica.
+                        </span>
                       </div>
+                    </label>
+                  </div>
+                  <button
+                    type="button"
+                    disabled={busy || !vm}
+                    onClick={() =>
+                      void patch({
+                        ...buildClinicalPatchFromForm(),
+                        validacao_medica: true,
+                        status: 'CONFIRMADA',
+                      })
+                    }
+                    className="w-full rounded-2xl bg-emerald-600 px-6 py-4 text-sm font-black text-white shadow-[0_4px_14px_0_rgba(5,150,105,0.39)] hover:bg-emerald-500 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(5,150,105,0.23)] disabled:opacity-50 disabled:hover:translate-y-0 transition-all focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                  >
+                    ✅ Confirmar e Assinar Consulta
+                  </button>
+                </div>
+              ) : null}
 
-                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-slate-100">
-                         <div>
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">BFC (bpm)</label>
-                           <input type="number" value={bfc} onChange={e => setBfc(e.target.value)} placeholder="Ex: 140" className="block w-full rounded-xl border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-brand-pink focus:ring-brand-pink bg-slate-50 font-medium text-slate-700" />
-                         </div>
-                         <div>
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Edema</label>
-                           <button type="button" onClick={() => setEdema(!edema)} className={`w-full py-2.5 rounded-xl border font-bold text-xs shadow-sm transition-all ${edema ? 'bg-rose-50 border-rose-200 text-rose-700' : 'bg-slate-50 border-slate-200 text-slate-500 hover:bg-slate-100'}`}>
-                              {edema ? 'Presente' : 'Ausente'}
-                           </button>
-                         </div>
-                         <div>
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Mov. Fetal</label>
-                           <button type="button" onClick={() => setMovFetal(!movFetal)} className={`w-full py-2.5 rounded-xl border font-bold text-xs shadow-sm transition-all ${movFetal ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-rose-50 border-rose-200 text-rose-700'}`}>
-                              {movFetal ? 'Preservado' : 'Reduzido'}
-                           </button>
-                         </div>
-                         <div>
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Exantema</label>
-                           <button type="button" onClick={() => setExantema(!exantema)} className={`w-full py-2.5 rounded-xl border font-bold text-xs shadow-sm transition-all ${exantema ? 'bg-rose-50 border-rose-200 text-rose-700' : 'bg-slate-50 border-slate-200 text-slate-500 hover:bg-slate-100'}`}>
-                              {exantema ? 'Presente' : 'Ausente'}
-                           </button>
-                         </div>
-                      </div>
-                      
-                      <div className="pt-2">
-                           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Apresentação Fetal</label>
-                           <input type="text" value={apresentacao} onChange={e => setApresentacao(e.target.value)} placeholder="Ex: Cefálica" className="block w-full rounded-xl border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-brand-pink focus:ring-brand-pink bg-slate-50 font-medium text-slate-700" />
-                      </div>
-
-                      <div className="pt-4 border-t border-slate-100">
-                        <label className="block text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-2">
-                           Queixa Livre
-                        </label>
-                        <textarea
-                          value={queixa}
-                          onChange={(e) => setQueixa(e.target.value)}
-                          rows={4}
-                          placeholder="Ex: Dor lombar..."
-                          className="block w-full rounded-2xl border-slate-200 px-5 py-4 text-sm shadow-sm focus:border-brand-pink focus:ring-brand-pink resize-none mb-4 bg-slate-50 font-medium text-slate-700"
-                        />
-                        
-                        <label className="block text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-2">
-                           Conduta Livre
-                        </label>
-                        <textarea
-                          value={conduta}
-                          onChange={(e) => setConduta(e.target.value)}
-                          rows={4}
-                          placeholder="Ex: Evite carregar peso..."
-                          className="block w-full rounded-2xl border-slate-200 px-5 py-4 text-sm shadow-sm focus:border-brand-pink focus:ring-brand-pink resize-none bg-slate-50 font-medium text-slate-700"
-                        />
-                      </div>
-                      
-                      <div className="flex justify-end pt-2">
-                        <button
-                          type="button"
-                          disabled={busy || row?.status === 'CONFIRMADA'}
-                          onClick={() => {
-                            void patch({
-                              ...buildClinicalPatchFromForm(),
-                            })
-                          }}
-                          className="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-brand-navy shadow-sm hover:bg-slate-50 hover:text-brand-pink disabled:opacity-50 transition-colors"
-                        >
-                          Salvar
-                        </button>
-                      </div>
-                    </div>
-                 </section>
-
-                 <section className="rounded-3xl border border-emerald-100 bg-emerald-50/50 shadow-sm overflow-hidden">
-                    <div className="border-b border-emerald-100 bg-emerald-50 px-6 py-5">
-                      <h3 className="text-base font-black text-emerald-900 flex items-center gap-2">
-                        <span className="text-xl">✅</span> Conclusão da Consulta
-                      </h3>
-                    </div>
-                    
-                    <div className="p-6">
-                      {row?.status !== 'AGUARDANDO_CONFIRMACAO' && row?.status !== 'CONFIRMADA' ? (
-                        <div className="space-y-5">
-                           <p className="text-sm font-medium text-slate-600">Avance o status da consulta para permitir a revisão médica.</p>
-                           <div className="flex flex-wrap gap-3">
-                              {row?.status === 'RASCUNHO' && (
-                                <button
-                                  type="button"
-                                  disabled={busy}
-                                  onClick={() => void patch({ status: 'EM_ANDAMENTO' })}
-                                  className="rounded-xl bg-slate-800 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-slate-700 disabled:opacity-50 transition-colors"
-                                >
-                                  Registrar em Andamento
-                                </button>
-                              )}
-                              <button
-                                type="button"
-                                disabled={busy}
-                                onClick={() => void patch({ ...buildClinicalPatchFromForm(), status: 'AGUARDANDO_CONFIRMACAO' })}
-                                className="rounded-xl bg-amber-500 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-amber-600 disabled:opacity-50 transition-colors"
-                              >
-                                Enviar p/ Confirmação
-                              </button>
-                           </div>
-                        </div>
-                      ) : null}
-
-                      {row?.status === 'AGUARDANDO_CONFIRMACAO' ? (
-                        <div className="flex flex-col gap-6">
-                          <div className="rounded-2xl bg-amber-50 border border-amber-200 p-5 shadow-inner">
-                             <label className="flex items-start gap-4 cursor-pointer">
-                               <input type="checkbox" checked={vm} onChange={(e) => setVm(e.target.checked)} className="mt-1 h-5 w-5 rounded border-amber-300 text-emerald-600 focus:ring-emerald-600 cursor-pointer shadow-sm" />
-                               <div className="flex flex-col text-sm">
-                                 <span className="font-black text-amber-900">Validação Humana (Human-in-the-loop)</span>
-                                 <span className="text-amber-700 mt-1 font-medium leading-relaxed">Confirmo que revisei os dados extraídos pela IA e atesto sua veracidade clínica.</span>
-                               </div>
-                             </label>
-                          </div>
-                          <button
-                            type="button"
-                            disabled={busy || !vm}
-                            onClick={() =>
-                              void patch({
-                                ...buildClinicalPatchFromForm(),
-                                validacao_medica: true,
-                                status: 'CONFIRMADA',
-                              })
-                            }
-                            className="w-full rounded-2xl bg-emerald-600 px-6 py-4 text-sm font-black text-white shadow-[0_4px_14px_0_rgba(5,150,105,0.39)] hover:bg-emerald-500 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(5,150,105,0.23)] disabled:opacity-50 disabled:hover:translate-y-0 transition-all focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
-                          >
-                            ✅ Confirmar e Assinar Consulta
-                          </button>
-                        </div>
-                      ) : null}
-                      
-                      {row?.status === 'CONFIRMADA' && (
-                         <div className="flex items-center gap-4 bg-white text-emerald-800 p-5 rounded-2xl border border-emerald-200 font-bold text-sm shadow-sm">
-                            <span className="text-3xl">🎉</span>
-                            <div className="flex flex-col">
-                               <span className="text-base font-black">Consulta assinada e encerrada.</span>
-                               <span className="text-emerald-600/80 font-medium text-xs mt-1">Nenhum dado adicional pode ser alterado por conformidade arquitetural.</span>
-                            </div>
-                         </div>
-                      )}
-                    </div>
-                 </section>
-              </div>
+              {row?.status === 'CONFIRMADA' ? (
+                <div className="flex items-center gap-4 bg-white text-emerald-800 p-5 rounded-2xl border border-emerald-200 font-bold text-sm shadow-sm">
+                  <span className="text-3xl">🎉</span>
+                  <div className="flex flex-col">
+                    <span className="text-base font-black">Consulta assinada e encerrada.</span>
+                    <span className="text-emerald-600/80 font-medium text-xs mt-1">
+                      Nenhum dado adicional pode ser alterado por conformidade arquitetural.
+                    </span>
+                  </div>
+                </div>
+              ) : null}
             </div>
-          )}
+          </section>
         </div>
       </div>
 
-      {/* Painel Lívia Side-by-side fixo de tela cheia (desktop) */}
-      <aside className="fixed top-16 right-0 w-[24rem] h-[calc(100vh-4rem)] border-l border-brand-pink/30 bg-white hidden lg:flex flex-col z-30 shadow-[-4px_0_15px_rgba(251,160,167,0.05)]">
-         <LiviaAssistantPanel />
-      </aside>
+      {/* Painel Lívia (desktop): recolhível */}
+      {liviaAsideOpen ? (
+        <aside className="fixed top-16 right-0 z-30 hidden h-[calc(100vh-4rem)] w-[var(--livia-aside-width)] min-w-0 shrink-0 flex-col border-l border-brand-pink/30 bg-white shadow-[-4px_0_15px_rgba(251,160,167,0.05)] lg:flex">
+          <LiviaAssistantPanel
+            className="min-h-0 flex-1"
+            consultaId={isUuid(id) ? id : undefined}
+            onDesktopPanelHide={() => setLiviaAsideOpen(false)}
+          />
+        </aside>
+      ) : (
+        <LiviaDesktopFab onClick={() => setLiviaAsideOpen(true)} />
+      )}
 
-      {/* Mobile-first: assistente Lívia expansível (mobile apenas) */}
-      <div className="lg:hidden fixed bottom-4 right-4 z-40">
-        <details className="rounded-2xl border border-brand-pink/50 bg-white shadow-[0_4px_25px_rgba(251,160,167,0.3)] w-[calc(100vw-2rem)] max-w-sm ml-auto origin-bottom-right group transition-all">
-          <summary className="cursor-pointer list-none rounded-2xl px-5 py-4 text-sm font-bold text-brand-navy marker:content-none [&::-webkit-details-marker]:hidden bg-brand-pink/5 hover:bg-brand-pink/10 transition-colors">
-            <span className="flex items-center justify-between gap-2">
-              <span className="flex items-center gap-3">
-                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-pink text-white text-sm shadow-sm ring-2 ring-white">✨</span>
-                 Conversar com LívIA
-              </span>
-              <span className="text-xs font-bold text-brand-pink/70 group-open:hidden">ABRIR</span>
-              <span className="text-xs font-bold text-brand-pink/70 hidden group-open:block">FECHAR</span>
-            </span>
-          </summary>
-          <div className="border-t border-brand-pink/20 bg-white rounded-b-2xl h-[60vh] overflow-hidden flex flex-col">
-            <LiviaAssistantPanel />
-          </div>
-        </details>
-      </div>
+      <LiviaMobileFab>
+        <LiviaAssistantPanel consultaId={isUuid(id) ? id : undefined} />
+      </LiviaMobileFab>
 
       {dangerOpen ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">

@@ -1,0 +1,50 @@
+{"id":"P001","text":"Paciente Ana Paula Souza informou CPF 123.456.789-00 durante a triagem.","annotations":[{"type":"FULL_NAME","value":"Ana Paula Souza"},{"type":"CPF","value":"123.456.789-00"}]}
+{"id":"P002","text":"Registrar CNS 898001160444777 no atendimento de Joao Pedro Lima.","annotations":[{"type":"CNS","value":"898001160444777"},{"type":"FULL_NAME","value":"Joao Pedro Lima"}]}
+{"id":"P003","text":"Contato atualizado: telefone (31) 99876-1234 para Maria Clara Santos.","annotations":[{"type":"PHONE","value":"(31) 99876-1234"},{"type":"FULL_NAME","value":"Maria Clara Santos"}]}
+{"id":"P004","text":"Encaminhar laudo para camila.oliveira.teste@exemplo.com e confirmar recebimento.","annotations":[{"type":"EMAIL","value":"camila.oliveira.teste@exemplo.com"}]}
+{"id":"P005","text":"Codigo longo anotado no caderno: 98765432101234567890 para conferência.","annotations":[{"type":"LONG_NUMERIC_CHAIN","value":"98765432101234567890"}]}
+{"id":"P006","text":"A gestante Luiza Fernanda Costa disse que seu CPF e 222.333.444-55.","annotations":[{"type":"FULL_NAME","value":"Luiza Fernanda Costa"},{"type":"CPF","value":"222.333.444-55"}]}
+{"id":"P007","text":"No retorno, usar o e-mail equipe.prenatal+teste07@hospital.local para avisos.","annotations":[{"type":"EMAIL","value":"equipe.prenatal+teste07@hospital.local"}]}
+{"id":"P008","text":"Telefone de recado da paciente: +55 31 91234-5678.","annotations":[{"type":"PHONE","value":"+55 31 91234-5678"}]}
+{"id":"P009","text":"CNS informado verbalmente: 700401230987654.","annotations":[{"type":"CNS","value":"700401230987654"}]}
+{"id":"P010","text":"Nome completo captado no audio: Fernanda Beatriz Almeida.","annotations":[{"type":"FULL_NAME","value":"Fernanda Beatriz Almeida"}]}
+{"id":"P011","text":"Paciente Carolina Dias deixou CPF 390.120.450-99 e telefone 3133334444.","annotations":[{"type":"FULL_NAME","value":"Carolina Dias"},{"type":"CPF","value":"390.120.450-99"},{"type":"PHONE","value":"3133334444"}]}
+{"id":"P012","text":"Favor enviar orientacoes para prenatal.teste12@dominio.org.","annotations":[{"type":"EMAIL","value":"prenatal.teste12@dominio.org"}]}
+{"id":"P013","text":"Sequencia numerica extensa no campo livre: 11112222333344445555.","annotations":[{"type":"LONG_NUMERIC_CHAIN","value":"11112222333344445555"}]}
+{"id":"P014","text":"CNS da usuaria Renata Vitoria Mota: 880000123456789.","annotations":[{"type":"FULL_NAME","value":"Renata Vitoria Mota"},{"type":"CNS","value":"880000123456789"}]}
+{"id":"P015","text":"O acompanhante Carlos Eduardo Melo informou telefone 31 4002-8922.","annotations":[{"type":"FULL_NAME","value":"Carlos Eduardo Melo"},{"type":"PHONE","value":"31 4002-8922"}]}
+{"id":"P016","text":"No cadastro constou CPF 555.666.777-88 para Paula Gomes Ribeiro.","annotations":[{"type":"CPF","value":"555.666.777-88"},{"type":"FULL_NAME","value":"Paula Gomes Ribeiro"}]}
+{"id":"P017","text":"Canal alternativo: juliana.pereira17@teste.net para contato da equipe.","annotations":[{"type":"EMAIL","value":"juliana.pereira17@teste.net"}]}
+{"id":"P018","text":"Numero longo ditado no audio 123456789012345678901234.","annotations":[{"type":"LONG_NUMERIC_CHAIN","value":"123456789012345678901234"}]}
+{"id":"P019","text":"Paciente Bianca Lopes tem CNS 745632198765432 e CPF 101.202.303-40.","annotations":[{"type":"FULL_NAME","value":"Bianca Lopes"},{"type":"CNS","value":"745632198765432"},{"type":"CPF","value":"101.202.303-40"}]}
+{"id":"P020","text":"Telefone de emergencia anotado: (31) 3456-7890.","annotations":[{"type":"PHONE","value":"(31) 3456-7890"}]}
+{"id":"P021","text":"Nome composto registrado: Amanda Cristina Nogueira.","annotations":[{"type":"FULL_NAME","value":"Amanda Cristina Nogueira"}]}
+{"id":"P022","text":"Encaminhar resultados para contato22.prenatal@unit.local.","annotations":[{"type":"EMAIL","value":"contato22.prenatal@unit.local"}]}
+{"id":"P023","text":"CPF verbalizado durante consulta: 909.808.707-66.","annotations":[{"type":"CPF","value":"909.808.707-66"}]}
+{"id":"P024","text":"CNS 701122334455667 vinculado a Patricia Helena Prado.","annotations":[{"type":"CNS","value":"701122334455667"},{"type":"FULL_NAME","value":"Patricia Helena Prado"}]}
+{"id":"P025","text":"Chave numerica longa 44443333222211110000 foi mencionada no ditado.","annotations":[{"type":"LONG_NUMERIC_CHAIN","value":"44443333222211110000"}]}
+{"id":"P026","text":"Atualizar contato para telefone 31-98888-7766 e e-mail mae26@exemplo.org.","annotations":[{"type":"PHONE","value":"31-98888-7766"},{"type":"EMAIL","value":"mae26@exemplo.org"}]}
+{"id":"P027","text":"Paciente Rafael Augusto Moreira confirmou CPF 000.111.222-33.","annotations":[{"type":"FULL_NAME","value":"Rafael Augusto Moreira"},{"type":"CPF","value":"000.111.222-33"}]}
+{"id":"P028","text":"Foi informado CNS 899991234560001 no pre-atendimento.","annotations":[{"type":"CNS","value":"899991234560001"}]}
+{"id":"P029","text":"Registrar o e-mail de retorno: retorno29+aps@saude.fake.","annotations":[{"type":"EMAIL","value":"retorno29+aps@saude.fake"}]}
+{"id":"P030","text":"Telefone para recado da familia: 0800-123-456.","annotations":[{"type":"PHONE","value":"0800-123-456"}]}
+{"id":"P031","text":"Nome em audio: Daniela Prado Carvalho com CNS 712345678901234.","annotations":[{"type":"FULL_NAME","value":"Daniela Prado Carvalho"},{"type":"CNS","value":"712345678901234"}]}
+{"id":"P032","text":"CPF da usuaria temporaria: 741.852.963-14.","annotations":[{"type":"CPF","value":"741.852.963-14"}]}
+{"id":"P033","text":"Sequencia de protocolo longa 999988887777666655554444.","annotations":[{"type":"LONG_NUMERIC_CHAIN","value":"999988887777666655554444"}]}
+{"id":"P034","text":"Enviar material para equipe34.prenatal@hospital.fake e ligar no 31 3222 1100.","annotations":[{"type":"EMAIL","value":"equipe34.prenatal@hospital.fake"},{"type":"PHONE","value":"31 3222 1100"}]}
+{"id":"P035","text":"A paciente Gabriela Lima Rocha relatou telefone +55 (31) 97777-1122.","annotations":[{"type":"FULL_NAME","value":"Gabriela Lima Rocha"},{"type":"PHONE","value":"+55 (31) 97777-1122"}]}
+{"id":"P036","text":"No campo livre apareceu CPF 654.321.098-76 e CNS 700700700700700.","annotations":[{"type":"CPF","value":"654.321.098-76"},{"type":"CNS","value":"700700700700700"}]}
+{"id":"P037","text":"Contato de laboratorio: lab.prenatal37@dominio.fake.","annotations":[{"type":"EMAIL","value":"lab.prenatal37@dominio.fake"}]}
+{"id":"P038","text":"Nome completo reconhecido: Isabela Fernanda Teixeira.","annotations":[{"type":"FULL_NAME","value":"Isabela Fernanda Teixeira"}]}
+{"id":"P039","text":"Numero extenso informado pelo atendente 31415926535897932384.","annotations":[{"type":"LONG_NUMERIC_CHAIN","value":"31415926535897932384"}]}
+{"id":"P040","text":"Telefone principal 31 3010-4040 para Helena Costa Martins.","annotations":[{"type":"PHONE","value":"31 3010-4040"},{"type":"FULL_NAME","value":"Helena Costa Martins"}]}
+{"id":"P041","text":"CNS do cadastro de teste: 899123450001999.","annotations":[{"type":"CNS","value":"899123450001999"}]}
+{"id":"P042","text":"CPF 147.258.369-00 associado ao nome Bruno Cesar Duarte.","annotations":[{"type":"CPF","value":"147.258.369-00"},{"type":"FULL_NAME","value":"Bruno Cesar Duarte"}]}
+{"id":"P043","text":"Solicitar retorno em triagem43@aps.local com prioridade.","annotations":[{"type":"EMAIL","value":"triagem43@aps.local"}]}
+{"id":"P044","text":"Identificador numerico longo: 20242024202420242024.","annotations":[{"type":"LONG_NUMERIC_CHAIN","value":"20242024202420242024"}]}
+{"id":"P045","text":"Paciente Mariana Alves Pires informou telefone 31 99999 0001 e CPF 333.222.111-00.","annotations":[{"type":"FULL_NAME","value":"Mariana Alves Pires"},{"type":"PHONE","value":"31 99999 0001"},{"type":"CPF","value":"333.222.111-00"}]}
+{"id":"P046","text":"Registro de CNS 712340987650123 para paciente de nome Igor Matheus Ferreira.","annotations":[{"type":"CNS","value":"712340987650123"},{"type":"FULL_NAME","value":"Igor Matheus Ferreira"}]}
+{"id":"P047","text":"Email de apoio psicossocial: apoio47.saude@rede.fake.","annotations":[{"type":"EMAIL","value":"apoio47.saude@rede.fake"}]}
+{"id":"P048","text":"Telefone alternativo anotado no audio foi 31.98877.6655.","annotations":[{"type":"PHONE","value":"31.98877.6655"}]}
+{"id":"P049","text":"Cadeia longa de digitos usada como distractor: 13579135791357913579.","annotations":[{"type":"LONG_NUMERIC_CHAIN","value":"13579135791357913579"}]}
+{"id":"P050","text":"No encerramento, Ana Lucia Freitas confirmou CPF 888.777.666-55, CNS 899998887776665 e e-mail ana.freitas50@teste.fake.","annotations":[{"type":"FULL_NAME","value":"Ana Lucia Freitas"},{"type":"CPF","value":"888.777.666-55"},{"type":"CNS","value":"899998887776665"},{"type":"EMAIL","value":"ana.freitas50@teste.fake"}]}

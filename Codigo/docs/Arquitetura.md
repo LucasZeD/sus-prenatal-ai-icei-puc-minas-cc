@@ -20,12 +20,13 @@ O deploy é focado em isolamento rigoroso de redes internas. O WebApp ou serviç
 
 2. **`backend-nw` (Camada Lógica):**
    - **FastAPI / Node.js (Hub Orquestrador):** Atua como a ponte central (Cross-Network Bridge). Componente com prerrogativa de autenticar a requisição e distribuí-la.
-   - **Faster-Whisper (Motor Local de Áudio - STT):** Processa os áudios gravados capturados do dispositivo, transcrevendo em texto plano de forma veloz e 100% offline.
+   - **stt-service (Faster-Whisper `large-v3`, perfil Docker `ai`):** FastAPI em `backend-nw` com decode WebM (ffmpeg), pré-processamento e transcrição; expõe `POST /v1/audio/transcriptions` consumido pelo Hub Node via `WHISPER_HTTP_URL`.
+   - **diarization (pyannote.audio 3.1, perfil Docker `ai`, rede `data-nw`):** microsserviço FastAPI dedicado à diarização de locutores; expõe `POST /v1/diarize` consumido pelo Hub via `DIARIZATION_HTTP_URL`. Modelos baixados em *build time* e cacheados (runtime offline, `HF_HUB_OFFLINE=1`); CPU por padrão (GPU opcional). **Opcional e desativado por padrão** — sem `DIARIZATION_HTTP_URL` o sistema funciona normalmente. Estratégia atual: *diarização por segmento bufferizado* (o áudio efêmero do trecho é enviado ao fechar o utterance; os turnos são mesclados com a transcrição por sobreposição temporal; o rótulo de papel é editável pelo profissional). Fallback espectral em numpy puro (sem PyTorch) mantém o mesmo contrato quando o pyannote não está disponível.
 
 3. **`data-nw` (Camada de Persistência e RAG):**
    - **Servidor MCP (Model Context Protocol):** "Sidecar de Privacidade". O MCP barra a string suja enviada pelo Hub e extirpa Nomes, CPFs, e Cartões SUS antes de entregar pro llm (ex: converte em "Paciente hipertensa, 32 anos"). Nenhuma Query SQL vaza à IA Generativa.
    - **AI Agent (Ollama):** A engine encarregada da inteligência do ecossistema, processando instruções de triagem ou resumitiva rodando modelos restritos (ex: Llama-3 8B). Isolada da rede de internet aberta.
-   - **ChromaDB:** Banco Vetorial focado no "Retrieval-Augmented Generation" (RAG). Contém as Diretrizes do SUS picotadas e vetorizadas.
+   - **SQLite (vetores no clinical-ai):** Persistência local dos *embeddings* e dos fragmentos indexados para o RAG (implementação atual; substitui um motor vetorial dedicado como ChromaDB).
    - **PostgreSQL (via Prisma):** DB Central e de registros. Guardião último de todo o estado transacional.
 
 ![Diagrama de Implantação](UML/Diagrama%20de%20Implantacao.jpg)
@@ -57,4 +58,4 @@ O diagrama demonstra visualmente as restrições e trânsitos entre as camadas d
 - Operações de inicialização de Load Inference podem levar dezenas de segundos no 1º frame, forçando o frontend a lidar responsivamente por abordagens WebSocket ou Streaming Pacing (Loaders).
 
 ### 4.3 Estratégias de Recuperação e Anti-Alucinação
-- O chunking fragmentado no **ChromaDB** necessita de sobreposições semânticas saudáveis para não retornar contextos invertidos pro LLM, anulando o objetivo de segurança e padronização do SUS. A temp do modelo deve forçar zero "criatividade" nas conclusões clínicas.
+- O chunking fragmentado no armazenamento vetorial (\textbf{SQLite} no serviço \texttt{clinical-ai}) necessita de sobreposições semânticas saudáveis para não retornar contextos invertidos pro LLM, anulando o objetivo de segurança e padronização do SUS. A temp do modelo deve forçar zero "criatividade" nas conclusões clínicas.

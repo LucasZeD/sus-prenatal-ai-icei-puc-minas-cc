@@ -1,0 +1,132 @@
+# Ablacoes do benchmark STT (Escriba) - matriz comparativa estruturada
+
+per_request:
+  - id: preprocess_on
+    description: Pre-processamento ativo (header X-STT-Preprocess=1)
+    request:
+      preprocess: true
+  - id: preprocess_off
+    description: Pre-processamento desativado por requisicao
+    request:
+      preprocess: false
+
+# Bloco A: comparacao de modelos (baseline comum)
+# Bloco B: ablacoes de hiperparametros em large-v3 (uma variavel por preset)
+container:
+  - id: model_medium
+    block: model
+    description: "Bloco A: medium float16, beam=8, vad=true"
+    env:
+      WHISPER_MODEL: medium
+      WHISPER_COMPUTE_TYPE: float16
+      WHISPER_DEVICE: cuda
+      STT_NOISE_REDUCE: "false"
+      STT_PREPROCESS_ENABLED: "true"
+      STT_BEAM_SIZE: "8"
+      STT_VAD_FILTER: "true"
+      STT_CONDITION_ON_PREVIOUS_TEXT: "true"
+      STT_INITIAL_PROMPT: ""
+  - id: model_large_v3
+    block: model
+    description: "Bloco A: large-v3 float16 baseline"
+    env:
+      WHISPER_MODEL: large-v3
+      WHISPER_COMPUTE_TYPE: float16
+      WHISPER_DEVICE: cuda
+      STT_NOISE_REDUCE: "false"
+      STT_PREPROCESS_ENABLED: "true"
+      STT_BEAM_SIZE: "8"
+      STT_VAD_FILTER: "true"
+      STT_CONDITION_ON_PREVIOUS_TEXT: "true"
+      STT_INITIAL_PROMPT: ""
+  - id: model_large_v3_turbo
+    block: model
+    description: "Bloco A: large-v3-turbo float16 baseline"
+    env:
+      WHISPER_MODEL: large-v3-turbo
+      WHISPER_COMPUTE_TYPE: float16
+      WHISPER_DEVICE: cuda
+      STT_NOISE_REDUCE: "false"
+      STT_PREPROCESS_ENABLED: "true"
+      STT_BEAM_SIZE: "8"
+      STT_VAD_FILTER: "true"
+      STT_CONDITION_ON_PREVIOUS_TEXT: "true"
+      STT_INITIAL_PROMPT: ""
+  - id: hp_beam_5
+    block: hyperparam
+    description: "Bloco B: large-v3 beam_size=5"
+    env:
+      WHISPER_MODEL: large-v3
+      WHISPER_COMPUTE_TYPE: float16
+      WHISPER_DEVICE: cuda
+      STT_NOISE_REDUCE: "false"
+      STT_PREPROCESS_ENABLED: "true"
+      STT_BEAM_SIZE: "5"
+      STT_VAD_FILTER: "true"
+      STT_CONDITION_ON_PREVIOUS_TEXT: "true"
+      STT_INITIAL_PROMPT: ""
+  - id: hp_vad_off
+    block: hyperparam
+    description: "Bloco B: large-v3 VAD desligado"
+    env:
+      WHISPER_MODEL: large-v3
+      WHISPER_COMPUTE_TYPE: float16
+      WHISPER_DEVICE: cuda
+      STT_NOISE_REDUCE: "false"
+      STT_PREPROCESS_ENABLED: "true"
+      STT_BEAM_SIZE: "8"
+      STT_VAD_FILTER: "false"
+      STT_CONDITION_ON_PREVIOUS_TEXT: "true"
+      STT_INITIAL_PROMPT: ""
+  - id: hp_int8_float16
+    block: hyperparam
+    description: "Bloco B: large-v3 quantizado int8_float16"
+    env:
+      WHISPER_MODEL: large-v3
+      WHISPER_COMPUTE_TYPE: int8_float16
+      WHISPER_DEVICE: cuda
+      STT_NOISE_REDUCE: "false"
+      STT_PREPROCESS_ENABLED: "true"
+      STT_BEAM_SIZE: "8"
+      STT_VAD_FILTER: "true"
+      STT_CONDITION_ON_PREVIOUS_TEXT: "true"
+      STT_INITIAL_PROMPT: ""
+  - id: hp_initial_prompt
+    block: hyperparam
+    description: "Bloco B: large-v3 com initial_prompt clinico SUS"
+    env:
+      WHISPER_MODEL: large-v3
+      WHISPER_COMPUTE_TYPE: float16
+      WHISPER_DEVICE: cuda
+      STT_NOISE_REDUCE: "false"
+      STT_PREPROCESS_ENABLED: "true"
+      STT_BEAM_SIZE: "8"
+      STT_VAD_FILTER: "true"
+      STT_CONDITION_ON_PREVIOUS_TEXT: "true"
+      STT_INITIAL_PROMPT: "Consulta de pre-natal no SUS. Termos: gestante, idade gestacional, BCF, altura uterina, pressao arterial, proteinuria, cefalico, movimentos fetais, edema, alto risco."
+  - id: hp_noise_reduce
+    block: hyperparam
+    description: "Bloco B: large-v3 com noise reduce no preprocess"
+    env:
+      WHISPER_MODEL: large-v3
+      WHISPER_COMPUTE_TYPE: float16
+      WHISPER_DEVICE: cuda
+      STT_NOISE_REDUCE: "true"
+      STT_PREPROCESS_ENABLED: "true"
+      STT_BEAM_SIZE: "8"
+      STT_VAD_FILTER: "true"
+      STT_CONDITION_ON_PREVIOUS_TEXT: "true"
+      STT_INITIAL_PROMPT: ""
+  - id: hp_condition_off
+    block: hyperparam
+    description: "Bloco B: large-v3 condition_on_previous_text=false"
+    env:
+      WHISPER_MODEL: large-v3
+      WHISPER_COMPUTE_TYPE: float16
+      WHISPER_DEVICE: cuda
+      STT_NOISE_REDUCE: "false"
+      STT_PREPROCESS_ENABLED: "true"
+      STT_BEAM_SIZE: "8"
+      STT_VAD_FILTER: "true"
+      STT_CONDITION_ON_PREVIOUS_TEXT: "false"
+      STT_INITIAL_PROMPT: ""

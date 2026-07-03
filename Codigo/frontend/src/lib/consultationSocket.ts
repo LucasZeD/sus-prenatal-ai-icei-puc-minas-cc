@@ -4,12 +4,36 @@ export type StreamHistoryItem = {
   createdAt: string
 }
 
+export type DiarizedSegment = { speaker: string; role: string; text: string }
+
+/** Campos clinicos extraidos pela IA (RF04) — chaves alinhadas a API. */
+export type ConsultaClinicalFieldsPatch = {
+  queixa?: string | null
+  peso?: number | null
+  pa_sistolica?: number | null
+  pa_diastolica?: number | null
+  idade_gestacional?: number | null
+  au?: number | null
+  bfc?: number | null
+  mov_fetal?: string | null
+  apresentacao_fetal?: string | null
+  is_edema?: boolean
+  is_exantema?: boolean
+}
+
 export type ConsultationServerMessage =
-  | { type: 'ready'; consultaId: string }
+  | { type: 'ready'; consultaId: string; diarizationAvailable: boolean }
   | { type: 'history'; eventos: StreamHistoryItem[] }
   | { type: 'stt_partial'; text: string }
+  | { type: 'stt_diarized'; segments: DiarizedSegment[] }
+  | { type: 'ia_reset' }
   | { type: 'ia_token'; token: string }
   | { type: 'ia_done' }
+  | {
+      type: 'form_patch'
+      patch: Partial<ConsultaClinicalFieldsPatch>
+      source: 'ai_extract'
+    }
   | { type: 'error'; message: string }
 
 export type ConsultationSocketCallbacks = {
@@ -24,6 +48,9 @@ import { getWsBaseUrl } from './apiBase.js'
 export type ConsultationSocketHandle = {
   close: () => void
   sendVadPause: () => void
+  sendMicState: (active: boolean) => void
+  sendDiarizationState: (enabled: boolean) => void
+  sendProntuarioDraft: (fields: Partial<ConsultaClinicalFieldsPatch>) => void
   sendBinary: (data: ArrayBuffer | Blob) => void
   readyState: () => number
 }
@@ -35,7 +62,11 @@ function parseMessage(raw: string): ConsultationServerMessage | null {
     switch (v.type) {
       case 'ready':
         return typeof (v as { consultaId?: string }).consultaId === 'string'
-          ? { type: 'ready', consultaId: (v as { consultaId: string }).consultaId }
+          ? {
+              type: 'ready',
+              consultaId: (v as { consultaId: string }).consultaId,
+              diarizationAvailable: (v as { diarizationAvailable?: boolean }).diarizationAvailable === true,
+            }
           : null
       case 'history': {
         const eventos = (v as { eventos?: StreamHistoryItem[] }).eventos
@@ -47,12 +78,41 @@ function parseMessage(raw: string): ConsultationServerMessage | null {
         return typeof (v as { text?: string }).text === 'string'
           ? { type: 'stt_partial', text: (v as { text: string }).text }
           : null
+      case 'stt_diarized': {
+        const raw = (v as { segments?: unknown }).segments
+        if (!Array.isArray(raw)) return null
+        const segments: DiarizedSegment[] = raw
+          .filter(
+            (s): s is DiarizedSegment =>
+              typeof s === 'object' &&
+              s !== null &&
+              typeof (s as { speaker?: unknown }).speaker === 'string' &&
+              typeof (s as { role?: unknown }).role === 'string' &&
+              typeof (s as { text?: unknown }).text === 'string',
+          )
+          .map((s) => ({ speaker: s.speaker, role: s.role, text: s.text }))
+        return { type: 'stt_diarized', segments }
+      }
+      case 'ia_reset':
+        return { type: 'ia_reset' }
       case 'ia_token':
         return typeof (v as { token?: string }).token === 'string'
           ? { type: 'ia_token', token: (v as { token: string }).token }
           : null
       case 'ia_done':
         return { type: 'ia_done' }
+      case 'form_patch': {
+        const patch = (v as { patch?: unknown }).patch
+        const source = (v as { source?: string }).source
+        if (source !== 'ai_extract' || !patch || typeof patch !== 'object' || Array.isArray(patch)) {
+          return null
+        }
+        return {
+          type: 'form_patch',
+          patch: patch as Partial<ConsultaClinicalFieldsPatch>,
+          source: 'ai_extract',
+        }
+      }
       case 'error':
         return typeof (v as { message?: string }).message === 'string'
           ? { type: 'error', message: (v as { message: string }).message }
@@ -102,6 +162,21 @@ export function openConsultationSocket(
     sendVadPause: () => {
       if (ws.readyState === WebSocket.OPEN) {
         ws.send(JSON.stringify({ type: 'vad_pause' }))
+      }
+    },
+    sendMicState: (active: boolean) => {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ type: 'mic_state', active }))
+      }
+    },
+    sendDiarizationState: (enabled: boolean) => {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ type: 'diarization_state', enabled }))
+      }
+    },
+    sendProntuarioDraft: (fields) => {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ type: 'prontuario_draft', fields }))
       }
     },
     sendBinary: (data) => {

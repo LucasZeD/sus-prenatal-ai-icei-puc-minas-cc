@@ -1,8 +1,27 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.js'
+import { useLiviaDesktopAsideOpen } from '../hooks/useLiviaDesktopAsideOpen.js'
 import { isUuid } from '../lib/uuid.js'
 import { LiviaAssistantPanel } from '../components/LiviaAssistantPanel.js'
+import { LiviaDesktopFab } from '../components/LiviaDesktopFab.js'
+import { LiviaMobileFab } from '../components/LiviaMobileFab.js'
+import { GanhoPesoGestacionalPanel } from '../components/nutricao/GanhoPesoGestacionalPanel.js'
+import { BoolTriState } from '../components/BoolTriState.js'
+import { DerModulosProntuario, type DerModulosPersistHandle } from './paciente-detail/DerModulosProntuario.js'
+import { useProntuarioDrafts } from './paciente-detail/useProntuarioDrafts.js'
+import {
+  addCalendarDaysLocal,
+  calcIgAtualFromDum,
+  formatApiDateOnlyPtBr,
+  formatLocalDatePtBr,
+  impliedDumForIg,
+  NAEGELE_DAYS,
+  parseApiDateOnlyToLocalDate,
+  parsePtBrDateOnlyToLocalDate,
+  primaryDppFromDumAndEco,
+  toIsoDateOnlyLocal,
+} from '../lib/gestacaoDpp.js'
 
 type UnidadeRow = { id: string; nome: string }
 
@@ -70,6 +89,7 @@ type ConsultaRow = {
 export function PacienteDetailPage() {
   const { id } = useParams()
   const { authFetch } = useAuth()
+  const [liviaAsideOpen, setLiviaAsideOpen] = useLiviaDesktopAsideOpen()
   const [paciente, setPaciente] = useState<PacienteRow | null>(null)
   const [pacienteFull, setPacienteFull] = useState<Record<string, unknown> | null>(null)
   const [gestacoes, setGestacoes] = useState<GestacaoRow[]>([])
@@ -98,7 +118,15 @@ export function PacienteDetailPage() {
 
   const [savingGestacao, setSavingGestacao] = useState(false)
 
+  const [novaGestOpen, setNovaGestOpen] = useState(false)
+  const [novaGestDum, setNovaGestDum] = useState('')
+  const [novaGestSemanas, setNovaGestSemanas] = useState('')
+  const [novaGestBusy, setNovaGestBusy] = useState(false)
+  const [novaGestErr, setNovaGestErr] = useState<string | null>(null)
+
   const [isEditing, setIsEditing] = useState(false)
+  const [savingDer, setSavingDer] = useState(false)
+  const derRef = useRef<DerModulosPersistHandle | null>(null)
   const [savingAntecedentes, setSavingAntecedentes] = useState(false)
   const [antecedentesDraft, setAntecedentesDraft] = useState({
     n_gestas_anteriores: '',
@@ -135,7 +163,6 @@ export function PacienteDetailPage() {
     dpp: '',
     dpp_eco: '',
     ig_inicial: '',
-    tipo_risco: '' as '' | 'HABITUAL' | 'ALTO',
     coombs: '',
     tipo_gravidez: '' as '' | 'unica' | 'gemelar' | 'tripla_ou_mais' | 'ignorada',
     idade_gestac_confirmada: '',
@@ -144,7 +171,6 @@ export function PacienteDetailPage() {
     is_ativa: '' as '' | 'true' | 'false',
     is_colocar_diu: '' as '' | 'true' | 'false',
     is_did_consulta_odontologica: '' as '' | 'true' | 'false',
-    // Novos campos
     is_diabetes_gestacional: '' as '' | 'true' | 'false',
     is_infeccao_urinaria: '' as '' | 'true' | 'false',
     is_infertilidade: '' as '' | 'true' | 'false',
@@ -165,6 +191,8 @@ export function PacienteDetailPage() {
   const [expandedConsultas, setExpandedConsultas] = useState<Set<string>>(new Set())
   const [showMorePerfil, setShowMorePerfil] = useState(false)
   const [showMoreGestacao, setShowMoreGestacao] = useState(false)
+  /** `<details>` de Antecedentes: ao editar, abrimos para os tri-states não ficarem “invisíveis”. */
+  const [antecedentesDetailsOpen, setAntecedentesDetailsOpen] = useState(false)
 
   const validId = useMemo(() => (id && isUuid(id) ? id : null), [id])
 
@@ -173,6 +201,144 @@ export function PacienteDetailPage() {
     const list = pacienteFull && Array.isArray((pacienteFull as any).gestacoes) ? ((pacienteFull as any).gestacoes as any[]) : []
     return list.find((g) => String(g.id) === selG) ?? null
   }, [pacienteFull, selG])
+
+  const temGestacaoAtiva = useMemo(() => gestacoes.some((g) => g.is_ativa === true), [gestacoes])
+
+  /** Apenas dígitos (campos Int no Prisma / contagens). */
+  const digitsOnly = (raw: string) => raw.replace(/\D/g, '')
+
+  const snapshotPacienteDraftFromFull = useCallback(() => {
+    const pf = pacienteFull as any
+    if (!pf) return
+    setPacienteDraft({
+      nome_social: typeof pf.nome_social === 'string' ? pf.nome_social : '',
+      data_nascimento: formatApiDateOnlyPtBr(pf.data_nascimento),
+      etnia: typeof pf.etnia === 'string' ? pf.etnia : '',
+      escolaridade: typeof pf.escolaridade === 'string' ? pf.escolaridade : '',
+      estado_civil: typeof pf.estado_civil === 'string' ? pf.estado_civil : '',
+      ocupacao: typeof pf.ocupacao === 'string' ? pf.ocupacao : '',
+      abo_rh: typeof pf.abo_rh === 'string' ? pf.abo_rh : '',
+      altura: pf.altura != null ? String(pf.altura) : '',
+      peso_pre_gestacional: pf.peso_pre_gestacional != null ? String(pf.peso_pre_gestacional) : '',
+      is_particip_atvd_educativa:
+        typeof pf.is_particip_atvd_educativa === 'boolean' ? (pf.is_particip_atvd_educativa ? 'true' : 'false') : '',
+      telefone: typeof pf.telefone === 'string' ? pf.telefone : '',
+      email: typeof pf.email === 'string' ? pf.email : '',
+      localizacao: typeof pf.localizacao === 'string' ? pf.localizacao : '',
+    })
+  }, [pacienteFull])
+
+  const snapshotGestacaoDraftFromFull = useCallback(() => {
+    const list = pacienteFull && Array.isArray((pacienteFull as any).gestacoes) ? ((pacienteFull as any).gestacoes as any[]) : []
+    const g = list.find((x) => String(x?.id) === selG) as any
+    if (!g) return
+
+    const toBoolStr = (v: unknown): '' | 'true' | 'false' =>
+      typeof v === 'boolean' ? (v ? 'true' : 'false') : ''
+
+    setGestacaoDraft({
+      dum: formatApiDateOnlyPtBr(g.dum),
+      dpp: formatApiDateOnlyPtBr(g.dpp),
+      dpp_eco: formatApiDateOnlyPtBr(g.dpp_eco),
+      ig_inicial: g.ig_inicial != null ? String(g.ig_inicial) : '',
+      coombs: typeof g.coombs === 'string' ? g.coombs : '',
+      tipo_gravidez:
+        typeof g.tipo_gravidez === 'string'
+          ? (g.tipo_gravidez === 'tripla ou mais' ? 'tripla_ou_mais' : g.tipo_gravidez)
+          : '',
+      idade_gestac_confirmada: g.idade_gestac_confirmada != null ? String(g.idade_gestac_confirmada) : '',
+      is_planejada: toBoolStr(g.is_planejada),
+      is_visita_maternidade: toBoolStr(g.is_visita_maternidade),
+      is_ativa: toBoolStr(g.is_ativa),
+      is_colocar_diu: toBoolStr(g.is_colocar_diu),
+      is_did_consulta_odontologica: toBoolStr(g.is_did_consulta_odontologica),
+      is_diabetes_gestacional: toBoolStr(g.is_diabetes_gestacional),
+      is_infeccao_urinaria: toBoolStr(g.is_infeccao_urinaria),
+      is_infertilidade: toBoolStr(g.is_infertilidade),
+      is_dificuldade_alimentar: toBoolStr(g.is_dificuldade_alimentar),
+      is_cardiopatia: toBoolStr(g.is_cardiopatia),
+      is_tromboembolismo: toBoolStr(g.is_tromboembolismo),
+      is_hipertensao_arterial: toBoolStr(g.is_hipertensao_arterial),
+      is_cirurgia_elvica_uterina: toBoolStr(g.is_cirurgia_elvica_uterina),
+      is_cirugia: toBoolStr(g.is_cirugia),
+      tratamento_sifilis_dose_1: formatApiDateOnlyPtBr(g.tratamento_sifilis_dose_1),
+      tratamento_sifilis_dose_2: formatApiDateOnlyPtBr(g.tratamento_sifilis_dose_2),
+      tratamento_sifilis_dose_3: formatApiDateOnlyPtBr(g.tratamento_sifilis_dose_3),
+      suplementacao_ferro: toBoolStr(g.suplementacao_ferro),
+      suplementacao_acido_folico: toBoolStr(g.suplementacao_acido_folico),
+    })
+  }, [pacienteFull, selG])
+
+  const snapshotAntecedentesDraftFromFull = useCallback(() => {
+    const a = (selectedGestacaoFull as any)?.antecedentes
+    if (!a) {
+      setAntecedentesDraft({
+        n_gestas_anteriores: '',
+        n_partos: '',
+        n_abortos: '',
+        n_nascidos_vivos: '',
+        n_vivem: '',
+        n_mortos_primeira_semana: '',
+        n_mortos_apos_primeira_semana: '',
+        n_nascidos_mortos: '',
+        n_cesarea: '',
+        n_parto_normal: '',
+        n_parto_prematuro: '',
+        n_bebe_menos_dois_kilos_e_meio: '',
+        n_bebe_mais_quatro_kilos_e_meio: '',
+        is_gesta_ectopica: '',
+        is_gesta_molar: '',
+        is_hipertensao_familiar: '',
+        is_gravidez_gemelar_familiar: '',
+        is_diabetes_familiar: '',
+        is_fumo: '',
+        is_alcool: '',
+        is_drogas: '',
+        is_cardiopatia: '',
+        is_tromboembolismo: '',
+        is_infertilidade: '',
+        is_isoimunizacao_rh: '',
+        is_cirurgia_pelvica_uterina: '',
+        is_final_gestacao_anterior_1_ano: '',
+        is_sifilis: '',
+      })
+      return
+    }
+
+    const toIntStr = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? String(v) : v == null ? '' : String(v))
+    const toBoolStr = (v: unknown): '' | 'true' | 'false' => (typeof v === 'boolean' ? (v ? 'true' : 'false') : '')
+
+    setAntecedentesDraft({
+      n_gestas_anteriores: toIntStr(a.n_gestas_anteriores),
+      n_partos: toIntStr(a.n_partos),
+      n_abortos: toIntStr(a.n_abortos),
+      n_nascidos_vivos: toIntStr(a.n_nascidos_vivos),
+      n_vivem: toIntStr(a.n_vivem),
+      n_mortos_primeira_semana: toIntStr(a.n_mortos_primeira_semana),
+      n_mortos_apos_primeira_semana: toIntStr(a.n_mortos_apos_primeira_semana),
+      n_nascidos_mortos: toIntStr(a.n_nascidos_mortos),
+      n_cesarea: toIntStr(a.n_cesarea),
+      n_parto_normal: toIntStr(a.n_parto_normal),
+      n_parto_prematuro: toIntStr(a.n_parto_prematuro),
+      n_bebe_menos_dois_kilos_e_meio: toIntStr(a.n_bebe_menos_dois_kilos_e_meio),
+      n_bebe_mais_quatro_kilos_e_meio: toIntStr(a.n_bebe_mais_quatro_kilos_e_meio),
+      is_gesta_ectopica: toBoolStr(a.is_gesta_ectopica),
+      is_gesta_molar: toBoolStr(a.is_gesta_molar),
+      is_hipertensao_familiar: toBoolStr(a.is_hipertensao_familiar),
+      is_gravidez_gemelar_familiar: toBoolStr(a.is_gravidez_gemelar_familiar),
+      is_diabetes_familiar: toBoolStr(a.is_diabetes_familiar),
+      is_fumo: toBoolStr(a.is_fumo),
+      is_alcool: toBoolStr(a.is_alcool),
+      is_drogas: toBoolStr(a.is_drogas),
+      is_cardiopatia: toBoolStr(a.is_cardiopatia),
+      is_tromboembolismo: toBoolStr(a.is_tromboembolismo),
+      is_infertilidade: toBoolStr(a.is_infertilidade),
+      is_isoimunizacao_rh: toBoolStr(a.is_isoimunizacao_rh),
+      is_cirurgia_pelvica_uterina: toBoolStr(a.is_cirurgia_pelvica_uterina),
+      is_final_gestacao_anterior_1_ano: toBoolStr(a.is_final_gestacao_anterior_1_ano),
+      is_sifilis: toBoolStr(a.is_sifilis),
+    })
+  }, [selectedGestacaoFull])
 
   const loadPaciente = useCallback(async () => {
     if (!validId) return
@@ -213,38 +379,6 @@ export function PacienteDetailPage() {
       setErr('Falha ao carregar paciente.')
     }
   }, [authFetch, validId])
-
-  const loadGestacoes = useCallback(async () => {
-    if (!validId) return
-    try {
-      const list: GestacaoRow[] =
-        pacienteFull && Array.isArray((pacienteFull as any).gestacoes)
-          ? ((pacienteFull as any).gestacoes as any[]).map((g) => ({
-              id: String(g.id),
-              paciente_id: String(g.paciente_id),
-              tipo_risco: typeof g.tipo_risco === 'string' ? g.tipo_risco : String(g.tipo_risco ?? ''),
-              dum: typeof g.dum === 'string' ? g.dum : null,
-              dpp: typeof g.dpp === 'string' ? g.dpp : null,
-              dpp_eco: typeof g.dpp_eco === 'string' ? g.dpp_eco : null,
-              ig_inicial: typeof g.ig_inicial === 'number' ? g.ig_inicial : null,
-              idade_gestac_confirmada: typeof g.idade_gestac_confirmada === 'number' ? g.idade_gestac_confirmada : null,
-              coombs: typeof g.coombs === 'string' ? g.coombs : null,
-              tipo_gravidez: typeof g.tipo_gravidez === 'string' ? g.tipo_gravidez : null,
-              is_planejada: typeof g.is_planejada === 'boolean' ? g.is_planejada : null,
-              is_visita_maternidade: typeof g.is_visita_maternidade === 'boolean' ? g.is_visita_maternidade : null,
-              is_ativa: typeof g.is_ativa === 'boolean' ? g.is_ativa : null,
-              is_colocar_diu: typeof g.is_colocar_diu === 'boolean' ? g.is_colocar_diu : null,
-              is_did_consulta_odontologica:
-                typeof g.is_did_consulta_odontologica === 'boolean' ? g.is_did_consulta_odontologica : null,
-              concluida_em: typeof g.concluida_em === 'string' ? g.concluida_em : null,
-            }))
-          : []
-      setGestacoes(list)
-      setSelG((prev) => prev || list[0]?.id || '')
-    } catch {
-      setGestacoes([])
-    }
-  }, [pacienteFull, validId])
 
   const loadUnidades = useCallback(async () => {
     try {
@@ -337,11 +471,81 @@ export function PacienteDetailPage() {
     }
   }, [authFetch, consultas.length, loadConsultas, selG, selUnidade])
 
+  const criarNovaGestacao = useCallback(async () => {
+    if (!validId) return
+    setNovaGestBusy(true)
+    setNovaGestErr(null)
+    const body: Record<string, unknown> = { paciente_id: validId }
+    if (novaGestDum.trim() && /^\d{4}-\d{2}-\d{2}$/.test(novaGestDum.trim())) {
+      body.dum = novaGestDum.trim()
+    }
+    const sem = novaGestSemanas.trim() ? Number.parseInt(novaGestSemanas.trim(), 10) : NaN
+    if (Number.isFinite(sem) && sem >= 0 && sem <= 45) {
+      body.idade_gestac_confirmada = sem
+    }
+    try {
+      const res = await authFetch('/api/v1/gestacoes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      })
+      const j = (await res.json()) as { id?: string; message?: string }
+      if (!res.ok) {
+        setNovaGestErr(typeof j.message === 'string' ? j.message : `Não foi possível registrar (${res.status}).`)
+        return
+      }
+      const newId = typeof j.id === 'string' ? j.id : ''
+      await loadPaciente()
+      if (newId) setSelG(newId)
+      setNovaGestOpen(false)
+      setNovaGestDum('')
+      setNovaGestSemanas('')
+    } catch {
+      setNovaGestErr('Falha de rede ao registrar nova gravidez.')
+    } finally {
+      setNovaGestBusy(false)
+    }
+  }, [authFetch, loadPaciente, novaGestDum, novaGestSemanas, validId])
+
   useEffect(() => {
     void loadPaciente()
-    void loadGestacoes()
     void loadUnidades()
-  }, [loadPaciente, loadGestacoes, loadUnidades])
+  }, [loadPaciente, loadUnidades])
+
+  /** Deriva `gestacoes` de `pacienteFull` (evita loop: `loadGestacoes` não pode depender de `pacienteFull` e estar no mesmo efeito que `loadPaciente`). */
+  useEffect(() => {
+    if (!validId) return
+    if (!pacienteFull || !Array.isArray((pacienteFull as any).gestacoes)) {
+      setGestacoes([])
+      return
+    }
+    const fullId = String((pacienteFull as any).id ?? '')
+    if (fullId !== validId) {
+      setGestacoes([])
+      return
+    }
+    const list: GestacaoRow[] = ((pacienteFull as any).gestacoes as any[]).map((g) => ({
+      id: String(g.id),
+      paciente_id: String(g.paciente_id),
+      tipo_risco: typeof g.tipo_risco === 'string' ? g.tipo_risco : String(g.tipo_risco ?? ''),
+      dum: typeof g.dum === 'string' ? g.dum : null,
+      dpp: typeof g.dpp === 'string' ? g.dpp : null,
+      dpp_eco: typeof g.dpp_eco === 'string' ? g.dpp_eco : null,
+      ig_inicial: typeof g.ig_inicial === 'number' ? g.ig_inicial : null,
+      idade_gestac_confirmada: typeof g.idade_gestac_confirmada === 'number' ? g.idade_gestac_confirmada : null,
+      coombs: typeof g.coombs === 'string' ? g.coombs : null,
+      tipo_gravidez: typeof g.tipo_gravidez === 'string' ? g.tipo_gravidez : null,
+      is_planejada: typeof g.is_planejada === 'boolean' ? g.is_planejada : null,
+      is_visita_maternidade: typeof g.is_visita_maternidade === 'boolean' ? g.is_visita_maternidade : null,
+      is_ativa: typeof g.is_ativa === 'boolean' ? g.is_ativa : null,
+      is_colocar_diu: typeof g.is_colocar_diu === 'boolean' ? g.is_colocar_diu : null,
+      is_did_consulta_odontologica:
+        typeof g.is_did_consulta_odontologica === 'boolean' ? g.is_did_consulta_odontologica : null,
+      concluida_em: typeof g.concluida_em === 'string' ? g.concluida_em : null,
+    }))
+    setGestacoes(list)
+    setSelG((prev) => prev || list[0]?.id || '')
+  }, [pacienteFull, validId])
 
   useEffect(() => {
     if (selG) void loadConsultas(selG)
@@ -349,226 +553,34 @@ export function PacienteDetailPage() {
   }, [selG, loadConsultas])
 
   useEffect(() => {
-    // Sincroniza draft com dados do banco APENAS se não estivermos editando ativamente
     if (isEditing) return
-
-    const pf = pacienteFull as any
-    if (!pf) return
-    
-    // Converte ISO Date (YYYY-MM-DD) para display pt-BR (DD/MM/YYYY) para campos de texto
-    const toDateDisplay = (v: unknown): string => {
-      if (typeof v !== 'string' || !v) return ''
-      const d = new Date(v)
-      if (Number.isNaN(d.getTime())) return ''
-      return d.toLocaleDateString('pt-BR')
-    }
-
-    setPacienteDraft({
-      nome_social: typeof pf.nome_social === 'string' ? pf.nome_social : '',
-      data_nascimento: toDateDisplay(pf.data_nascimento),
-      etnia: typeof pf.etnia === 'string' ? pf.etnia : '',
-      escolaridade: typeof pf.escolaridade === 'string' ? pf.escolaridade : '',
-      estado_civil: typeof pf.estado_civil === 'string' ? pf.estado_civil : '',
-      ocupacao: typeof pf.ocupacao === 'string' ? pf.ocupacao : '',
-      abo_rh: typeof pf.abo_rh === 'string' ? pf.abo_rh : '',
-      altura: pf.altura != null ? String(pf.altura) : '',
-      peso_pre_gestacional: pf.peso_pre_gestacional != null ? String(pf.peso_pre_gestacional) : '',
-      is_particip_atvd_educativa:
-        typeof pf.is_particip_atvd_educativa === 'boolean' ? (pf.is_particip_atvd_educativa ? 'true' : 'false') : '',
-      telefone: typeof pf.telefone === 'string' ? pf.telefone : '',
-      email: typeof pf.email === 'string' ? pf.email : '',
-      localizacao: typeof pf.localizacao === 'string' ? pf.localizacao : '',
-    })
-  }, [pacienteFull, isEditing])
+    snapshotPacienteDraftFromFull()
+  }, [isEditing, snapshotPacienteDraftFromFull])
 
   useEffect(() => {
     if (isEditing) return
-
-    const list = pacienteFull && Array.isArray((pacienteFull as any).gestacoes) ? ((pacienteFull as any).gestacoes as any[]) : []
-    const g = list.find((x) => String(x?.id) === selG) as any
-    if (!g) return
-
-    const toDateDisplay = (v: unknown): string => {
-      if (typeof v !== 'string' || !v) return ''
-      const d = new Date(v)
-      if (Number.isNaN(d.getTime())) return ''
-      return d.toLocaleDateString('pt-BR')
-    }
-
-    const toBoolStr = (v: unknown): '' | 'true' | 'false' => 
-      typeof v === 'boolean' ? (v ? 'true' : 'false') : ''
-
-    setGestacaoDraft({
-      dum: toDateDisplay(g.dum),
-      dpp: toDateDisplay(g.dpp),
-      dpp_eco: toDateDisplay(g.dpp_eco),
-      ig_inicial: g.ig_inicial != null ? String(g.ig_inicial) : '',
-      tipo_risco: typeof g.tipo_risco === 'string' ? g.tipo_risco : String(g.tipo_risco ?? ''),
-      coombs: typeof g.coombs === 'string' ? g.coombs : '',
-      tipo_gravidez:
-        typeof g.tipo_gravidez === 'string'
-          ? (g.tipo_gravidez === 'tripla ou mais' ? 'tripla_ou_mais' : g.tipo_gravidez)
-          : '',
-      idade_gestac_confirmada: g.idade_gestac_confirmada != null ? String(g.idade_gestac_confirmada) : '',
-      is_planejada: toBoolStr(g.is_planejada),
-      is_visita_maternidade: toBoolStr(g.is_visita_maternidade),
-      is_ativa: toBoolStr(g.is_ativa),
-      is_colocar_diu: toBoolStr(g.is_colocar_diu),
-      is_did_consulta_odontologica: toBoolStr(g.is_did_consulta_odontologica),
-      is_diabetes_gestacional: toBoolStr(g.is_diabetes_gestacional),
-      is_infeccao_urinaria: toBoolStr(g.is_infeccao_urinaria),
-      is_infertilidade: toBoolStr(g.is_infertilidade),
-      is_dificuldade_alimentar: toBoolStr(g.is_dificuldade_alimentar),
-      is_cardiopatia: toBoolStr(g.is_cardiopatia),
-      is_tromboembolismo: toBoolStr(g.is_tromboembolismo),
-      is_hipertensao_arterial: toBoolStr(g.is_hipertensao_arterial),
-      is_cirurgia_elvica_uterina: toBoolStr(g.is_cirurgia_elvica_uterina),
-      is_cirugia: toBoolStr(g.is_cirugia),
-      tratamento_sifilis_dose_1: toDateDisplay(g.tratamento_sifilis_dose_1),
-      tratamento_sifilis_dose_2: toDateDisplay(g.tratamento_sifilis_dose_2),
-      tratamento_sifilis_dose_3: toDateDisplay(g.tratamento_sifilis_dose_3),
-      suplementacao_ferro: toBoolStr(g.suplementacao_ferro),
-      suplementacao_acido_folico: toBoolStr(g.suplementacao_acido_folico),
-    })
-  }, [pacienteFull, selG, isEditing])
+    snapshotGestacaoDraftFromFull()
+  }, [isEditing, snapshotGestacaoDraftFromFull])
 
   useEffect(() => {
     if (isEditing) return
-    const a = (selectedGestacaoFull as any)?.antecedentes
-    if (!a) {
-      setAntecedentesDraft({
-        n_gestas_anteriores: '',
-        n_partos: '',
-        n_abortos: '',
-        n_nascidos_vivos: '',
-        n_vivem: '',
-        n_mortos_primeira_semana: '',
-        n_mortos_apos_primeira_semana: '',
-        n_nascidos_mortos: '',
-        n_cesarea: '',
-        n_parto_normal: '',
-        n_parto_prematuro: '',
-        n_bebe_menos_dois_kilos_e_meio: '',
-        n_bebe_mais_quatro_kilos_e_meio: '',
-        is_gesta_ectopica: '',
-        is_gesta_molar: '',
-        is_hipertensao_familiar: '',
-        is_gravidez_gemelar_familiar: '',
-        is_diabetes_familiar: '',
-        is_fumo: '',
-        is_alcool: '',
-        is_drogas: '',
-        is_cardiopatia: '',
-        is_tromboembolismo: '',
-        is_infertilidade: '',
-        is_isoimunizacao_rh: '',
-        is_cirurgia_pelvica_uterina: '',
-        is_final_gestacao_anterior_1_ano: '',
-        is_sifilis: '',
-      })
-      return
-    }
+    snapshotAntecedentesDraftFromFull()
+  }, [isEditing, snapshotAntecedentesDraftFromFull])
 
-    const toIntStr = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? String(v) : v == null ? '' : String(v))
-    const toBoolStr = (v: unknown): '' | 'true' | 'false' => (typeof v === 'boolean' ? (v ? 'true' : 'false') : '')
-
-    setAntecedentesDraft({
-      n_gestas_anteriores: toIntStr(a.n_gestas_anteriores),
-      n_partos: toIntStr(a.n_partos),
-      n_abortos: toIntStr(a.n_abortos),
-      n_nascidos_vivos: toIntStr(a.n_nascidos_vivos),
-      n_vivem: toIntStr(a.n_vivem),
-      n_mortos_primeira_semana: toIntStr(a.n_mortos_primeira_semana),
-      n_mortos_apos_primeira_semana: toIntStr(a.n_mortos_apos_primeira_semana),
-      n_nascidos_mortos: toIntStr(a.n_nascidos_mortos),
-      n_cesarea: toIntStr(a.n_cesarea),
-      n_parto_normal: toIntStr(a.n_parto_normal),
-      n_parto_prematuro: toIntStr(a.n_parto_prematuro),
-      n_bebe_menos_dois_kilos_e_meio: toIntStr(a.n_bebe_menos_dois_kilos_e_meio),
-      n_bebe_mais_quatro_kilos_e_meio: toIntStr(a.n_bebe_mais_quatro_kilos_e_meio),
-      is_gesta_ectopica: toBoolStr(a.is_gesta_ectopica),
-      is_gesta_molar: toBoolStr(a.is_gesta_molar),
-      is_hipertensao_familiar: toBoolStr(a.is_hipertensao_familiar),
-      is_gravidez_gemelar_familiar: toBoolStr(a.is_gravidez_gemelar_familiar),
-      is_diabetes_familiar: toBoolStr(a.is_diabetes_familiar),
-      is_fumo: toBoolStr(a.is_fumo),
-      is_alcool: toBoolStr(a.is_alcool),
-      is_drogas: toBoolStr(a.is_drogas),
-      is_cardiopatia: toBoolStr(a.is_cardiopatia),
-      is_tromboembolismo: toBoolStr(a.is_tromboembolismo),
-      is_infertilidade: toBoolStr(a.is_infertilidade),
-      is_isoimunizacao_rh: toBoolStr(a.is_isoimunizacao_rh),
-      is_cirurgia_pelvica_uterina: toBoolStr(a.is_cirurgia_pelvica_uterina),
-      is_final_gestacao_anterior_1_ano: toBoolStr(a.is_final_gestacao_anterior_1_ano),
-      is_sifilis: toBoolStr(a.is_sifilis),
-    })
-  }, [isEditing, selectedGestacaoFull])
-
-  if (!validId) {
-    return (
-      <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-900 m-8">
-        <p className="font-bold">Identificador de paciente inválido no painel principal.</p>
-        <Link to="/pacientes" className="mt-3 inline-block font-bold py-2 px-4 bg-white rounded-xl shadow-sm border border-red-200">
-          Voltar à lista
-        </Link>
-      </div>
-    )
-  }
+  const { prepareEnterEdit } = useProntuarioDrafts(
+    snapshotPacienteDraftFromFull,
+    snapshotGestacaoDraftFromFull,
+    snapshotAntecedentesDraftFromFull,
+    setShowMorePerfil,
+    setShowMoreGestacao,
+    setAntecedentesDetailsOpen,
+  )
 
   const fmtDateOnly = (v: unknown): string => {
-    if (typeof v !== 'string' || !v) return '—'
-    const d = new Date(v)
-    if (Number.isNaN(d.getTime())) return '—'
-    return d.toLocaleDateString('pt-BR')
+    const s = formatApiDateOnlyPtBr(v)
+    return s || '—'
   }
   const fmtBool = (v: unknown): string => (v === true ? 'Sim' : v === false ? 'Não' : '—')
-  const BoolRadio = ({
-    name,
-    value,
-    disabled,
-    onChange,
-  }: {
-    name: string
-    value: '' | 'true' | 'false'
-    disabled?: boolean
-    onChange: (next: '' | 'true' | 'false') => void
-  }) => {
-    const base =
-      'inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-[11px] font-black text-slate-700 shadow-sm select-none cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed'
-    const active = 'border-brand-pink/50 ring-2 ring-brand-pink/20 text-brand-navy'
-    const opt = (id: '' | 'true' | 'false', label: string) => {
-      const inputId = `${name}-${id || 'unset'}`
-      return (
-      <label
-        htmlFor={inputId}
-        onClick={(e) => {
-          e.preventDefault()
-          if (!disabled) onChange(id)
-        }}
-        className={`${base} ${value === id ? active : ''}`}
-      >
-        <input
-          id={inputId}
-          type="radio"
-          name={name}
-          value={id}
-          disabled={disabled}
-          checked={value === id}
-          onChange={() => onChange(id)}
-          className="h-3.5 w-3.5 accent-brand-pink"
-        />
-        {label}
-      </label>
-    )
-    }
-    return (
-      <div className="flex flex-wrap gap-1.5">
-        {opt('', '—')}
-        {opt('true', 'Sim')}
-        {opt('false', 'Não')}
-      </div>
-    )
-  }
   const fmtDateTime = (v: unknown): string => {
     if (typeof v !== 'string' || !v) return '—'
     const d = new Date(v)
@@ -576,57 +588,37 @@ export function PacienteDetailPage() {
     return d.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })
   }
 
-  const parseBrDateToLocalDate = (v: string): Date | null => {
-    const t = (v || '').trim()
-    if (!t) return null
-    const parts = t.split('/')
-    if (parts.length !== 3) return null
-    const dd = Number.parseInt(parts[0], 10)
-    const mm = Number.parseInt(parts[1], 10)
-    const yyyy = Number.parseInt(parts[2], 10)
-    if (!Number.isFinite(dd) || !Number.isFinite(mm) || !Number.isFinite(yyyy)) return null
-    const d = new Date(yyyy, mm - 1, dd, 12, 0, 0, 0)
-    return Number.isNaN(d.getTime()) ? null : d
-  }
+  const dumBaseDate = useMemo(() => {
+    if (isEditing) return parsePtBrDateOnlyToLocalDate(gestacaoDraft.dum)
+    return parseApiDateOnlyToLocalDate(selectedGestacao?.dum ?? null)
+  }, [gestacaoDraft.dum, isEditing, selectedGestacao?.dum])
 
-  const parseIsoDateOnlyToLocalDate = (v: unknown): Date | null => {
-    if (typeof v !== 'string' || !v) return null
-    const t = v.slice(0, 10)
-    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(t)
-    if (!m) return null
-    const yyyy = Number.parseInt(m[1], 10)
-    const mm = Number.parseInt(m[2], 10)
-    const dd = Number.parseInt(m[3], 10)
-    const d = new Date(yyyy, mm - 1, dd, 12, 0, 0, 0)
-    return Number.isNaN(d.getTime()) ? null : d
-  }
+  const dppEcoBaseDate = useMemo(() => {
+    if (isEditing) return parsePtBrDateOnlyToLocalDate(gestacaoDraft.dpp_eco)
+    return parseApiDateOnlyToLocalDate(selectedGestacao?.dpp_eco ?? null)
+  }, [gestacaoDraft.dpp_eco, isEditing, selectedGestacao?.dpp_eco])
 
-  const fmtBrDate = (d: Date | null): string => {
-    if (!d || Number.isNaN(d.getTime())) return ''
-    const dd = String(d.getDate()).padStart(2, '0')
-    const mm = String(d.getMonth() + 1).padStart(2, '0')
-    const yyyy = String(d.getFullYear())
-    return `${dd}/${mm}/${yyyy}`
-  }
+  const primaryDppDate = useMemo(
+    () => primaryDppFromDumAndEco(dumBaseDate, dppEcoBaseDate),
+    [dumBaseDate, dppEcoBaseDate],
+  )
 
-  const addDaysLocal = (d: Date, n: number): Date => {
-    const x = new Date(d)
-    x.setDate(x.getDate() + n)
-    return x
-  }
+  const naegeleDppDate = useMemo(
+    () => (dumBaseDate ? addCalendarDaysLocal(dumBaseDate, NAEGELE_DAYS) : null),
+    [dumBaseDate],
+  )
 
-  const calcIgAtualFromDum = (dum: Date | null, now = new Date()): string => {
-    if (!dum) return '—'
-    const today = new Date(now)
-    today.setHours(12, 0, 0, 0)
-    const base = new Date(dum)
-    base.setHours(12, 0, 0, 0)
-    const diffDays = Math.floor((today.getTime() - base.getTime()) / 86400000)
-    if (!Number.isFinite(diffDays) || diffDays < 0) return '—'
-    const weeks = Math.floor(diffDays / 7)
-    const days = diffDays % 7
-    return `${weeks} sem ${days} d`
-  }
+  const primaryDppBr = useMemo(() => formatLocalDatePtBr(primaryDppDate) || '—', [primaryDppDate])
+
+  const impliedDumIg = useMemo(() => impliedDumForIg(dumBaseDate, dppEcoBaseDate), [dumBaseDate, dppEcoBaseDate])
+
+  const igAtualAuto = useMemo(() => calcIgAtualFromDum(impliedDumIg), [impliedDumIg])
+
+  useEffect(() => {
+    if (!isEditing) return
+    const next = primaryDppDate ? formatLocalDatePtBr(primaryDppDate) : ''
+    setGestacaoDraft((p) => (p.dpp === next ? p : { ...p, dpp: next }))
+  }, [primaryDppDate, isEditing])
 
   const calcIdadeEmAnos = (isoDateOnlyOrIso: string): number | null => {
     const d = new Date(isoDateOnlyOrIso)
@@ -638,7 +630,7 @@ export function PacienteDetailPage() {
     const hadBirthday = m > 0 || (m === 0 && day >= 0)
     return Math.max(0, hadBirthday ? y : y - 1)
   }
-  
+
   const hasSifilisExamePositivo = useMemo(() => {
     const exames = (pacienteFull as any)?.exames
     if (!Array.isArray(exames)) return false
@@ -653,21 +645,6 @@ export function PacienteDetailPage() {
       return /positiv/i.test(valor)
     })
   }, [pacienteFull])
-
-  const dumBaseDate = useMemo(() => {
-    if (isEditing) return parseBrDateToLocalDate(gestacaoDraft.dum)
-    return parseIsoDateOnlyToLocalDate(selectedGestacao?.dum ?? null)
-  }, [gestacaoDraft.dum, isEditing, selectedGestacao?.dum])
-
-  const dppAutoDate = useMemo(() => (dumBaseDate ? addDaysLocal(dumBaseDate, 280) : null), [dumBaseDate])
-  const dppAutoBr = useMemo(() => fmtBrDate(dppAutoDate) || '—', [dppAutoDate])
-  const igAtualAuto = useMemo(() => calcIgAtualFromDum(dumBaseDate), [dumBaseDate])
-
-  useEffect(() => {
-    if (!isEditing) return
-    const next = dppAutoDate ? fmtBrDate(dppAutoDate) : ''
-    setGestacaoDraft((p) => (p.dpp === next ? p : { ...p, dpp: next }))
-  }, [dppAutoDate, isEditing])
 
   const toggleConsulta = (cid: string) => {
     setExpandedConsultas(prev => {
@@ -720,10 +697,10 @@ export function PacienteDetailPage() {
     return [...consultas].sort((a, b) => new Date(a.data).getTime() - new Date(b.data).getTime())
   }, [consultas])
 
-  const patchPaciente = useCallback(async () => {
-    if (!validId) return
+  const patchPaciente = useCallback(async (): Promise<boolean> => {
+    if (!validId) return true
     const pf = pacienteFull as any
-    if (!pf) return
+    if (!pf) return false
 
     const payload: Record<string, unknown> = {}
     const setIfChanged = (key: keyof typeof pacienteDraft, current: unknown) => {
@@ -766,12 +743,19 @@ export function PacienteDetailPage() {
     if ((pacienteDraft.abo_rh || '') !== (pf.abo_rh ?? '')) payload.abo_rh = pacienteDraft.abo_rh || null
     setNumberIfChanged('altura', pf.altura)
     setNumberIfChanged('peso_pre_gestacional', pf.peso_pre_gestacional)
-    if (pacienteDraft.is_particip_atvd_educativa) payload.is_particip_atvd_educativa = pacienteDraft.is_particip_atvd_educativa === 'true'
+    {
+      const d = pacienteDraft.is_particip_atvd_educativa
+      const cur = pf.is_particip_atvd_educativa
+      if (d === 'true' || d === 'false') {
+        const next = d === 'true'
+        if (cur !== next) payload.is_particip_atvd_educativa = next
+      }
+    }
     setIfChanged('telefone', pf.telefone)
     setIfChanged('email', pf.email)
     setIfChanged('localizacao', pf.localizacao)
 
-    if (Object.keys(payload).length === 0) return
+    if (Object.keys(payload).length === 0) return true
 
     setSavingPaciente(true)
     setErr(null)
@@ -783,20 +767,20 @@ export function PacienteDetailPage() {
       })
       if (!res.ok) {
         setErr(`Atualizar paciente: HTTP ${res.status}`)
-        return
+        return false
       }
-      await loadPaciente()
+      return true
     } catch {
       setErr('Falha ao atualizar paciente.')
+      return false
     } finally {
       setSavingPaciente(false)
-      setIsEditing(false)
     }
-  }, [authFetch, loadPaciente, pacienteDraft, pacienteFull, validId])
+  }, [authFetch, pacienteDraft, pacienteFull, validId])
 
-  const patchGestacao = useCallback(async () => {
-    if (!selG) return
-    if (!selectedGestacaoFull) return
+  const patchGestacao = useCallback(async (): Promise<boolean> => {
+    if (!selG) return true
+    if (!selectedGestacaoFull) return false
 
     const current = selectedGestacaoFull as any
     const payload: Record<string, unknown> = {}
@@ -811,32 +795,20 @@ export function PacienteDetailPage() {
       return `${y}-${m}-${d}`
     }
 
-    const setDate = (key: 'dum' | 'dpp_eco' | 'tratamento_sifilis_dose_1' | 'tratamento_sifilis_dose_2' | 'tratamento_sifilis_dose_3') => {
-      const next = parseBrDate((gestacaoDraft[key] || '').trim())
+    const setDate = (
+      key: 'dum' | 'dpp_eco' | 'tratamento_sifilis_dose_1' | 'tratamento_sifilis_dose_2' | 'tratamento_sifilis_dose_3',
+      opts?: { allowNull?: boolean },
+    ) => {
+      const raw = (gestacaoDraft[key] || '').trim()
       const cur = current[key] ? String(current[key]).slice(0, 10) : ''
-      if (next === null || next === cur) return
+      if (raw === '') {
+        if (opts?.allowNull && cur !== '') payload[key] = null
+        return
+      }
+      const next = parseBrDate(raw)
+      if (next === null) return
+      if (next === cur) return
       payload[key] = next
-    }
-    const isoDateOnlyToLocalDate = (iso: string): Date | null => {
-      const t = iso.slice(0, 10)
-      const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(t)
-      if (!m) return null
-      const y = Number.parseInt(m[1], 10)
-      const mo = Number.parseInt(m[2], 10) - 1
-      const da = Number.parseInt(m[3], 10)
-      const d = new Date(y, mo, da, 12, 0, 0, 0)
-      return Number.isNaN(d.getTime()) ? null : d
-    }
-    const localDateToIsoDateOnly = (d: Date): string => {
-      const y = d.getFullYear()
-      const m = String(d.getMonth() + 1).padStart(2, '0')
-      const da = String(d.getDate()).padStart(2, '0')
-      return `${y}-${m}-${da}`
-    }
-    const addDaysLocal = (d: Date, n: number): Date => {
-      const x = new Date(d)
-      x.setDate(x.getDate() + n)
-      return x
     }
     const setInt = (key: 'ig_inicial' | 'idade_gestac_confirmada') => {
       const raw = (gestacaoDraft[key] || '').trim()
@@ -866,7 +838,7 @@ export function PacienteDetailPage() {
         | 'suplementacao_acido_folico',
     ) => {
       const raw = gestacaoDraft[key]
-      if (!raw) return
+      if (raw !== 'true' && raw !== 'false') return
       const next = raw === 'true'
       if (typeof current[key] === 'boolean' && current[key] === next) return
       payload[key] = next
@@ -874,20 +846,21 @@ export function PacienteDetailPage() {
 
     setDate('dum')
     setDate('dpp_eco')
+    setDate('tratamento_sifilis_dose_1', { allowNull: true })
+    setDate('tratamento_sifilis_dose_2', { allowNull: true })
+    setDate('tratamento_sifilis_dose_3', { allowNull: true })
 
-    // DPP: sempre derivada da DUM (280 dias) e enviada ao banco quando possível
-    const nextDumIso = parseBrDate((gestacaoDraft.dum || '').trim())
-    if (nextDumIso) {
-      const dumDate = isoDateOnlyToLocalDate(nextDumIso)
-      if (dumDate) {
-        const dppIso = localDateToIsoDateOnly(addDaysLocal(dumDate, 280))
-        const curDpp = current.dpp ? String(current.dpp).slice(0, 10) : ''
-        if (dppIso !== curDpp) payload.dpp = dppIso
-      }
+    // DPP de referência: DPP-Eco se informada; senão Naegele (DUM + 280 dias).
+    const dumDate = parsePtBrDateOnlyToLocalDate((gestacaoDraft.dum || '').trim())
+    const ecoDate = parsePtBrDateOnlyToLocalDate((gestacaoDraft.dpp_eco || '').trim())
+    const primaryDate = primaryDppFromDumAndEco(dumDate, ecoDate)
+    const curDpp = current.dpp ? String(current.dpp).slice(0, 10) : ''
+    if (primaryDate) {
+      const dppIso = toIsoDateOnlyLocal(primaryDate)
+      if (dppIso !== curDpp) payload.dpp = dppIso
     }
     setInt('ig_inicial')
     setInt('idade_gestac_confirmada')
-    if (gestacaoDraft.tipo_risco && gestacaoDraft.tipo_risco !== current.tipo_risco) payload.tipo_risco = gestacaoDraft.tipo_risco
     if ((gestacaoDraft.coombs || '').trim() !== (current.coombs ?? '')) payload.coombs = gestacaoDraft.coombs.trim() || null
 
     const tipoGravidezCur = (current.tipo_gravidez ?? '').toString()
@@ -912,7 +885,7 @@ export function PacienteDetailPage() {
     setBool('suplementacao_ferro')
     setBool('suplementacao_acido_folico')
 
-    if (Object.keys(payload).length === 0) return
+    if (Object.keys(payload).length === 0) return true
 
     setSavingGestacao(true)
     setErr(null)
@@ -924,19 +897,19 @@ export function PacienteDetailPage() {
       })
       if (!res.ok) {
         setErr(`Atualizar gestação: HTTP ${res.status}`)
-        return
+        return false
       }
-      await loadPaciente()
+      return true
     } catch {
       setErr('Falha ao atualizar gestação.')
+      return false
     } finally {
       setSavingGestacao(false)
-      setIsEditing(false)
     }
-  }, [authFetch, gestacaoDraft, loadPaciente, selG, selectedGestacaoFull])
+  }, [authFetch, gestacaoDraft, selG, selectedGestacaoFull])
 
-  const patchAntecedentes = useCallback(async () => {
-    if (!selG) return
+  const patchAntecedentes = useCallback(async (): Promise<boolean> => {
+    if (!selG) return true
 
     const current = (selectedGestacaoFull as any)?.antecedentes ?? {}
     const payload: Record<string, unknown> = {}
@@ -957,7 +930,7 @@ export function PacienteDetailPage() {
 
     const setBool = (key: keyof typeof antecedentesDraft) => {
       const raw = (antecedentesDraft as any)[key] as '' | 'true' | 'false'
-      if (!raw) return
+      if (raw !== 'true' && raw !== 'false') return
       const next = raw === 'true'
       if (typeof current[key] === 'boolean' && current[key] === next) return
       payload[key as string] = next
@@ -997,7 +970,7 @@ export function PacienteDetailPage() {
       'is_sifilis',
     ].forEach((k) => setBool(k as any))
 
-    if (Object.keys(payload).length === 0) return
+    if (Object.keys(payload).length === 0) return true
 
     setSavingAntecedentes(true)
     setErr(null)
@@ -1009,27 +982,54 @@ export function PacienteDetailPage() {
       })
       if (!res.ok) {
         setErr(`Atualizar antecedentes: HTTP ${res.status}`)
-        return
+        return false
       }
-      await loadPaciente()
+      return true
     } catch {
       setErr('Falha ao atualizar antecedentes.')
+      return false
     } finally {
       setSavingAntecedentes(false)
     }
-  }, [antecedentesDraft, authFetch, loadPaciente, selG, selectedGestacaoFull])
+  }, [antecedentesDraft, authFetch, selG, selectedGestacaoFull])
 
   const savePerfis = useCallback(async () => {
-    await patchPaciente()
-    if (selG) await patchGestacao()
-    if (selG) await patchAntecedentes()
-  }, [patchAntecedentes, patchGestacao, patchPaciente, selG])
+    const okP = await patchPaciente()
+    if (!okP) return
+    const okG = selG ? await patchGestacao() : true
+    if (!okG) return
+    const okA = selG ? await patchAntecedentes() : true
+    if (!okA) return
+    setSavingDer(true)
+    setErr(null)
+    try {
+      await derRef.current?.persist()
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : 'Falha ao salvar modulos do prontuario (DER).')
+      return
+    } finally {
+      setSavingDer(false)
+    }
+    await loadPaciente()
+    setIsEditing(false)
+  }, [loadPaciente, patchAntecedentes, patchGestacao, patchPaciente, selG])
+
+  if (!validId) {
+    return (
+      <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-900 m-8">
+        <p className="font-bold">Identificador de paciente inválido no painel principal.</p>
+        <Link to="/pacientes" className="mt-3 inline-block font-bold py-2 px-4 bg-white rounded-xl shadow-sm border border-red-200">
+          Voltar à lista
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <div className="flex relative items-start">
       {/* Container Principal */}
-      <div className="flex-1 w-full lg:pr-[24rem]">
-        <div className="space-y-8 max-w-7xl mx-auto px-4 lg:px-6 py-8">
+      <div className="relative flex-1 w-full min-w-0 lg:pr-[calc(var(--livia-aside-width)+1.5rem)]">
+        <div className="space-y-8 max-w-7xl mx-auto px-4 lg:max-w-none lg:mx-0 lg:px-6 py-8">
           
           {/* Cabeçalho */}
           <div className="flex items-center gap-4">
@@ -1042,7 +1042,12 @@ export function PacienteDetailPage() {
             <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
               <button
                 type="button"
-                onClick={() => setIsEditing(!isEditing)}
+                onClick={() => {
+                  if (!isEditing) {
+                    prepareEnterEdit()
+                  }
+                  setIsEditing((v) => !v)
+                }}
                 className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-[11px] font-black transition-all ${
                   isEditing
                     ? 'bg-amber-50 border-amber-200 text-amber-700 shadow-sm'
@@ -1074,10 +1079,10 @@ export function PacienteDetailPage() {
               <button
                 type="button"
                 onClick={() => void savePerfis()}
-                disabled={savingPaciente || savingGestacao || savingAntecedentes || !isEditing}
+                disabled={savingPaciente || savingGestacao || savingAntecedentes || savingDer || !isEditing}
                 className="rounded-xl bg-brand-pink px-4 py-2 text-[11px] font-black text-white shadow-sm hover:bg-[#e88d94] disabled:opacity-50"
               >
-                {savingPaciente || savingGestacao || savingAntecedentes ? 'Salvando...' : 'Salvar dados'}
+                {savingPaciente || savingGestacao || savingAntecedentes || savingDer ? 'Salvando...' : 'Salvar dados'}
               </button>
             </div>
           </div>
@@ -1119,16 +1124,16 @@ export function PacienteDetailPage() {
                   ) : null}
 
                   <span
-                    className={`sm:ml-auto inline-flex items-center rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest ${
-                      (!selectedGestacao?.tipo_risco || selectedGestacao.tipo_risco === 'HABITUAL')
-                        ? 'bg-emerald-100 text-emerald-800'
-                        : selectedGestacao?.tipo_risco === 'ALTO'
-                          ? 'bg-amber-100 text-amber-800'
-                          : 'bg-rose-100 text-rose-800'
+                    className={`sm:ml-auto inline-flex items-center rounded-full border px-3 py-1 text-[10px] font-black uppercase tracking-widest ${
+                      (!selectedGestacao?.tipo_risco || String(selectedGestacao.tipo_risco).toUpperCase() === 'HABITUAL')
+                        ? 'border-emerald-200 bg-emerald-100 text-emerald-800'
+                        : String(selectedGestacao?.tipo_risco ?? '').toUpperCase() === 'ALTO'
+                          ? 'border-red-300 bg-red-100 text-red-800'
+                          : 'border-rose-200 bg-rose-100 text-rose-800'
                     }`}
                     title="Risco gestacional"
                   >
-                    {selectedGestacao?.tipo_risco?.replace('_', ' ') ?? 'HABITUAL'}
+                    {(selectedGestacao?.tipo_risco ?? 'HABITUAL').toString().replace('_', ' ')}
                   </span>
                  </div>
                  
@@ -1181,23 +1186,111 @@ export function PacienteDetailPage() {
                   ) : (
                     <span className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 border border-slate-200 px-3 py-1.5">Localização: —</span>
                    )}
+                  {selG ? (
+                    <span
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 border border-slate-200 px-3 py-1.5"
+                      title="Data provável do parto (referência principal: ultrassom se houver; senão Naegele pela DUM)"
+                    >
+                      DPP: {primaryDppBr}
+                      {dppEcoBaseDate ? ' · USG' : dumBaseDate ? ' · Naegele' : ''}
+                    </span>
+                  ) : null}
                  </div>
 
-                {/* Gestação (sem unidade) */}
+                {/* Acompanhamento da gravidez (histórico + atual) */}
                 <div className="mt-5">
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Gestação</div>
+                  <div className="flex flex-wrap items-end justify-between gap-2 mb-2">
+                    <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Acompanhamento da gravidez</div>
+                    <button
+                      type="button"
+                      disabled={temGestacaoAtiva}
+                      title={
+                        temGestacaoAtiva
+                          ? 'So e possivel uma gravidez em acompanhamento por vez. Desative a gestacao atual (campo Ativa) antes de registrar outra.'
+                          : undefined
+                      }
+                      onClick={() => {
+                        if (temGestacaoAtiva) return
+                        setNovaGestErr(null)
+                        setNovaGestDum('')
+                        setNovaGestSemanas('')
+                        setNovaGestOpen(true)
+                      }}
+                      className="rounded-lg border border-brand-pink/40 bg-brand-pink/10 px-3 py-1.5 text-[11px] font-black text-brand-navy hover:bg-brand-pink/20 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      Registrar nova gravidez
+                    </button>
+                  </div>
                   <select
                     value={selG}
                     onChange={(e) => setSelG(e.target.value)}
                     className="block w-full max-w-md rounded-xl border-slate-200 bg-slate-50 py-2.5 pl-4 pr-10 text-slate-900 focus:ring-2 focus:ring-brand-pink focus:border-brand-pink font-bold text-sm shadow-sm transition-colors"
                   >
-                    {gestacoes.length === 0 ? <option value="">(Sem gestações)</option> : null}
+                    {gestacoes.length === 0 ? <option value="">(Nenhum acompanhamento cadastrado)</option> : null}
                     {gestacoes.map((g, idx) => (
                       <option key={g.id} value={g.id}>
-                        {`Gestação #${idx + 1} (${g.dum ? `Iniciada em ${fmtDateOnly(g.dum)}` : 'Sem data'})`}
+                        {`Gravidez ${idx + 1} (${g.dum ? `DUM ${fmtDateOnly(g.dum)}` : 'sem data da última menstruação'})`}
                       </option>
                     ))}
                   </select>
+                  {novaGestOpen ? (
+                    <div
+                      className="fixed inset-0 z-50 flex items-center justify-center bg-black/35 p-4"
+                      role="dialog"
+                      aria-modal="true"
+                      aria-labelledby="nova-gravidez-titulo"
+                    >
+                      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-xl">
+                        <h3 id="nova-gravidez-titulo" className="text-lg font-black text-brand-navy">
+                          Nova gravidez neste prontuário
+                        </h3>
+                        <p className="mt-2 text-xs text-slate-600">
+                          So pode haver uma gravidez em acompanhamento por paciente. Opcional: preencha DUM e semanas agora ou depois no
+                          prontuario.
+                        </p>
+                        <div className="mt-4 space-y-3">
+                          <div>
+                            <label className="block text-[11px] font-bold text-slate-600">Data da última menstruação (opcional)</label>
+                            <input
+                              type="date"
+                              value={novaGestDum}
+                              onChange={(e) => setNovaGestDum(e.target.value)}
+                              className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold shadow-sm"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[11px] font-bold text-slate-600">Idade gestacional em semanas hoje (opcional)</label>
+                            <input
+                              value={novaGestSemanas}
+                              onChange={(e) => setNovaGestSemanas(e.target.value.replace(/\D/g, ''))}
+                              inputMode="numeric"
+                              placeholder="Ex.: 8"
+                              className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold shadow-sm"
+                            />
+                          </div>
+                        </div>
+                        {novaGestErr ? <p className="mt-3 text-sm font-medium text-rose-700">{novaGestErr}</p> : null}
+                        <div className="mt-6 flex flex-wrap justify-end gap-2">
+                          <button
+                            type="button"
+                            disabled={novaGestBusy}
+                            onClick={() => setNovaGestOpen(false)}
+                            className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-50"
+                          >
+                            Cancelar
+                          </button>
+                          <button
+                            type="button"
+                            disabled={novaGestBusy}
+                            onClick={() => void criarNovaGestacao()}
+                            className="rounded-xl bg-brand-navy px-4 py-2 text-sm font-bold text-white hover:opacity-95 disabled:opacity-50"
+                          >
+                            {novaGestBusy ? 'Salvando…' : 'Confirmar'}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
                </div>
             </div>
@@ -1346,7 +1439,7 @@ export function PacienteDetailPage() {
                       )}
                     </dd>
                   </div>
-                  <div>
+                  <div id="perfil-antropometria">
                     <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Altura</dt>
                     <dd className="mt-1">
                       {isEditing ? (
@@ -1438,25 +1531,50 @@ export function PacienteDetailPage() {
                           />
                         ) : (
                           <span className="text-sm font-black text-brand-navy">
-                            {selectedGestacao?.dum ? new Date(selectedGestacao.dum).toLocaleDateString('pt-BR') : '—'}
+                            {formatApiDateOnlyPtBr(selectedGestacao?.dum ?? null)}
                           </span>
                         )}
                       </dd>
                     </div>
                     <div>
-                      <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">DPP</dt>
+                      <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                        DPP <span className="font-normal normal-case text-slate-400">(referência principal)</span>
+                      </dt>
                       <dd className="mt-1">
                         {isEditing ? (
-                          <input
-                            placeholder="DD/MM/YYYY"
-                            value={gestacaoDraft.dpp}
-                            disabled
-                            className="block w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-bold text-slate-800 shadow-sm disabled:opacity-80 disabled:cursor-not-allowed"
-                          />
+                          <div>
+                            <input
+                              placeholder="DD/MM/YYYY"
+                              value={gestacaoDraft.dpp}
+                              disabled
+                              className="block w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-bold text-slate-800 shadow-sm disabled:opacity-80 disabled:cursor-not-allowed"
+                            />
+                            {dppEcoBaseDate ? (
+                              <p className="mt-1 text-[10px] font-semibold text-slate-500">Calculada a partir da DPP ecográfica</p>
+                            ) : dumBaseDate ? (
+                              <p className="mt-1 text-[10px] font-semibold text-slate-500">
+                                Calculada pela DUM + {NAEGELE_DAYS} dias (Naegele)
+                              </p>
+                            ) : (
+                              <p className="mt-1 text-[10px] text-slate-500">Informe DUM ou DPP ecográfica</p>
+                            )}
+                          </div>
                         ) : (
-                          <span className="text-sm font-black text-brand-navy">
-                            {dppAutoBr}
-                          </span>
+                          <div>
+                            <span className="text-sm font-black text-brand-navy">{primaryDppBr}</span>
+                            {dppEcoBaseDate ? (
+                              <p className="mt-0.5 text-[10px] font-semibold text-slate-500">Prioridade: DPP ecográfica</p>
+                            ) : dumBaseDate ? (
+                              <p className="mt-0.5 text-[10px] font-semibold text-slate-500">
+                                Regra de Naegele: DUM + {NAEGELE_DAYS} dias (40 semanas)
+                              </p>
+                            ) : null}
+                            {dppEcoBaseDate && naegeleDppDate ? (
+                              <p className="mt-0.5 text-[10px] text-slate-500">
+                                Naegele pela DUM: {formatLocalDatePtBr(naegeleDppDate) || '—'}
+                              </p>
+                            ) : null}
+                          </div>
                         )}
                       </dd>
                     </div>
@@ -1472,8 +1590,11 @@ export function PacienteDetailPage() {
                         {isEditing ? (
                           <input
                             inputMode="numeric"
+                            pattern="[0-9]*"
                             value={gestacaoDraft.ig_inicial}
-                            onChange={(e) => setGestacaoDraft((p) => ({ ...p, ig_inicial: e.target.value }))}
+                            onChange={(e) =>
+                              setGestacaoDraft((p) => ({ ...p, ig_inicial: digitsOnly(e.target.value) }))
+                            }
                             placeholder="Semanas"
                             className="block w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-800 shadow-sm focus:ring-2 focus:ring-brand-pink/30 focus:border-brand-pink/50"
                           />
@@ -1494,7 +1615,7 @@ export function PacienteDetailPage() {
                           />
                         ) : (
                           <span className="text-sm font-black text-brand-navy">
-                            {selectedGestacao?.dpp_eco ? new Date(selectedGestacao.dpp_eco).toLocaleDateString('pt-BR') : '—'}
+                            {formatApiDateOnlyPtBr(selectedGestacao?.dpp_eco ?? null)}
                           </span>
                         )}
                       </dd>
@@ -1505,8 +1626,14 @@ export function PacienteDetailPage() {
                         {isEditing ? (
                           <input
                             inputMode="numeric"
+                            pattern="[0-9]*"
                             value={gestacaoDraft.idade_gestac_confirmada}
-                            onChange={(e) => setGestacaoDraft((p) => ({ ...p, idade_gestac_confirmada: e.target.value }))}
+                            onChange={(e) =>
+                              setGestacaoDraft((p) => ({
+                                ...p,
+                                idade_gestac_confirmada: digitsOnly(e.target.value),
+                              }))
+                            }
                             placeholder="Semanas"
                             className="block w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-800 shadow-sm focus:ring-2 focus:ring-brand-pink/30 focus:border-brand-pink/50"
                           />
@@ -1526,21 +1653,12 @@ export function PacienteDetailPage() {
                     <div>
                       <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Tipo risco</dt>
                       <dd className="mt-1">
-                        {isEditing ? (
-                          <select
-                            value={gestacaoDraft.tipo_risco}
-                            onChange={(e) => setGestacaoDraft((p) => ({ ...p, tipo_risco: e.target.value as any }))}
-                            className="block w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-800 shadow-sm focus:ring-2 focus:ring-brand-pink/30 focus:border-brand-pink/50"
-                          >
-                            <option value="">Selecionar</option>
-                            <option value="HABITUAL">Habitual</option>
-                            <option value="ALTO">Alto risco</option>
-                          </select>
-                        ) : (
-                          <span className={`text-sm font-black ${selectedGestacao?.tipo_risco === 'ALTO' ? 'text-rose-600' : 'text-emerald-600'}`}>
-                            {selectedGestacao?.tipo_risco === 'ALTO' ? 'Alto risco' : 'Habitual'}
-                          </span>
-                        )}
+                        <span className={`text-sm font-black ${selectedGestacao?.tipo_risco === 'ALTO' ? 'text-rose-600' : 'text-emerald-600'}`}>
+                          {selectedGestacao?.tipo_risco === 'ALTO' ? 'Alto risco' : 'Habitual'}
+                        </span>
+                        <p className="mt-1 text-[10px] font-medium leading-snug text-slate-500">
+                          Calculado automaticamente pelo sistema com base nos critérios do Guia MS (2024); altera ao salvar dados clínicos relevantes.
+                        </p>
                       </dd>
                     </div>
                     <div>
@@ -1567,15 +1685,12 @@ export function PacienteDetailPage() {
                       <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Ativa</dt>
                       <dd className="mt-1">
                         {isEditing ? (
-                          <select
+                          <BoolTriState
+                            name={`g-${selG}-is_ativa`}
                             value={gestacaoDraft.is_ativa}
-                            onChange={(e) => setGestacaoDraft((p) => ({ ...p, is_ativa: e.target.value as any }))}
-                            className="block w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-800 shadow-sm focus:ring-2 focus:ring-brand-pink/30 focus:border-brand-pink/50"
-                          >
-                            <option value="">Selecionar</option>
-                            <option value="true">Sim</option>
-                            <option value="false">Não</option>
-                          </select>
+                            disabled={!isEditing}
+                            onChange={(next) => setGestacaoDraft((p) => ({ ...p, is_ativa: next }))}
+                          />
                         ) : (
                           <span className="text-sm font-black text-brand-navy">{fmtBool(selectedGestacao?.is_ativa)}</span>
                         )}
@@ -1603,7 +1718,7 @@ export function PacienteDetailPage() {
                       <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Planejada</dt>
                       <dd className="mt-1">
                         {isEditing ? (
-                          <BoolRadio
+                          <BoolTriState
                             name={`g-${selG}-is_planejada`}
                             value={gestacaoDraft.is_planejada}
                             disabled={!isEditing}
@@ -1618,7 +1733,7 @@ export function PacienteDetailPage() {
                       <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Visita maternidade</dt>
                       <dd className="mt-1">
                         {isEditing ? (
-                          <BoolRadio
+                          <BoolTriState
                             name={`g-${selG}-is_visita_maternidade`}
                             value={gestacaoDraft.is_visita_maternidade}
                             disabled={!isEditing}
@@ -1633,7 +1748,7 @@ export function PacienteDetailPage() {
                       <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Deseja DIU</dt>
                       <dd className="mt-1">
                         {isEditing ? (
-                          <BoolRadio
+                          <BoolTriState
                             name={`g-${selG}-is_colocar_diu`}
                             value={gestacaoDraft.is_colocar_diu}
                             disabled={!isEditing}
@@ -1648,7 +1763,7 @@ export function PacienteDetailPage() {
                       <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Consulta odonto</dt>
                       <dd className="mt-1">
                         {isEditing ? (
-                          <BoolRadio
+                          <BoolTriState
                             name={`g-${selG}-is_did_consulta_odontologica`}
                             value={gestacaoDraft.is_did_consulta_odontologica}
                             disabled={!isEditing}
@@ -1723,7 +1838,7 @@ export function PacienteDetailPage() {
                   <div className="grid grid-cols-2 gap-3">
                     <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-2.5">
                       <div className="text-[11px] font-bold text-slate-600 mb-2">Sulfato Ferroso</div>
-                      <BoolRadio
+                      <BoolTriState
                         name={`g-${selG}-suplementacao_ferro`}
                         value={gestacaoDraft.suplementacao_ferro}
                         disabled={!isEditing}
@@ -1732,7 +1847,7 @@ export function PacienteDetailPage() {
                     </div>
                     <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-2.5">
                       <div className="text-[11px] font-bold text-slate-600 mb-2">Ácido Fólico</div>
-                      <BoolRadio
+                      <BoolTriState
                         name={`g-${selG}-suplementacao_acido_folico`}
                         value={gestacaoDraft.suplementacao_acido_folico}
                         disabled={!isEditing}
@@ -1758,7 +1873,7 @@ export function PacienteDetailPage() {
                     ].map((item) => (
                       <div key={item.key} className="rounded-xl border border-slate-100 bg-slate-50/50 p-2.5">
                         <div className="text-[11px] font-bold text-slate-600 mb-2">{item.label}</div>
-                        <BoolRadio
+                        <BoolTriState
                           name={`g-${selG}-${item.key}`}
                           value={(gestacaoDraft as any)[item.key]}
                           disabled={!isEditing}
@@ -1776,7 +1891,11 @@ export function PacienteDetailPage() {
 
           {/* Antecedentes (DER) */}
           <section className="rounded-3xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-            <details className="group">
+            <details
+              className="group"
+              open={antecedentesDetailsOpen}
+              onToggle={(e) => setAntecedentesDetailsOpen(e.currentTarget.open)}
+            >
               <summary className="cursor-pointer list-none px-4 py-4 bg-slate-50/70 border-b border-slate-200 flex items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
                 <div className="min-w-0">
                   <div className="text-xs font-bold uppercase tracking-widest text-slate-500">Antecedentes</div>
@@ -1814,8 +1933,14 @@ export function PacienteDetailPage() {
                             {isEditing ? (
                               <input
                                 inputMode="numeric"
+                                pattern="[0-9]*"
                                 value={(antecedentesDraft as any)[f.key]}
-                                onChange={(e) => setAntecedentesDraft((p) => ({ ...p, [f.key]: e.target.value }))}
+                                onChange={(e) =>
+                                  setAntecedentesDraft((p) => ({
+                                    ...p,
+                                    [f.key]: digitsOnly(e.target.value),
+                                  }))
+                                }
                                 placeholder="—"
                                 className="block w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-800 shadow-sm focus:ring-2 focus:ring-brand-pink/30 focus:border-brand-pink/50"
                               />
@@ -1840,7 +1965,7 @@ export function PacienteDetailPage() {
                         <div key={m.key} className="rounded-xl border border-slate-100 bg-slate-50/50 p-2.5">
                           <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{m.label}</dt>
                           <dd className="mt-2">
-                            <BoolRadio
+                            <BoolTriState
                               name={`ant-${selG}-${m.key}`}
                               value={(antecedentesDraft as any)[m.key]}
                               disabled={!isEditing}
@@ -1886,7 +2011,7 @@ export function PacienteDetailPage() {
                         <div key={m.key} className="rounded-xl border border-slate-100 bg-slate-50/50 p-2.5">
                           <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{m.label}</dt>
                           <dd className="mt-2">
-                            <BoolRadio
+                            <BoolTriState
                               name={`ant-${selG}-${m.key}`}
                               value={(antecedentesDraft as any)[m.key]}
                               disabled={!isEditing}
@@ -1932,7 +2057,7 @@ export function PacienteDetailPage() {
                         <div key={m.key} className="rounded-xl border border-slate-100 bg-slate-50/50 p-2.5">
                           <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{m.label}</dt>
                           <dd className="mt-2">
-                            <BoolRadio
+                            <BoolTriState
                               name={`ant-${selG}-${m.key}`}
                               value={(antecedentesDraft as any)[m.key]}
                               disabled={!isEditing}
@@ -1961,283 +2086,39 @@ export function PacienteDetailPage() {
                   </div>
               </div>
 
-            {true ? (
-              <div className="space-y-3">
-                {[
-                  {
-                    title: 'Vacinas & Exames (DER)',
-                    content: (
-                      <div className="space-y-4">
-                        <div>
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Vacinas</p>
-                          {Array.isArray((pacienteFull as any)?.vacinas) && (pacienteFull as any).vacinas.length > 0 ? (
-                            <div className="space-y-2">
-                              {(pacienteFull as any).vacinas.map((v: any) => (
-                                <div key={String(v.id)} className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm">
-                                  <div className="font-black text-brand-navy">{String(v.tipo ?? '—')}</div>
-                                  <div className="text-[11px] font-bold text-slate-400">
-                                    {fmtDateOnly(v.data)}{v.data_aprazada ? ` • Aprazada: ${fmtDateOnly(v.data_aprazada)}` : ''}
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          ) : (
-                            <p className="text-sm font-medium text-slate-500">Sem vacinas registradas.</p>
-                          )}
-                        </div>
-
-                        <div>
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Exames laboratoriais</p>
-                          {Array.isArray((pacienteFull as any)?.exames) && (pacienteFull as any).exames.length > 0 ? (
-                            <div className="space-y-2">
-                              {(pacienteFull as any).exames.map((e: any) => (
-                                <div key={String(e.id)} className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm">
-                                  <div className="font-black text-brand-navy">{String(e.tipo ?? '—')}</div>
-                                  <div className="text-[11px] font-bold text-slate-400">
-                                    {fmtDateOnly(e.data_coleta)}
-                                    {e.trimestre != null ? ` • T${e.trimestre}` : ''}
-                                    {e.is_alterado ? ' • Alterado' : ''}
-                                  </div>
-                                  <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                    <div>
-                                      <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Valor</div>
-                                      <div className="text-xs font-medium text-slate-600 mt-0.5">{e.valor ?? '—'}</div>
-                                    </div>
-                                    <div>
-                                      <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Coombs</div>
-                                      <div className="text-xs font-medium text-slate-600 mt-0.5">{e.coombs ?? '—'}</div>
-                                    </div>
-                                    <div className="sm:col-span-2">
-                                      <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Categoria sensibilidade</div>
-                                      <div className="text-xs font-medium text-slate-600 mt-0.5">{e.categoria_sensibilidade ?? '—'}</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          ) : (
-                            <p className="text-sm font-medium text-slate-500">Sem exames registrados.</p>
-                          )}
-                        </div>
-                      </div>
-                    ),
-                  },
-                  {
-                    title: 'USG (DER)',
-                    content: Array.isArray(selectedGestacaoFull?.usgs) && selectedGestacaoFull.usgs.length > 0 ? (
-                      <div className="space-y-2">
-                        {selectedGestacaoFull.usgs.map((u: any) => (
-                          <div key={String(u.id)} className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm">
-                            <div className="text-[11px] font-bold text-slate-400">
-                              {u.idade_gestacional_usg != null ? `IG USG: ${u.idade_gestacional_usg} sem` : 'IG USG: —'}
-                              {u.peso_fetal_estimado != null ? ` • PFE: ${u.peso_fetal_estimado}` : ''}
-                            </div>
-                            <div className="text-xs font-black text-brand-navy mt-1">
-                              {u.localizacao_placenta ? `Placenta: ${u.localizacao_placenta}` : 'Placenta: —'}
-                            </div>
-                            <div className="text-xs font-bold text-slate-500 mt-1">
-                              Líquido amniótico: {fmtBool(u.is_liquido_amniotico_normal)}
-                            </div>
-                            <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                              <div>
-                                <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Data</div>
-                                <div className="text-xs font-medium text-slate-600 mt-0.5">{fmtDateOnly(u.data_exame)}</div>
-                              </div>
-                              <div>
-                                <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">IG (DUM/USG)</div>
-                                <div className="text-xs font-medium text-slate-600 mt-0.5">
-                                  {(u.ig_dum ?? '—') as any}/{(u.ig_usg ?? '—') as any}
-                                </div>
-                              </div>
-                              <div className="sm:col-span-2">
-                                <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Outros</div>
-                                <div className="text-xs font-medium text-slate-600 mt-0.5 whitespace-pre-wrap">{u.outros ?? '—'}</div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="text-sm font-medium text-slate-500">Sem USG registrados.</p>
-                    ),
-                  },
-                  {
-                    title: 'Odonto & Plano de parto (DER)',
-                    content: (
-                      <div className="space-y-4">
-                        <div>
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Avaliação odontológica</p>
-                          {selectedGestacaoFull?.avaliacao_odonto ? (
-                            <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                              <div>
-                                <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Alta</dt>
-                                <dd className="text-sm font-black text-brand-navy mt-1">{fmtBool(selectedGestacaoFull.avaliacao_odonto.is_alta)}</dd>
-                              </div>
-                              <div>
-                                <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Sangramento gengival</dt>
-                                <dd className="text-sm font-black text-brand-navy mt-1">
-                                  {fmtBool(selectedGestacaoFull.avaliacao_odonto.is_sangramento_gengival)}
-                                </dd>
-                              </div>
-                              <div>
-                                <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Cárie detectada</dt>
-                                <dd className="text-sm font-black text-brand-navy mt-1">
-                                  {fmtBool(selectedGestacaoFull.avaliacao_odonto.is_carie_detectada)}
-                                </dd>
-                              </div>
-                              <div className="sm:col-span-2 lg:col-span-3">
-                                <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Anotações</dt>
-                                <dd className="text-sm font-medium text-slate-700 mt-1 whitespace-pre-wrap">
-                                  {selectedGestacaoFull.avaliacao_odonto.anotacoes ?? '—'}
-                                </dd>
-                              </div>
-                            </dl>
-                          ) : (
-                            <p className="text-sm font-medium text-slate-500">Sem avaliação odontológica.</p>
-                          )}
-                        </div>
-
-                        <div className="pt-4 border-t border-slate-100">
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Plano de parto</p>
-                          {selectedGestacaoFull?.plano_parto ? (
-                            <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                              <div>
-                                <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Acompanhante</dt>
-                                <dd className="text-sm font-black text-brand-navy mt-1">
-                                  {selectedGestacaoFull.plano_parto.acompanhante_nome ?? '—'}
-                                </dd>
-                              </div>
-                              <div>
-                                <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Deseja doula</dt>
-                                <dd className="text-sm font-black text-brand-navy mt-1">{fmtBool(selectedGestacaoFull.plano_parto.is_deseja_doula)}</dd>
-                              </div>
-                              <div>
-                                <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Posição</dt>
-                                <dd className="text-sm font-black text-brand-navy mt-1">{selectedGestacaoFull.plano_parto.posicao_parto_pref ?? '—'}</dd>
-                              </div>
-                              <div>
-                                <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Alívio da dor</dt>
-                                <dd className="text-sm font-black text-brand-navy mt-1">{selectedGestacaoFull.plano_parto.anestesia_alivio_dor ?? '—'}</dd>
-                              </div>
-                            </dl>
-                          ) : (
-                            <p className="text-sm font-medium text-slate-500">Sem plano de parto.</p>
-                          )}
-                        </div>
-                      </div>
-                    ),
-                  },
-                  {
-                    title: 'Desfecho & pós-parto (DER)',
-                    content: (
-                      <div className="space-y-4">
-                        <div>
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Desfecho</p>
-                          {selectedGestacaoFull?.desfecho ? (
-                            <div className="space-y-3">
-                              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div>
-                                  <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Tipo parto</dt>
-                                  <dd className="text-sm font-black text-brand-navy mt-1">{selectedGestacaoFull.desfecho.tipo_parto ?? '—'}</dd>
-                                </div>
-                                <div>
-                                  <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Peso nascimento</dt>
-                                  <dd className="text-sm font-black text-brand-navy mt-1">{selectedGestacaoFull.desfecho.peso_nascimento ?? '—'}</dd>
-                                </div>
-                                <div>
-                                  <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Sexo</dt>
-                                  <dd className="text-sm font-black text-brand-navy mt-1">{selectedGestacaoFull.desfecho.sexo ?? '—'}</dd>
-                                </div>
-                                <div>
-                                  <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">APGAR</dt>
-                                  <dd className="text-sm font-black text-brand-navy mt-1">
-                                    {(selectedGestacaoFull.desfecho.apgar_1_minuto ?? '—') as any}/{(selectedGestacaoFull.desfecho.apgar_5_minuto ?? '—') as any}
-                                  </dd>
-                                </div>
-                                <div className="sm:col-span-2">
-                                  <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Grau de laceração</dt>
-                                  <dd className="text-sm font-black text-brand-navy mt-1">{selectedGestacaoFull.desfecho.grau_laceracao ?? '—'}</dd>
-                                </div>
-                              </dl>
-
-                              <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                                {[
-                                  { key: 'is_indicacao_cesarea', label: 'Indicação de cesárea' },
-                                  { key: 'is_reanimacao', label: 'Reanimação' },
-                                  { key: 'is_laceracao', label: 'Laceração' },
-                                ].map((b) => (
-                                  <div key={b.key}>
-                                    <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{b.label}</dt>
-                                    <dd className="text-sm font-black text-brand-navy mt-1">{fmtBool((selectedGestacaoFull.desfecho as any)?.[b.key])}</dd>
-                                  </div>
-                                ))}
-                              </dl>
-                            </div>
-                          ) : (
-                            <p className="text-sm font-medium text-slate-500">Sem desfecho registrado.</p>
-                          )}
-                        </div>
-
-                        <div className="pt-4 border-t border-slate-100">
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Consultas pós-parto</p>
-                          {Array.isArray(selectedGestacaoFull?.consultas_pos_parto) && selectedGestacaoFull.consultas_pos_parto.length > 0 ? (
-                            <div className="space-y-2">
-                              {selectedGestacaoFull.consultas_pos_parto.map((pp: any) => (
-                                <div key={String(pp.id)} className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm">
-                                  <div className="font-black text-brand-navy">{fmtDateOnly(pp.data)}</div>
-                                  <div className="text-xs font-medium text-slate-700 mt-1">{pp.avaliacao_amamentacao ?? '—'}</div>
-                                  <div className="text-xs font-medium text-slate-700 mt-1">{pp.involucao_uterina ?? '—'}</div>
-                                  <div className="text-xs font-medium text-slate-700 mt-1">{pp.metodo_contraceptivo ?? '—'}</div>
-                                </div>
-                              ))}
-                            </div>
-                          ) : (
-                            <p className="text-sm font-medium text-slate-500">Sem consultas pós-parto.</p>
-                          )}
-                        </div>
-                      </div>
-                    ),
-                  },
-                  {
-                    title: 'Parceiro (DER)',
-                    content: (pacienteFull as any)?.parceiro ? (
-                      <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div className="sm:col-span-2">
-                          <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Nome</dt>
-                          <dd className="text-sm font-black text-brand-navy mt-1">{(pacienteFull as any)?.parceiro?.nome ?? '—'}</dd>
-                        </div>
-                        <div>
-                          <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">VDRL</dt>
-                          <dd className="text-sm font-black text-brand-navy mt-1">{(pacienteFull as any)?.parceiro?.vdrl ?? '—'}</dd>
-                        </div>
-                        <div>
-                          <dt className="text-[10px] font-bold uppercase tracking-widest text-slate-400">HIV</dt>
-                          <dd className="text-sm font-black text-brand-navy mt-1">{(pacienteFull as any)?.parceiro?.hiv ?? '—'}</dd>
-                        </div>
-                      </dl>
-                    ) : (
-                      <p className="text-sm font-medium text-slate-500">Sem dados de parceiro.</p>
-                    ),
-                  },
-                ].map((sec) => (
-                  <details key={sec.title} className="group rounded-3xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-                    <summary className="cursor-pointer list-none px-4 py-3 bg-slate-50/70 border-b border-slate-200 flex items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
-                      <div className="min-w-0">
-                        <div className="text-[11px] font-black text-brand-navy truncate">{sec.title}</div>
-                      </div>
-                      <div className="shrink-0 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-[11px] font-black text-slate-700 shadow-sm">
-                        <span className="group-open:hidden">Mostrar mais</span>
-                        <span className="hidden group-open:inline">Ocultar</span>
-                      </div>
-                    </summary>
-                    <div className="p-4">{sec.content}</div>
-                  </details>
-                ))}
-              </div>
-            ) : null}
+            <DerModulosProntuario
+              ref={derRef}
+              authFetch={authFetch}
+              validId={validId}
+              selG={selG}
+              selUnidade={selUnidade}
+              pacienteFull={pacienteFull}
+              isEditing={isEditing}
+            />
               </div>
             </details>
           </section>
+
+          {selG ? (
+            <section
+              id="acompanhamento-nutricional"
+              className="rounded-3xl border border-slate-200 bg-white shadow-sm overflow-hidden mt-8"
+            >
+              <div className="border-b border-brand-pink/10 bg-brand-pink/5 px-8 py-6">
+                <h2 className="text-xl font-black text-brand-navy">Acompanhamento nutricional (Caderneta 2024)</h2>
+                <p className="mt-2 text-sm font-medium text-slate-500">
+                  Ganho de peso acumulado por idade gestacional, conforme orientação do Ministério da Saúde.
+                </p>
+              </div>
+              <div className="p-8">
+                <GanhoPesoGestacionalPanel
+                  pacienteId={validId}
+                  paciente={paciente}
+                  consultas={cronologico}
+                />
+              </div>
+            </section>
+          ) : null}
 
           {/* Timeline Expandida de Consultas */}
           <section className="rounded-3xl border border-slate-200 bg-white shadow-sm overflow-hidden mt-8">
@@ -2488,29 +2369,23 @@ export function PacienteDetailPage() {
         </div>
       ) : null}
 
-      {/* Painel Lívia Side-by-side fixo de tela cheia (desktop) */}
-      <aside className="fixed top-16 right-0 w-[24rem] h-[calc(100vh-4rem)] border-l border-brand-pink/30 bg-white hidden lg:flex flex-col z-30 shadow-[-4px_0_15px_rgba(251,160,167,0.05)]">
-         <LiviaAssistantPanel />
-      </aside>
+      {/* Painel Lívia (desktop): recolhível; botão fixo reaparece quando fechado */}
+      {liviaAsideOpen ? (
+        <aside className="pointer-events-none fixed top-16 right-0 z-30 hidden h-[calc(100vh-4rem)] w-[var(--livia-aside-width)] min-w-0 shrink-0 border-l border-brand-pink/30 bg-white shadow-[-4px_0_15px_rgba(251,160,167,0.05)] lg:flex lg:flex-col">
+          <LiviaAssistantPanel
+            className="pointer-events-auto min-h-0 flex-1"
+            pacienteId={validId ?? undefined}
+            gestacaoId={isUuid(selG) ? selG : undefined}
+            onDesktopPanelHide={() => setLiviaAsideOpen(false)}
+          />
+        </aside>
+      ) : (
+        <LiviaDesktopFab onClick={() => setLiviaAsideOpen(true)} />
+      )}
 
-      {/* Mobile-first: assistente Lívia expansível (mobile apenas) */}
-      <div className="lg:hidden fixed bottom-4 right-4 z-40">
-        <details className="rounded-2xl border border-brand-pink/50 bg-white shadow-[0_4px_25px_rgba(251,160,167,0.3)] w-[calc(100vw-2rem)] max-w-sm ml-auto origin-bottom-right group transition-all">
-          <summary className="cursor-pointer list-none rounded-2xl px-5 py-4 text-sm font-bold text-brand-navy marker:content-none [&::-webkit-details-marker]:hidden bg-brand-pink/5 hover:bg-brand-pink/10 transition-colors">
-            <span className="flex items-center justify-between gap-2">
-              <span className="flex items-center gap-3">
-                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-pink text-white text-sm shadow-sm ring-2 ring-white">✨</span>
-                 Conversar com LívIA
-              </span>
-              <span className="text-xs font-bold text-brand-pink/70 group-open:hidden">ABRIR</span>
-              <span className="text-xs font-bold text-brand-pink/70 hidden group-open:block">FECHAR</span>
-            </span>
-          </summary>
-          <div className="border-t border-brand-pink/20 bg-white rounded-b-2xl h-[60vh] overflow-hidden flex flex-col">
-            <LiviaAssistantPanel />
-          </div>
-        </details>
-      </div>
+      <LiviaMobileFab>
+        <LiviaAssistantPanel pacienteId={validId ?? undefined} gestacaoId={isUuid(selG) ? selG : undefined} />
+      </LiviaMobileFab>
 
     </div>
   )

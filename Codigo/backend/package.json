@@ -12,7 +12,7 @@
     "prisma:deploy": "prisma migrate deploy",
     "db:seed": "tsc -p tsconfig.seed.json && prisma db seed",
     "test": "prisma generate && vitest run",
-    "test:unit": "vitest run test/pacienteIdsHash.test.ts test/consultaPatchService.test.ts",
+    "test:unit": "vitest run test/pacienteIdsHash.test.ts test/consultaPatchService.test.ts test/riscoMs2024.test.ts test/gestacaoPatchDateParse.test.ts",
     "test:integration": "prisma generate && vitest run test/backend.integration.test.ts test/ws.integration.test.ts",
     "test:watch": "prisma generate && vitest",
     "test:types": "tsc -p tsconfig.test.json --noEmit"

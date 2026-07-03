@@ -14,3 +14,6 @@ Pode-se também criar um diretório "canvas", que seria descrito da seguinte for
 	* **BusinessModelCanvas.pdf**: Canvas do modelo de negócios.
 
 Assim, sucessivamente para outros artefatos como `processos` e `DER`, etc.
+
+## Testes e Ground Truth
+* **Roteiro_de_Testes_Clinicos_e_Seguranca.md**: Descrição e escopo formal dos cenários de teste (*Ground Truth*) exigidos para a validação do modelo RAG, do *Model Context Protocol* (MCP) e dos *Guardrails* de segurança de dados sensíveis (PII).

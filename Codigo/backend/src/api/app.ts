@@ -6,14 +6,27 @@ import { getHealthStatus } from "../services/healthService.js";
 import { registerApiV1Routes } from "./v1/index.js";
 import { buildOpenApiDoc } from "./openapi.js";
 
+function parseCorsOrigins(raw: string | undefined): string[] {
+  const fallback = "http://localhost:5173";
+  const s = (raw ?? "").trim();
+  if (!s) {
+    return [fallback];
+  }
+  const parts = s
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean);
+  return parts.length ? parts : [fallback];
+}
+
 export function createApp(): Hono {
   const app = new Hono();
-  const origin = process.env.FRONTEND_ORIGIN ?? "http://localhost:5173";
+  const origins = parseCorsOrigins(process.env.FRONTEND_ORIGIN);
 
   app.use(
     "*",
     cors({
-      origin: [origin],
+      origin: origins,
       allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
       allowHeaders: ["Authorization", "Content-Type", "Accept"],
     }),
