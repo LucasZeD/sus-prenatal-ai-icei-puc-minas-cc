@@ -46,6 +46,11 @@ services:
       STT_CHUNK_MIN_MS: ${STT_CHUNK_MIN_MS:-2500}
       STT_USE_PREPROCESS: ${STT_USE_PREPROCESS:-true}
       STT_CONCURRENCY_LIMIT: ${STT_CONCURRENCY_LIMIT:-1}
+      # Diarização (vazio = desligada; fluxo segue normal). Compose: http://diarization:8001
+      DIARIZATION_HTTP_URL: ${DIARIZATION_HTTP_URL:-}
+      DIARIZATION_CONCURRENCY_LIMIT: ${DIARIZATION_CONCURRENCY_LIMIT:-1}
+      DIARIZATION_FIRST_SPEAKER_ROLE: ${DIARIZATION_FIRST_SPEAKER_ROLE:-profissional}
+      DIARIZATION_GPU_GATE: ${DIARIZATION_GPU_GATE:-0}
       GPU_DEMO_MODE: ${GPU_DEMO_MODE:-time_slice}
       STREAM_RAG_DEBOUNCE_MS: ${STREAM_RAG_DEBOUNCE_MS:-1500}
       MCP_SERVER_URL: ${MCP_SERVER_URL:-}
@@ -194,12 +199,22 @@ services:
       WHISPER_COMPUTE_TYPE: ${WHISPER_COMPUTE_TYPE:-float16}
       WHISPER_DEVICE: ${WHISPER_DEVICE:-cuda}
       STT_PREPROCESS_ENABLED: ${STT_PREPROCESS_ENABLED:-true}
-      STT_DIARIZATION_ENABLED: ${STT_DIARIZATION_ENABLED:-true}
+      STT_NOISE_REDUCE: ${STT_NOISE_REDUCE:-false}
       STT_LANGUAGE: ${STT_LANGUAGE:-pt}
+      STT_BEAM_SIZE: ${STT_BEAM_SIZE:-8}
+      STT_VAD_FILTER: ${STT_VAD_FILTER:-true}
+      STT_INITIAL_PROMPT: ${STT_INITIAL_PROMPT:-}
+      STT_CONDITION_ON_PREVIOUS_TEXT: ${STT_CONDITION_ON_PREVIOUS_TEXT:-false}
+      STT_MIN_RMS: ${STT_MIN_RMS:-0.004}
+      STT_NO_SPEECH_THRESHOLD: ${STT_NO_SPEECH_THRESHOLD:-0.6}
+      STT_LOG_PROB_THRESHOLD: ${STT_LOG_PROB_THRESHOLD:--1.0}
+      STT_COMPRESSION_RATIO_THRESHOLD: ${STT_COMPRESSION_RATIO_THRESHOLD:-2.4}
     volumes:
       - whisper_models:/root/.cache/huggingface
     networks:
       - backend-nw
+    ports:
+      - "127.0.0.1:${STT_PUBLISH_PORT:-8000}:8000"
     deploy:
       resources:
         reservations:
@@ -215,11 +230,64 @@ services:
       start_period: 180s
     restart: unless-stopped
 
+  # Diarização de locutores (pyannote.audio 3.1) — perfil `ai`; CPU por padrão.
+  # Modelos cacheados em BUILD TIME via secret `hf_token`.
+  # Runtime 100% offline (HF_HUB_OFFLINE=1). Sem token no build, sobe no backend `fallback`.
+  diarization:
+    profiles: [ai]
+    build:
+      context: ./diarization
+      dockerfile: Dockerfile
+      args:
+        DIARIZATION_MODEL: ${DIARIZATION_MODEL:-pyannote/speaker-diarization-3.1}
+      secrets:
+        - hf_token
+    container_name: prenatal_diarization
+    environment:
+      DIARIZATION_MODEL: ${DIARIZATION_MODEL:-pyannote/speaker-diarization-3.1}
+      DIARIZATION_DEVICE: ${DIARIZATION_DEVICE:-cpu}
+      DIARIZATION_BACKEND: ${DIARIZATION_BACKEND:-auto}
+      DIARIZATION_CONCURRENCY_LIMIT: ${DIARIZATION_CONCURRENCY_LIMIT:-1}
+      HF_HUB_OFFLINE: ${DIARIZATION_HF_OFFLINE:-1}
+      TRANSFORMERS_OFFLINE: ${DIARIZATION_HF_OFFLINE:-1}
+    volumes:
+      - diarization_models:/models/huggingface
+    networks:
+      - data-nw
+    # GPU opcional: descomente com DIARIZATION_DEVICE=cuda (divide VRAM com o Ollama).
+    # Numa maquina single-GPU, ligue tambem DIARIZATION_GPU_GATE=1 no backend para
+    # enfileirar a diarizacao no arbitro de GPU (gpuDemoGate) em vez de disputar VRAM.
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+    deploy:
+      resources:
+        limits:
+          memory: 6g
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8001/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 6
+      start_period: 180s
+    restart: unless-stopped
+
   # ollama (opcional no Compose; demo usa Ollama no host):
   #   profiles: [ai]
   #   image: ollama/ollama:latest
   #   networks: [data-nw]
   #   volumes: [ollama_data:/root/.ollama]
+
+# Secret usado apenas no build da imagem `diarization` (BuildKit). Não persiste na imagem.
+# Para build com pyannote, crie `diarization/hf_token.txt` com o token HF (gitignored).
+# Para build só-fallback (sem pyannote), basta um arquivo vazio: `touch diarization/hf_token.txt`.
+secrets:
+  hf_token:
+    file: ${HF_TOKEN_FILE:-./diarization/hf_token.txt}
 
 networks:
   frontend-nw:
@@ -233,4 +301,5 @@ volumes:
   prenatal_pg_data:
   clinical_rag_data:
   whisper_models:
+  diarization_models:
   # ollama_data:

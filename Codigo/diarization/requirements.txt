@@ -1,0 +1,11 @@
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+python-multipart>=0.0.12
+numpy>=1.26.0
+scipy>=1.11.0
+# Diarização (qualidade). CPU por padrão; GPU opcional via DIARIZATION_DEVICE=cuda.
+# Para CPU-only e imagem menor, troque a linha do torch por:
+#   torch>=2.2.0 --index-url https://download.pytorch.org/whl/cpu
+pyannote.audio>=3.1.0
+torch>=2.2.0
+torchaudio>=2.2.0
