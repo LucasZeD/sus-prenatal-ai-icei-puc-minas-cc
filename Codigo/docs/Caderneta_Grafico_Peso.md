@@ -50,7 +50,7 @@ Dados via API existente (sem endpoint dedicado):
 
 - Variável: `SEED_DEMO_GESTANTE=1` (padrão em DB local)
 - Paciente: **An\*\*\* Demo** — altura 1,62 m, peso pré 68 kg, 4 consultas (IG 12/18/24/30)
-- Doc de teste: [`Documentacao/Testes/nutricao_grafico_demo.md`](../../Documentacao/Testes/nutricao_grafico_demo.md)
+- Doc de teste: [`Documentacao/Testes/escriba_demo/nutricao_grafico_demo.md`](../../Documentacao/Testes/escriba_demo/nutricao_grafico_demo.md)
 
 ## Limitações conhecidas
 

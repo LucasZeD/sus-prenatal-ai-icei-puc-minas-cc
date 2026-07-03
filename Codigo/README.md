@@ -1,16 +1,16 @@
 # SUS Pré-natal — guia de ambiente e build
 
-Este diretório (`Codigo/`) concentra **backend** (Hono + Prisma), **frontend** (Vite + React), `docker-compose.yml` e o arquivo **`.env`** na raiz do compose.
+Este diretório (`Codigo/`) concentra **backend** (Hono + Prisma), **frontend** (Vite + React), `docker-compose.yml` e o arquivo `**.env`** na raiz do compose.
 
 ---
 
 ## Setup inicial (passo a passo)
 
-Siga na ordem. Os comandos assumem PowerShell no Windows e pasta **`F:\...\sus-prenatal-ai-icei-puc-minas-cc\Codigo`** (ajuste o disco/caminho).
+Siga na ordem. Os comandos assumem PowerShell no Windows e pasta `**F:\...\sus-prenatal-ai-icei-puc-minas-cc\Codigo**` (ajuste o disco/caminho).
 
 ### 1) Onde fica o `.env`
 
-- O arquivo deve chamar-se **`.env`** e ficar em **`Codigo/.env`** (o **mesmo** diretório que `docker-compose.yml`).
+- O arquivo deve chamar-se `**.env**` e ficar em `**Codigo/.env**` (o **mesmo** diretório que `docker-compose.yml`).
 - O Docker Compose **carrega automaticamente** esse arquivo quando você roda `docker compose` a partir de `Codigo/`.
 - **Não** confie em `.env` só dentro de `Codigo/backend/` para o Compose: o `docker-compose.yml` não monta esse arquivo no contêiner; variáveis críticas são **repassadas** pelo Compose a partir de `Codigo/.env`.
 
@@ -23,43 +23,47 @@ cd F:\TCC\sus-prenatal-ai-icei-puc-minas-cc\Codigo
 copy .env.example .env
 ```
 
-Edite **`.env`** e garanta estes itens (valores reais, não placeholder de tutorial):
+Edite `**.env**` e garanta estes itens (valores reais, não placeholder de tutorial):
 
-| Variável | Uso |
-|----------|-----|
-| `POSTGRES_PASSWORD` | Senha do Postgres (o Compose falha se estiver vazia). |
-| `JWT_SECRET` | Pelo menos **32 caracteres**; autenticação JWT. |
-| `PACIENTE_IDS_PEPPER` | Segredo longo para HMAC de CPF/Cartão; obrigatório no Compose para o `backend`. |
-| `DATABASE_URL` | Para Prisma **no seu PC** (host): `postgresql://USUARIO:SENHA@127.0.0.1:PORTA/sus_prenatal` com **a mesma** senha/usuário que `POSTGRES_*`. Dentro do Docker o backend usa outra URL montada pelo Compose (`@db:5432`). |
-| `SEED_PROFISSIONAL_EMAIL` / `SEED_PROFISSIONAL_PASSWORD` | Credenciais do profissional criadas pelo **seed** (login na API). |
-| `SEED_DEMO_GESTANTE` | `1` (padrão em DB local): cria gestante **An\*\*\* Demo** com altura/peso pré e 4 consultas para o gráfico nutricional. Use `0` para desativar. |
-| `CLINICAL_AI_URL` | Opcional: `http://clinical_ai:4010` no Compose para proxies `/api/v1/dev/...` e sanitize via serviço Python. |
+
+| Variável                                                 | Uso                                                                                                                                                                                                                     |
+| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `POSTGRES_PASSWORD`                                      | Senha do Postgres (o Compose falha se estiver vazia).                                                                                                                                                                   |
+| `JWT_SECRET`                                             | Pelo menos **32 caracteres**; autenticação JWT.                                                                                                                                                                         |
+| `PACIENTE_IDS_PEPPER`                                    | Segredo longo para HMAC de CPF/Cartão; obrigatório no Compose para o `backend`.                                                                                                                                         |
+| `DATABASE_URL`                                           | Para Prisma **no seu PC** (host): `postgresql://USUARIO:SENHA@127.0.0.1:PORTA/sus_prenatal` com **a mesma** senha/usuário que `POSTGRES_*`. Dentro do Docker o backend usa outra URL montada pelo Compose (`@db:5432`). |
+| `SEED_PROFISSIONAL_EMAIL` / `SEED_PROFISSIONAL_PASSWORD` | Credenciais do profissional criadas pelo **seed** (login na API).                                                                                                                                                       |
+| `SEED_DEMO_GESTANTE`                                     | `1` (padrão em DB local): cria gestante **An Demo** com altura/peso pré e 4 consultas para o gráfico nutricional. Use `0` para desativar.                                                                               |
+| `CLINICAL_AI_URL`                                        | Opcional: `http://clinical_ai:4010` no Compose para proxies `/api/v1/dev/...` e sanitize via serviço Python.                                                                                                            |
+
 
 **Senha do Postgres e URL:** use preferencialmente letras e números. Caracteres como `@`, `:`, `/`, `#` na senha podem **quebrar** a montagem de `postgresql://user:password@db:5432/...` e derrubar migração ou conexão.
 
 ### 3) Subir os serviços
 
-Sempre a partir de **`Codigo/`**:
+Sempre a partir de `**Codigo/`**:
 
 ```powershell
 cd F:\TCC\sus-prenatal-ai-icei-puc-minas-cc\Codigo
 docker compose up -d --build
 ```
 
-**Escriba (STT):** o serviço `stt` está no perfil Compose **`ai`** e **não** entra no comando acima por padrão. Se `WHISPER_HTTP_URL=http://stt:8000`, defina no `.env`:
+**Escriba (STT):** o serviço `stt` está no perfil Compose `**ai`** e **não** entra no comando acima por padrão.
+
+Se `WHISPER_HTTP_URL=http://stt:8000`, defina no `.env` (com isso, o mesmo `docker compose up -d --build` passa a incluir o `stt`):
 
 ```env
 COMPOSE_PROFILES=ai
 WHISPER_HTTP_URL=http://stt:8000
 ```
 
-(com isso, o mesmo `docker compose up -d --build` passa a incluir o `stt`), **ou** use explicitamente:
+**ou** use explicitamente:
 
 ```powershell
 docker compose --profile ai up -d --build
 ```
 
-Requer NVIDIA Container Toolkit e GPU; preflight: `./scripts/demo-gpu-preflight.sh`. Ver [`docs/STT_GPU_DEMO.md`](docs/STT_GPU_DEMO.md).
+Requer NVIDIA Container Toolkit e GPU; preflight: `./scripts/demo-gpu-preflight.sh`. Ver `[docs/STT_GPU_DEMO.md](docs/STT_GPU_DEMO.md)`.
 
 O contêiner `backend` só inicia o Node **depois** de `prisma migrate deploy` no `docker-entrypoint.sh`. O `db` precisa passar no healthcheck antes.
 
@@ -69,7 +73,7 @@ O contêiner `backend` só inicia o Node **depois** de `prisma migrate deploy` n
 docker compose ps
 ```
 
-- **`prenatal_backend`** deve estar **Up** (não “Restarting”).
+- `**prenatal_backend**` deve estar **Up** (não “Restarting”).
 - Se estiver reiniciando, veja o motivo:
 
 ```powershell
@@ -78,13 +82,13 @@ docker compose logs backend --tail 100
 
 Causas frequentes: falha de migração ou histórico de DB incompatível (**[backend/prisma/FALHAS-MIGRACAO.md](backend/prisma/FALHAS-MIGRACAO.md)**), `JWT_SECRET` curto, ou senha do Postgres com caracteres que estragam a URL interna.
 
-**Log `exec ./docker-entrypoint.sh: no such file or directory`:** quase sempre é o arquivo `docker-entrypoint.sh` com **fim de linha Windows (CRLF)**. O `Dockerfile` já remove `\r` na build; faça **`docker compose build --no-cache backend`** e suba de novo. O repositório usa **`.gitattributes`** (`*.sh` → LF) para não voltar a acontecer após `git add`.
+**Log `exec ./docker-entrypoint.sh: no such file or directory`:** quase sempre é o arquivo `docker-entrypoint.sh` com **fim de linha Windows (CRLF)**. O `Dockerfile` já remove `\r` na build; faça `**docker compose build --no-cache backend`** e suba de novo. O repositório usa `**.gitattributes**` (`*.sh` → LF) para não voltar a acontecer após `git add`.
 
 ### 5) Health check (URL correta)
 
 No navegador ou com `curl`:
 
-- **Correto:** `http://localhost:3000/health` (há **`://`** depois de `localhost` e **`/`** antes de `health`).
+- **Correto:** `http://localhost:3000/health` (há `**://`** depois de `localhost` e `**/**` antes de `health`).
 - **Errado:** `localhost3000health` — o navegador não trata isso como HTTP na porta 3000.
 
 Se a conexão for recusada, o processo não está escutando (contêiner caiu ou ainda reinicia) — volte ao passo 4.
@@ -97,9 +101,9 @@ Só rode quando o **backend** estiver **Up**:
 docker compose exec backend npx prisma db seed
 ```
 
-Com `NODE_ENV=production` no contêiner (padrão do compose), o seed **só grava** o profissional se **`SEED_PROFISSIONAL_EMAIL`** e **`SEED_PROFISSIONAL_PASSWORD`** estiverem definidos no **`Codigo/.env`** (agora repassados ao contêiner pelo `docker-compose.yml`). Use os mesmos valores para fazer login na aplicação.
+Com `NODE_ENV=production` no contêiner (padrão do compose), o seed **só grava** o profissional se `**SEED_PROFISSIONAL_EMAIL`** e `**SEED_PROFISSIONAL_PASSWORD**` estiverem definidos no `**Codigo/.env**` (agora repassados ao contêiner pelo `docker-compose.yml`). Use os mesmos valores para fazer login na aplicação.
 
-**Erro `spawn tsx ENOENT`:** na imagem Docker o `npm prune --omit=dev` remove o `tsx`. O projeto compila `prisma/seed.ts` → **`dist/seed.js`** no build e o Prisma roda `node dist/seed.js`. Rebuild do backend: `docker compose build --no-cache backend`.
+**Erro `spawn tsx ENOENT`:** na imagem Docker o `npm prune --omit=dev` remove o `tsx`. O projeto compila `prisma/seed.ts` → `**dist/seed.js`** no build e o Prisma roda `node dist/seed.js`. Rebuild do backend: `docker compose build --no-cache backend`.
 
 **Seed: `P2022` / coluna inexistente (ex.: `profissional.unidade_id`):** volume/schema desalinhado — siga **[backend/prisma/FALHAS-MIGRACAO.md](backend/prisma/FALHAS-MIGRACAO.md)** e rode o seed de novo.
 
@@ -131,29 +135,21 @@ cloudflared tunnel --url http://127.0.0.1:5173
 Exige **conta Cloudflare** e **pelo menos um domínio** com DNS gerenciado na Cloudflare (o domínio pode ser comprado em qualquer registrador; em [Websites](https://dash.cloudflare.com/) use *Add a site* e troque os nameservers conforme o assistente).
 
 1. **Login do cliente** (associa certificado à sua conta e a uma zona):
-
-   ```powershell
+  ```powershell
    cloudflared tunnel login
-   ```
-
-   - O terminal mostra **“Waiting for login…”** e um **URL** (`https://dash.cloudflare.com/argotunnel?...`).
-   - Se o navegador não abrir sozinho, **copie o URL**, cole no Chrome/Edge e confirme o login na Cloudflare.
-   - Na página, **escolha o domínio (zona)** que já está na sua conta e autorize (**Authorize** / **Allow**). Isso não “cria” domínio novo — só diz em qual zona o `cloudflared` pode criar registros depois.
-   - Ao concluir, o terminal deve sair da espera e gravar o certificado (ex.: `~/.cloudflared/cert.pem` no Linux, equivalente no perfil do usuário no Windows).
-
+  ```
+  - O terminal mostra **“Waiting for login…”** e um **URL** (`https://dash.cloudflare.com/argotunnel?...`).
+  - Se o navegador não abrir sozinho, **copie o URL**, cole no Chrome/Edge e confirme o login na Cloudflare.
+  - Na página, **escolha o domínio (zona)** que já está na sua conta e autorize (**Authorize** / **Allow**). Isso não “cria” domínio novo — só diz em qual zona o `cloudflared` pode criar registros depois.
+  - Ao concluir, o terminal deve sair da espera e gravar o certificado (ex.: `~/.cloudflared/cert.pem` no Linux, equivalente no perfil do usuário no Windows).
    **Se não aparecer nenhum domínio na lista:** adicione o site no painel Cloudflare e aguarde a zona ativa; ou use apenas o **túnel rápido** (passo 8.2).
-
 2. **Criar o túnel** (nome interno livre, ex.: `prenatal`):
-
-   ```powershell
+  ```powershell
    cloudflared tunnel create prenatal
-   ```
-
+  ```
    Anote o **Tunnel ID** e o caminho do arquivo `*.json` de credenciais indicado no output.
-
 3. **Arquivo de configuração** (ex.: `~/.cloudflared/config.yml` — ajuste caminhos no Windows se preferir `%USERPROFILE%\.cloudflared\`):
-
-   ```yaml
+  ```yaml
    tunnel: <TUNNEL_ID>
    credentials-file: /caminho/absoluto/para/<UUID>.json
 
@@ -161,22 +157,16 @@ Exige **conta Cloudflare** e **pelo menos um domínio** com DNS gerenciado na Cl
      - hostname: app.seudominio.com.br
        service: http://127.0.0.1:5173
      - service: http_status:404
-   ```
-
+  ```
    Substitua `hostname` pela subida real e a porta pela do seu `FRONTEND_PUBLISH_PORT`.
-
 4. **DNS** (CNAME automático para o túnel):
-
-   ```powershell
+  ```powershell
    cloudflared tunnel route dns prenatal app.seudominio.com.br
-   ```
-
+  ```
 5. **Rodar o túnel**:
-
-   ```powershell
+  ```powershell
    cloudflared tunnel run prenatal
-   ```
-
+  ```
    Para manter sempre ligado, configure **serviço** (systemd no Linux, serviço Windows) conforme a documentação da Cloudflare.
 
 **CORS:** se algo chamar a API com **origem diferente** da do SPA, inclua o URL público em `FRONTEND_ORIGIN` no `Codigo/.env` (várias origens separadas por vírgula), rebuild do backend se necessário. Com `VITE_API_BASE_URL=/` e tudo no mesmo host do túnel, na prática tudo sai na mesma origem.
@@ -193,11 +183,11 @@ Instruções completas (incluindo `P3009`, `P3018`, limpeza de volume, `migrate 
 
 ---
 
-## O que corrigiu o erro do `docker compose build`
+## Erro `docker compose build`
 
-O log `TS2307: Cannot find module '../lib/....js'` indicava **`src/lib/` ausente** no frontend e no backend (imports já usavam sufixo `.js` no estilo ESM/TypeScript). Esses módulos foram recriados sob `backend/src/lib/` e `frontend/src/lib/`, de modo que `npm run build` / imagens Docker voltam a compilar.
+O log `TS2307: Cannot find module '../lib/....js'` indicava `**src/lib/` ausente** no frontend e no backend (imports já usavam sufixo `.js` no estilo ESM/TypeScript). Esses módulos foram recriados sob `backend/src/lib/` e `frontend/src/lib/`, de modo que `npm run build` / imagens Docker voltam a compilar.
 
-A causa raiz no Git era o `.gitignore` na raiz do repositório com a entrada **`lib/`** (herdada do bloco Python), que ignorava **qualquer** pasta chamada `lib`, inclusive `Codigo/**/src/lib`. Isso foi restrito a **`/lib/`** e **`/lib64/`** (somente na raiz do repo) para que `src/lib` possa ser versionado.
+A causa raiz no Git era o `.gitignore` na raiz do repositório com a entrada `**lib/`** (herdada do bloco Python), que ignorava **qualquer** pasta chamada `lib`, inclusive `Codigo/**/src/lib`. Isso foi restrito a `**/lib/`** e `**/lib64/**` (somente na raiz do repo) para que `src/lib` possa ser versionado.
 
 ## Pré-requisitos
 
@@ -208,7 +198,7 @@ A causa raiz no Git era o `.gitignore` na raiz do repositório com a entrada **`
 
 ## Build / Compose (referência rápida)
 
-Na pasta **`Codigo/`**:
+Na pasta `**Codigo/`**:
 
 ```powershell
 docker compose up -d --build
@@ -221,7 +211,7 @@ docker compose build --no-cache backend
 docker compose up -d backend
 ```
 
-Referência completa de variáveis: comentários em **`.env.example`**.
+Referência completa de variáveis: comentários em `**.env.example**`.
 
 ## Modo desenvolvimento híbrido (opcional)
 
@@ -229,7 +219,7 @@ Referência completa de variáveis: comentários em **`.env.example`**.
 
 ### Infraestrutura (Postgres + backend)
 
-Em **`Codigo/`**:
+Em `**Codigo/**`:
 
 ```powershell
 docker compose up -d db backend
@@ -237,7 +227,7 @@ docker compose up -d db backend
 
 ### Prisma no host (migrações + seed)
 
-Em **`Codigo/backend/`** (com `DATABASE_URL` no `.env` apontando para `127.0.0.1:5432`):
+Em `**Codigo/backend/**` (com `DATABASE_URL` no `.env` apontando para `127.0.0.1:5432`):
 
 ```powershell
 npx prisma generate
@@ -247,9 +237,9 @@ npm run db:seed
 
 ### Frontend (Vite)
 
-Em **`Codigo/frontend/`**:
+Em `**Codigo/frontend/**`:
 
-1. Copie `frontend/.env.example` → **`frontend/.env`** se ainda não existir.
+1. Copie `frontend/.env.example` → `**frontend/.env**` se ainda não existir.
 2. Instale dependências e suba o dev server:
 
 ```powershell
@@ -257,11 +247,11 @@ npm install
 npm run dev
 ```
 
-Abra **`http://localhost:5173`**. A URL da API vem de **`VITE_API_BASE_URL`** (WebSocket deriva dela: `http`→`ws`, `https`→`wss`).
+Abra `**http://localhost:5173**`. A URL da API vem de `**VITE_API_BASE_URL**` (WebSocket deriva dela: `http`→`ws`, `https`→`wss`).
 
 ## Testes
 
-Todos os comandos abaixo são em **`Codigo/backend/`**.
+Todos os comandos abaixo são em `**Codigo/backend/**`.
 
 **Unitários** (sem Docker de integração):
 
@@ -289,18 +279,20 @@ $env:SKIP_INTEGRATION_TESTS=1; npm test
 
 ## Manutenção Prisma
 
-Em **`Codigo/backend/`**:
+Em `**Codigo/backend/**`:
 
-| Objetivo | Comando |
-|----------|---------|
-| Estado das migrações | `npx prisma migrate status` |
-| Nova migração (dev) | `npx prisma migrate dev --name descricao` |
-| Reset (apaga dados) | `npx prisma migrate reset` |
+
+| Objetivo                              | Comando                                                    |
+| ------------------------------------- | ---------------------------------------------------------- |
+| Estado das migrações                  | `npx prisma migrate status`                                |
+| Nova migração (dev)                   | `npx prisma migrate dev --name descricao`                  |
+| Reset (apaga dados)                   | `npx prisma migrate reset`                                 |
 | Rebuild só do backend após mudar deps | Na pasta `Codigo/`: `docker compose up -d --build backend` |
+
 
 ## Cliente SQL (DBeaver, pgAdmin, …)
 
-Com o serviço **`db`** publicado no host:
+Com o serviço `**db**` publicado no host:
 
 - **Host:** `127.0.0.1`
 - **Porta:** valor de `POSTGRES_HOST_PORT` (padrão `5432`)
@@ -309,9 +301,9 @@ Com o serviço **`db`** publicado no host:
 
 ## Clinical AI — RAG + contexto (FastAPI)
 
-O Compose inclui o serviço **`clinical_ai`** ([`clinical-ai/`](clinical-ai/)): índice RAG local (JSONL/MD/TXT), reranking MMR + viés a documentos com `meta.effective_date` / `updated_at` / `document_date` mais recentes, desidentificação de PII e rota de pergunta direta à médica (`POST /mcp/test/direct-question`). **Não há busca na internet** — só o corpus e os blocos opcionais enviados no JSON.
+O Compose inclui o serviço `**clinical_ai`** (`[clinical-ai/](clinical-ai/)`): índice RAG local (JSONL/MD/TXT), reranking MMR + viés a documentos com `meta.effective_date` / `updated_at` / `document_date` mais recentes, desidentificação de PII e rota de pergunta direta à médica (`POST /mcp/test/direct-question`). **Não há busca na internet** — só o corpus e os blocos opcionais enviados no JSON.
 
-**Ollama no host:** o contêiner usa `CLINICAL_AI_OLLAMA_BASE_URL` (padrão `http://host.docker.internal:11434`). No Linux o `docker-compose.yml` já define `extra_hosts: host.docker.internal:host-gateway`. Tenha **`ollama serve`** acessível e modelos puxados:
+**Ollama no host:** o contêiner usa `CLINICAL_AI_OLLAMA_BASE_URL` (padrão `http://host.docker.internal:11434`). No Linux o `docker-compose.yml` já define `extra_hosts: host.docker.internal:host-gateway`. Tenha `**ollama serve`** acessível e modelos puxados:
 
 - **Chat:** mesmo `OLLAMA_MODEL` do `.env` (ex. `qwen3.5:9b-medical-rag`).
 - **Embeddings RAG:** modelo **distinto**, `RAG_EMBEDDING_MODEL` (ex. `nomic-embed-text` — `ollama pull nomic-embed-text`).
@@ -342,13 +334,70 @@ Corpus padrão na imagem: `clinical-ai/corpus/CartilhasSUS` (`RAG_CORPUS_DIR`; v
 
 ## IA opcional (Compose comentado)
 
-O perfil Compose **`ai`** sobe o serviço **`stt`** ([`stt-service/`](stt-service/)) com GPU (Whisper `large-v3`). Ordem recomendada: `db` → `clinical_ai` → `stt` → `backend` → `frontend`. No `.env`: `WHISPER_HTTP_URL=http://stt:8000`. Preflight: `./scripts/demo-gpu-preflight.sh`. Docs: [`docs/Escriba_STT.md`](docs/Escriba_STT.md), [`docs/STT_GPU_DEMO.md`](docs/STT_GPU_DEMO.md).
+O perfil Compose `**ai**` sobe o serviço `**stt**` (`[stt-service/](stt-service/)`) com GPU (Whisper `large-v3`). Ordem recomendada: `db` → `clinical_ai` → `stt` → `backend` → `frontend`. No `.env`: `WHISPER_HTTP_URL=http://stt:8000`. Preflight: `./scripts/demo-gpu-preflight.sh`. Docs: `[docs/Escriba_STT.md](docs/Escriba_STT.md)`, `[docs/STT_GPU_DEMO.md](docs/STT_GPU_DEMO.md)`.
 
-O backend usa **`OLLAMA_HTTP_URL`** (host), **`WHISPER_HTTP_URL`** e **`CLINICAL_AI_URL`** conforme `.env.example`. Sem Ollama no host, o clinical-ai sobe mas rotas que chamam o modelo local falham.
+O backend usa `**OLLAMA_HTTP_URL**` (host), `**WHISPER_HTTP_URL**` e `**CLINICAL_AI_URL**` conforme `.env.example`. Sem Ollama no host, o clinical-ai sobe mas rotas que chamam o modelo local falham.
+
+## Diarização de locutores (opcional, `diarization`)
+
+O serviço `**diarization**` (`[diarization/](diarization/)`, pyannote.audio 3.1) atribui rótulos de locutor (profissional/gestante) à transcrição da consulta, 100% local. Está no perfil Compose `**ai**` e é **opcional**: com `**DIARIZATION_HTTP_URL**` vazio o sistema sobe e funciona normalmente (diarização desligada).
+
+**Subir com o perfil `ai`** (a partir de `Codigo/`):
+
+```bash
+docker compose --profile ai up -d --build
+# ou no .env: COMPOSE_PROFILES=ai e DIARIZATION_HTTP_URL=http://diarization:8001
+```
+
+### Por que é preciso um token Hugging Face?
+
+Os modelos `pyannote/speaker-diarization-3.1` e `pyannote/segmentation-3.0` são **"gated"**: o autor exige o **aceite dos termos de uso** antes do download, e esse aceite só é validado se você estiver autenticado (token). O token é usado **apenas no build** (para baixar e cachear os modelos); em runtime o serviço roda 100% offline (`HF_HUB_OFFLINE=1`), **sem token e sem internet**. A maioria dos modelos do Hugging Face é pública e não exige token — é uma exigência específica do pyannote.
+
+> **Sem token também funciona:** com `diarization/hf_token.txt` vazio, a imagem sobe no backend **`fallback`** (agrupamento espectral em numpy puro, sem PyTorch e sem download), mantendo o mesmo contrato `POST /v1/diarize`. Qualidade menor, mas zero burocracia — útil para validar o fluxo/UI.
+
+### Passo a passo: conta, token e licenças (uma vez)
+
+1. **Criar conta** no Hugging Face: acesse https://huggingface.co/join e cadastre-se (e-mail + senha) ou entre em https://huggingface.co/login se já tiver conta.
+2. **Aceitar as licenças** dos dois modelos gated (logado, clique em *Agree and access repository* / preencha o formulário — a liberação costuma ser imediata):
+   - https://huggingface.co/pyannote/speaker-diarization-3.1
+   - https://huggingface.co/pyannote/segmentation-3.0
+3. **Gerar o token de acesso** (tipo *Read*):
+   - Vá em https://huggingface.co/settings/tokens → **New token** (ou *Create new token*).
+   - **Type:** `Read`. Dê um nome (ex.: `prenatal-diarization`) e clique em **Create**.
+   - **Copie o token** (formato `hf_...`) — ele só aparece uma vez.
+4. **Gravar o token no arquivo** (a partir de `Codigo/`; o arquivo é gitignored, não vai pro Git):
+   ```bash
+   echo "hf_SEU_TOKEN_AQUI" > diarization/hf_token.txt
+   ```
+
+### Build (baixa e cacheia os modelos) e subida
+
+```bash
+# 1) Build do serviço: o token é injetado via BuildKit secret e NÃO fica na imagem.
+DOCKER_BUILDKIT=1 docker compose --profile ai build diarization
+
+# 2) Sobe o serviço (runtime offline; modelos vêm do cache da imagem)
+docker compose --profile ai up -d diarization
+
+# 3) Confere qual backend ativou (espere "backend":"pyannote")
+docker compose exec diarization curl -s http://127.0.0.1:8001/health
+```
+
+Se `/health` retornar `"backend":"pyannote"`, o modelo está instalado e pronto. Se vier `"backend":"fallback"`, o download não ocorreu — verifique se o token foi salvo e se as duas licenças foram aceitas, e rode o build novamente.
+
+> ⚠️ O primeiro build baixa PyTorch + pyannote (alguns GB) e pode demorar. Para uma imagem CPU mais enxuta, veja o comentário sobre o índice CPU do PyTorch em `diarization/requirements.txt`.
+
+**Requisitos de hardware:** CPU é o **default seguro** (`DIARIZATION_DEVICE=cpu`) — a diarização de um trecho leva alguns segundos e não toca na GPU. Para acelerar com `DIARIZATION_DEVICE=cuda` numa máquina single-GPU (a VRAM de 16 GB é dividida com o Ollama/Qwen ~10,5 GB), ligue também `DIARIZATION_GPU_GATE=1`: a diarização passa a **entrar na mesma fila do árbitro de GPU** (`gpuDemoGate`) usada por STT/LLM, então ela **espera a vez** em vez de disputar VRAM em paralelo (sem OOM por contenção). Em CPU ou GPU dedicada deixe `DIARIZATION_GPU_GATE=0`. Em ambos os casos, `DIARIZATION_CONCURRENCY_LIMIT=1` mantém uma segunda fila no próprio serviço (rejeita excesso com 429).
+
+**Privacidade:** o áudio do trecho é bufferizado em memória, enviado ao serviço ao fechar o utterance e **descartado em seguida**; nada é gravado em disco. A diarização é exibida apenas em tempo real no WebSocket (`stt_diarized`); **não** persiste transcrição nem texto por locutor. Variáveis: ver `.env.example` (`DIARIZATION_*`). Testes do serviço (offline, sem PyTorch): `cd diarization && pytest -q`.
+
+### Escriba — pré-preenchimento estruturado (RF04)
+
+A cada trecho clínico fechado, o backend chama em paralelo o insight Markdown (`/mcp/escriba/suggest-stream`) e a extração de campos (`/mcp/escriba/extract-fields-stream`). O front recebe `form_patch` para pré-preencher queixa, PA, peso, IG etc. na aba Prontuário — **somente em memória** até a profissional clicar em **Salvar rascunho** (`PATCH /api/v1/consultas/:id`). Desligar extração: `ESCRIBA_EXTRACT_ENABLED=0` no backend.
 
 ## PowerShell no Windows
 
-Em versões antigas do PowerShell, `&&` pode falhar. Use **`;`** entre comandos ou execute um comando por vez, sempre com o diretório de trabalho correto (`Codigo/` ou `Codigo/backend/` / `Codigo/frontend/`).
+Em versões antigas do PowerShell, `&&` pode falhar. Use `**;**` entre comandos ou execute um comando por vez, sempre com o diretório de trabalho correto (`Codigo/` ou `Codigo/backend/` / `Codigo/frontend/`).
 
 ---
 

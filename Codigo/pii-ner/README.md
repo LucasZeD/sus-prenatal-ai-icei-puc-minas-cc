@@ -1,6 +1,6 @@
 # PII NER sidecar
 
-Microserviço FastAPI para detecção de entidades PII com o modelo
+MicroserviÃ§o FastAPI para detecÃ§Ã£o de entidades PII com o modelo
 `OpenMed/OpenMed-PII-Portuguese-SnowflakeMed-Large-568M-v1`.
 
 ## Rotas
@@ -8,7 +8,7 @@ Microserviço FastAPI para detecção de entidades PII com o modelo
 - `GET /health`: status do carregamento do modelo.
 - `POST /detect`: retorna entidades detectadas com `label`, `start`, `end`, `score` e `text`.
 
-## Execução local
+## ExecuÃ§Ã£o local
 
 ```bash
 cd Codigo/pii-ner

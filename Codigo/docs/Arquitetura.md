@@ -20,7 +20,8 @@ O deploy é focado em isolamento rigoroso de redes internas. O WebApp ou serviç
 
 2. **`backend-nw` (Camada Lógica):**
    - **FastAPI / Node.js (Hub Orquestrador):** Atua como a ponte central (Cross-Network Bridge). Componente com prerrogativa de autenticar a requisição e distribuí-la.
-   - **stt-service (Faster-Whisper `large-v3`, perfil Docker `ai`):** FastAPI em `backend-nw` com decode WebM (ffmpeg), pré-processamento e diarização simples; expõe `POST /v1/audio/transcriptions` consumido pelo Hub Node via `WHISPER_HTTP_URL`.
+   - **stt-service (Faster-Whisper `large-v3`, perfil Docker `ai`):** FastAPI em `backend-nw` com decode WebM (ffmpeg), pré-processamento e transcrição; expõe `POST /v1/audio/transcriptions` consumido pelo Hub Node via `WHISPER_HTTP_URL`.
+   - **diarization (pyannote.audio 3.1, perfil Docker `ai`, rede `data-nw`):** microsserviço FastAPI dedicado à diarização de locutores; expõe `POST /v1/diarize` consumido pelo Hub via `DIARIZATION_HTTP_URL`. Modelos baixados em *build time* e cacheados (runtime offline, `HF_HUB_OFFLINE=1`); CPU por padrão (GPU opcional). **Opcional e desativado por padrão** — sem `DIARIZATION_HTTP_URL` o sistema funciona normalmente. Estratégia atual: *diarização por segmento bufferizado* (o áudio efêmero do trecho é enviado ao fechar o utterance; os turnos são mesclados com a transcrição por sobreposição temporal; o rótulo de papel é editável pelo profissional). Fallback espectral em numpy puro (sem PyTorch) mantém o mesmo contrato quando o pyannote não está disponível.
 
 3. **`data-nw` (Camada de Persistência e RAG):**
    - **Servidor MCP (Model Context Protocol):** "Sidecar de Privacidade". O MCP barra a string suja enviada pelo Hub e extirpa Nomes, CPFs, e Cartões SUS antes de entregar pro llm (ex: converte em "Paciente hipertensa, 32 anos"). Nenhuma Query SQL vaza à IA Generativa.
