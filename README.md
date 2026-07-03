@@ -6,6 +6,16 @@ O sistema utiliza um **Escriba Digital** offline (Faster-Whisper) para transcri�
 
 O objetivo central é reduzir a carga cognitiva do profissional de saúde e aumentar a segurança clínica da paciente, garantindo que as condutas recomendadas estejam alinhadas com as evidências científicas mais recentes (Cartilha do SUS 8ª Edição). O envio de recomendações ao longo das semanas via WhatsApp é tratado como módulo complementar (Plus).
 
+## Demonstração online
+
+Uma versão de **demonstração** do sistema está publicada em:
+
+**[https://prenatal.duarte-zegrine.com.br/](https://prenatal.duarte-zegrine.com.br/)**
+
+Trata-se de um ambiente de **apresentação e avaliação** (TCC), executado em infraestrutura **local** (estações de trabalho do autor), exposto à internet por túnel quando necessário. Por isso, o serviço **pode ficar temporariamente indisponível**
+
+Para uso contínuo ou em produção, siga a instalação completa em [`Codigo/README.md`](Codigo/README.md) (`docker compose` na sua própria máquina ou servidor).
+
 ## Tabela de Conteúdos
 * [Especificação de Requisitos e User Stories](Documentacao/Especificacao.md) 
 
