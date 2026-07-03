@@ -1,3 +1,7 @@
+# Segredos de build
+Codigo/diarization/hf_token.txt
+hf_token.txt
+
 # SO e IDEs
 .DS_Store
 Thumbs.db
@@ -25,7 +29,8 @@ __pycache__/
 .venv
 venv/
 ENV/
-env/
+# Python venv na raiz do repo apenas (`env/` solto ignorava `Codigo/backend/src/lib/env/` do TS).
+/env/
 .env.python
 build/
 develop-eggs/
@@ -101,3 +106,9 @@ ai/
 .cursor/
 tools/
 Implantacao/
+
+Artigo/**
+!Artigo/TCC2_PC5/
+!Artigo/TCC2_PC5/**
+!Artigo/WebMedia2026_Caderneta_da_Gestante_Digital/
+!Artigo/WebMedia2026_Caderneta_da_Gestante_Digital/**
