@@ -72,7 +72,7 @@ Para facilitar a validação das integrações complexas (STT, LLM, MCP, WebSock
 
 1. **Painel WebSocket / Escriba:**
   - Botão para Iniciar/Parar simulação de envio de chunks de áudio (Mock ou Mic real).
-  - Log em tempo real dos eventos recebidos do servidor (`consulta_stream_evento`).
+  - Log em tempo real dos eventos WebSocket do Escriba (transcrição, insights, form_patch).
 2. **Painel do MCP (Privacy Gateway):**
   - Input de texto livre para testar a sanitização de PII.
   - Display exibindo o "Antes" (Texto sujo) e o "Depois" (Texto assepsiado que iria para o LLM).
