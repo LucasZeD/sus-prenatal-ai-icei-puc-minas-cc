@@ -16,5 +16,5 @@
     "declaration": false,
     "sourceMap": false
   },
-  "include": ["prisma/seed.ts", "prisma/seedDemoGestanteNutricao.ts"]
+  "include": ["prisma/seed.ts", "prisma/seedDemoGestantesApresentacao.ts"]
 }
