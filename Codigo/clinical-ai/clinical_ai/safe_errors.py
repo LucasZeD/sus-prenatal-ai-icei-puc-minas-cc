@@ -17,7 +17,7 @@ def _strip_internal_error_prefix(msg: str) -> str:
 
 
 def redact_secrets_in_text(s: str) -> str:
-    """Strip common secret patterns from free-form text (defense in depth)."""
+    """Strip common secret patterns from free-form text."""
     if not s:
         return s
     out = s

@@ -1,7 +1,7 @@
 [project]
 name = "clinical-ai"
 version = "0.1.0"
-description = "RAG + contexto clínico (PII) para pré-natal — FastAPI"
+description = "RAG + contexto clÃ­nico (PII) para prÃ©-natal â€” FastAPI"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

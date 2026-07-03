@@ -4,7 +4,7 @@ import json
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import Any
+from typing import Any, Literal
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import StreamingResponse
@@ -13,9 +13,11 @@ from pydantic import BaseModel, Field, field_validator
 from clinical_ai import engine, gemini_client, ollama_client, pii
 from clinical_ai.config import get_settings
 from clinical_ai.pii_ner_client import NerUnavailableError, get_ner_status
+from clinical_ai.escriba_extract import format_current_fields_block, parse_and_validate_extract_response
 from clinical_ai.prompts import (
     SYSTEM_DIRECT_QUESTION,
     SYSTEM_DIRECT_QUESTION_NO_RAG_CONTEXT,
+    SYSTEM_ESCRIBA_EXTRACT_FIELDS,
     SYSTEM_ESCRIBA_SUGGESTIONS,
 )
 from clinical_ai.reply_sanitize import sanitize_assistant_visible_reply
@@ -119,10 +121,20 @@ async def sanitize_root(body: SanitizeBody) -> dict[str, Any]:
     return await mcp_sanitize(body)
 
 
+class ConversationTurn(BaseModel):
+    role: Literal["user", "assistant"]
+    content: str = Field(..., min_length=1, max_length=8000)
+
+
 class DirectQuestionBody(BaseModel):
     question: str = Field(..., min_length=1, max_length=8192)
     gestacao_context: str | dict | None = None
     consulta_escriba_context: str | None = Field(default=None, max_length=20_000)
+    conversation_history: list[ConversationTurn] | None = Field(
+        default=None,
+        max_length=20,
+        description="Turnos anteriores user/assistant (opcional, multi-turno).",
+    )
     top_k: int | None = Field(default=None, ge=1, le=32)
     rag_expand_query: bool | None = Field(
         default=None,
@@ -163,6 +175,36 @@ class DirectQuestionBody(BaseModel):
 
 def _xml_escape_user_text(s: str) -> str:
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def _conversation_history_to_messages(
+    history: list[ConversationTurn] | None,
+    *,
+    max_assistant_chars: int = 4000,
+) -> list[dict[str, str]]:
+    if not history:
+        return []
+    out: list[dict[str, str]] = []
+    for turn in history:
+        raw = turn.content.strip()
+        if not raw:
+            continue
+        if turn.role == "user":
+            sanitized = pii.sanitize_for_model(raw, max_fragment_chars=4000)
+            if not sanitized:
+                continue
+            payload = (
+                "<pergunta_do_profissional_saude>\n"
+                f"{_xml_escape_user_text(sanitized)}\n"
+                "</pergunta_do_profissional_saude>"
+            )
+            out.append({"role": "user", "content": payload})
+        else:
+            sanitized = pii.sanitize_for_model(raw, max_fragment_chars=max_assistant_chars)
+            if not sanitized:
+                continue
+            out.append({"role": "assistant", "content": sanitized})
+    return out
 
 
 async def _direct_question_messages_and_context(
@@ -217,10 +259,10 @@ async def _direct_question_messages_and_context(
         f"{_xml_escape_user_text(q_sanitized)}\n"
         "</pergunta_do_profissional_saude>"
     )
-    messages: list[dict[str, str]] = [
-        {"role": "system", "content": system_body},
-        {"role": "user", "content": user_payload},
-    ]
+    history_messages = _conversation_history_to_messages(body.conversation_history)
+    messages: list[dict[str, str]] = [{"role": "system", "content": system_body}]
+    messages.extend(history_messages)
+    messages.append({"role": "user", "content": user_payload})
     # Qwen3.5 "think" shares one num_predict budget between internal reasoning and user-visible text.
     base_pred = max(1, int(s.mcp_chat_max_tokens))
     if think_eff:
@@ -261,6 +303,7 @@ async def _direct_question_messages_and_context(
         "stream_note_pt": stream_note_pt,
         "llm_provider_requested": body.llm_provider,
         "gemini_configured": gemini_client.gemini_configured(),
+        "n_conversation_turns": len(history_messages),
     }
     return messages, meta
 
@@ -536,6 +579,154 @@ async def mcp_escriba_suggest_stream(body: EscribaSuggestBody) -> StreamingRespo
                 yield line
         except Exception as exc:  # noqa: BLE001
             log.exception("escriba-suggest-stream LLM failed")
+            err = {"type": "error", "detail": public_message_from_exception(exc)}
+            yield (json.dumps(err, ensure_ascii=False) + "\n").encode("utf-8")
+            return
+        yield (json.dumps({"type": "done"}, ensure_ascii=False) + "\n").encode("utf-8")
+
+    return StreamingResponse(
+        gen_bytes(),
+        media_type="application/x-ndjson; charset=utf-8",
+        headers={"Cache-Control": "no-store"},
+    )
+
+
+class EscribaExtractFieldsBody(BaseModel):
+    transcription: str = Field(..., min_length=1, max_length=8192)
+    gestacao_context: str | dict | None = None
+    consulta_escriba_context: str | None = Field(default=None, max_length=20_000)
+    current_fields: dict[str, Any] | None = None
+    top_k: int = Field(default=0, ge=0, le=32)
+    think: bool | None = Field(
+        default=None,
+        description="Extended reasoning (Ollama think); null uses OLLAMA_THINK from clinical-ai env.",
+    )
+
+    @field_validator("gestacao_context", mode="before")
+    @classmethod
+    def _limit_escriba_gestacao_context_extract(cls, v: object) -> object:
+        if isinstance(v, str) and len(v) > 20_000:
+            return v[:20_000]
+        if isinstance(v, dict):
+            raw = json.dumps(v, ensure_ascii=False)
+            if len(raw) > 25_000:
+                raise ValueError("gestacao_context excede o tamanho maximo permitido.")
+        return v
+
+
+async def _escriba_extract_fields_messages_and_context(
+    body: EscribaExtractFieldsBody,
+) -> tuple[list[dict[str, str]], dict[str, Any]]:
+    stt_raw = body.transcription.strip()
+    stt_sanitized = pii.sanitize_for_model(stt_raw)
+    if not stt_sanitized:
+        raise HTTPException(status_code=400, detail="Transcription empty after sanitization.")
+
+    gest = pii.sanitize_optional_block(body.gestacao_context)
+    esc = pii.sanitize_optional_block(body.consulta_escriba_context)
+    current_sanitized = pii.sanitize_optional_block(body.current_fields)
+
+    rag_chunks: list[dict[str, Any]] = []
+    rag_outcome = None
+    rag_block = ""
+    if body.top_k > 0:
+        rag_query = stt_sanitized
+        if esc:
+            rag_query = f"{stt_sanitized}\n{esc[:600]}"
+        rag_outcome = await engine.retrieve(rag_query, k=body.top_k, expand_query=False)
+        rag_chunks = rag_outcome.chunks
+        rag_block = engine.format_context_block(rag_chunks)
+
+    context_parts: list[str] = []
+    if gest:
+        context_parts.append("### Dados da gestacao (desidentificados)\n\n" + gest)
+    if esc:
+        context_parts.append("### Notas da consulta / escriba (desidentificados)\n\n" + esc)
+    current_block = format_current_fields_block(current_sanitized if isinstance(current_sanitized, dict) else None)
+    if current_block:
+        context_parts.append(current_block)
+    if rag_block:
+        context_parts.append(rag_block)
+
+    context_block = "\n\n".join(context_parts).strip()
+
+    s = get_settings()
+    think_eff = body.think if body.think is not None else s.ollama_think
+
+    system_body = SYSTEM_ESCRIBA_EXTRACT_FIELDS
+    if context_block:
+        system_body = f"{SYSTEM_ESCRIBA_EXTRACT_FIELDS}\n\nCONTEXT:\n{context_block}"
+    if think_eff:
+        system_body += (
+            "\n\n[Raciocinio estendido ativo] Seja breve no pensamento interno; "
+            "priorize emitir somente o JSON final."
+        )
+
+    user_payload = (
+        "<trecho_fala>\n"
+        f"{_xml_escape_user_text(stt_sanitized)}\n"
+        "</trecho_fala>"
+    )
+    messages: list[dict[str, str]] = [
+        {"role": "system", "content": system_body},
+        {"role": "user", "content": user_payload},
+    ]
+
+    base_pred = max(1, int(s.mcp_chat_max_tokens))
+    if think_eff:
+        uncapped = max(
+            base_pred + max(0, int(s.mcp_chat_think_extra_tokens)),
+            max(512, int(s.mcp_chat_think_num_predict_floor)),
+        )
+        ceiling = max(base_pred + 256, int(s.mcp_chat_think_max_predict))
+        num_predict = min(ceiling, uncapped)
+    else:
+        num_predict = min(base_pred, 512)
+
+    meta: dict[str, Any] = {
+        "sanitized_blocks": {
+            "transcription": stt_sanitized,
+            "gestacao_context": gest,
+            "consulta_escriba_context": esc,
+            "current_fields": current_sanitized,
+        },
+        "rag_chunks": rag_chunks,
+        "think_enabled": think_eff,
+        "n_rag_chunks": len(rag_chunks),
+        "top_k": body.top_k,
+        "context_chars": len(context_block),
+        "ollama_model": s.ollama_model,
+        "num_predict": num_predict,
+    }
+    if rag_outcome is not None:
+        meta["rag_timing_ms"] = rag_outcome.timing_ms
+        meta["rag_retrieval_query_raw"] = rag_outcome.retrieval_query_raw
+        meta["rag_retrieval_query_effective"] = rag_outcome.retrieval_query_effective
+        meta["rag_retrieval_expansion"] = rag_outcome.retrieval_expansion
+
+    return messages, meta
+
+
+@app.post("/mcp/escriba/extract-fields-stream")
+async def mcp_escriba_extract_fields_stream(body: EscribaExtractFieldsBody) -> StreamingResponse:
+    """Stream de extracao estruturada do Escriba (campos da ficha) em JSON."""
+    messages, meta = await _escriba_extract_fields_messages_and_context(body)
+
+    async def gen_bytes() -> AsyncIterator[bytes]:
+        first = {"type": "pipeline", **meta}
+        yield (json.dumps(first, ensure_ascii=False) + "\n").encode("utf-8")
+
+        try:
+            async for line in _yield_visible_from_raw_stream(
+                ollama_client.chat_completion_stream(
+                    messages,
+                    think=body.think,
+                    max_tokens=int(meta["num_predict"]),
+                )
+            ):
+                yield line
+        except Exception as exc:  # noqa: BLE001
+            log.exception("escriba-extract-fields-stream LLM failed")
             err = {"type": "error", "detail": public_message_from_exception(exc)}
             yield (json.dumps(err, ensure_ascii=False) + "\n").encode("utf-8")
             return

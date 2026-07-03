@@ -14,8 +14,7 @@ _CAT = "cataloga\u00e7\u00e3o na fonte"
 
 def should_skip_rag_chunk(text: str) -> bool:
     """
-    Return True if the chunk is unlikely to help clinical retrieval (boilerplate only).
-    Conservative: only skips when patterns are strong or the chunk is very short.
+    Return True if the chunk is unlikely to help clinical retrieval.
     """
     raw = (text or "").strip()
     if not raw:
