@@ -1,0 +1,45 @@
+A Inteligência Artificial (IA) tem demonstrado potencial transformador na saúde pública, oferecendo soluções para otimização de fluxos de trabalho e suporte à decisão \cite{Rajpurkar2022, Cabitza2022, zuin2022prediction, zuin2025community}.
+No contexto do atendimento pré-natal, estudos com bases reais de imagem e avaliação fetal têm explorado análises clínicas específicas, como a avaliação de expressões faciais associadas à dor fetal \cite{Rosa2020FetalPain, Bernardes2022FetalPain}, reforçando o interesse em soluções digitais aplicadas ao acompanhamento pré-natal.
+Contudo, a mortalidade e a morbidade materna no Brasil permanecem como desafios persistentes de saúde pública, associados a desigualdades no acesso à assistência pré-natal e à necessidade de correção dos dados oficiais sobre mortes maternas \cite{AcessoPreNatal2018, Laurenti2010}.
+
+A documentação clínica no \textit{Sistema Único de Saúde} (SUS) combina registros em sistemas digitais e instrumentos físicos independentes, como fichas de pré-natal e a Caderneta da Gestante \cite{FichaPreNatal2018, CadernetaGestante2024}. Essa fragmentação dificulta a integração entre sistemas médicos~\cite{cifuentes2015electronic, kruse2016challenges}. Na prática clínica, a dispersão das informações também aumenta o esforço de documentação dos profissionais de saúde~\cite{moy2021measurement, moy2023understanding}, especialmente em contextos que exigem monitoramento contínuo, identificação de sinais de risco e consulta frequente a protocolos assistenciais. 
+
+Essa demanda torna-se particularmente relevante no pré-natal de alto risco. Segundo as diretrizes dos Manuais de Gestação de Alto Risco do Ministério da Saúde \cite{ManualAltoRisco2022, ManualAltoRisco2012}, condições de risco ou morbidades pré-existentes exigem estratificação contínua e acesso rápido a protocolos de acompanhamento. Diante do volume de informações envolvido nesse processo, modelos generativos têm sido propostos como assistentes virtuais clínicos para resumo e triagem de dados \cite{Clusmann2023, Rajpurkar2022}.
+
+No entanto, a implantação irrestrita de Modelos de Linguagem de Grande Escala (LLMs) em cenários públicos de saúde enfrenta barreiras críticas, incluindo o risco de exposição de dados sensíveis (\textit{Personally Identifiable Information} -- PII), com potenciais implicações para a conformidade com a Lei Geral de Proteção de Dados (LGPD) \cite{OWASPLLM2025, LGPD2018}. Além disso, estudos apontam limitações no uso autônomo desses modelos em decisões clínicas, incluindo falhas em seguir instruções e sensibilidade ao contexto fornecido~\cite{hager2024evaluation}, bem como risco de geração de respostas não fundamentadas ou clinicamente inadequadas~\cite{asgari2025framework}.
+
+Diante dessas limitações, este trabalho propõe a especificação, implementação e avaliação de uma plataforma digital \textit{on-premise} para apoio documental ao pré-natal, com foco no registro clínico durante a própria consulta, sem substituir a validação profissional. A abordagem proposta combina transcrição de voz para texto (\textit{Speech-to-Text}), recuperação aumentada (RAG) por documentos oficiais do Ministério da Saúde, mascaramento de PII, e validação profissional obrigatória. O trabalho também avalia em que medida modelos menores, executados localmente, podem alcançar desempenho próximo ao de modelos fechados de maior porte nessa tarefa, dentro de limites computacionais razoáveis para uso cotidiano. Essa comparação é relevante porque pode reduzir a dependência de serviços externos no processamento de áudio e dados textuais sensíveis. 
+
+Embora a adoção de RAG busque aproximar as respostas dos protocolos utilizados como base documental, ela não elimina a necessidade de avaliar a aderência das saídas geradas. Da mesma forma, o mascaramento de PII antes da inferência reduz a exposição de dados sensíveis, mas não substitui mecanismos de validação e controle ao longo do fluxo. Por isso, a arquitetura proposta é concebida como um sistema assistivo e não autônomo, no qual o modelo generativo não recebe autonomia decisória nem persiste informações sem validação profissional. A partir dessa delimitação, este trabalho baseia-se na seguinte pergunta norteadora: \textit{Como especificar, implementar e avaliar um protótipo on-premise para apoio documental ao pré-natal a partir de protocolos públicos, sem atribuir autonomia decisória ao modelo generativo?}
+Essa pergunta norteadora desdobra-se nas seguintes questões de pesquisa, identificadas como RQ1--RQ5 ao longo do artigo:
+\begin{itemize}
+\item \textbf{RQ1:} Como estruturar uma arquitetura local em contêineres que reduza o risco de exposição de áudio ou dados textuais sensíveis?
+  \item \textbf{RQ2:} Qual é o desempenho do módulo RAG na recuperação de documentos e trechos relevantes dos manuais oficiais de pré-natal?
+	\item \textbf{RQ3:} Qual é a aderência das respostas geradas por um LLM local aos protocolos de atendimento pré-natal no SUS?
+	\item \textbf{RQ4:} Em que medida um anonimizador de dados pessoais sensíveis mascara entidades antes da inferência pelo modelo generativo?
+	\item \textbf{RQ5:} Quais são os custos de latência associados à execução local em comparação com uma linha de base externa?
+\end{itemize}
+
+
+O objetivo geral deste trabalho é especificar, implementar e avaliar uma plataforma digital \textit{on-premise} para apoio documental ao pré-natal, integrando um \textit{LLM} fundamentado por \textit{RAG} e mecanismos de mascaramento de PII, com ênfase em explicabilidade, privacidade por desenho, auditabilidade e alinhamento às diretrizes públicas de saúde. Para atingir esse objetivo, delineiam-se os seguintes objetivos específicos:
+
+\begin{enumerate}
+  \item Desenvolver um protótipo funcional voltado à consulta assistida de informações de pré-natal, mantendo revisão humana obrigatória;
+  \item Implementar um módulo de anonimização dedicado ao mascaramento e sanitização de PII brasileiras;
+  \item Estruturar a recuperação de conhecimento com base em documentos públicos oficiais;
+  \item Avaliar o desempenho do protótipo por meio de métricas de recuperação, aderência automática de respostas em testes sintéticos e análise de latência.
+  \item Analisar os ganhos e perdas entre privacidade local, custo computacional, latência e viabilidade de implantação em ambientes de produção.
+\end{enumerate}
+
+O artigo está organizado da seguinte forma: a Seção~\ref{sec:ref} apresenta os fundamentos teóricos que orientam a proposta; as Seções~\ref{sec:materiais} e~\ref{sec:metodo} descrevem os materiais, o ambiente experimental, a arquitetura e as interfaces da plataforma; e a Seção~\ref{sec:avaliacao} apresenta os experimentos conduzidos para responder às perguntas de pesquisa. Por fim, a Seção~\ref{sec:discussao} discute os resultados obtidos, e a Seção~\ref{sec:conc} sintetiza as conclusões do estudo.
+
+
+%Portanto, a justificativa técnica deste projeto fundamenta-se na estruturação de uma arquitetura local e auditável para apoio documental ao pré-natal, reduzindo a dependência de serviços externos no processamento de áudio e texto sensível. A proposta combina execução \textit{on-premise}, recuperação aumentada por documentos oficiais do Ministério da Saúde e revisão humana obrigatória, de modo que o modelo generativo não receba autonomia decisória nem persista informações sem validação profissional.
+
+%A adoção de RAG busca reduzir o risco de respostas desvinculadas dos protocolos utilizados como base documental, embora não elimine a necessidade de avaliação de aderência e de revisão humana.
+%De forma complementar, o gateway de privacidade aplica mecanismos de detecção e mascaramento de PII antes da inferência pelo modelo generativo, contribuindo para um fluxo mais controlável sob a perspectiva de privacidade por desenho, minimização de dados e auditabilidade.
+%Assim, o foco do trabalho não é demonstrar eficácia assistencial, mas avaliar a viabilidade técnica, os limites e os trade-offs de uma arquitetura assistiva, local e não autônoma para o contexto do SUS.
+
+%A pesquisa baseia-se na seguinte pergunta norteadora: \textit{Como especificar, implementar e avaliar um protótipo 'on-premise' para apoio documental ao pré-natal a partir de protocolos públicos, sem atribuir autonomia decisória ao modelo generativo?}
+
+%O restante deste artigo está estruturado da seguinte forma: o referencial teórico embasa as decisões de design; os materiais e a metodologia detalham o ambiente e o fluxo de desenvolvimento; a solução proposta apresenta a arquitetura e interfaces criadas; e as seções finais discutem o desempenho e as limitações do ecossistema.

@@ -1,0 +1,103 @@
+
+
+Nesta seção, são detalhados os componentes que estruturam o sistema, incluindo os requisitos de \textit{hardware} para execução local, os \textit{frameworks} de desenvolvimento, as bases de dados utilizadas e as ferramentas de Inteligência Artificial implementadas.
+%\subsection{Hardware}
+A escolha do modelo obedeceu ao critério de viabilidade operacional local, sendo o protótipo executado em ambiente com CPU Intel i7-14700K, 32GB de RAM e GPU Nvidia RTX 5060 Ti com 16GB de VRAM.
+Embora o model card do Qwen3.5 9B indique suporte a contexto padrão de 262.144 tokens, adotou-se uma janela operacional reduzida de 16.384 tokens no protótipo, em função das restrições locais de VRAM, latência e estabilidade de inferência \cite{Qwen35ModelCard2026}.
+A escolha do Qwen3.5 9B quantizado em Q4 decorreu da compatibilidade com a VRAM disponível, evitando \textit{offloading} para RAM/CPU e aumento expressivo do tempo até o primeiro token (TTFT).
+
+%\subsection{Software e Frameworks}
+O ambiente adota \textit{TypeScript} como linguagem principal.
+O \textit{backend} foi desenvolvido em \textit{Node.js} utilizando o micro-\textit{framework} Hono e o \textit{frontend} foi estruturado em React, empregando Vite e TailwindCSS.
+A execução em contêineres \textit{Docker} contribui para segmentação lógica e isolamento operacional, reduzindo a exposição de PII em caso de comprometimento.
+Para transcrição, integra-se o \textit{Faster-Whisper} com processamento local e descarte imediato do stream de áudio, evitando o envio a terceiros e reduzindo a superfície de vazamento.
+
+A orquestração do LLM clínico ocorre via \textit{Ollama}; para apoio à decisão, empregam-se hiperparâmetros conservadores (Tabela~\ref{tab:hyperparams}) para reduzir a variabilidade, favorecendo a aderência ao contexto recuperado.
+
+\begin{table}[h!]
+  \centering
+  \caption{Hiperparâmetros de inferência (Ollama) e RAG.}
+  \label{tab:hyperparams}
+  \small
+  \begin{tabular}{l r | l r}
+    \toprule
+    \multicolumn{2}{c}{\textbf{LLM (Qwen3.5)}} & \multicolumn{2}{c}{\textbf{RAG \& Chunking}} \\
+    \midrule
+    \texttt{num\_ctx}                          & 16.384 & \texttt{embedding\_model}  & nomic-embed-text \\
+    \texttt{num\_batch}                        & 256    & \texttt{chunk\_max\_chars} & 900              \\
+    \texttt{temperature}                       & 0.1    & \texttt{max\_chunks}       & 6                \\
+    \texttt{top\_p}                            & 0.9    & \texttt{rerank\_enabled}   & True             \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Base de Dados}
+
+A camada transacional (cadastros e triagens) utiliza \textit{PostgreSQL}, gerenciado via \textit{Prisma ORM}. 
+As Cartilhas de Atenção Pré-Natal do Ministério da Saúde foram vetorizadas como fonte documental de referência (Tabela~\ref{tab:cartilhas_sus}).
+O acervo inclui edições de 2010--2025 e para mitigar conflitos no RAG, cada documento foi associado a metadados de ano e origem, permitindo rastreabilidade das respostas geradas.
+
+\begin{table}[b!]
+  \centering
+  \caption{Base de conhecimento documental: Manuais e cartilhas.}
+  \label{tab:cartilhas_sus}
+  %\footnotesize
+  \begin{tabular}{l c c}
+    \toprule
+        \textbf{Título do Documento} & \textbf{Ano} & \textbf{Referência} \\ 
+    \midrule
+        Guia do Pré-natal do Parceiro [...]     & 2025 & \cite{GuiaPreNatalParceiro2025} \\
+        Caderneta da Gestante                   & 2024 & \cite{CadernetaGestante2024} \\
+        Guia de Atenção à Saúde                 & 2024 & \cite{GuiaAtencaoGestanteMG2024} \\
+        Manual de Gestação de Alto Risco        & 2022 & \cite{ManualAltoRisco2022} \\
+        Ficha Pré-natal                         & 2018 & \cite{FichaPreNatal2018} \\
+        Atualização em Pré-natal [...]          & 2014 & \cite{AtualizacaoPreNatalSC2014} \\
+        Cadernos de Atenção Básica              & 2012 & \cite{CadernosAtencaoBasica32} \\
+        Manual Técnico Gestação de Alto Risco   & 2012 & \cite{ManualAltoRisco2012} \\
+        Gestação de Alto Risco                  & 2010 & \cite{ManualAltoRisco2010} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Ferramentas de IA}
+
+A seleção do modelo obedeceu a um critério de viabilidade operacional \textit{on-premise}, com 16GB de VRAM dedicados e janela de contexto configurada em 16.384 \textit{tokens} para RAG.
+Modelos cujo consumo estimado de VRAM superasse 13GB após quantização Q4 foram descartados para evitar \textit{offloading} de memória, reconhecendo-se que essas estimativas são teóricas e dependem da arquitetura de hardware, \textit{drivers}, mecanismo de inferência e parâmetros de execução \cite{VRAMCalculator}.
+
+\begin{table}[t!]
+  \centering
+  \begin{threeparttable}
+  \caption{Estimativa teórica de consumo de VRAM.}
+  \label{tab:latency_compatibility}
+  %\footnotesize
+  \begin{tabular}{l c c r}
+    \toprule
+    \textbf{Modelo}       & \textbf{Contexto} & \textbf{Parâmetros} & \textbf{VRAM}           \\
+    \midrule
+    Qwen3.6 (Q4)          & 16.384            & 35B                 & $\sim$24 GB             \\
+    Qwen3.5 (Q4)          & 16.384            & 27B                 & $\sim$27.4 GB           \\
+    GPT-OSS (Q4)          & 16.384            & 20B                 & $\sim$17.3 GB           \\
+    Qwen3 (Q4)            & 16.384            & 14B                 & $\sim$16.12 GB          \\
+    \textbf{Qwen3.5 (Q4)} & \textbf{16.384}   & \textbf{9B}         & \textbf{$\sim$10.51 GB} \\
+    Qwen3 (Q4)            & 16.384            & 8B                  & $\sim$10.41 GB          \\
+    \bottomrule
+  \end{tabular}
+  \begin{tablenotes}
+    \footnotesize
+    \item[*] Cálculo de VRAM teórico estimado baseado em https://apxml.com/tools/vram-calculator.
+  \end{tablenotes}
+  \end{threeparttable}
+\end{table}
+
+Para a escolha entre os candidatos compatíveis com 16GB de VRAM sem \textit{offloading} de memória, dentre o conjunto de candidatos, o Qwen3.5 9B foi considerado para combinar menor demanda de memória com uma geração mais recente da família Qwen, cujo \textit{model card} informa suporte a contexto nativo de 262.144 tokens \cite{Qwen35ModelCard2026}.
+Para complementar o critério de escolha, consultou-se o comparativo público não revisado por pares LLMBase \cite{benchmarks_llm}. Embora esses resultados não reproduzam a arquitetura local deste trabalho, o comparativo indica vantagem do Qwen3.5 9B sobre o Qwen3 14B em métricas como GPQA (80,6\% contra 60,4\%) e índice composto de inteligência (32,4 contra 16,2).
+
+A inferência é orquestrada pelo \textit{Ollama} com o modelo Qwen3.5 (9B, quantização Q4) da Alibaba, parametrizado para mitigar alucinações 
+%(Tabela~\ref{tab:hyperparams}) 
+(Tabela~\ref{tab:latency_compatibility}) na arquitetura de hardware disponível.
+A estruturação da base de conhecimento inclui o particionamento semântico (\textit{chunking}) das diretrizes e sua vetorização única, com persistência no armazenamento vetorial.
+
+Na etapa de recuperação, adotou-se \textit{Maximal Marginal Relevance} (MMR) como estratégia de reranqueamento/diversificação dos trechos recuperados.
+O MMR seleciona iterativamente os \textit{chunks} que apresentam alta similaridade com a consulta, mas penaliza trechos muito semelhantes aos já escolhidos, buscando equilibrar relevância e diversidade no contexto enviado ao modelo \cite{CarbonellGoldstein1998MMR}.
+Essa técnica foi utilizada para reduzir redundância no contexto recuperado, não como mecanismo isolado de resolução de divergências entre edições distintas dos manuais.
+

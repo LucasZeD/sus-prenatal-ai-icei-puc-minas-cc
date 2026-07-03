@@ -1,0 +1,139 @@
+A avaliação experimental foi conduzida em três frentes complementares: recuperação documental, geração de respostas e segurança do fluxo clínico, associadas às RQ2, RQ3 e RQ4, respectivamente. A RQ1 é avaliada de forma complementar pelos testes funcionais de segurança do fluxo, enquanto a RQ5 é tratada na análise de latência. 
+O objetivo foi verificar se a arquitetura proposta, baseada em RAG, LLM local e \textit{gateway} de privacidade, consegue recuperar evidências dos manuais oficiais, produzir respostas aderentes aos protocolos e impedir vazamento de informações sensíveis antes da inferência.
+O conjunto de testes utilizado contém 100 perguntas em português, das quais 90 avaliam aderência a protocolos e 10 são perguntas distratoras (\textit{trap}).
+A distribuição por dificuldade foi de 42 itens fáceis, 35 médios e 23 difíceis.
+Os níveis de dificuldade foram definidos manualmente durante a construção do benchmark.
+Questões fáceis correspondem a consultas diretas cuja resposta pode ser localizada em um único documento ou trecho protocolar.
+Questões de dificuldade média exigem combinar múltiplas informações presentes em diferentes seções de um mesmo manual ou em documentos distintos.
+Questões difíceis envolvem cenários menos frequentes, exceções protocolares ou situações que demandam maior especificidade terminológica para recuperação da evidência correta.
+Quatro itens classificados como \texttt{human\_judge} foram mantidos para revisão qualitativa e não compõem o denominador da métrica automática de APR.
+Este sistema de avaliação foi inspirado por práticas da indústria para avaliação de agentes de IA, como as avaliações de agentes do \textit{Microsoft Copilot Studio} \cite{MicrosoftCopilotEval2026}.
+
+%--------------------------------------------------------------------------------------------
+
+\subsection{Recuperação Semântica}
+
+%O módulo de recuperação foi avaliado isoladamente com \textit{top-k}=6 e expansão de consulta ativada.
+O módulo de recuperação, correspondente à RQ2, foi avaliado isoladamente com \textit{top-k}=6 e expansão de consulta ativada.
+O valor de $k$ foi definido como escolha operacional intermediária, buscando equilibrar cobertura documental e controle de ruído no contexto enviado ao modelo.
+Foram utilizadas três métricas:
+\textit{Hit@6}, que verifica se o documento-fonte esperado aparece entre os seis primeiros \textit{chunks};
+\textit{Mean Reciprocal Rank} (MRR), que mede quão cedo o primeiro documento correto aparece na lista recuperada. Quanto mais próximo da primeira posição estiver o documento esperado, maior será o valor da métrica, aproximando-se de 1;
+e \textit{phrase\_recall}, que mede a presença das frases esperadas nos trechos recuperados.
+Além de apoiar a geração de respostas, o RAG acrescenta uma camada de rastreabilidade documental ao sistema, pois permite associar cada resposta aos trechos recuperados, seus documentos de origem e respectivos metadados.
+Essa característica aumenta a auditabilidade das respostas e favorece a revisão humana, aspecto relevante em sistemas de apoio informacional no contexto médico.
+A Tabela~\ref{tab:metricas_rag} apresenta os resultados por dificuldade.
+
+\begin{table}[t!]
+  \centering
+  \caption{Desempenho do módulo RAG por nível de dificuldade ($n=100$).}
+  \label{tab:metricas_rag}
+  %\small
+  \begin{tabular}{lccc}
+  	\toprule
+  	\textbf{Dificuldade} & \textbf{n}   & \textbf{Hit@6 (\%)}  & \textbf{MRR Médio} \\
+  	\midrule
+  	Easy                 & 42           & 76,2\%               & 0,4837             \\
+  	Medium               & 35           & 68,6\%               & 0,3633             \\
+  	Hard                 & 23           & 95,7\%               & 0,6536             \\
+  	\midrule
+  	\textbf{Global}      & \textbf{100} & \textbf{78,0\%}      & \textbf{0,4807}    \\
+  	\bottomrule
+  	\end{tabular}
+  \end{table}
+  
+O \textit{phrase\_recall} médio global foi de 47,1\%.
+Embora os casos encontrados nos itens difíceis representem situações potencialmente mais complexas do ponto de vista clínico, eles frequentemente utilizam terminologia mais específica e menos ambígua, o que favorece a recuperação vetorial.
+Em contraste, perguntas rotineiras de pré-natal apresentam maior sobreposição semântica entre documentos, aumentando a competição entre trechos similares durante o ranqueamento.
+
+%--------------------------------------------------------------------------------------------
+
+\subsection{Geração de Resposta}
+
+A aderência das respostas aos protocolos, eixo da RQ3, foi avaliada por meio da Taxa de Aprovação de Respostas (APR) correspondente à proporção de frases obrigatórias aprovadas segundo os critérios de protocolo, calculada sobre itens elegíveis à avaliação automática, e da Taxa de Falha em Perguntas Distratoras (TFR), calculada sobre os itens \textit{trap}.
+O modelo local Qwen3.5 9B foi executado com e sem RAG para medir o ganho incremental da recuperação.
+O Gemini-3.1-Flash-Lite foi utilizado apenas como linha de base externa de comparação, recebendo o mesmo contexto recuperado pelo RAG do protótipo, mas sem integrar a arquitetura \textit{on-premise} proposta.
+
+\begin{table}[h!]
+  \centering
+  \caption{Desempenho dos modelos na geração de respostas.}
+  \label{tab:apr_tfr_providers}
+  \small
+  \begin{tabular}{lccc}
+  	\toprule
+  	\textbf{Provedor}           & \textbf{Modo RAG} & \textbf{APR (\%)} & \textbf{TFR (\%)} \\
+  	\midrule
+  	Qwen3.5 9B (Ollama)         & Off               & 53,1\% (51/96)    & 20,0\% (2/10)     \\
+	  Qwen3.5 9B (Ollama)         & On                & 57,3\% (55/96)    & 10,0\% (1/10)     \\
+  	Gemini-3.1-Flash-Lite       & On                & 61,5\% (59/96)    & 0\% (0/10)      \\
+  	\bottomrule
+  \end{tabular}
+  \end{table}
+
+A ativação do RAG no modelo local elevou a APR de 53,1\% para 57,3\% e reduziu a TFR de 20,0\% para 10,0\%.
+O ganho é limitado, indicando que a recuperação documental contribui para reduzir respostas inseguras, mas não garante aderência clínica estrita quando o modelo precisa negar condutas, reproduzir termos literais ou resolver conflitos entre documentos.
+No conjunto total de execuções, foram registradas 3 falhas em itens \textit{trap} e 120 reprovações de protocolo nas 258 avaliações automáticas de frases obrigatórias.
+Os quatro itens excluídos da avaliação demandam revisão qualitativa da equipe clínica e não entram no denominador da Tabela~\ref{tab:apr_tfr_providers}.
+
+%--------------------------------------------------------------------------------------------
+
+\subsection{Privacidade, escopo e latência}
+
+A avaliação do mascaramento de PII, correspondente à RQ4, submeteu o módulo de anonimização a 50 frases sintéticas, totalizando 76 entidades sensíveis avaliadas, incluindo CPF, Cartão Nacional de Saúde (CNS), e-mail, telefone, nomes completos e cadeias numéricas longas.
+Não houve vazamento detectado no conjunto testado, conforme a Tabela~\ref{tab:pii_leak}. Esse resultado valida a implementação inicial do mascaramento, mas não elimina a necessidade de testes com variações linguísticas, abreviações e ruído de transcrição.
+
+\begin{table}[b!]
+  \centering
+  \caption{Taxa de vazamento de PII por tipo de entidade.}
+  \label{tab:pii_leak}
+  %\small
+  \begin{tabular}{lcc}
+  	\toprule
+	\textbf{Entidade} 	 	                & \textbf{n} 		                & \textbf{Leak Rate (\%)} \\
+	\midrule
+  	CNS     			                      & 11                            & 0\%                   \\
+  	CPF                                 & 12                            & 0\%                   \\
+  	E-mail                              & 12                            & 0\%                   \\
+  	Nome Completo			                  & 21                            & 0\%                   \\
+  	Cadeias Numéricas Longas            & 8                             & 0\%                   \\
+  	Telefone                            & 12                            & 0\%                   \\
+	\midrule
+  	\textbf{Total Global}               & \textbf{76}                   & \textbf{0\%}          \\
+  	\bottomrule
+  \end{tabular}
+  \end{table}
+
+\begin{table*}[h!]
+  \centering
+  \caption{Latência média por configuração de execução.}
+  \label{tab:latencia_config}
+  %\small
+  \begin{tabular}{lrrrr}
+    \toprule
+    \textbf{Configuração} 		& \textbf{Retrieve (ms)} 	& \textbf{Latência total (s)} 	& \textbf{TTFT (ms)} 	& \textbf{tokens/s} \\
+    \midrule
+    Qwen3.5 9B (Ollama)			& --    		 	& 11,71 			& 470,1  		& 32,5 \\
+    Qwen3.5 9B (Ollama)   + RAG on  	& 373,1 			& 15,59 			& 2789,7 		& 32,4 \\
+    Gemini-3.1-Flash-Lite + RAG on 	& 372,7 			& 4,55  			& 3501,9 		& 360,6 \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
+
+Além das métricas agregadas, o roteiro funcional (GT01-GT05) avaliou aspectos operacionais ligados à RQ1, com cinco casos sintéticos voltados a comportamentos essenciais do protótipo. Os casos GT01, GT02 e GT03 avaliam respostas clínicas com RAG e LLM em cenários de risco alto extraídos dos manuais protocolares.
+O GT04 avalia sanitização direta de PII.
+O GT05 avalia a capacidade de recusar uma requisição fora do escopo de pré-natal.
+
+O roteiro funcional obteve sucesso em quatro dos cinco casos avaliados.
+Os três casos clínicos com RAG e LLM foram aprovados, assim como o caso de sanitização direta de PII.
+A falha ocorreu no GT05, no qual a barreira de escopo não conteve adequadamente uma requisição fora do domínio pré-natal.
+Esse resultado indica que a segurança comportamental não deve depender apenas de \textit{system prompts} e o módulo de privacidade deve incorporar verificações determinísticas ou classificadores de escopo antes da síntese pelo modelo.
+
+
+A RQ5 foi analisada a partir das métricas de eficiência computacional, segregadas por configuração para evitar que a linha de base em nuvem distorça a interpretação operacional do modelo local.
+%Quanto à eficiência computacional, as métricas foram segregadas por configuração para evitar que a linha de base em nuvem distorça a interpretação operacional do protótipo local.
+A Tabela~\ref{tab:latencia_config} apresenta os resultados médios encontrados.
+
+Para o protótipo local, a recuperação vetorial acrescentou aproximadamente 373 ms ao fluxo, enquanto a latência total do Qwen3.5 9B com RAG foi de 15590,1 ms.
+Portanto, o gargalo operacional permanece na inferência local do LLM e no aumento de contexto provocado pelo RAG, não na busca vetorial.
+A linha de base externa apresentou maior vazão de geração, mas não representa a premissa de privacidade local da arquitetura proposta.
+Esse resultado reforça que a adoção em produção de baixo custo ainda é limitada pelos requisitos de hardware, especialmente VRAM, tempo de inferência e estabilidade sob carga.

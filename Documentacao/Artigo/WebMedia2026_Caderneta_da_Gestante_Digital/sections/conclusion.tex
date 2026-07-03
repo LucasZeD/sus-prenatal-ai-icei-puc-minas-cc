@@ -1,0 +1,16 @@
+Este trabalho especificou, implementou e avaliou um sistema protótipo \textit{on-premise} para apoio documental ao pré-natal no contexto do SUS, integrando transcrição local, RAG sobre manuais oficiais, LLM executado via Ollama com revisão humana obrigatória e um \textit{gateway} de anonimização de dados.
+
+A pergunta norteadora foi respondida de forma parcial:
+a arquitetura mostrou-se tecnicamente viável como base assistiva, auditável e não autônoma, mas os resultados de geração, escopo e latência indicam que o sistema ainda não possui robustez suficiente para uso clínico sem supervisão profissional.
+A topologia em contêineres deve ser entendida como decisão de privacidade por desenho, não como comprovação de isolamento absoluto, pois não foram realizados testes específicos de segurança de rede.
+
+Na avaliação experimental, o módulo \textit{RAG} alcançou \textit{Hit@6} global de 78,0\% e MRR médio de 0,4807, mas o \textit{phrase\_recall} médio de 47,1\%, indicando capacidade razoável de recuperar documentos relevantes, embora o \textit{phrase\_recall} mostre que a evidência recuperada nem sempre contém o trecho necessário para satisfazer integralmente o critério de resposta.
+O resultado mais expressivo foi observado nos itens classificados como difíceis, para os quais o módulo RAG atingiu Hit@6 de 95,7\%, sugerindo potencial utilidade em cenários menos rotineiros e com maior especificidade protocolar.
+
+O módulo de privacidade não apresentou vazamento no conjunto sintético de 76 entidades avaliadas, embora esse resultado não substitua testes com fala espontânea, abreviações, erros de transcrição e maior variação linguística.
+A latência média de 15,59 segundos no fluxo local com \textit{RAG} evidencia que a inferência local e os requisitos de hardware ainda limitam a adoção de baixo custo em produção.
+Por fim, a revisão humana obrigatória foi validada como restrição de projeto, pois os resultados reforçam que o sistema deve permanecer assistivo, auditável e não autônomo.
+A aprovação de quatro dos cinco casos funcionais do roteiro (GT01-GT05) indica coerência funcional inicial, enquanto a falha no GT05 evidencia a necessidade de barreiras de escopo antes da geração via \textit{LLM}.
+
+Como contribuição, o estudo entrega uma arquitetura replicável, um fluxo de privacidade alinhado aos princípios da LGPD e um benchmark inicial reprodutível para avaliação técnica de recuperação, geração, mascaramento de PII, escopo e latência em documentos de pré-natal.
+Os resultados evidenciam os trade-offs entre execução local, custo computacional e segurança operacional, indicando que avanços em modelos, quantização, aceleração em hardware e técnicas de RAG podem tornar esse tipo de sistema mais viável em ambientes reais.
