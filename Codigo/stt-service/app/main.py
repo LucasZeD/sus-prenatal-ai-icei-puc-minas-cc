@@ -7,12 +7,10 @@ import os
 from contextlib import asynccontextmanager
 from typing import Any
 
-import numpy as np
 from fastapi import FastAPI, File, Form, Header, UploadFile
 from fastapi.responses import JSONResponse
 
-from app.audio_preprocess import TARGET_SR, decode_audio, preprocess
-from app.diarization import Segment, diarize_simple, format_diarized_text
+from app.audio_preprocess import audio_rms, decode_audio, default_min_rms, preprocess
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
@@ -22,8 +20,29 @@ WHISPER_COMPUTE_TYPE = os.getenv("WHISPER_COMPUTE_TYPE", "int8_float16")
 WHISPER_DEVICE = os.getenv("WHISPER_DEVICE", "cuda")
 STT_PREPROCESS_ENABLED = os.getenv("STT_PREPROCESS_ENABLED", "true").lower() in ("1", "true", "yes")
 STT_NOISE_REDUCE = os.getenv("STT_NOISE_REDUCE", "false").lower() in ("1", "true", "yes")
-STT_DIARIZATION_ENABLED = os.getenv("STT_DIARIZATION_ENABLED", "true").lower() in ("1", "true", "yes")
 STT_LANGUAGE = os.getenv("STT_LANGUAGE", "pt")
+STT_BEAM_SIZE = int(os.getenv("STT_BEAM_SIZE", "8"))
+STT_VAD_FILTER = os.getenv("STT_VAD_FILTER", "true").lower() in ("1", "true", "yes")
+STT_INITIAL_PROMPT = os.getenv("STT_INITIAL_PROMPT", "").strip() or None
+STT_CONDITION_ON_PREVIOUS_TEXT = os.getenv("STT_CONDITION_ON_PREVIOUS_TEXT", "false").lower() in (
+    "1",
+    "true",
+    "yes",
+)
+STT_MIN_RMS = default_min_rms()
+
+
+def _env_float(name: str, default: float) -> float:
+    raw = os.getenv(name, str(default)).strip()
+    try:
+        return float(raw)
+    except ValueError:
+        return default
+
+
+STT_NO_SPEECH_THRESHOLD = _env_float("STT_NO_SPEECH_THRESHOLD", 0.6)
+STT_LOG_PROB_THRESHOLD = _env_float("STT_LOG_PROB_THRESHOLD", -1.0)
+STT_COMPRESSION_RATIO_THRESHOLD = _env_float("STT_COMPRESSION_RATIO_THRESHOLD", 2.4)
 
 _model = None
 _cuda_available = False
@@ -59,9 +78,20 @@ async def health() -> dict[str, Any]:
     return {
         "status": "ok" if _model is not None else "loading",
         "model": WHISPER_MODEL,
+        "compute_type": WHISPER_COMPUTE_TYPE,
+        "device": WHISPER_DEVICE,
         "cuda": _cuda_available,
         "preprocess": STT_PREPROCESS_ENABLED,
-        "diarization": STT_DIARIZATION_ENABLED,
+        "noise_reduce": STT_NOISE_REDUCE,
+        "language": STT_LANGUAGE,
+        "beam_size": STT_BEAM_SIZE,
+        "vad_filter": STT_VAD_FILTER,
+        "initial_prompt_set": bool(STT_INITIAL_PROMPT),
+        "condition_on_previous_text": STT_CONDITION_ON_PREVIOUS_TEXT,
+        "min_rms": STT_MIN_RMS,
+        "no_speech_threshold": STT_NO_SPEECH_THRESHOLD,
+        "log_prob_threshold": STT_LOG_PROB_THRESHOLD,
+        "compression_ratio_threshold": STT_COMPRESSION_RATIO_THRESHOLD,
     }
 
 
@@ -83,7 +113,7 @@ async def transcribe(
     _ = model  # ignored; WHISPER_MODEL env drives backend
     raw = await file.read()
     if not raw:
-        return JSONResponse({"text": "", "segments": [], "speakers": []})
+        return JSONResponse({"text": "", "segments": []})
 
     filename = file.filename or "chunk.webm"
     do_preprocess = _env_preprocess(x_stt_preprocess, preprocess_field)
@@ -98,53 +128,46 @@ async def transcribe(
         audio,
         enabled=do_preprocess,
         noise_reduce=STT_NOISE_REDUCE,
+        min_rms=STT_MIN_RMS,
     )
+
+    if audio_rms(audio) < STT_MIN_RMS:
+        return JSONResponse({"text": "", "segments": []})
 
     if _model is None:
         return JSONResponse({"text": "", "error": "model not loaded"}, status_code=503)
 
     segments_out: list[dict[str, Any]] = []
-    whisper_segments: list[Segment] = []
 
-    segs, _info = _model.transcribe(
-        audio,
-        language=STT_LANGUAGE,
-        beam_size=5,
-        vad_filter=True,
-        word_timestamps=False,
-    )
+    transcribe_kwargs: dict[str, Any] = {
+        "language": STT_LANGUAGE,
+        "beam_size": STT_BEAM_SIZE,
+        "vad_filter": STT_VAD_FILTER,
+        "word_timestamps": False,
+        "temperature": 0,
+        "condition_on_previous_text": STT_CONDITION_ON_PREVIOUS_TEXT,
+        "no_speech_threshold": STT_NO_SPEECH_THRESHOLD,
+        "log_prob_threshold": STT_LOG_PROB_THRESHOLD,
+        "compression_ratio_threshold": STT_COMPRESSION_RATIO_THRESHOLD,
+    }
+    if STT_INITIAL_PROMPT:
+        transcribe_kwargs["initial_prompt"] = STT_INITIAL_PROMPT
+
+    segs, _info = _model.transcribe(audio, **transcribe_kwargs)
     full_parts: list[str] = []
     for s in segs:
         t = (s.text or "").strip()
         if not t:
             continue
         full_parts.append(t)
-        whisper_segments.append(Segment(start=float(s.start), end=float(s.end), text=t))
         segments_out.append({"start": s.start, "end": s.end, "text": t})
 
     plain_text = " ".join(full_parts).strip()
 
-    labeled, speaker_blocks = diarize_simple(
-        audio,
-        TARGET_SR,
-        whisper_segments,
-        enabled=STT_DIARIZATION_ENABLED,
-    )
-
-    speakers_json: list[dict[str, str | int]] = [
-        {"id": b.id, "label": b.label, "text": b.text} for b in speaker_blocks
-    ]
-
-    if speaker_blocks:
-        text = format_diarized_text(speaker_blocks)
-    else:
-        text = plain_text
-
     return JSONResponse(
         {
-            "text": text or plain_text,
+            "text": plain_text,
             "segments": segments_out,
-            "speakers": speakers_json,
         }
     )
 
@@ -152,4 +175,4 @@ async def transcribe(
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("app.main:app", host="0.0.0.0", port=int(os.getenv("PORT", "8000")))
+    uvicorn.run("app:app", host="0.0.0.0", port=int(os.getenv("PORT", "8000")))

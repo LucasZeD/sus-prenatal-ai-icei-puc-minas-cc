@@ -19,6 +19,22 @@ log = logging.getLogger(__name__)
 
 TARGET_SR = 16_000
 HIGH_PASS_HZ = 80.0
+TARGET_RMS = 0.08
+
+
+def audio_rms(audio: np.ndarray) -> float:
+    """RMS do sinal float32 mono (0 se vazio)."""
+    if len(audio) == 0:
+        return 0.0
+    return float(np.sqrt(np.mean(audio**2)))
+
+
+def default_min_rms() -> float:
+    raw = os.getenv("STT_MIN_RMS", "0.004").strip()
+    try:
+        return max(0.0, float(raw))
+    except ValueError:
+        return 0.004
 
 
 def _ffmpeg_decode_to_wav(raw: bytes, suffix: str = ".webm") -> bytes:
@@ -92,9 +108,13 @@ def preprocess(
     *,
     enabled: bool = True,
     noise_reduce: bool = False,
+    min_rms: float | None = None,
 ) -> np.ndarray:
     if not enabled or len(audio) == 0:
         return audio
+
+    if min_rms is None:
+        min_rms = default_min_rms()
 
     # High-pass ~80 Hz
     nyq = TARGET_SR / 2.0
@@ -102,11 +122,11 @@ def preprocess(
     b, a = signal.butter(2, wn, btype="high")
     audio = signal.filtfilt(b, a, audio).astype(np.float32)
 
-    # Loudness normalization (target RMS)
-    rms = float(np.sqrt(np.mean(audio**2)) or 1e-6)
-    target_rms = 0.08
-    audio = audio * (target_rms / rms)
-    audio = np.clip(audio, -1.0, 1.0)
+    # Loudness normalization only when signal is above energy floor (avoids amplifying silence/noise).
+    rms = audio_rms(audio) or 1e-6
+    if rms >= min_rms:
+        audio = audio * (TARGET_RMS / rms)
+        audio = np.clip(audio, -1.0, 1.0)
 
     if noise_reduce:
         try:
