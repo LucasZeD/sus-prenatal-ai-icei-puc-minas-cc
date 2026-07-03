@@ -8,7 +8,7 @@
 5b. [ ] Confirmar que a sugestão **não** entrou no prontuário oficial até salvar/confirmar manualmente
 6. [ ] Aba **Prontuário** → salvar rascunho
 7. [ ] Lívia (Gemini se `GPU_DEMO_MODE=livia_cloud`)
-8. [ ] Prontuário da gestante demo (`An*** Demo`) → painel **Acompanhamento nutricional** com gráfico ([`nutricao_grafico_demo.md`](../nutricao_grafico_demo.md))
+8. [ ] Prontuário da gestante demo (`An*** Demo`) → painel **Acompanhamento nutricional** com gráfico ([`nutricao_grafico_demo.md`](nutricao_grafico_demo.md))
 
 ## Screenshots sugeridos (TCC)
 
