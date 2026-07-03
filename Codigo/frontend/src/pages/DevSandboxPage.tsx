@@ -28,6 +28,15 @@ function statusDot(ok: boolean, partial: boolean) {
   return 'bg-slate-300'
 }
 
+function newProfFormError(email: string, nome: string, password: string): string | null {
+  const em = email.trim()
+  const nm = nome.trim()
+  if (!em) return 'Informe o e-mail de login.'
+  if (nm.length < 2) return 'Nome deve ter pelo menos 2 caracteres.'
+  if (password.length < 8) return 'Senha deve ter pelo menos 8 caracteres.'
+  return null
+}
+
 export function DevSandboxPage() {
   const apiBase = useMemo(() => getApiBaseUrl(), [])
   const [health, setHealth] = useState<HealthPayload | null>(null)
@@ -87,6 +96,15 @@ export function DevSandboxPage() {
   const [newProfPassword, setNewProfPassword] = useState('')
   const [newProfBusy, setNewProfBusy] = useState(false)
   const [newProfMsg, setNewProfMsg] = useState('')
+  const [newProfMsgKind, setNewProfMsgKind] = useState<'idle' | 'success' | 'error'>('idle')
+
+  const newProfFormHint = useMemo(() => {
+    const parts: string[] = []
+    if (!newProfEmail.trim()) parts.push('e-mail')
+    if (newProfNome.trim().length < 2) parts.push('nome (mín. 2 caracteres)')
+    if (newProfPassword.length < 8) parts.push(`senha (${newProfPassword.length}/8 caracteres)`)
+    return parts.length ? `Para criar, preencha: ${parts.join(', ')}.` : null
+  }, [newProfEmail, newProfNome, newProfPassword])
 
   type DevDeleteElig = { deleteEnabled: boolean; callerIsAdmin: boolean }
   const [delElig, setDelElig] = useState<DevDeleteElig | null>(null)
@@ -294,8 +312,16 @@ export function DevSandboxPage() {
   }
 
   const handleCreateProfissional = async () => {
+    const validationErr = newProfFormError(newProfEmail, newProfNome, newProfPassword)
+    if (validationErr) {
+      setNewProfMsgKind('error')
+      setNewProfMsg(validationErr)
+      return
+    }
+
     setNewProfBusy(true)
     setNewProfMsg('')
+    setNewProfMsgKind('idle')
     try {
       const res = await authFetch('/api/v1/dev/profissionais', {
         method: 'POST',
@@ -306,18 +332,29 @@ export function DevSandboxPage() {
           registro: newProfRegistro.trim() || undefined,
         }),
       })
-      const j = (await res.json()) as { message?: string; code?: string; email?: string; id?: string }
+      const raw = await res.text()
+      let j: { message?: string; code?: string; email?: string; id?: string } = {}
+      if (raw.trim()) {
+        try {
+          j = JSON.parse(raw) as typeof j
+        } catch {
+          j = {}
+        }
+      }
       if (!res.ok) {
         const msg = typeof j.message === 'string' ? j.message : j.code ?? `HTTP ${res.status}`
+        setNewProfMsgKind('error')
         setNewProfMsg(`Erro: ${msg}`)
         return
       }
+      setNewProfMsgKind('success')
       setNewProfMsg(`Criado: ${j.email ?? newProfEmail} (id ${j.id ?? '?'})`)
       setNewProfEmail('')
       setNewProfNome('')
       setNewProfRegistro('')
       setNewProfPassword('')
     } catch {
+      setNewProfMsgKind('error')
       setNewProfMsg('Falha de rede ao criar profissional.')
     } finally {
       setNewProfBusy(false)
@@ -883,23 +920,43 @@ export function DevSandboxPage() {
               </p>
             )}
             {token && !profEligLoading && profElig && profElig.createEnabled && profElig.callerIsAdmin && (
-              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              <form
+                className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4"
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  void handleCreateProfissional()
+                }}
+              >
                 <div>
                   <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">E-mail (login)</label>
                   <input
                     value={newProfEmail}
-                    onChange={(e) => setNewProfEmail(e.target.value)}
+                    onChange={(e) => {
+                      setNewProfEmail(e.target.value)
+                      if (newProfMsg) {
+                        setNewProfMsg('')
+                        setNewProfMsgKind('idle')
+                      }
+                    }}
                     className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white p-2 text-sm shadow-sm"
-                    placeholder="colega@local.dev"
+                    placeholder="usuarioteste@dev.com"
+                    autoComplete="off"
                   />
                 </div>
                 <div>
                   <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Nome</label>
                   <input
                     value={newProfNome}
-                    onChange={(e) => setNewProfNome(e.target.value)}
+                    onChange={(e) => {
+                      setNewProfNome(e.target.value)
+                      if (newProfMsg) {
+                        setNewProfMsg('')
+                        setNewProfMsgKind('idle')
+                      }
+                    }}
                     className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white p-2 text-sm shadow-sm"
                     placeholder="Nome completo"
+                    autoComplete="off"
                   />
                 </div>
                 <div>
@@ -909,6 +966,7 @@ export function DevSandboxPage() {
                     onChange={(e) => setNewProfRegistro(e.target.value)}
                     className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white p-2 text-sm shadow-sm"
                     placeholder="CRM / COREN"
+                    autoComplete="off"
                   />
                 </div>
                 <div>
@@ -916,24 +974,45 @@ export function DevSandboxPage() {
                   <input
                     type="password"
                     value={newProfPassword}
-                    onChange={(e) => setNewProfPassword(e.target.value)}
+                    onChange={(e) => {
+                      setNewProfPassword(e.target.value)
+                      if (newProfMsg) {
+                        setNewProfMsg('')
+                        setNewProfMsgKind('idle')
+                      }
+                    }}
                     className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white p-2 text-sm shadow-sm"
-                    placeholder="********"
+                    placeholder="mínimo 8 caracteres"
+                    autoComplete="new-password"
                   />
                 </div>
                 <div className="sm:col-span-2 lg:col-span-4 flex flex-wrap items-center gap-2">
                   <button
-                    type="button"
-                    disabled={newProfBusy || newProfPassword.length < 8 || newProfNome.trim().length < 2 || !newProfEmail.trim()}
-                    onClick={() => void handleCreateProfissional()}
+                    type="submit"
+                    disabled={newProfBusy}
                     className="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-emerald-800 disabled:opacity-50"
                   >
                     {newProfBusy ? 'Criando…' : 'Criar profissional'}
                   </button>
+                  {newProfFormHint && !newProfBusy && (
+                    <p className="text-xs font-medium text-amber-800">{newProfFormHint}</p>
+                  )}
                 </div>
-              </div>
+              </form>
             )}
-            {newProfMsg && <p className="mt-3 text-xs font-medium text-slate-800 whitespace-pre-wrap">{newProfMsg}</p>}
+            {newProfMsg && (
+              <p
+                className={`mt-3 rounded-xl border px-3 py-2 text-xs font-semibold whitespace-pre-wrap ${
+                  newProfMsgKind === 'success'
+                    ? 'border-emerald-200 bg-emerald-50 text-emerald-900'
+                    : 'border-rose-200 bg-rose-50 text-rose-900'
+                }`}
+                role="status"
+                aria-live="polite"
+              >
+                {newProfMsg}
+              </p>
+            )}
           </div>
 
           <div className="rounded-2xl border border-dashed border-rose-200 bg-rose-50/40 p-5">

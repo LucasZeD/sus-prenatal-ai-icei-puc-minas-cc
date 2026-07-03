@@ -1,7 +1,6 @@
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
-/** Compact prose-like styles without @tailwindcss/typography (Livia chat + DevTools). */
 const mdShell =
   'leading-relaxed text-slate-800 ' +
   '[&_p]:mb-3 [&_p:last-child]:mb-0 ' +

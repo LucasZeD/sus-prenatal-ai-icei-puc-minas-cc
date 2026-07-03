@@ -1,5 +1,10 @@
-import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { AssistantMarkdown } from './AssistantMarkdown.js'
+import { LiviaAssistantMessageActions } from './LiviaAssistantMessageActions.js'
+import { LiviaUserMessageActions } from './LiviaUserMessageActions.js'
+import { LiviaRagLivePreview, type RagChunkRow } from './LiviaRagSourcesPanel.js'
+import { LiviaRagSourcesModal } from './LiviaRagSourcesModal.js'
+import { LiviaSuggestionCollapsible } from './LiviaSuggestionCollapsible.js'
 import { useAuth } from '../context/AuthContext.js'
 import { getApiBaseUrl } from '../lib/apiBase.js'
 import { readNdjsonStream } from '../lib/readNdjsonStream.js'
@@ -20,6 +25,11 @@ function coerceLlmProvider(v: unknown): LlmProvider {
 
 /** Persistência só no browser (mesma aba); sem backend. Sobrevive a F5; some ao fechar a aba ou ao sair. */
 const LIVIA_SESSION_KEY = 'prenatal_livia_chat_v1'
+
+const CONVERSATION_HISTORY_MAX_TURNS = 10
+const CONVERSATION_HISTORY_MAX_CHARS = 4000
+
+type ConversationTurnPayload = { role: 'user' | 'assistant'; content: string }
 
 function defaultWelcomeMessages(): ChatMsg[] {
   return [
@@ -51,17 +61,32 @@ function isChatMsg(x: unknown): x is ChatMsg {
   return false
 }
 
-function sessionKeyForUser(emailBucket: string): string {
+export type LiviaClinicalIds = {
+  pacienteId?: string
+  gestacaoId?: string
+  consultaId?: string
+}
+
+function clinicalScopeKey(ids: LiviaClinicalIds): string {
+  const { consultaId, gestacaoId, pacienteId } = ids
+  if (consultaId && isUuid(consultaId)) return `consulta:${consultaId}`
+  if (gestacaoId && isUuid(gestacaoId)) return `gestacao:${gestacaoId}`
+  if (pacienteId && isUuid(pacienteId)) return `paciente:${pacienteId}`
+  return 'global'
+}
+
+function sessionKeyForUser(emailBucket: string, clinicalScope: string): string {
   const b = emailBucket.trim().toLowerCase() || 'guest'
-  return `${LIVIA_SESSION_KEY}::${b}`
+  return `${LIVIA_SESSION_KEY}::${b}::${clinicalScope}`
 }
 
 function loadLiviaSessionFromStorage(
   emailBucket: string,
+  clinicalScope: string,
 ): { messages: ChatMsg[]; inputText: string; thinkOn: boolean; llmProvider: LlmProvider } | null {
   if (typeof window === 'undefined') return null
   try {
-    const raw = sessionStorage.getItem(sessionKeyForUser(emailBucket))
+    const raw = sessionStorage.getItem(sessionKeyForUser(emailBucket, clinicalScope))
     if (!raw) return null
     const data = JSON.parse(raw) as unknown
     if (!data || typeof data !== 'object') return null
@@ -84,11 +109,12 @@ function persistLiviaSession(
   thinkOn: boolean,
   llmProvider: LlmProvider,
   emailBucket: string,
+  clinicalScope: string,
 ) {
   if (typeof window === 'undefined') return
   try {
     sessionStorage.setItem(
-      sessionKeyForUser(emailBucket),
+      sessionKeyForUser(emailBucket, clinicalScope),
       JSON.stringify({ messages, inputText, thinkOn, llmProvider }),
     )
   } catch {
@@ -96,17 +122,34 @@ function persistLiviaSession(
   }
 }
 
-type RagChunkRow = {
-  id?: string
-  title?: string
-  text?: string
-  source_file?: string
-  /** Provenance from clinical-ai retrieve(): id | file | collection (JSONL rows share one filename). */
-  source_citation?: string
-  /** Citation line: arquivo (Autor, ano) — definido pelo clinical-ai. */
-  citation_line?: string
-  retrieval_rank?: number
-  score?: number
+function truncateHistoryText(s: string, max = CONVERSATION_HISTORY_MAX_CHARS): string {
+  const t = s.trim()
+  if (t.length <= max) return t
+  return `${t.slice(0, max)}…`
+}
+
+/** Turnos anteriores para o LLM (exclui boas-vindas e mensagens após `excludeFromEnd`). */
+function deriveConversationHistory(messages: ChatMsg[], excludeFromEnd = 0): ConversationTurnPayload[] {
+  const hasUser = messages.some((m) => m.kind === 'user')
+  const filtered = messages.filter((m, i) => {
+    if (!hasUser && i === 0 && m.kind === 'assistant') return false
+    return true
+  })
+  const slice = excludeFromEnd > 0 ? filtered.slice(0, -excludeFromEnd) : filtered
+  const turns: ConversationTurnPayload[] = []
+  for (const m of slice) {
+    if (m.kind === 'user') {
+      turns.push({ role: 'user', content: truncateHistoryText(m.text) })
+    } else {
+      turns.push({ role: 'assistant', content: truncateHistoryText(m.content) })
+    }
+  }
+  const maxMessages = CONVERSATION_HISTORY_MAX_TURNS * 2
+  return turns.slice(-maxMessages)
+}
+
+function isAbortError(e: unknown): boolean {
+  return e instanceof DOMException && e.name === 'AbortError'
 }
 
 type ChatMsg =
@@ -166,12 +209,6 @@ function asRagChunks(v: unknown): RagChunkRow[] {
   return v.filter((x) => x && typeof x === 'object') as RagChunkRow[]
 }
 
-export type LiviaClinicalIds = {
-  pacienteId?: string
-  gestacaoId?: string
-  consultaId?: string
-}
-
 export function LiviaAssistantPanel({
   className = '',
   pacienteId,
@@ -181,13 +218,23 @@ export function LiviaAssistantPanel({
 }: LiviaClinicalIds & { className?: string; onDesktopPanelHide?: () => void }) {
   const { token, profissional, authFetch } = useAuth()
   const emailBucket = (profissional?.email ?? '').trim()
-  const [inputText, setInputText] = useState(() => loadLiviaSessionFromStorage(emailBucket)?.inputText ?? '')
+  const clinicalScope = useMemo(
+    () => clinicalScopeKey({ pacienteId, gestacaoId, consultaId }),
+    [pacienteId, gestacaoId, consultaId],
+  )
+  const [inputText, setInputText] = useState(
+    () => loadLiviaSessionFromStorage(emailBucket, clinicalScope)?.inputText ?? '',
+  )
   const [busy, setBusy] = useState(false)
-  const [thinkOn, setThinkOn] = useState(() => loadLiviaSessionFromStorage(emailBucket)?.thinkOn ?? false)
-  const [llmProvider, setLlmProvider] = useState<LlmProvider>(() => loadLiviaSessionFromStorage(emailBucket)?.llmProvider ?? 'ollama')
+  const [thinkOn, setThinkOn] = useState(
+    () => loadLiviaSessionFromStorage(emailBucket, clinicalScope)?.thinkOn ?? false,
+  )
+  const [llmProvider, setLlmProvider] = useState<LlmProvider>(
+    () => loadLiviaSessionFromStorage(emailBucket, clinicalScope)?.llmProvider ?? 'ollama',
+  )
   const [phase, setPhase] = useState<string>('')
   const [messages, setMessages] = useState<ChatMsg[]>(() => {
-    const s = loadLiviaSessionFromStorage(emailBucket)
+    const s = loadLiviaSessionFromStorage(emailBucket, clinicalScope)
     return s?.messages ?? defaultWelcomeMessages()
   })
   const [suggestionChips, setSuggestionChips] = useState<string[]>(SUGESTOES)
@@ -204,9 +251,13 @@ export function LiviaAssistantPanel({
   } | null>(null)
   /** Feedback curto após copiar texto para a área de transferência */
   const [copyFlashId, setCopyFlashId] = useState<string | null>(null)
+  /** Modal de fontes RAG (não persiste em sessionStorage). */
+  const [ragModal, setRagModal] = useState<{ open: boolean; chunks: RagChunkRow[] } | null>(null)
   /** Banner transitório quando o backend devolve 429 por saturação da IA (LLM/clinical-ai). */
   const [busyNotice, setBusyNotice] = useState<string | null>(null)
   const busyNoticeTimerRef = useRef<number | null>(null)
+  const abortRef = useRef<AbortController | null>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const showBusyNotice = useCallback((msg: string) => {
     if (busyNoticeTimerRef.current !== null) {
       window.clearTimeout(busyNoticeTimerRef.current)
@@ -256,14 +307,54 @@ export function LiviaAssistantPanel({
   const clearChat = useCallback(() => {
     if (busy) return
     setMessages(defaultWelcomeMessages())
+    setInputText('')
     setLive(null)
     setPhase('')
+    setRagModal(null)
   }, [busy])
+
+  const cancelPendingQuestion = useCallback(() => {
+    abortRef.current?.abort()
+  }, [])
+
+  const openRagModal = useCallback((chunks: RagChunkRow[]) => {
+    if (chunks.length === 0) return
+    setRagModal({ open: true, chunks })
+  }, [])
+
+  const closeRagModal = useCallback(() => {
+    setRagModal(null)
+  }, [])
+
+  const lastAssistantIndex = useMemo(
+    () => messages.reduce((acc, m, i) => (m.kind === 'assistant' ? i : acc), -1),
+    [messages],
+  )
+
+  const lastUserIndex = useMemo(
+    () => messages.reduce((acc, m, i) => (m.kind === 'user' ? i : acc), -1),
+    [messages],
+  )
+
+  const isWelcomeMessage = useCallback(
+    (i: number) => i === 0 && messages[0]?.kind === 'assistant' && !messages.some((m) => m.kind === 'user'),
+    [messages],
+  )
+
+  const isLastAssistant = useCallback(
+    (i: number) => i === lastAssistantIndex && !live,
+    [lastAssistantIndex, live],
+  )
+
+  const isLastUser = useCallback(
+    (i: number) => i === lastUserIndex && !live && !busy,
+    [lastUserIndex, live, busy],
+  )
 
   const prevTokenRef = useRef(token)
   useEffect(() => {
-    persistLiviaSession(messages, inputText, thinkOn, llmProvider, emailBucket)
-  }, [messages, inputText, thinkOn, llmProvider, emailBucket])
+    persistLiviaSession(messages, inputText, thinkOn, llmProvider, emailBucket, clinicalScope)
+  }, [messages, inputText, thinkOn, llmProvider, emailBucket, clinicalScope])
 
   useEffect(() => {
     const base = getApiBaseUrl()
@@ -339,7 +430,7 @@ export function LiviaAssistantPanel({
         const keys = Object.keys(sessionStorage).filter((k) => k.startsWith(`${LIVIA_SESSION_KEY}::`))
         for (const k of keys) sessionStorage.removeItem(k)
       } catch {
-        sessionStorage.removeItem(sessionKeyForUser(emailBucket))
+        sessionStorage.removeItem(sessionKeyForUser(emailBucket, clinicalScope))
       }
       setMessages(defaultWelcomeMessages())
       setInputText('')
@@ -348,7 +439,7 @@ export function LiviaAssistantPanel({
       setLive(null)
       setPhase('')
     }
-  }, [token, emailBucket])
+  }, [token, emailBucket, clinicalScope])
 
   const prevEmailBucketRef = useRef<string | null>(null)
   useEffect(() => {
@@ -358,203 +449,324 @@ export function LiviaAssistantPanel({
     }
     if (prevEmailBucketRef.current === emailBucket) return
     prevEmailBucketRef.current = emailBucket
-    const s = loadLiviaSessionFromStorage(emailBucket)
+    const s = loadLiviaSessionFromStorage(emailBucket, clinicalScope)
     setMessages(s?.messages ?? defaultWelcomeMessages())
     setInputText(s?.inputText ?? '')
     setThinkOn(s?.thinkOn ?? false)
     setLlmProvider(s?.llmProvider ?? 'ollama')
     setLive(null)
     setPhase('')
-  }, [emailBucket])
+  }, [emailBucket, clinicalScope])
 
-  async function handleSend(e: FormEvent) {
-    e.preventDefault()
-    const q = inputText.trim()
-    if (!q || busy) return
-    if (!token.trim()) {
-      setMessages((m) => [
-        ...m,
-        { kind: 'assistant', content: 'Faça login para usar o assistente.', chunks: [], thinkWasOn: false },
-      ])
+  const prevClinicalScopeRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (prevClinicalScopeRef.current === null) {
+      prevClinicalScopeRef.current = clinicalScope
       return
     }
-
-    setBusy(true)
-    setPhase('Enviando pergunta…')
+    if (prevClinicalScopeRef.current === clinicalScope) return
+    prevClinicalScopeRef.current = clinicalScope
+    const s = loadLiviaSessionFromStorage(emailBucket, clinicalScope)
+    setMessages(s?.messages ?? defaultWelcomeMessages())
+    setInputText(s?.inputText ?? '')
+    setThinkOn(s?.thinkOn ?? false)
+    setLlmProvider(s?.llmProvider ?? 'ollama')
     setLive(null)
-    setMessages((m) => [...m, { kind: 'user', text: q }])
+    setPhase('')
+    setRagModal(null)
+  }, [clinicalScope, emailBucket])
 
-    let thinkingAcc = ''
-    let contentAcc = ''
-    let chunksAcc: RagChunkRow[] = []
-    let thinkEff = false
-    let streamNote = ''
-
-    try {
-      const streamBody: Record<string, unknown> = { question: q, think: thinkOn, llm_provider: llmProvider }
-      const canClinicalContext =
-        (consultaId && isUuid(consultaId)) || (gestacaoId && isUuid(gestacaoId))
-      if (canClinicalContext) {
-        setPhase('Montando contexto clínico…')
-        try {
-          const ctxRes = await authFetch('/api/v1/clinical/livia/context', {
-            method: 'POST',
-            body: JSON.stringify({
-              question: q,
-              ...(pacienteId && isUuid(pacienteId) ? { paciente_id: pacienteId } : {}),
-              ...(gestacaoId && isUuid(gestacaoId) ? { gestacao_id: gestacaoId } : {}),
-              ...(consultaId && isUuid(consultaId) ? { consulta_id: consultaId } : {}),
-            }),
-          })
-          if (ctxRes.ok) {
-            const ctx = (await ctxRes.json()) as Record<string, unknown>
-            const gc = ctx.gestacao_context
-            const ecc = ctx.consulta_escriba_context
-            if (typeof gc === 'string' && gc.trim()) streamBody.gestacao_context = gc
-            if (typeof ecc === 'string' && ecc.trim()) streamBody.consulta_escriba_context = ecc
-          } else {
-            let ctxBody: Record<string, unknown> = {}
-            try {
-              ctxBody = (await ctxRes.json()) as Record<string, unknown>
-            } catch {
-              ctxBody = {}
-            }
-            if (isAiBusyError(ctxBody, ctxRes.status)) {
-              showBusyNotice(AI_BUSY_MESSAGE)
-              setPhase('IA ocupada — seguindo só com cartilhas de referência.')
-            } else {
-              setPhase('Prontuário indisponível; segue só com cartilhas de referência.')
-            }
-          }
-        } catch {
-          setPhase('Falha ao carregar o prontuário; segue só com cartilhas de referência.')
-        }
-      }
-
-      const res = await authFetch('/api/v1/dev/mcp/test/direct-question-stream', {
-        method: 'POST',
-        headers: { Accept: 'application/x-ndjson' },
-        body: JSON.stringify(streamBody),
-      })
-
-      if (!res.ok) {
-        let body: Record<string, unknown> = {}
-        try {
-          body = (await res.json()) as Record<string, unknown>
-        } catch {
-          body = {}
-        }
-        const errMsg = errorTextFromBody(body, res.status)
-        if (isAiBusyError(body, res.status)) {
-          showBusyNotice(AI_BUSY_MESSAGE)
-          setMessages((m) => [
-            ...m,
-            { kind: 'assistant', content: AI_BUSY_MESSAGE, chunks: [], thinkWasOn: thinkOn },
-          ])
-          return
-        }
+  const sendQuestion = useCallback(
+    async (q: string, opts?: { historyFromMessages?: ChatMsg[] }) => {
+      const trimmed = q.trim()
+      if (!trimmed || busy) return
+      if (!token.trim()) {
         setMessages((m) => [
           ...m,
-          { kind: 'assistant', content: `Erro: ${errMsg}`, chunks: [], thinkWasOn: thinkOn },
+          { kind: 'assistant', content: 'Faça login para usar o assistente.', chunks: [], thinkWasOn: false },
         ])
         return
       }
 
-      setLive({ chunks: [], thinking: '', content: '', thinkEnabled: thinkOn })
-      setPhase('Consultando cartilhas e preparando a resposta…')
+      const historyBase = opts?.historyFromMessages ?? messages
+      const conversationHistory = deriveConversationHistory(historyBase)
+      const ac = new AbortController()
+      abortRef.current = ac
+      let gotFinalResponse = false
+      let wasCancelled = false
 
-      await readNdjsonStream(
-        res,
-        (row) => {
-          const t = row.type
-          if (t === 'pipeline') {
-            chunksAcc = asRagChunks(row.rag_chunks)
-            thinkEff = Boolean(row.think_enabled)
-            streamNote = typeof row.stream_note_pt === 'string' ? row.stream_note_pt : ''
-            const rt = row.rag_timing_ms
-            let tempoBusca = ''
-            if (rt && typeof rt === 'object') {
-              const o = rt as Record<string, unknown>
-              const tot = typeof o.retrieve_total_ms === 'number' ? o.retrieve_total_ms : null
-              if (tot != null && tot > 0) tempoBusca += ` · busca ~${Math.round(tot / 100) / 10}s`
-            }
-            const nTrechos = typeof row.n_rag_chunks === 'number' ? row.n_rag_chunks : chunksAcc.length
-            setPhase(
-              `${nTrechos} trecho(s) das cartilhas selecionado(s) · raciocínio aprofundado ${thinkEff ? 'ligado' : 'desligado'}${tempoBusca}`,
-            )
-            setLive({
-              chunks: chunksAcc,
-              thinking: thinkingAcc,
-              content: contentAcc,
-              thinkEnabled: thinkEff,
-              note: streamNote,
-            })
-            return
-          }
-          if (t === 'ollama') {
-            setPhase('Redigindo resposta…')
-            if (typeof row.thinking === 'string' && row.thinking) thinkingAcc += row.thinking
-            if (typeof row.content === 'string' && row.content) {
-              const rep = row.content_replace === true
-              if (rep) contentAcc = row.content
-              else contentAcc += row.content
-            }
-            setLive({
-              chunks: chunksAcc,
-              thinking: thinkingAcc,
-              content: contentAcc,
-              thinkEnabled: thinkEff,
-              note: streamNote,
-            })
-            return
-          }
-          if (t === 'error') {
-            const dRaw = typeof row.detail === 'string' ? row.detail : 'Falha na geração da resposta'
-            const d = redactSecretsInClientMessage(dRaw)
-            setPhase(`Erro: ${d}`)
-            setMessages((m) => [
-              ...m,
-              { kind: 'assistant', content: `Não foi possível concluir a resposta: ${d}`, chunks: chunksAcc, thinkWasOn: thinkEff },
-            ])
-            setLive(null)
-            return
-          }
-          if (t === 'done') {
-            setPhase('Concluído')
-            const emptyVisible =
-              !contentAcc.trim() &&
-              thinkEff &&
-              thinkingAcc.trim().length > 400
-                ? 'Não foi possível exibir a resposta escrita: com **raciocínio aprofundado** ligado, o assistente dedicou todo o espaço à análise interna e não chegou a redigir o texto clínico. Desative **raciocínio aprofundado** no cabeçalho e envie a pergunta de novo, de preferência de forma mais objetiva.'
-                : !contentAcc.trim()
-                  ? 'Não houve texto de resposta. Reformule a pergunta ou tente novamente.'
-                  : contentAcc.trim()
-            setMessages((m) => [
-              ...m,
-              {
-                kind: 'assistant',
-                content: emptyVisible,
-                chunks: chunksAcc,
-                thinking: thinkingAcc.trim() || undefined,
-                thinkWasOn: thinkEff,
-              },
-            ])
-            setLive(null)
-          }
-        },
-      )
-    } catch {
-      setMessages((m) => [
-        ...m,
-        { kind: 'assistant', content: 'Falha de comunicação com o assistente. Verifique a conexão e tente novamente.', chunks: [], thinkWasOn: thinkOn },
-      ])
-      setPhase('')
+      setBusy(true)
+      setPhase('Enviando pergunta…')
       setLive(null)
-    } finally {
-      setBusy(false)
-      setPhase('')
-      setInputText('')
+      setRagModal(null)
+      setMessages((m) => [...m, { kind: 'user', text: trimmed }])
+
+      let thinkingAcc = ''
+      let contentAcc = ''
+      let chunksAcc: RagChunkRow[] = []
+      let thinkEff = false
+      let streamNote = ''
+
+      try {
+        const streamBody: Record<string, unknown> = {
+          question: trimmed,
+          think: thinkOn,
+          llm_provider: llmProvider,
+        }
+        if (conversationHistory.length > 0) {
+          streamBody.conversation_history = conversationHistory
+        }
+        const canClinicalContext =
+          (consultaId && isUuid(consultaId)) || (gestacaoId && isUuid(gestacaoId))
+        if (canClinicalContext) {
+          setPhase('Montando contexto clínico…')
+          try {
+            const ctxRes = await authFetch('/api/v1/clinical/livia/context', {
+              method: 'POST',
+              signal: ac.signal,
+              body: JSON.stringify({
+                question: trimmed,
+                ...(pacienteId && isUuid(pacienteId) ? { paciente_id: pacienteId } : {}),
+                ...(gestacaoId && isUuid(gestacaoId) ? { gestacao_id: gestacaoId } : {}),
+                ...(consultaId && isUuid(consultaId) ? { consulta_id: consultaId } : {}),
+              }),
+            })
+            if (ctxRes.ok) {
+              const ctx = (await ctxRes.json()) as Record<string, unknown>
+              const gc = ctx.gestacao_context
+              const ecc = ctx.consulta_escriba_context
+              if (typeof gc === 'string' && gc.trim()) streamBody.gestacao_context = gc
+              if (typeof ecc === 'string' && ecc.trim()) streamBody.consulta_escriba_context = ecc
+            } else {
+              let ctxBody: Record<string, unknown> = {}
+              try {
+                ctxBody = (await ctxRes.json()) as Record<string, unknown>
+              } catch {
+                ctxBody = {}
+              }
+              if (isAiBusyError(ctxBody, ctxRes.status)) {
+                showBusyNotice(AI_BUSY_MESSAGE)
+                setPhase('IA ocupada — seguindo só com cartilhas de referência.')
+              } else {
+                setPhase('Prontuário indisponível; segue só com cartilhas de referência.')
+              }
+            }
+          } catch (e) {
+            if (isAbortError(e)) throw e
+            setPhase('Falha ao carregar o prontuário; segue só com cartilhas de referência.')
+          }
+        }
+
+        const res = await authFetch('/api/v1/dev/mcp/test/direct-question-stream', {
+          method: 'POST',
+          headers: { Accept: 'application/x-ndjson' },
+          signal: ac.signal,
+          body: JSON.stringify(streamBody),
+        })
+
+        if (!res.ok) {
+          let body: Record<string, unknown> = {}
+          try {
+            body = (await res.json()) as Record<string, unknown>
+          } catch {
+            body = {}
+          }
+          const errMsg = errorTextFromBody(body, res.status)
+          if (isAiBusyError(body, res.status)) {
+            showBusyNotice(AI_BUSY_MESSAGE)
+            setMessages((m) => [
+              ...m,
+              { kind: 'assistant', content: AI_BUSY_MESSAGE, chunks: [], thinkWasOn: thinkOn },
+            ])
+            gotFinalResponse = true
+            return
+          }
+          setMessages((m) => [
+            ...m,
+            { kind: 'assistant', content: `Erro: ${errMsg}`, chunks: [], thinkWasOn: thinkOn },
+          ])
+          gotFinalResponse = true
+          return
+        }
+
+        setLive({ chunks: [], thinking: '', content: '', thinkEnabled: thinkOn })
+        setPhase('Consultando cartilhas e preparando a resposta…')
+
+        await readNdjsonStream(
+          res,
+          (row) => {
+            const t = row.type
+            if (t === 'pipeline') {
+              chunksAcc = asRagChunks(row.rag_chunks)
+              thinkEff = Boolean(row.think_enabled)
+              streamNote = typeof row.stream_note_pt === 'string' ? row.stream_note_pt : ''
+              const rt = row.rag_timing_ms
+              let tempoBusca = ''
+              if (rt && typeof rt === 'object') {
+                const o = rt as Record<string, unknown>
+                const tot = typeof o.retrieve_total_ms === 'number' ? o.retrieve_total_ms : null
+                if (tot != null && tot > 0) tempoBusca += ` · busca ~${Math.round(tot / 100) / 10}s`
+              }
+              const nTrechos = typeof row.n_rag_chunks === 'number' ? row.n_rag_chunks : chunksAcc.length
+              setPhase(
+                `${nTrechos} trecho(s) das cartilhas selecionado(s) · raciocínio aprofundado ${thinkEff ? 'ligado' : 'desligado'}${tempoBusca}`,
+              )
+              setLive({
+                chunks: chunksAcc,
+                thinking: thinkingAcc,
+                content: contentAcc,
+                thinkEnabled: thinkEff,
+                note: streamNote,
+              })
+              return
+            }
+            if (t === 'ollama') {
+              setPhase('Redigindo resposta…')
+              if (typeof row.thinking === 'string' && row.thinking) thinkingAcc += row.thinking
+              if (typeof row.content === 'string' && row.content) {
+                const rep = row.content_replace === true
+                if (rep) contentAcc = row.content
+                else contentAcc += row.content
+              }
+              setLive({
+                chunks: chunksAcc,
+                thinking: thinkingAcc,
+                content: contentAcc,
+                thinkEnabled: thinkEff,
+                note: streamNote,
+              })
+              return
+            }
+            if (t === 'error') {
+              const dRaw = typeof row.detail === 'string' ? row.detail : 'Falha na geração da resposta'
+              const d = redactSecretsInClientMessage(dRaw)
+              setPhase(`Erro: ${d}`)
+              setMessages((m) => [
+                ...m,
+                {
+                  kind: 'assistant',
+                  content: `Não foi possível concluir a resposta: ${d}`,
+                  chunks: chunksAcc,
+                  thinkWasOn: thinkEff,
+                },
+              ])
+              setLive(null)
+              gotFinalResponse = true
+              return
+            }
+            if (t === 'done') {
+              setPhase('Concluído')
+              const emptyVisible =
+                !contentAcc.trim() &&
+                thinkEff &&
+                thinkingAcc.trim().length > 400
+                  ? 'Não foi possível exibir a resposta escrita: com **raciocínio aprofundado** ligado, o assistente dedicou todo o espaço à análise interna e não chegou a redigir o texto clínico. Desative **raciocínio aprofundado** no cabeçalho e envie a pergunta de novo, de preferência de forma mais objetiva.'
+                  : !contentAcc.trim()
+                    ? 'Não houve texto de resposta. Reformule a pergunta ou tente novamente.'
+                    : contentAcc.trim()
+              setMessages((m) => [
+                ...m,
+                {
+                  kind: 'assistant',
+                  content: emptyVisible,
+                  chunks: chunksAcc,
+                  thinking: thinkingAcc.trim() || undefined,
+                  thinkWasOn: thinkEff,
+                },
+              ])
+              setLive(null)
+              gotFinalResponse = true
+            }
+          },
+          undefined,
+          ac.signal,
+        )
+      } catch (e) {
+        if (isAbortError(e)) {
+          wasCancelled = true
+          setMessages((m) => {
+            const last = m[m.length - 1]
+            if (!gotFinalResponse && last?.kind === 'user' && last.text === trimmed) {
+              return m.slice(0, -1)
+            }
+            return m
+          })
+          setInputText(trimmed)
+          setLive(null)
+          setPhase('')
+          return
+        }
+        setMessages((m) => [
+          ...m,
+          {
+            kind: 'assistant',
+            content: 'Falha de comunicação com o assistente. Verifique a conexão e tente novamente.',
+            chunks: [],
+            thinkWasOn: thinkOn,
+          },
+        ])
+        setPhase('')
+        setLive(null)
+      } finally {
+        abortRef.current = null
+        setBusy(false)
+        if (!wasCancelled) setPhase('')
+      }
+    },
+    [
+      busy,
+      thinkOn,
+      llmProvider,
+      token,
+      authFetch,
+      pacienteId,
+      gestacaoId,
+      consultaId,
+      messages,
+      showBusyNotice,
+    ],
+  )
+
+  const handleRegenerate = useCallback(() => {
+    if (busy) return
+    const lastAsstIdx = messages.map((m) => m.kind).lastIndexOf('assistant')
+    if (lastAsstIdx < 0) return
+    let userIdx = -1
+    for (let j = lastAsstIdx - 1; j >= 0; j--) {
+      if (messages[j].kind === 'user') {
+        userIdx = j
+        break
+      }
     }
+    if (userIdx < 0) return
+    const userMsg = messages[userIdx]
+    if (userMsg.kind !== 'user') return
+    const q = userMsg.text
+    const historyBase = messages.slice(0, userIdx)
+    setMessages(historyBase)
+    void sendQuestion(q, { historyFromMessages: historyBase })
+  }, [busy, messages, sendQuestion])
+
+  const handleEditQuestion = useCallback(
+    (userIdx: number) => {
+      if (busy) return
+      const msg = messages[userIdx]
+      if (msg.kind !== 'user') return
+      setMessages((m) => m.slice(0, userIdx))
+      setInputText(msg.text)
+      setLive(null)
+      setPhase('')
+      setRagModal(null)
+      window.requestAnimationFrame(() => inputRef.current?.focus())
+    },
+    [busy, messages],
+  )
+
+  function handleSend(e: FormEvent) {
+    e.preventDefault()
+    const q = inputText.trim()
+    if (!q || busy) return
+    void sendQuestion(q).finally(() => setInputText(''))
   }
 
   return (
@@ -672,170 +884,105 @@ export function LiviaAssistantPanel({
         <div className="mt-auto space-y-3">
           {messages.map((b, i) =>
             b.kind === 'user' ? (
-              <div key={i} className="max-w-[95%] ml-auto rounded-2xl rounded-tr-sm bg-rose-600 px-4 py-3 text-sm leading-relaxed text-white shadow-sm">
-                <p className="whitespace-pre-wrap">{b.text}</p>
+              <div key={i} className="max-w-[95%] ml-auto">
+                <div className="rounded-2xl rounded-tr-sm bg-rose-600 px-4 py-3 text-sm leading-relaxed text-white shadow-sm">
+                  <p className="whitespace-pre-wrap">{b.text}</p>
+                </div>
+                {isLastUser(i) ? (
+                  <LiviaUserMessageActions
+                    onEdit={() => handleEditQuestion(i)}
+                    editDisabled={busy}
+                  />
+                ) : null}
               </div>
             ) : (
-              <div
-                key={i}
-                className="max-w-[95%] mr-auto rounded-2xl rounded-tl-sm border border-slate-100 bg-white px-4 py-3 text-sm leading-relaxed text-slate-700 shadow-sm"
-              >
-                {b.chunks.length > 0 ? (
-                  <div className="mb-3 rounded-xl border border-emerald-200 bg-emerald-50/60 p-3">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-emerald-800">
-                      Trechos das cartilhas usados como referência
-                    </p>
-                    <ul className="mt-2 max-h-40 space-y-2 overflow-y-auto text-[11px] text-emerald-950">
-                      {b.chunks.map((c, j) => {
-                        const cite =
-                          (typeof c.citation_line === 'string' && c.citation_line.trim()
-                            ? c.citation_line.trim()
-                            : null) ??
-                          (typeof c.source_file === 'string' && c.source_file.trim()
-                            ? c.source_file.trim()
-                            : null) ??
-                          (typeof c.source_citation === 'string' && c.source_citation.trim()
-                            ? c.source_citation.trim()
-                            : null)
-                        return (
-                          <li key={`${String(c.id)}-${j}`} className="border-l-2 border-emerald-400 pl-2">
-                            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-                              <span className="font-bold text-emerald-950">[{j + 1}]</span>
-                              {cite ? (
-                                <span className="font-medium leading-snug text-emerald-900">{cite}</span>
-                              ) : null}
-                            </div>
-                            <pre className="mt-1 max-h-24 overflow-auto whitespace-pre-wrap font-sans text-[10px] text-emerald-900/95">
-                              {(c.text ?? '').slice(0, 1200)}
-                              {(c.text ?? '').length > 1200 ? '…' : ''}
-                            </pre>
-                          </li>
-                        )
-                      })}
-                    </ul>
-                  </div>
-                ) : null}
-                {b.thinkWasOn && b.thinking ? (
-                  <details className="mb-3 rounded-xl border border-slate-200 bg-slate-50 p-2">
-                    <summary className="cursor-pointer text-[10px] font-black uppercase tracking-wider text-slate-500">
-                      Raciocínio interno do assistente (opcional)
-                    </summary>
-                    <pre className="mt-2 max-h-36 overflow-auto whitespace-pre-wrap font-mono text-[10px] text-slate-600">
-                      {b.thinking}
-                    </pre>
-                  </details>
-                ) : null}
-                <div className="mb-2 flex justify-end">
-                  <button
-                    type="button"
-                    onClick={() => void copyPlainText(b.content, `asst-${i}`)}
-                    disabled={!b.content.trim()}
-                    className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-600 transition-colors hover:bg-rose-50 hover:border-rose-200 hover:text-rose-900 disabled:cursor-not-allowed disabled:opacity-40"
-                  >
-                    {copyFlashId === `asst-${i}` ? 'Copiado!' : 'Copiar resposta'}
-                  </button>
+              <div key={i} className="max-w-[95%] mr-auto">
+                <div className="rounded-2xl rounded-tl-sm border border-slate-100 bg-white px-4 py-3 text-sm leading-relaxed text-slate-700 shadow-sm">
+                  <AssistantMarkdown markdown={b.content} className="text-[15px] font-medium" />
+                  {b.thinkWasOn && b.thinking ? (
+                    <details className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-2">
+                      <summary className="cursor-pointer text-[10px] font-black uppercase tracking-wider text-slate-500">
+                        Raciocínio interno do assistente (opcional)
+                      </summary>
+                      <pre className="mt-2 max-h-36 overflow-auto whitespace-pre-wrap font-mono text-[10px] text-slate-600">
+                        {b.thinking}
+                      </pre>
+                    </details>
+                  ) : null}
                 </div>
-                <AssistantMarkdown markdown={b.content} className="text-[15px] font-medium" />
+                <LiviaAssistantMessageActions
+                  content={b.content}
+                  onCopy={() => void copyPlainText(b.content, `asst-${i}`)}
+                  onShowSources={
+                    isLastAssistant(i) && b.chunks.length > 0
+                      ? () => openRagModal(b.chunks)
+                      : undefined
+                  }
+                  onRegenerate={
+                    isLastAssistant(i) && !isWelcomeMessage(i) ? handleRegenerate : undefined
+                  }
+                  copyFlashActive={copyFlashId === `asst-${i}`}
+                  showRegenerate={isLastAssistant(i) && !isWelcomeMessage(i)}
+                  showSources={isLastAssistant(i) && b.chunks.length > 0}
+                  regenerateDisabled={busy}
+                />
               </div>
             ),
           )}
 
           {live ? (
-            <div className="rounded-2xl border-2 border-dashed border-rose-200 bg-rose-50/40 p-3 text-sm shadow-inner">
-              <p className="text-[10px] font-black uppercase tracking-widest text-rose-700">Em elaboração…</p>
-              {live.note ? (
-                <p className="mt-1 text-[10px] text-amber-800/90" title={live.note}>
-                  {live.thinkEnabled
-                    ? 'Com raciocínio aprofundado ativado, o assistente pode demorar mais antes de exibir o texto clínico.'
-                    : 'Elaborando resposta com base nas cartilhas e no prontuário, quando disponível.'}
-                </p>
-              ) : null}
-              {live.chunks.length > 0 ? (
-                <div className="mt-2 rounded-lg border border-emerald-200 bg-white/80 p-2">
-                  <p className="text-[10px] font-bold uppercase text-emerald-800">Documentos de referência</p>
-                  <ul className="mt-1 max-h-32 space-y-1 overflow-y-auto text-[10px] text-emerald-900">
-                    {live.chunks.map((c, j) => {
-                      const cite =
-                        (typeof c.citation_line === 'string' && c.citation_line.trim()
-                          ? c.citation_line.trim()
-                          : null) ??
-                        (typeof c.source_file === 'string' && c.source_file.trim()
-                          ? c.source_file.trim()
-                          : null) ??
-                        (typeof c.source_citation === 'string' && c.source_citation.trim()
-                          ? c.source_citation.trim()
-                          : null)
-                      return (
-                        <li key={`lv-${String(c.id)}-${j}`} className="border-b border-emerald-100/80 py-1.5 last:border-0">
-                          <div className="flex flex-wrap items-baseline gap-x-1.5 text-[9px] font-semibold leading-snug text-emerald-950">
-                            <span>[{j + 1}]</span>
-                            {cite ? <span className="font-medium">{cite}</span> : null}
-                          </div>
-                          <p className="mt-1 line-clamp-4 font-sans text-[9px] leading-relaxed text-emerald-950/95">
-                            {(c.text ?? '').slice(0, 280)}
-                            {(c.text ?? '').length > 280 ? '…' : ''}
-                          </p>
-                        </li>
-                      )
-                    })}
-                  </ul>
-                </div>
-              ) : null}
-              {live.thinkEnabled ? (
-                <div className="mt-2">
-                  <p className="text-[10px] font-bold uppercase text-slate-500">Raciocínio interno (em elaboração)</p>
-                  <pre className="mt-1 max-h-28 overflow-auto whitespace-pre-wrap rounded bg-slate-900/90 p-2 font-mono text-[10px] text-slate-100">
-                    {live.thinking || '…'}
-                  </pre>
-                </div>
-              ) : null}
-              <div className="mt-2">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="text-[10px] font-bold uppercase text-rose-600">Resposta</p>
-                  <button
-                    type="button"
-                    onClick={() => void copyPlainText(live.content, 'live')}
-                    disabled={!live.content.trim()}
-                    className="rounded-lg border border-rose-200/80 bg-white px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-rose-800 transition-colors hover:bg-rose-100 disabled:cursor-not-allowed disabled:opacity-40"
-                  >
-                    {copyFlashId === 'live' ? 'Copiado!' : 'Copiar'}
-                  </button>
-                </div>
-                <div className="mt-1 max-h-[min(28rem,50vh)] overflow-y-auto rounded-lg border border-rose-100/80 bg-white/90 p-2">
+            <div className="max-w-[95%] mr-auto">
+              <div className="rounded-2xl border-2 border-dashed border-rose-200 bg-rose-50/40 p-3 text-sm shadow-inner">
+                <p className="text-[10px] font-black uppercase tracking-widest text-rose-700">Em elaboração…</p>
+                {live.note ? (
+                  <p className="mt-1 text-[10px] text-amber-800/90" title={live.note}>
+                    {live.thinkEnabled
+                      ? 'Com raciocínio aprofundado ativado, o assistente pode demorar mais antes de exibir o texto clínico.'
+                      : 'Elaborando resposta com base nas cartilhas e no prontuário, quando disponível.'}
+                  </p>
+                ) : null}
+                <LiviaRagLivePreview chunks={live.chunks} />
+                <div className="mt-2 max-h-[min(28rem,50vh)] overflow-y-auto rounded-lg border border-rose-100/80 bg-white/90 p-2">
                   {live.content.trim() ? (
                     <AssistantMarkdown markdown={live.content} className="text-sm font-semibold text-slate-900" />
                   ) : (
                     <span className="text-sm font-semibold text-slate-400">…</span>
                   )}
                 </div>
+                {live.thinkEnabled ? (
+                  <div className="mt-2">
+                    <p className="text-[10px] font-bold uppercase text-slate-500">Raciocínio interno (em elaboração)</p>
+                    <pre className="mt-1 max-h-28 overflow-auto whitespace-pre-wrap rounded bg-slate-900/90 p-2 font-mono text-[10px] text-slate-100">
+                      {live.thinking || '…'}
+                    </pre>
+                  </div>
+                ) : null}
               </div>
+              <LiviaAssistantMessageActions
+                content={live.content}
+                onCopy={() => void copyPlainText(live.content, 'live')}
+                onShowSources={
+                  live.chunks.length > 0 ? () => openRagModal(live.chunks) : undefined
+                }
+                copyFlashActive={copyFlashId === 'live'}
+                showRegenerate={false}
+                regenerateDisabled
+                showSources={live.chunks.length > 0}
+              />
             </div>
           ) : null}
         </div>
-
-        <div className="mt-6">
-          <p className="mb-3 text-[11px] font-bold uppercase tracking-wider text-slate-400 pl-1">Sugestões rápidas</p>
-          <ul className="flex flex-wrap gap-2">
-            {suggestionChips.map((s, idx) => (
-              <li key={`${idx}-${s.slice(0, 48)}`}>
-                <button
-                  type="button"
-                  disabled={busy}
-                  onClick={() => setInputText(s)}
-                  className="rounded-full border border-rose-200 bg-white px-4 py-2 text-[13px] font-medium text-rose-700 shadow-sm transition-colors hover:bg-rose-50 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 disabled:opacity-50"
-                >
-                  {s}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-
       </div>
 
-      <div className="shrink-0 border-t border-rose-100 bg-white p-4">
+      <div className="shrink-0 space-y-3 border-t border-rose-100 bg-white p-4">
+        <LiviaSuggestionCollapsible
+          chips={suggestionChips}
+          busy={busy}
+          onSelect={(s) => setInputText(s)}
+        />
         <form className="relative" onSubmit={(e) => void handleSend(e)}>
           <input
+            ref={inputRef}
             type="text"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
@@ -843,18 +990,38 @@ export function LiviaAssistantPanel({
             disabled={busy}
             className="block w-full rounded-2xl border-0 py-3 pl-4 pr-12 text-slate-900 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-rose-500 disabled:bg-slate-50 sm:text-sm sm:leading-6"
           />
-          <button
-            type="submit"
-            disabled={busy || !inputText.trim()}
-            className="absolute right-2 top-2 rounded-xl bg-rose-500 p-1.5 text-white shadow-sm hover:bg-rose-600 disabled:cursor-not-allowed disabled:opacity-40"
-            title="Enviar"
-          >
-            <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
-              <path d="M3.105 2.289a.75.75 0 00-.826.95l1.414 4.925A1.5 1.5 0 005.135 9.25h6.115a.75.75 0 010 1.5H5.135a1.5 1.5 0 00-1.442 1.086l-1.414 4.926a.75.75 0 00.826.95 28.896 28.896 0 0015.293-7.154.75.75 0 000-1.115A28.897 28.897 0 003.105 2.289z" />
-            </svg>
-          </button>
+          {busy ? (
+            <button
+              type="button"
+              onClick={cancelPendingQuestion}
+              className="absolute right-2 top-2 rounded-xl bg-slate-700 p-1.5 text-white shadow-sm hover:bg-slate-800"
+              aria-label="Parar geração"
+              title="Parar"
+            >
+              <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
+                <path fillRule="evenodd" d="M5.25 4.5A1.75 1.75 0 007 2.75h6a1.75 1.75 0 011.75 1.75v10.5A1.75 1.75 0 0113 16.25H7A1.75 1.75 0 005.25 14.5V4.5z" clipRule="evenodd" />
+              </svg>
+            </button>
+          ) : (
+            <button
+              type="submit"
+              disabled={!inputText.trim()}
+              className="absolute right-2 top-2 rounded-xl bg-rose-500 p-1.5 text-white shadow-sm hover:bg-rose-600 disabled:cursor-not-allowed disabled:opacity-40"
+              title="Enviar"
+            >
+              <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
+                <path d="M3.105 2.289a.75.75 0 00-.826.95l1.414 4.925A1.5 1.5 0 005.135 9.25h6.115a.75.75 0 010 1.5H5.135a1.5 1.5 0 00-1.442 1.086l-1.414 4.926a.75.75 0 00.826.95 28.896 28.896 0 0015.293-7.154.75.75 0 000-1.115A28.897 28.897 0 003.105 2.289z" />
+              </svg>
+            </button>
+          )}
         </form>
       </div>
+
+      <LiviaRagSourcesModal
+        open={ragModal?.open ?? false}
+        onClose={closeRagModal}
+        chunks={ragModal?.chunks ?? []}
+      />
     </div>
   )
 }

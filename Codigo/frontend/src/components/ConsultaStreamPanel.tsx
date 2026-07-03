@@ -4,8 +4,10 @@ import { useAuth } from '../context/AuthContext.js'
 import { getWsBaseUrl } from '../lib/apiBase.js'
 import {
   openConsultationSocket,
+  type ConsultaClinicalFieldsPatch,
   type ConsultationServerMessage,
   type ConsultationSocketHandle,
+  type DiarizedSegment,
   type StreamHistoryItem,
 } from '../lib/consultationSocket.js'
 import {
@@ -14,9 +16,9 @@ import {
   startSttMediaRecorder,
   type SttRecorderSession,
 } from '../lib/sttMediaRecorder.js'
-import { AudioLevelMeter } from './escriba/AudioLevelMeter.js'
-import { EscribaRecordingBar, type RecordingPhase } from './escriba/EscribaRecordingBar.js'
 import { EscribaStreamDiagnostics } from './escriba/EscribaStreamDiagnostics.js'
+import type { RecordingPhase } from './escriba/EscribaRecordingBar.js'
+import { MicLevelIcon } from './escriba/MicLevelIcon.js'
 import { AssistantMarkdown } from './AssistantMarkdown.js'
 
 const uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
@@ -52,6 +54,10 @@ export type ConsultaStreamPanelProps = {
   initialConsultaId?: string
   /** Espelha STT/IA para a aba de revisão da escriba. */
   onStreamTexts?: (stt: string, ia: string) => void
+  /** Pré-preenchimento estruturado da ficha (RF04). */
+  onFormPatch?: (patch: Partial<ConsultaClinicalFieldsPatch>) => void
+  /** Snapshot do prontuário em edição (rascunho não salvo) para o agente de sugestões. */
+  prontuarioDraft?: Partial<ConsultaClinicalFieldsPatch>
 }
 
 type PacienteRow = {
@@ -92,6 +98,8 @@ export function ConsultaStreamPanel({
   variant = 'embedded',
   initialConsultaId = '',
   onStreamTexts,
+  onFormPatch,
+  prontuarioDraft,
 }: ConsultaStreamPanelProps) {
   const wsBase = getWsBaseUrl()
   const { token, authFetch } = useAuth()
@@ -101,6 +109,11 @@ export function ConsultaStreamPanel({
   const [streamError, setStreamError] = useState<string | null>(null)
   const [sttText, setSttText] = useState('')
   const [iaText, setIaText] = useState('')
+  // Blocos de fala rotulados (diarização). Rótulo editável pelo profissional (human-in-the-loop).
+  const [diarized, setDiarized] = useState<DiarizedSegment[]>([])
+  // Disponibilidade (serviço no deploy) e opt-in da sessão (toggle do profissional).
+  const [diarizationAvailable, setDiarizationAvailable] = useState(false)
+  const [diarizationEnabled, setDiarizationEnabled] = useState(false)
   const [history, setHistory] = useState<StreamHistoryItem[]>([])
   const [logLines, setLogLines] = useState<string[]>([])
 
@@ -154,6 +167,14 @@ export function ConsultaStreamPanel({
   useEffect(() => {
     onStreamTexts?.(sttText, iaText)
   }, [sttText, iaText, onStreamTexts])
+
+  useEffect(() => {
+    if (!isStreamOnly || streamStatus !== 'conectado') return
+    const timer = window.setTimeout(() => {
+      socketRef.current?.sendProntuarioDraft(prontuarioDraft ?? {})
+    }, 400)
+    return () => window.clearTimeout(timer)
+  }, [isStreamOnly, streamStatus, prontuarioDraft])
 
   const pushLog = useCallback((line: string) => {
     setLogLines((prev) => [...prev.slice(-80), `${new Date().toISOString().slice(11, 19)} ${line}`])
@@ -331,9 +352,12 @@ export function ConsultaStreamPanel({
     (msg: ConsultationServerMessage) => {
       switch (msg.type) {
         case 'ready':
-          pushLog(`ready consulta=${msg.consultaId}`)
+          pushLog(`ready consulta=${msg.consultaId} diarizacao=${msg.diarizationAvailable ? 'disponível' : 'indisponível'}`)
           setStreamStatus('conectado')
           setStreamError(null)
+          setDiarizationAvailable(msg.diarizationAvailable)
+          setDiarizationEnabled(false)
+          socketRef.current?.sendDiarizationState(false)
           break
         case 'history':
           setHistory(msg.eventos)
@@ -347,6 +371,10 @@ export function ConsultaStreamPanel({
             sttRequestStarted.current = 0
           }
           break
+        case 'stt_diarized':
+          setDiarized((prev) => [...prev, ...msg.segments])
+          pushLog(`stt_diarized: ${msg.segments.length} bloco(s)`)
+          break
         case 'ia_reset':
           setIaText('')
           break
@@ -356,6 +384,10 @@ export function ConsultaStreamPanel({
         case 'ia_done':
           pushLog('ia_done')
           break
+        case 'form_patch':
+          onFormPatch?.(msg.patch)
+          pushLog(`form_patch: ${Object.keys(msg.patch).join(', ') || '(vazio)'}`)
+          break
         case 'error':
           setStreamError(msg.message)
           pushLog(`error: ${msg.message}`)
@@ -364,7 +396,7 @@ export function ConsultaStreamPanel({
           break
       }
     },
-    [pushLog, showDevMetrics],
+    [pushLog, showDevMetrics, onFormPatch],
   )
 
   const connect = useCallback(() => {
@@ -383,6 +415,9 @@ export function ConsultaStreamPanel({
     setStreamError(null)
     setSttText('')
     setIaText('')
+    setDiarized([])
+    setDiarizationAvailable(false)
+    setDiarizationEnabled(false)
     setHistory([])
     setAudioChunksSent(0)
     setAudioBytesSent(0)
@@ -413,19 +448,200 @@ export function ConsultaStreamPanel({
     }
   }, [isStreamOnly, token, consultaId, streamStatus, connect])
 
-  const apsStatusLabel = useCallback((): string => {
-    if (streamStatus === 'conectando') return 'Conectando…'
-    if (streamStatus === 'erro') return 'Erro de conexão'
-    if (recordingPhase === 'recording') return 'Ouvindo'
-    if (recordingPhase === 'paused') return 'Pausado'
-    if (streamStatus === 'conectado') return 'Pronto para gravar'
-    return 'Desconectado'
-  }, [recordingPhase, streamStatus])
-
   const sendVad = useCallback(() => {
     socketRef.current?.sendVadPause()
     pushLog('vad_pause enviado')
   }, [pushLog])
+
+  const setDiarizedRole = useCallback((index: number, role: string) => {
+    setDiarized((prev) => prev.map((seg, i) => (i === index ? { ...seg, role } : seg)))
+  }, [])
+
+  const toggleDiarization = useCallback(
+    (enabled: boolean) => {
+      setDiarizationEnabled(enabled)
+      socketRef.current?.sendDiarizationState(enabled)
+      pushLog(`diarização ${enabled ? 'ligada' : 'desligada'}`)
+    },
+    [pushLog],
+  )
+
+  const renderDiarizationToggle = () => (
+    <div className="flex items-center justify-between gap-3 rounded-2xl border border-indigo-200 bg-indigo-50/50 px-4 py-2.5">
+      <div className="flex items-center gap-2">
+        <span aria-hidden>🗣️</span>
+        <span className="text-xs font-bold text-indigo-900">Diarização (quem falou)</span>
+        {!diarizationAvailable ? (
+          <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-bold text-slate-600">
+            indisponível neste servidor
+          </span>
+        ) : null}
+      </div>
+      <label className="inline-flex cursor-pointer items-center gap-2">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-700">
+          {diarizationEnabled && diarizationAvailable ? 'Ligada' : 'Desligada'}
+        </span>
+        <input
+          type="checkbox"
+          role="switch"
+          checked={diarizationEnabled && diarizationAvailable}
+          disabled={!diarizationAvailable}
+          onChange={(e) => toggleDiarization(e.target.checked)}
+          className="h-5 w-5 rounded border-indigo-300 text-indigo-600 focus:ring-indigo-500 disabled:opacity-40"
+          aria-label="Ligar ou desligar a diarização de locutores"
+        />
+      </label>
+    </div>
+  )
+
+  const roleBadgeClass = (role: string): string => {
+    if (role === 'profissional') return 'bg-emerald-100 text-emerald-800 border-emerald-200'
+    if (role === 'gestante') return 'bg-brand-pink/15 text-brand-pink border-brand-pink/30'
+    return 'bg-slate-100 text-slate-600 border-slate-200'
+  }
+
+  const roleDisplayLabel = (seg: DiarizedSegment): string => {
+    if (seg.role === 'profissional') return 'Profissional'
+    if (seg.role === 'gestante') return 'Gestante'
+    return seg.speaker || 'Desconhecido'
+  }
+
+  const showDiarizedTranscription =
+    diarizationEnabled && diarizationAvailable && diarized.length > 0
+
+  const renderTranscriptionContent = () => {
+    if (showDiarizedTranscription) {
+      return (
+        <ul className="space-y-2">
+          {diarized.map((seg, i) => (
+            <li key={`${seg.speaker}-${i}`} className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+              <span className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-bold ${roleBadgeClass(seg.role)}`}>
+                {roleDisplayLabel(seg)}:
+              </span>
+              <select
+                value={['profissional', 'gestante'].includes(seg.role) ? seg.role : 'desconhecido'}
+                onChange={(e) => setDiarizedRole(i, e.target.value)}
+                className="shrink-0 rounded border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] font-semibold text-slate-600"
+                aria-label={`Papel do locutor ${seg.speaker}`}
+              >
+                <option value="profissional">Profissional</option>
+                <option value="gestante">Gestante</option>
+                <option value="desconhecido">Desconhecido</option>
+              </select>
+              <span className="min-w-0 flex-1 text-slate-800">{seg.text}</span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    return (
+      <p className="whitespace-pre-wrap text-slate-800">
+        {sttText || 'Aguardando fala…'}
+      </p>
+    )
+  }
+
+  const renderCompactDiarizationToggle = () => (
+    <button
+      type="button"
+      disabled={!diarizationAvailable}
+      onClick={() => toggleDiarization(!diarizationEnabled)}
+      className={`rounded-full border px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-colors disabled:opacity-40 ${
+        diarizationEnabled && diarizationAvailable
+          ? 'border-emerald-400 bg-emerald-50 text-emerald-800'
+          : 'border-slate-200 bg-slate-50 text-slate-600'
+      }`}
+      aria-pressed={diarizationEnabled && diarizationAvailable}
+      aria-label="Ligar ou desligar diarização"
+    >
+      {diarizationEnabled && diarizationAvailable ? 'Diarização ON' : 'Diarização'}
+    </button>
+  )
+
+  const escribaControlBtnClass =
+    'rounded-full border px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-colors disabled:cursor-not-allowed disabled:opacity-40'
+
+  const renderListenButton = () => {
+    const disabled = streamStatus !== 'conectado'
+    if (recordingPhase === 'idle') {
+      return (
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={() => void startMic({ deviceId: micDeviceId || undefined })}
+          className={`${escribaControlBtnClass} border-slate-200 bg-white text-slate-700 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-900`}
+        >
+          Clique para ouvir
+        </button>
+      )
+    }
+    if (recordingPhase === 'recording') {
+      return (
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={pauseMic}
+          className={`${escribaControlBtnClass} border-rose-400 bg-rose-50 text-rose-800 hover:bg-rose-100`}
+          aria-pressed
+        >
+          Ouvindo
+        </button>
+      )
+    }
+    return (
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={resumeMic}
+        className={`${escribaControlBtnClass} border-amber-400 bg-amber-50 text-amber-800 hover:bg-amber-100`}
+      >
+        Pausado
+      </button>
+    )
+  }
+
+  const renderDiarizedPanel = () =>
+    diarized.length > 0 ? (
+      <section className="rounded-3xl border border-indigo-200 bg-indigo-50/40 p-5">
+        <div className="flex items-center justify-between gap-2">
+          <h3 className="text-xs font-bold uppercase tracking-widest text-indigo-900 flex items-center gap-2">
+            <span aria-hidden>🗣️</span> Por locutor (diarização)
+          </h3>
+          <span className="text-[10px] font-medium text-indigo-700/80">Rótulo editável</span>
+        </div>
+        <p className="mt-1 text-[10px] text-indigo-700/80">
+          Atribuição automática (heurística). Ajuste o papel se a identificação estiver trocada.
+        </p>
+        <ul className="mt-3 space-y-2">
+          {diarized.map((seg, i) => (
+            <li
+              key={`${seg.speaker}-${i}`}
+              className="flex flex-col gap-1.5 rounded-2xl border border-indigo-100 bg-white p-3 sm:flex-row sm:items-start sm:gap-3"
+            >
+              <div className="flex shrink-0 items-center gap-2">
+                <span
+                  className={`rounded-full border px-2 py-0.5 text-[10px] font-bold ${roleBadgeClass(seg.role)}`}
+                  title={seg.speaker}
+                >
+                  {seg.speaker}
+                </span>
+                <select
+                  value={['profissional', 'gestante'].includes(seg.role) ? seg.role : 'desconhecido'}
+                  onChange={(e) => setDiarizedRole(i, e.target.value)}
+                  className="rounded-lg border border-indigo-200 bg-white px-2 py-1 text-xs font-semibold text-indigo-900"
+                  aria-label={`Papel do locutor ${seg.speaker}`}
+                >
+                  <option value="profissional">Profissional</option>
+                  <option value="gestante">Gestante</option>
+                  <option value="desconhecido">Desconhecido</option>
+                </select>
+              </div>
+              <p className="min-w-0 flex-1 whitespace-pre-wrap text-sm leading-relaxed text-slate-800">{seg.text}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ) : null
 
   const getAudioConstraints = useCallback(
     (opts?: { deviceId?: string; forceBrowserPrompt?: boolean }): MediaStreamConstraints => {
@@ -468,6 +684,12 @@ export function ConsultaStreamPanel({
       setStreamError('Permissão de microfone negada ou indisponível.')
     }
   }, [getAudioConstraints, micDeviceId, pushLog, recordingPhase, stopMicPreview])
+
+  useEffect(() => {
+    if (!isStreamOnly || streamStatus !== 'conectado') return
+    if (recordingPhase !== 'idle' || micMonitorActive || micStream) return
+    void startMicMonitor()
+  }, [isStreamOnly, streamStatus, recordingPhase, micMonitorActive, micStream, startMicMonitor])
 
   const clearSttRotateTimer = useCallback(() => {
     if (sttRotateTimerRef.current) {
@@ -721,32 +943,28 @@ export function ConsultaStreamPanel({
   const showClinicalChrome = token && variant !== 'streamOnly'
 
   return (
-    <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+    <section
+      className={
+        isStreamOnly
+          ? 'space-y-4'
+          : 'rounded-lg border border-slate-200 bg-white p-6 shadow-sm'
+      }
+    >
+      {!isStreamOnly ? (
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold text-slate-900">
-            {variant === 'streamOnly' ? 'Atendimento — transcrição ao vivo' : 'Área técnica — stream e cadastro rápido'}
+            Área técnica — stream e cadastro rápido
           </h2>
-          {!isStreamOnly ? (
-            <p className="mt-1 text-sm text-slate-600">
-              UUID da consulta no <code className="rounded bg-slate-100 px-1">POST /api/v1/consultas</code> ou na
-              worklist. WebSocket: <span className="font-mono text-xs">{wsBase}/ws/consultation/:id</span>.
-            </p>
-          ) : (
-            <p className="mt-1 text-sm text-slate-600">Grave a consulta; a transcrição e as sugestões da IA aparecem abaixo.</p>
-          )}
+          <p className="mt-1 text-sm text-slate-600">
+            UUID da consulta no <code className="rounded bg-slate-100 px-1">POST /api/v1/consultas</code> ou na
+            worklist. WebSocket: <span className="font-mono text-xs">{wsBase}/ws/consultation/:id</span>.
+          </p>
         </div>
-        {variant === 'streamOnly' ? (
-          <Link
-            to="/dashboard"
-            className="shrink-0 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-800 hover:bg-slate-50"
-          >
-            Voltar à agenda
-          </Link>
-        ) : null}
       </div>
+      ) : null}
 
-      <div className="mt-6 grid gap-6 border-t border-slate-100 pt-6">
+      <div className={isStreamOnly ? 'space-y-4' : 'mt-6 grid gap-6 border-t border-slate-100 pt-6'}>
         {variant !== 'streamOnly' && !token ? (
           <div className="rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
             Sessão necessária para carregar dados clínicos.{' '}
@@ -980,114 +1198,90 @@ export function ConsultaStreamPanel({
 
 
         {isStreamOnly ? (
-          <div className="space-y-6 pb-28">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch">
-              <aside className="flex shrink-0 flex-col items-center gap-3 rounded-3xl border border-emerald-200/80 bg-gradient-to-b from-emerald-50/80 to-white p-5 shadow-sm lg:w-36">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-800">Nível do mic</p>
-                <AudioLevelMeter stream={levelStream} orientation="vertical" />
-                <p className="text-center text-[10px] font-medium text-slate-500 leading-snug">
-                  {levelStream
-                    ? micCapturing
-                      ? 'Enviando áudio…'
-                      : 'Fale para testar'
-                    : 'Ligue o monitor abaixo'}
-                </p>
-              </aside>
-
-              <div className="min-w-0 flex-1 space-y-4">
-                <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div>
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Status</p>
-                      <p className="text-lg font-black text-brand-navy">{apsStatusLabel()}</p>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500">
-                      <span
-                        className={`rounded-full px-2 py-0.5 font-bold ${streamStatus === 'conectado' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'}`}
-                      >
-                        WS: {streamStatus}
-                      </span>
-                      {showDevMetrics && audioChunksSent > 0 ? (
-                        <span>
-                          {audioChunksSent} chunks · {(audioBytesSent / 1024).toFixed(1)} KB
-                        </span>
-                      ) : null}
-                      {showDevMetrics && sttLatencyMs != null ? <span>STT ~{sttLatencyMs} ms</span> : null}
-                    </div>
-                  </div>
-                  {streamError ? <p className="mt-3 text-sm font-bold text-rose-700">{streamError}</p> : null}
-                  <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto_auto] items-end">
-                    <div>
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Microfone</label>
-                      <select
-                        value={micDeviceId}
-                        onChange={(e) => setMicDeviceId(e.target.value)}
-                        className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm bg-slate-50"
-                      >
-                        <option value="">Automático</option>
-                        {micDevices.map((d) => (
-                          <option key={d.deviceId} value={d.deviceId}>
-                            {d.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <button
-                      type="button"
-                      disabled={micBusy || micCapturing}
-                      onClick={() => (micMonitorActive ? stopMicPreview() : void startMicMonitor())}
-                      className={`rounded-xl border px-4 py-2 text-sm font-bold disabled:opacity-50 ${
-                        micMonitorActive
-                          ? 'border-emerald-400 bg-emerald-50 text-emerald-900'
-                          : 'border-brand-navy/20 text-brand-navy hover:bg-slate-50'
-                      }`}
-                    >
-                      {micMonitorActive ? 'Parar monitor' : 'Ligar monitor'}
-                    </button>
-                    <button
-                      type="button"
-                      disabled={micBusy}
-                      onClick={() => void requestMicPermissionAndRefresh()}
-                      className="rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-50"
-                      title="Atualizar lista de dispositivos"
-                    >
-                      Atualizar mics
-                    </button>
-                  </div>
-                  <div className="mt-3 lg:hidden">
-                    <AudioLevelMeter stream={levelStream} orientation="horizontal" />
-                  </div>
+          <div className="space-y-4">
+            <header className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+              <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+                <MicLevelIcon stream={levelStream} />
+                <h2 className="text-lg font-black text-brand-navy">Escriba</h2>
+                {streamStatus === 'conectado' ? (
+                  <span className="rounded-full border border-slate-200 bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-slate-700">
+                    Em atendimento
+                  </span>
+                ) : null}
+                <Link
+                  to="/dashboard"
+                  className="ml-auto shrink-0 text-xs font-semibold text-slate-500 hover:text-brand-navy hover:underline"
+                  aria-label="Voltar à agenda"
+                  title="Voltar à agenda"
+                >
+                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                  </svg>
+                </Link>
+              </div>
+              {streamStatus === 'conectado' ? (
+                <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3">
+                  {renderListenButton()}
+                  {renderCompactDiarizationToggle()}
+                  <select
+                    value={micDeviceId}
+                    onChange={(e) => setMicDeviceId(e.target.value)}
+                    className="min-w-0 flex-1 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[10px] font-semibold text-slate-700 sm:max-w-[14rem] sm:flex-none"
+                    aria-label="Selecionar microfone"
+                  >
+                    <option value="">Selecionar microfone</option>
+                    {micDevices.map((d) => (
+                      <option key={d.deviceId} value={d.deviceId}>
+                        {d.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
+              ) : (
+                <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3">
+                  <select
+                    value={micDeviceId}
+                    onChange={(e) => setMicDeviceId(e.target.value)}
+                    className="min-w-0 flex-1 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[10px] font-semibold text-slate-700 sm:max-w-[14rem]"
+                    aria-label="Selecionar microfone"
+                  >
+                    <option value="">Selecionar microfone</option>
+                    {micDevices.map((d) => (
+                      <option key={d.deviceId} value={d.deviceId}>
+                        {d.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </header>
 
-                <div className="grid gap-4 lg:grid-cols-2">
-                  <section className="rounded-3xl border border-brand-navy/15 bg-slate-50 p-5 min-h-[12rem] flex flex-col">
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-brand-navy mb-2">O que foi dito</h3>
-                    <div className="flex-1 overflow-y-auto max-h-64">
-                      <p className="text-sm text-slate-800 whitespace-pre-wrap leading-relaxed">
-                        {sttText || 'Aguardando fala… (grave ≥3 s ou finalize o trecho)'}
-                      </p>
-                    </div>
-                  </section>
-                  <section className="rounded-3xl border border-brand-pink/30 bg-brand-pink/5 p-5 min-h-[12rem] flex flex-col">
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-brand-pink mb-2 flex items-center gap-2">
-                      <span aria-hidden>🧠</span> Sugestão da IA
-                    </h3>
-                    <p className="text-[10px] text-brand-pink/80 mb-2">
-                      Rascunho automático — não salva no prontuário até você revisar e confirmar a consulta.
+            {streamError ? <p className="text-sm font-bold text-rose-700">{streamError}</p> : null}
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <section className="flex min-h-[10rem] max-h-[14rem] flex-col overflow-hidden rounded-2xl border border-brand-navy/15 bg-slate-50 p-4">
+                <h3 className="mb-2 text-xs font-bold uppercase tracking-widest text-brand-navy">Transcrição</h3>
+                <div className="flex-1 overflow-y-auto text-sm leading-relaxed">{renderTranscriptionContent()}</div>
+              </section>
+              <section className="flex min-h-[10rem] max-h-[14rem] flex-col overflow-hidden rounded-2xl border border-brand-pink/30 bg-brand-pink/5 p-4">
+                <h3 className="mb-1 text-xs font-bold uppercase tracking-widest text-brand-pink">Sugestões Lívia</h3>
+                <p className="mb-2 text-[10px] text-brand-pink/80">Rascunho — não salva automaticamente.</p>
+                <div className="flex-1 overflow-y-auto text-sm leading-relaxed">
+                  {iaText.trim() ? (
+                    <AssistantMarkdown markdown={iaText} className="text-brand-navy" />
+                  ) : (
+                    <p className="text-brand-navy">
+                      Insight após um trecho com conteúdo clínico (queixa, sinais, conduta).
                     </p>
-                    <div className="flex-1 overflow-y-auto max-h-64">
-                      {iaText.trim() ? (
-                        <AssistantMarkdown markdown={iaText} className="text-sm text-brand-navy" />
-                      ) : (
-                        <p className="text-sm text-brand-navy leading-relaxed">
-                          Insight após um trecho com conteúdo clínico (queixa, sinais, conduta).
-                        </p>
-                      )}
-                    </div>
-                  </section>
+                  )}
                 </div>
+              </section>
+            </div>
 
-                {showEscribaDiagnostics ? (
+            {showEscribaDiagnostics ? (
+              <details className="rounded-2xl border border-slate-200 bg-white">
+                <summary className="cursor-pointer px-4 py-3 text-sm font-bold text-slate-600">Avançado</summary>
+                <div className="border-t border-slate-100 p-4">
                   <EscribaStreamDiagnostics
                     streamStatus={streamStatus}
                     recordingPhase={recordingPhase}
@@ -1103,33 +1297,62 @@ export function ConsultaStreamPanel({
                     wsUrl={`${wsBase}/ws/consultation/${consultaId.trim() || '…'}`}
                     onReconnect={connect}
                     onDisconnect={disconnect}
+                    onFinishSegment={sendVad}
                     defaultOpen={import.meta.env.DEV}
                   />
-                ) : (
-                  <details className="rounded-2xl border border-slate-200 bg-white">
-                    <summary className="cursor-pointer px-4 py-3 text-sm font-bold text-slate-600">Avançado</summary>
-                    <div className="border-t border-slate-100 p-4 space-y-3 text-xs font-mono text-slate-600">
-                      <button type="button" onClick={disconnect} className="rounded-lg border px-2 py-1">
-                        Desconectar
+                </div>
+              </details>
+            ) : (
+              <details className="rounded-2xl border border-slate-200 bg-white">
+                <summary className="cursor-pointer px-4 py-3 text-sm font-bold text-slate-600">Avançado</summary>
+                <div className="border-t border-slate-100 space-y-3 p-4 text-xs text-slate-600">
+                  <p className="leading-relaxed text-slate-500">
+                    A sugestão da IA dispara automaticamente após pausa na fala ou fim de frase.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      disabled={streamStatus !== 'conectado' || recordingPhase === 'idle'}
+                      onClick={sendVad}
+                      className="rounded-lg border border-brand-navy/20 px-2 py-1 font-bold text-brand-navy hover:bg-slate-50 disabled:opacity-50"
+                    >
+                      Finalizar trecho (forçar)
+                    </button>
+                    <button
+                      type="button"
+                      disabled={micBusy}
+                      onClick={() => void requestMicPermissionAndRefresh()}
+                      className="rounded-lg border border-slate-200 px-2 py-1 font-bold hover:bg-slate-50 disabled:opacity-50"
+                    >
+                      Atualizar mics
+                    </button>
+                    {micMonitorActive ? (
+                      <button
+                        type="button"
+                        disabled={micCapturing}
+                        onClick={stopMicPreview}
+                        className="rounded-lg border border-slate-200 px-2 py-1 font-bold hover:bg-slate-50 disabled:opacity-50"
+                      >
+                        Parar monitor
                       </button>
-                      <pre className="max-h-24 overflow-auto bg-slate-900 text-slate-100 p-2 rounded">
-                        {logLines.slice(-15).join('\n') || '—'}
-                      </pre>
-                    </div>
-                  </details>
-                )}
-              </div>
-            </div>
-
-            <EscribaRecordingBar
-              phase={recordingPhase}
-              statusLabel={apsStatusLabel()}
-              disabled={streamStatus !== 'conectado'}
-              onStart={() => void startMic({ deviceId: micDeviceId || undefined })}
-              onPause={pauseMic}
-              onResume={resumeMic}
-              onFinishSegment={sendVad}
-            />
+                    ) : null}
+                    <button type="button" onClick={disconnect} className="rounded-lg border px-2 py-1 font-mono">
+                      Desconectar
+                    </button>
+                  </div>
+                  {showDevMetrics ? (
+                    <p className="font-mono text-[10px] text-slate-500">
+                      WS: {streamStatus}
+                      {audioChunksSent > 0 ? ` · ${audioChunksSent} chunks · ${(audioBytesSent / 1024).toFixed(1)} KB` : ''}
+                      {sttLatencyMs != null ? ` · STT ~${sttLatencyMs} ms` : ''}
+                    </p>
+                  ) : null}
+                  <pre className="max-h-24 overflow-auto rounded bg-slate-900 p-2 font-mono text-slate-100">
+                    {logLines.slice(-15).join('\n') || '—'}
+                  </pre>
+                </div>
+              </details>
+            )}
           </div>
         ) : (
         <>
@@ -1269,6 +1492,9 @@ export function ConsultaStreamPanel({
             </div>
           </div>
         </div>
+
+        {streamStatus === 'conectado' ? renderDiarizationToggle() : null}
+        {renderDiarizedPanel()}
 
         <div>
           <h4 className="text-xs font-semibold uppercase text-slate-500">Log</h4>

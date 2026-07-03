@@ -171,7 +171,6 @@ export function PacienteDetailPage() {
     is_ativa: '' as '' | 'true' | 'false',
     is_colocar_diu: '' as '' | 'true' | 'false',
     is_did_consulta_odontologica: '' as '' | 'true' | 'false',
-    // Novos campos
     is_diabetes_gestacional: '' as '' | 'true' | 'false',
     is_infeccao_urinaria: '' as '' | 'true' | 'false',
     is_infertilidade: '' as '' | 'true' | 'false',

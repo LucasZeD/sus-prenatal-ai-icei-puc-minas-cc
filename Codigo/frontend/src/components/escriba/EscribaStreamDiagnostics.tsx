@@ -16,6 +16,7 @@ type Props = {
   wsUrl: string
   onReconnect: () => void
   onDisconnect: () => void
+  onFinishSegment?: () => void
   defaultOpen?: boolean
 }
 
@@ -62,6 +63,7 @@ export function EscribaStreamDiagnostics({
   wsUrl,
   onReconnect,
   onDisconnect,
+  onFinishSegment,
   defaultOpen = false,
 }: Props) {
   const wsOk = streamStatus === 'conectado'
@@ -111,10 +113,24 @@ export function EscribaStreamDiagnostics({
           <ol className="list-decimal list-inside space-y-1 font-medium text-amber-900/90">
             <li>Ligue o monitor do microfone e fale — a barra vertical deve subir.</li>
             <li>Inicie a gravação e fale por pelo menos <strong>3 segundos</strong> (o servidor acumula ~2,5 s antes do STT).</li>
-            <li>Use <strong>Finalizar trecho</strong> para forçar o envio do buffer restante e disparar a IA.</li>
+            <li>A IA dispara automaticamente após pausa na fala ou fim de frase; use <strong>Finalizar trecho</strong> abaixo só para forçar em testes.</li>
             <li>Se os chunks sobem mas o STT não aparece, verifique o serviço STT/GPU no Docker.</li>
           </ol>
         </div>
+
+        {onFinishSegment ? (
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              disabled={streamStatus !== 'conectado' || recordingPhase === 'idle'}
+              onClick={onFinishSegment}
+              className="rounded-lg border border-brand-navy/20 bg-white px-3 py-1.5 text-xs font-bold text-brand-navy hover:bg-slate-50 disabled:opacity-50"
+            >
+              Finalizar trecho (forçar)
+            </button>
+            <span className="text-[10px] text-slate-500">Só para diagnóstico — o fluxo normal é automático.</span>
+          </div>
+        ) : null}
 
         {streamError ? (
           <p className="text-xs font-bold text-rose-700 rounded-lg bg-rose-50 border border-rose-200 px-3 py-2">

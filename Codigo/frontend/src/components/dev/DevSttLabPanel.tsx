@@ -10,11 +10,9 @@ import { AudioLevelMeter } from '../escriba/AudioLevelMeter.js'
 
 type AudioInputDevice = { deviceId: string; label: string }
 type RecordingPhase = 'idle' | 'recording' | 'paused'
-type SpeakerBlock = { id: number; label: string; text: string }
 type SttResponse = {
   text: string
   segments: Array<{ start: number; end: number; text: string }>
-  speakers: SpeakerBlock[]
   latencyMs: number
 }
 
@@ -80,7 +78,6 @@ export function DevSttLabPanel({
   const [streamError, setStreamError] = useState<string | null>(null)
   const [sttNow, setSttNow] = useState('')
   const [sttTranscript, setSttTranscript] = useState('')
-  const [speakerSnapshots, setSpeakerSnapshots] = useState<Array<{ at: string; speakers: SpeakerBlock[] }>>([])
   const [chunkCount, setChunkCount] = useState(0)
   const [chunkBytes, setChunkBytes] = useState(0)
   const [lastChunkBytes, setLastChunkBytes] = useState(0)
@@ -160,9 +157,6 @@ export function DevSttLabPanel({
           pushLog('ok', `STT OK (${body.latencyMs ?? '?'} ms)`, body.text.slice(0, 120))
         } else {
           pushLog('error', 'Resposta OK sem texto', bodyText.slice(0, 200))
-        }
-        if (Array.isArray(body.speakers) && body.speakers.length) {
-          setSpeakerSnapshots((prev) => [{ at: sentAt, speakers: body.speakers }, ...prev].slice(0, 8))
         }
       } catch (e: unknown) {
         const errMsg = e instanceof Error ? e.message : 'Falha de rede'
@@ -498,7 +492,6 @@ export function DevSttLabPanel({
               onClick={() => {
                 setSttNow('')
                 setSttTranscript('')
-                setSpeakerSnapshots([])
                 setChunkCount(0)
                 setChunkBytes(0)
                 setLastChunkBytes(0)
@@ -525,31 +518,12 @@ export function DevSttLabPanel({
         </div>
       </div>
 
-      <div className="mt-5 grid gap-4 lg:grid-cols-2">
+      <div className="mt-5">
         <section className="rounded-2xl border border-brand-navy/10 bg-white p-4">
           <h3 className="text-xs font-bold uppercase tracking-widest text-brand-navy">Ouvindo agora</h3>
           <p className="mt-2 min-h-[5rem] whitespace-pre-wrap text-sm text-slate-900">
             {sttNow || 'Aguardando audio...'}
           </p>
-        </section>
-        <section className="rounded-2xl border border-rose-200 bg-rose-50/40 p-4">
-          <h3 className="text-xs font-bold uppercase tracking-widest text-rose-700">Diarizacao (ultimos chunks)</h3>
-          <div className="mt-2 max-h-44 space-y-2 overflow-auto">
-            {speakerSnapshots.length === 0 ? (
-              <p className="text-sm text-slate-500">Aguardando identificacao de falantes...</p>
-            ) : (
-              speakerSnapshots.map((snap, idx) => (
-                <div key={`${snap.at}-${idx}`} className="rounded-xl border border-rose-100 bg-white p-2">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{snap.at}</p>
-                  {snap.speakers.map((speaker, speakerIdx) => (
-                    <p key={`${snap.at}-${speaker.id}-${speakerIdx}`} className="mt-1 text-sm text-slate-800">
-                      <span className="font-black text-rose-700">[{speaker.label}]</span> {speaker.text}
-                    </p>
-                  ))}
-                </div>
-              ))
-            )}
-          </div>
         </section>
       </div>
 

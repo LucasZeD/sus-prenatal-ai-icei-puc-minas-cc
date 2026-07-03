@@ -259,7 +259,7 @@ export function LandingPage() {
               <li className="flex gap-3">
                 <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-brand-pink" aria-hidden />
                 <span>
-                  <strong className="font-semibold text-brand-navy">Escriba digital:</strong> a consulta é transcrita localmente e a ficha é pré-preenchida. Você revisa os dados inseridos pela IA, decide se aprova e então grava no prontuário da gestante.
+                  <strong className="font-semibold text-brand-navy">Escriba digital:</strong> a consulta é transcrita localmente e a IA pré-preenche os campos da ficha para revisão. A transcrição não é gravada no prontuário — você revisa, edita e só então salva no registro da gestante.
                 </span>
               </li>
               <li className="flex gap-3">
@@ -393,7 +393,7 @@ export function LandingPage() {
             <div className="rounded-2xl border border-emerald-200 bg-emerald-50/40 p-8 shadow-sm sm:p-9">
               <h3 className="text-lg font-semibold text-brand-navy">O que o sistema acrescenta</h3>
               <ol className="mt-5 list-decimal list-inside space-y-3 text-base leading-relaxed text-slate-800">
-                <li>Transcrição da consulta pré-preenche a ficha, que é revisada antes de gravar.</li>
+                <li>A fala da consulta pré-preenche campos da ficha para revisão; a transcrição não é persistida — só entra no prontuário o que você salvar.</li>
                 <li>
                   Busca em trechos de <strong className="font-semibold text-brand-navy">cartilhas e manuais públicos</strong> indexados, com referência à fonte e página.
                 </li>
