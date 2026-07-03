@@ -1,5 +1,4 @@
 import { describe, expect, it, vi } from "vitest";
-import { ConsultaStreamEventoTipo } from "../src/lib/prismaBarrel.js";
 
 vi.mock("../src/lib/privacyMcpGateway.js", () => ({
   mcpGateway: () => ({
@@ -14,18 +13,28 @@ vi.mock("../src/services/escribaInsightService.js", () => ({
   },
 }));
 
+vi.mock("../src/services/escribaExtractService.js", () => ({
+  extractEscribaFields: async () => ({
+    patch: {
+      queixa: "dor lombar",
+      idade_gestacional: 28,
+      peso: 72,
+      pa_sistolica: 140,
+      pa_diastolica: 90,
+    },
+    confidence: {},
+    sources: {},
+  }),
+}));
+
 describe("ConsultationStreamSession", () => {
-  it("persiste apenas eventos de stream, nao consulta_ia", async () => {
+  it("emite form_patch e insight sem persistir transcricao", async () => {
     const { ConsultationStreamSession } = await import("../src/services/consultationStreamService.js");
 
-    const appendStreamEvento = vi.fn().mockResolvedValue(undefined);
-    const consultas = { appendStreamEvento };
-
-    const outbound: { type: string }[] = [];
+    const outbound: { type: string; patch?: unknown }[] = [];
     const session = new ConsultationStreamSession(
       "consulta-test-id",
       (msg) => outbound.push(msg),
-      consultas as never,
       { transcribeBuffer: async () => "" } as never,
     );
 
@@ -33,14 +42,14 @@ describe("ConsultationStreamSession", () => {
     process.env.STREAM_RAG_MIN_CHARS = "3";
 
     await session.applySttPartial(
-      "Gestante com pressao elevada. Nova afericao em quinze minutos.",
+      "Gestante com 28 semanas, peso 72 kg, pressao 140 por 90, queixa de dor lombar.",
       false,
     );
     await session.onVadPause();
 
     await vi.waitFor(
       () => {
-        expect(appendStreamEvento.mock.calls.length).toBeGreaterThanOrEqual(2);
+        expect(outbound.some((m) => m.type === "form_patch")).toBe(true);
       },
       { timeout: 8000 },
     );
@@ -48,21 +57,21 @@ describe("ConsultationStreamSession", () => {
     if (prevMin === undefined) delete process.env.STREAM_RAG_MIN_CHARS;
     else process.env.STREAM_RAG_MIN_CHARS = prevMin;
 
-    const tipos = appendStreamEvento.mock.calls.map((c) => c[1]);
-    expect(tipos).toContain(ConsultaStreamEventoTipo.TRANSCRICAO_SANITIZADA);
-    expect(tipos).toContain(ConsultaStreamEventoTipo.IA_INSIGHT_COMPLETO);
     expect(outbound.some((m) => m.type === "ia_reset")).toBe(true);
     expect(outbound.some((m) => m.type === "ia_done")).toBe(true);
+    const patchMsg = outbound.find((m) => m.type === "form_patch");
+    expect(patchMsg?.patch).toMatchObject({
+      queixa: "dor lombar",
+      idade_gestacional: 28,
+    });
   });
 
   it("nao chama LLM para trecho sem sinal clinico", async () => {
     const { ConsultationStreamSession } = await import("../src/services/consultationStreamService.js");
-    const appendStreamEvento = vi.fn().mockResolvedValue(undefined);
     const outbound: { type: string }[] = [];
     const session = new ConsultationStreamSession(
       "consulta-test-id",
       (msg) => outbound.push(msg),
-      { appendStreamEvento } as never,
       { transcribeBuffer: async () => "" } as never,
     );
 
@@ -71,5 +80,6 @@ describe("ConsultationStreamSession", () => {
 
     await new Promise((r) => setTimeout(r, 400));
     expect(outbound.some((m) => m.type === "ia_token")).toBe(false);
+    expect(outbound.some((m) => m.type === "form_patch")).toBe(false);
   });
 });

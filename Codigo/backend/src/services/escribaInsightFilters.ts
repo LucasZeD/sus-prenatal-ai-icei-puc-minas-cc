@@ -9,7 +9,26 @@ export function transcriptFingerprint(text: string): string {
 }
 
 const FILLER_ONLY =
-  /^(ok|hum|hm|ah|eh|sim|nao|não|obrigad[ao]|oi|bom dia|boa tarde|tchau|certo|entendi|e isso|pronto|pode ser|ta|tão|legal|beleza)[\s.!?�]*$/iu;
+  /^(ok|hum|hm|ah|eh|sim|nao|não|obrigad[ao]|oi|bom dia|boa tarde|boa noite|tchau|certo|entendi|e isso|pronto|pode ser|ta|tão|legal|beleza|am[eé]m|valeu|aplausos)[\s.!?,]*$/iu;
+
+/** Trecho que é só cumprimento/filler (alucinação comum do Whisper em silêncio). */
+export function isFillerOnly(text: string): boolean {
+  return FILLER_ONLY.test(text.trim());
+}
+
+export type SttTextSegment = { start: number; end: number; text: string };
+
+export type DiarizedFilterSegment = { speaker: string; role: string; text: string };
+
+/** Remove segmentos STT cujo texto é só filler. */
+export function filterSttSegments(segments: SttTextSegment[]): SttTextSegment[] {
+  return segments.filter((s) => !isFillerOnly(s.text));
+}
+
+/** Remove blocos diarizados cujo texto inteiro é filler. */
+export function filterDiarizedSegments(segments: DiarizedFilterSegment[]): DiarizedFilterSegment[] {
+  return segments.filter((s) => !isFillerOnly(s.text));
+}
 
 /** Indícios de conteúdo clínico na transcrição (gate antes do LLM). */
 const CLINICAL_SIGNAL =
@@ -21,7 +40,7 @@ const CLINICAL_SIGNAL =
 export function hasClinicalSignal(text: string): boolean {
   const t = text.trim();
   if (!t) return false;
-  if (FILLER_ONLY.test(t)) return false;
+  if (isFillerOnly(t)) return false;
   if (CLINICAL_SIGNAL.test(t)) return true;
   return t.length >= 48;
 }

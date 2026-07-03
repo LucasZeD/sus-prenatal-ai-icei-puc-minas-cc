@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import { normalizeObstetricJargon } from "../src/lib/obstetricJargonNormalize.js";
 
 const ROTEIRO_INPUT =
-  "Paciente em IG de vinte duas semanas, BCF cento e quarenta, AU vinte, feto cefálico e dorso à esquerda. MF presentes.";
+  "Paciente em IG de vinte duas semanas, BCF cento e quarenta, AU vinte, feto cefÃ¡lico e dorso Ã  esquerda. MF presentes.";
 const ROTEIRO_EXPECTED =
-  "Paciente em IG de 22 semanas, BCF 140, AU 20, feto cefálico e dorso à esquerda. MF presentes.";
+  "Paciente em IG de 22 semanas, BCF 140, AU 20, feto cefÃ¡lico e dorso Ã  esquerda. MF presentes.";
 
 describe("normalizeObstetricJargon", () => {
   it("normaliza frase de referencia do roteiro (Caso 6 em texto)", () => {

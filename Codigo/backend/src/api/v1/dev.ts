@@ -408,7 +408,6 @@ export function registerDevV1Routes(v1: Hono<{ Variables: AuthVariables }>): voi
     return c.json({
       text: diag.transcription.text,
       segments: diag.transcription.segments,
-      speakers: diag.transcription.speakers,
       latencyMs: Date.now() - startedAt,
     });
   });

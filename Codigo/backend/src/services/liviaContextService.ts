@@ -1,6 +1,8 @@
-import type { Consulta, Exame } from "@prisma/client";
-import { ExameTipo } from "../lib/prismaBarrel.js";
+import { ExameTipo, type Prisma } from "../lib/prismaBarrel.js";
 import { AppError } from "../core/errors.js";
+import type { Consulta } from "../repository/consultaRepository.js";
+
+type Exame = Prisma.ExameGetPayload<Record<string, never>>;
 import { isUuid } from "../lib/validation/uuid.js";
 import { mcpGateway } from "../lib/privacyMcpGateway.js";
 import { getPrisma } from "../repository/prisma.js";
@@ -478,7 +480,7 @@ export async function buildLiviaSuggestions(input: LiviaScopeIds): Promise<{ sug
   const hasPaMarcador =
     gestacao.is_hipertensao_arterial ||
     Boolean(gestacao.antecedentes?.is_hipertensao_familiar) ||
-    gestacao.consultas.some((c) => c.pa_sistolica != null || c.pa_diastolica != null);
+    gestacao.consultas.some((c: Consulta) => c.pa_sistolica != null || c.pa_diastolica != null);
   if (hasPaMarcador) {
     suggestions.push("Conduta para PA elevada (protocolo MS) nesta paciente");
   }

@@ -919,7 +919,7 @@ export function registerClinicalV1Routes(secured: Hono<{ Variables: AuthVariable
    * Fluxo excepcional (Escriba):
    * - Consulta CONFIRMADA não pode gravar novamente.
    * - Para regravar, cria-se uma NOVA consulta com pré-preenchimento (cópia de campos clínicos),
-   *   e apaga-se a gravação anterior (eventos de stream) da consulta confirmada.
+   *   mantendo a consulta confirmada como registro histórico.
    */
   secured.post("/consultas/:id/recriar-para-escriba", async (c) => {
     const id = c.req.param("id");
@@ -941,9 +941,6 @@ export function registerClinicalV1Routes(secured: Hono<{ Variables: AuthVariable
     const cur = current as unknown as Record<string, unknown>;
 
     const created = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-      // Apaga a "gravação" (histórico de stream) da consulta confirmada.
-      await tx.consultaStreamEvento.deleteMany({ where: { consulta_id: id } });
-
       // Mantém sugestão/saída IA da consulta anterior para pré-preenchimento,
       // mas zera qualquer referência efêmera de transcrição.
       const iaPrev = await tx.consultaIa.findUnique({ where: { consulta_id: id } });
