@@ -1,11 +1,9 @@
 import { sttConcurrencyLimiter } from "../concurrencyLimiter.js";
 
 export type SttSegment = { start: number; end: number; text: string };
-export type SttSpeaker = { id: number; label: string; text: string };
 export type SttTranscription = {
   text: string;
   segments: SttSegment[];
-  speakers: SttSpeaker[];
 };
 
 export type SttTranscribeFailureReason =
@@ -110,7 +108,7 @@ export class FasterWhisperClient {
       };
     }
 
-    let body: { text?: unknown; segments?: unknown; speakers?: unknown; error?: unknown };
+    let body: { text?: unknown; segments?: unknown; error?: unknown };
     try {
       body = JSON.parse(bodyText) as typeof body;
     } catch {
@@ -157,23 +155,9 @@ export class FasterWhisperClient {
           })
           .map((s) => ({ start: s.start, end: s.end, text: s.text }))
       : [];
-    const speakers = Array.isArray(body.speakers)
-      ? body.speakers
-          .filter((s): s is { id: number; label: string; text: string } => {
-            return (
-              typeof s === "object" &&
-              s !== null &&
-              typeof (s as { id?: unknown }).id === "number" &&
-              typeof (s as { label?: unknown }).label === "string" &&
-              typeof (s as { text?: unknown }).text === "string"
-            );
-          })
-          .map((s) => ({ id: s.id, label: s.label, text: s.text }))
-      : [];
-
     return {
       ok: true,
-      transcription: { text: body.text, segments, speakers },
+      transcription: { text: body.text, segments },
       whisperUrl,
     };
   }
