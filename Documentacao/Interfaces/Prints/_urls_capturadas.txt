@@ -1,0 +1,5 @@
+Dashboard: https://prenatal.duarte-zegrine.com.br/dashboard
+Pacientes: https://prenatal.duarte-zegrine.com.br/pacientes
+Prontuário: https://prenatal.duarte-zegrine.com.br/pacientes
+Escriba: N/A
+Capturado em: 2026-07-02T04:13:31.063Z
