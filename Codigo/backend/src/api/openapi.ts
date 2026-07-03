@@ -260,7 +260,7 @@ export function buildOpenApiDoc(baseUrl = "/"): OpenApiDoc {
           tags: ["Streaming"],
           summary: "WebSocket de consulta (token via querystring)",
           description:
-            "Upgrade WebSocket. Use `?token=JWT` na URL. Eventos: history/ready, envio binário de áudio e `{\"type\":\"vad_pause\"}`.",
+            "Upgrade WebSocket. Use `?token=JWT` na URL. Eventos servidor: `history`, `ready`, `stt_partial`, `stt_diarized`, `ia_reset`, `ia_token`, `ia_done`, `form_patch` (RF04), `error`. Cliente: áudio binário, `{\"type\":\"vad_pause\"}`, `mic_state`, `diarization_state`.",
           parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" } }],
           responses: { 101: { description: "Switching Protocols (WebSocket)" } },
         },
@@ -370,7 +370,7 @@ export function buildOpenApiDoc(baseUrl = "/"): OpenApiDoc {
                 "application/json": {
                   schema: {
                     type: "object",
-                    required: ["text", "segments", "speakers", "latencyMs"],
+                    required: ["text", "segments", "latencyMs"],
                     properties: {
                       text: { type: "string" },
                       latencyMs: { type: "number" },
@@ -382,18 +382,6 @@ export function buildOpenApiDoc(baseUrl = "/"): OpenApiDoc {
                           properties: {
                             start: { type: "number" },
                             end: { type: "number" },
-                            text: { type: "string" },
-                          },
-                        },
-                      },
-                      speakers: {
-                        type: "array",
-                        items: {
-                          type: "object",
-                          required: ["id", "label", "text"],
-                          properties: {
-                            id: { type: "number" },
-                            label: { type: "string" },
                             text: { type: "string" },
                           },
                         },
@@ -459,6 +447,19 @@ export function buildOpenApiDoc(baseUrl = "/"): OpenApiDoc {
                     llm_provider: { type: "string", enum: ["ollama", "gemini", "auto"] },
                     gestacao_context: { type: "string", nullable: true },
                     consulta_escriba_context: { type: "string", nullable: true },
+                    conversation_history: {
+                      type: "array",
+                      nullable: true,
+                      items: {
+                        type: "object",
+                        required: ["role", "content"],
+                        properties: {
+                          role: { type: "string", enum: ["user", "assistant"] },
+                          content: { type: "string" },
+                        },
+                      },
+                      description: "Turnos anteriores user/assistant (opcional, multi-turno).",
+                    },
                   },
                 },
               },

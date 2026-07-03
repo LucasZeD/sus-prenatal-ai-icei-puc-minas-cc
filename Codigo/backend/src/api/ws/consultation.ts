@@ -78,18 +78,10 @@ export function registerConsultationWebSocket(app: Hono, upgradeWebSocket: Upgra
 
           await consultas.updateStatus(consultaId, StatusConsulta.EM_ANDAMENTO);
 
-          const eventos = await consultas.listStreamEventos(consultaId);
-          outbound({
-            type: "history",
-            eventos: eventos.map((e: { tipo: string; payload: string; createdAt: Date }) => ({
-              tipo: e.tipo,
-              payload: e.payload,
-              createdAt: e.createdAt.toISOString(),
-            })),
-          });
-          outbound({ type: "ready", consultaId });
+          outbound({ type: "history", eventos: [] });
+          outbound({ type: "ready", consultaId, diarizationAvailable: streamService.diarizationAvailable });
 
-          session = streamService.createSession(consultaId, outbound);
+          session = await streamService.createSession(consultaId, outbound);
         },
 
         onMessage: async (evt: { data: unknown }) => {
@@ -111,6 +103,18 @@ export function registerConsultationWebSocket(app: Hono, upgradeWebSocket: Upgra
             if (parsed?.type === "mic_state") {
               const active = Boolean((parsed as { active?: boolean }).active);
               session.onMicState(active);
+              return;
+            }
+            if (parsed?.type === "diarization_state") {
+              const enabled = Boolean((parsed as { enabled?: boolean }).enabled);
+              session.setDiarizationEnabled(enabled);
+              return;
+            }
+            if (parsed?.type === "prontuario_draft") {
+              const fields = (parsed as { fields?: unknown }).fields;
+              if (fields && typeof fields === "object" && !Array.isArray(fields)) {
+                session.onProntuarioDraft(fields as Record<string, unknown>);
+              }
               return;
             }
             return;

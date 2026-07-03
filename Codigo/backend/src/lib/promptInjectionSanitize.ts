@@ -1,7 +1,5 @@
 /**
  * Camada complementar contra prompt injection em texto enviado a LLM.
- * Usada no gateway de privacidade (antes/depois do clinical-ai) e no modo noop.
- * Mantida alinhada em esprito a `clinical_ai/prompt_sanitize.py`.
  */
 
 const ZW_RE = /[\u200b-\u200f\u202a-\u202e\u2060-\u206f\ufeff]/g;

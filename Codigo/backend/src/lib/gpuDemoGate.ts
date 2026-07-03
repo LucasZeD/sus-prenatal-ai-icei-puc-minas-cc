@@ -1,8 +1,9 @@
 /**
- * Coordena uso da GPU em demo single-device: STT (Whisper) vs LLM (Ollama) não rodam em paralelo.
+ * Coordena uso da GPU em demo single-device: STT (Whisper), LLM (Ollama) e diarização
+ * (pyannote em GPU) não rodam em paralelo — disputam o mesmo árbitro (fila FIFO).
  */
 
-export type GpuJobKind = "stt" | "llm";
+export type GpuJobKind = "stt" | "llm" | "diarization";
 
 export type GpuDemoMode = "time_slice" | "exclusive_stt" | "livia_cloud";
 

@@ -78,3 +78,10 @@ export const clinicalAiProxyConcurrencyLimiter = new ConcurrencyLimiter(
   "clinical_ai_proxy_busy",
   "clinical-ai temporariamente ocupado. Tente novamente em instantes.",
 );
+
+// Diarização é pesada (pyannote em CPU). Default 1 para não competir com STT/LLM na GPU/CPU.
+export const diarizationConcurrencyLimiter = new ConcurrencyLimiter(
+  parsePositiveIntEnv("DIARIZATION_CONCURRENCY_LIMIT", 1),
+  "diarization_busy",
+  "Diarização temporariamente ocupada. Tente novamente em instantes.",
+);
